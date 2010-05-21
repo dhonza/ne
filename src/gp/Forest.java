@@ -1,0 +1,115 @@
+package gp;
+
+import common.RND;
+
+import java.util.Arrays;
+
+/**
+ * Created by IntelliJ IDEA.
+ * User: drchaj1
+ * Date: Jun 17, 2009
+ * Time: 6:21:40 PM
+ * To change this template use File | Settings | File Templates.
+ */
+public class Forest implements Comparable {
+    private Tree[] trees;
+    private double fitness = -Double.MAX_VALUE;
+    final private int generationOfOrigin;
+    transient final private TreeInputs treeInputs;
+
+    private Forest(int generationOfOrigin, TreeInputs treeInputs) {
+        this.generationOfOrigin = generationOfOrigin;
+        this.treeInputs = treeInputs;
+    }
+
+    public double getFitness() {
+        return fitness;
+    }
+
+    public void setFitness(double fitness) {
+        this.fitness = fitness;
+    }
+
+    public static Forest createEmpty() {
+        return new Forest(0, null);
+    }
+
+    public static Forest createRandom(int generationOfOrigin, TreeInputs treeInputs, int numOfOutputs, NodeCollection nodeCollection) {
+        Forest forest = new Forest(generationOfOrigin, treeInputs);
+        forest.trees = new Tree[numOfOutputs];
+        for (int i = 0; i < numOfOutputs; i++) {
+            forest.trees[i] = Tree.createRandom(nodeCollection);
+        }
+        return forest;
+    }
+
+    public Forest mutate(NodeCollection nodeCollection, int generationOfOrigin) {
+        Forest forest = new Forest(generationOfOrigin, treeInputs);
+        forest.trees = new Tree[trees.length];
+        //TODO nebo vybrat jeden?
+        for (int i = 0; i < trees.length; i++) {
+            if (RND.getDouble() < GP.MUTATION_SUBTREE_PROBABLITY) {
+                forest.trees[i] = this.trees[i].mutateSubtree(nodeCollection);
+            } else {
+                forest.trees[i] = this.trees[i].mutateNode(nodeCollection);
+            }
+        }
+        forest.setFitness(Double.NaN);
+        return forest;
+
+    }
+
+    public double distance(Forest other) {
+        double distances = 0.0;
+        for (int i = 0; i < trees.length; i++) {
+            distances += this.trees[i].distance(other.trees[i]);
+        }
+        return distances / trees.length;
+    }
+
+    public int getNumOfInputs() {
+        return treeInputs.getNumOfInputs();
+    }
+
+    public void loadInputs(double[] inputs) {
+        treeInputs.loadInputs(inputs);
+    }
+
+    public double[] getOutputs() {
+        double[] outputs = new double[trees.length];
+        for (int i = 0; i < trees.length; i++) {
+            outputs[i] = trees[i].evaluate();
+        }
+        return outputs;
+    }
+
+    public int compareTo(Object o) {
+        return -new Double(fitness).compareTo(((Forest) o).fitness);
+    }
+
+    @Override
+    public String toString() {
+        return Arrays.asList(trees) + " F: " + fitness + " G: " + generationOfOrigin;
+    }
+
+    public String toMathematicaExpression() {
+        StringBuilder b = new StringBuilder("{");
+        for (int i = 0; i < trees.length; i++) {
+            Tree tree = trees[i];
+            b.append(tree.toMathematicaExpression());
+            if (i < (trees.length - 1)) {
+                b.append(", ");
+            }
+        }
+        b.append("}");
+        return b.toString();
+    }
+
+    public String innovationToString() {
+        String s = "";
+        for (Tree tree : trees) {
+            s += tree.innovationToString() + ", ";
+        }
+        return s;
+    }
+}
