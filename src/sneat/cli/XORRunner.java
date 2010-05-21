@@ -91,6 +91,6 @@ class XORRunner {
 
     public static void main(String[] args) throws IOException {
 //        HyperNEATParameters.loadParameterFile();
-        new XORRunner("sneat.properties");
+        new XORRunner("cfg/sneat.properties");
     }
 }
