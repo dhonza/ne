@@ -46,6 +46,7 @@ class XORRunner {
     }
 
     private void performExperiment(ParameterCombination parameters) {
+        HyperNEATParameters.loadParameterFile();
         IExperiment exp = new XORExperiment(parameters);
         IdGenerator idgen = new IdGenerator();
 

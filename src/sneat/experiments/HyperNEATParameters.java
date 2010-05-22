@@ -16,13 +16,11 @@ public class HyperNEATParameters {
     public static Map<String, Double> activationFunctions = new HashMap<String, Double>();
     public static Map<String, String> parameters = new HashMap<String, String>();
 
-    static {
-        loadParameterFile();
-    }
 
     public static void loadParameterFile() {
+        System.out.println("Loading SNEAT config file.");
         try {
-            BufferedReader input = new BufferedReader(new FileReader("params.txt"));
+            BufferedReader input = new BufferedReader(new FileReader("cfg/sneat-params.txt"));
             String wholeLine;
             String[] line;
             double probability;

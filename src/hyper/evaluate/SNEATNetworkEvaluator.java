@@ -1,5 +1,9 @@
 package hyper.evaluate;
 
+import hyper.builder.NetSubstrateBuilder;
+import hyper.cppn.BasicSNEATCPPN;
+import hyper.cppn.CPPN;
+import neat.Net;
 import sneat.experiments.INetworkEvaluator;
 import sneat.neuralnetwork.INetwork;
 
@@ -13,23 +17,21 @@ import java.util.concurrent.Semaphore;
  * To change this template use File | Settings | File Templates.
  */
 public class SNEATNetworkEvaluator implements INetworkEvaluator {
-//    private final float[][] in = {{1.0f, 0.0f, 0.0f}, // the first number for bias
-//            {1.0f, 0.0f, 1.0f}, {1.0f, 1.0f, 0.0f}, {1.0f, 1.0f, 1.0f}};
+    final private NetSubstrateBuilder substrateBuilder;
+    final private Problem problem;
 
-    private final float[][] in = {{0.0f, 0.0f},
-            {0.0f, 1.0f}, {1.0f, 0.0f}, {1.0f, 1.0f}};
-
-    private final double[] out = {0.0, 1.0, 1.0, 0.0};
+    public SNEATNetworkEvaluator(NetSubstrateBuilder substrateBuilder, Problem problem) {
+        this.substrateBuilder = substrateBuilder;
+        this.problem = problem;
+    }
 
     public double evaluateNetwork(INetwork network) {
-        float error = 0;
-        for (int i = 0; i < 4; i++) {
-            network.clearSignals();
-            network.setInputSignals(in[i]);
-            network.multipleSteps(5);
-            error += Math.abs(out[i] - network.getOutputSignal(0));
-        }
-        return Math.pow((4.0 - error), 2);
+        CPPN aCPPN = new BasicSNEATCPPN(network, substrateBuilder.getSubstrate().getMaxDimension());
+        substrateBuilder.build(aCPPN);
+
+        Net hyperNet = substrateBuilder.getNet();
+
+        return problem.evaluate(hyperNet);
     }
 
     public double threadSafeEvaluateNetwork(INetwork network, Semaphore sem) {

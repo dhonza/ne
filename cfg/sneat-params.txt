@@ -1,0 +1,9 @@
+Threshold .2
+WeightRange 3
+NumberOfThreads 1
+StartActivationFunctions
+BipolarSigmoid 0.25
+Gaussian 0.25
+Sine 0.25
+Linear 0.25
+EndActivationFunctions

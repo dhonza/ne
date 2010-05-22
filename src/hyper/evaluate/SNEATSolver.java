@@ -3,12 +3,15 @@ package hyper.evaluate;
 import common.pmatrix.ParameterCombination;
 import common.stats.Stats;
 import hyper.builder.NetSubstrateBuilder;
-import neat.Genome;
-import neat.Net;
-import neat.Neuron;
 import sneat.evolution.EvolutionAlgorithm;
 import sneat.evolution.IdGenerator;
+import sneat.experiments.HyperNEATParameters;
 import sneat.neatgenome.GenomeFactory;
+import sneat.neatgenome.NeatGenome;
+import sneat.neatgenome.xml.XmlGenomeWriterStatic;
+import sneat.neuralnetwork.activationfunctions.ActivationFunctionFactory;
+
+import java.io.File;
 
 /**
  * Created by IntelliJ IDEA.
@@ -34,23 +37,13 @@ public class SNEATSolver implements Solver {
         this.problem = problem;
     }
 
-    private static Genome getPrototype(int aCPPNInputs, int aCPPNOutputs) {
-        Net net = new Net(1);
-        net.createFeedForward(aCPPNInputs, new int[]{}, aCPPNOutputs);
-        for (int i = 0; i < aCPPNOutputs; i++) {
-            net.getOutputs().get(i).setActivation(Neuron.Activation.BIPOLAR_SIGMOID);
-//            net.getOutputs().get(i).setActivation(Neuron.Activation.LINEAR);
-        }
-        net.randomizeWeights(-0.3, 0.3);
-        return new Genome(net);
-    }
-
     public void solve() {
         //TODO encapsulate!, je jeste v evaluatoru!
         int inputsCPPN = 2 * substrateBuilder.getSubstrate().getMaxDimension();
         int outputsCPPN = substrateBuilder.getSubstrate().getNumOfConnections();
 
-        SNEATExperiment exp = new SNEATExperiment(parameters, inputsCPPN, outputsCPPN);
+        HyperNEATParameters.loadParameterFile();
+        SNEATExperiment exp = new SNEATExperiment(parameters, substrateBuilder, problem, inputsCPPN, outputsCPPN);
         IdGenerator idgen = new IdGenerator();
 
         EvolutionAlgorithm ea = new EvolutionAlgorithm(
@@ -65,6 +58,7 @@ public class SNEATSolver implements Solver {
                 exp.getPopulationEvaluator(),
                 exp.getDefaultNeatParameters());
 
+        XmlGenomeWriterStatic.Write(new File("seedGenome.xml"), (NeatGenome) ea.getPopulation().getGenomeList().get(0));
 
         double maxFitness = -Double.MAX_VALUE;
         for (int j = 0; j < exp.getDefaultNeatParameters().maxGenerations; j++) {
@@ -76,6 +70,7 @@ public class SNEATSolver implements Solver {
             }
             System.out.println(ea.getGeneration() + " " + (maxFitness) + " " + (System.currentTimeMillis() - dt));
         }
+        XmlGenomeWriterStatic.Write(new File("bestGenome.xml"), (NeatGenome) ea.getBestGenome(), ActivationFunctionFactory.getActivationFunction("NullFn"));
 
 
         /*
