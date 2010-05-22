@@ -1,15 +1,18 @@
 package neat;
 
+import common.evolution.ProgressPrinter;
+
 /**
  * User: honza
  * Date: Apr 10, 2006
  * Time: 8:45:57 PM
  */
 
-//TODO - nejedna se v podstate o listener?
-public class BasicProgressPrinter extends ProgressPrinter {
+public class BasicProgressPrinter implements ProgressPrinter {
+    protected final Population pop;
+
     public BasicProgressPrinter(Population pop) {
-        super(pop);
+        this.pop = pop;
     }
 
     /**
@@ -20,8 +23,8 @@ public class BasicProgressPrinter extends ProgressPrinter {
         System.out.println(toStringGeneration());
     }
 
-    public String toStringGeneration(){
-         return "G:" + pop.getGeneration() + " EVA:" + pop.getEvaluation() + " SPE:" + pop.getSpecies().size() + " BSF:" + pop.getBestSoFar().getFitness() + " BOG:"
+    public String toStringGeneration() {
+        return "G:" + pop.getGeneration() + " EVA:" + pop.getEvaluation() + " SPE:" + pop.getSpecies().size() + " BSF:" + pop.getBestSoFar().getFitness() + " BOG:"
                 + pop.getBestOfGeneration().getFitness() + " LASTIN:" + pop.getLastInnovation() + " DELTA:" + NEAT.getConfig().distanceDelta + " LIN:"
                 + pop.getGlobalInnovation().getLinkInnovation() + " NIN:" + pop.getGlobalInnovation().getNeuronInnovation() + " BSFL:" + pop.getBestSoFar().getNet().getNumLinks()
                 + " BSFHN:" + pop.getBestSoFar().getNet().getNumHidden();
@@ -40,7 +43,7 @@ public class BasicProgressPrinter extends ProgressPrinter {
         System.out.println("FINISHED");
     }
 
-    public String toStringProgress(){
+    public String toStringProgress() {
         return " NEW CHAMP:" + pop.getBestSoFar().getFitness() + " BSFL:" + pop.getBestSoFar().getNet().getNumLinks() + " BSFHN:"
                 + pop.getBestSoFar().getNet().getNumHidden();
     }

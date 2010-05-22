@@ -1,10 +1,8 @@
 package neat.demo;
 
 import common.RND;
-import common.function.Function3D;
+import common.evolution.EvolutionaryAlgorithmSolver;
 import neat.*;
-
-import java.awt.*;
 
 /**
  * <p/>
@@ -25,38 +23,12 @@ import java.awt.*;
  */
 
 public class ExampleSpirals {
-
-    public static final int AXES = 1,
-            SPIRALS = 2,
-            SPIRAL = 3;
-
     FitnessSharingPopulation population;
 //    DeterministicCrowdingPopulation population;
 
     Net neval;
 
-//    VNet vn;
-
-    int evals = 0;
-
     EvaluateSpirals evaluateSpirals;
-
-    class SpiralsDraw implements Function3D {
-        public double getValue(double ox, double oy) {
-            double[] in = {1.0, ox, oy};
-            neval.loadInputs(in);
-            neval.reset();
-            evaluateSpirals.activate(neval);
-            double[] y = neval.getClampedOutputValues(-1.0, 1.0);
-//            return y[0]-y[1];
-//            if (y[0] < y[1]) {
-//                return -1.0;
-//            } else {
-//                return 1.0;
-//            }
-            return y[0];
-        }
-    }
 
     public ExampleSpirals() {
         NEAT problem = new NEAT();
@@ -65,7 +37,7 @@ public class ExampleSpirals {
 
         config.populationSize = 150;
         config.targetFitness = 200;
-        config.lastGeneration = 1000;
+        config.lastGeneration = 100;
         config.distanceDelta = 15;
 
 //        config.distanceC1 = 1.0;
@@ -102,18 +74,20 @@ public class ExampleSpirals {
         Net net = new Net(1);
         int[] h = {};
 //        net.createFeedForward(2, h, 2);
-        net.createFeedForward(2, h, 1);
+        net.createFeedForward(2, h, 1, Neuron.Activation.BIPOLAR_SIGMOID);
 
         Genome proto = new Genome(net);
         evaluateSpirals = new EvaluateSpirals();
 
         population = new FitnessSharingPopulation(evaluateSpirals, proto);
 //        population = new DeterministicCrowdingPopulation(evaluateSpirals, proto);
-
         problem.setPopulation(population);
-        problem.setProgressPrinter(new BasicProgressPrinter(population));
 
-        problem.run(false);
+        EvolutionaryAlgorithmSolver solver = new EvolutionaryAlgorithmSolver(problem);
+        solver.addProgressPrinter(new BasicProgressPrinter(population));
+        solver.addStopCondition(new LastGenerationStopCondition(problem));
+        solver.addStopCondition(new TargetFitnessStopCondition(problem));
+        solver.run();
 
         neval = population.getBestSoFarNet();
         System.out.println(neval);

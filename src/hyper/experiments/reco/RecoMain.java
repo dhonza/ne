@@ -6,7 +6,7 @@ import common.pmatrix.ParameterMatrixManager;
 import common.pmatrix.ParameterMatrixStorage;
 import common.stats.Stats;
 import hyper.builder.NetSubstrateBuilder;
-import hyper.evaluate.GPSolver;
+import hyper.evaluate.NEATSolver;
 import hyper.evaluate.Problem;
 import hyper.evaluate.Solver;
 import hyper.experiments.reco.problem.RecoSubstrateFactory;
@@ -64,9 +64,9 @@ public class RecoMain {
             for (int i = 0; i < experiments; i++) {
 //                System.out.println("EXPERIMENT: " + (i + 1));
 
-//                Solver solver = new NEATSolver(combination, substrateBuilder, stats, problem);
+                Solver solver = new NEATSolver(combination, substrateBuilder, stats, problem);
 //                Solver solver = new SNEATSolver(combination, substrateBuilder, stats, problem);
-                Solver solver = new GPSolver(combination, substrateBuilder, stats, problem);
+//                Solver solver = new GPSolver(combination, substrateBuilder, stats, problem);
                 solver.solve();
             }
             stats.printScope("EXPERIMENT");

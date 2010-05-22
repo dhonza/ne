@@ -174,6 +174,11 @@ public class Net {
         return inputs.get(0);
     }
 
+
+    public void createFeedForward(int onumInputs, int[] onumHidden, int onumOutputs) {
+        createFeedForward(onumInputs, onumHidden, onumOutputs, Neuron.Activation.SIGMOID);
+    }
+
     /**
      * Creates a feed forward network with all weights set to zero.
      * BIAS!!!!!!!!!!!
@@ -184,7 +189,7 @@ public class Net {
      * @param onumOutputs number of output neurons
      * @see #createFullyConnected
      */
-    public void createFeedForward(int onumInputs, int[] onumHidden, int onumOutputs) {
+    public void createFeedForward(int onumInputs, int[] onumHidden, int onumOutputs, Neuron.Activation hidoutType) {
         numInputs = onumInputs + 1; //bias
         numHidden = 0;
         numOutputs = onumOutputs;
@@ -227,7 +232,7 @@ public class Net {
         for (i = 0; i < onumHidden.length; i++) {
             // the Neurons of i-th hidden layer + Link from bias to them
             for (j = 0; j < onumHidden[i]; j++) {
-                tn = new Neuron(counterN++, Neuron.Type.HIDDEN, Neuron.Activation.SIGMOID);
+                tn = new Neuron(counterN++, Neuron.Type.HIDDEN, hidoutType);
                 hidout.add(tn);
                 tmp2.add(tn);
 
@@ -251,7 +256,7 @@ public class Net {
 
         // output Neurons + Links from bias to them
         for (j = 0; j < numOutputs; j++, counterN++) {
-            tn = new Neuron(counterN, Neuron.Type.OUTPUT, Neuron.Activation.SIGMOID);
+            tn = new Neuron(counterN, Neuron.Type.OUTPUT, hidoutType);
             hidout.add(tn);
             outputs.add(tn);
             tl = new Link(counterL++, 0.0, bias, tn);
@@ -428,7 +433,6 @@ public class Net {
      * mutation.
      *
      * @param olink new link
-     * @see ne.Genome#mutateAddLink
      */
     public void addLink(Link olink) {
         links.add(olink);
@@ -504,7 +508,6 @@ public class Net {
      * @param oneuron  new neuron
      * @param oinLink  input link
      * @param ooutLink output link
-     * @see ne.Genome#mutateAddNeuron
      */
     public void addNeuron(Neuron oneuron, Link oinLink, Link ooutLink) {
         hidout.add(oneuron);

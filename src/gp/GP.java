@@ -72,6 +72,9 @@ public class GP implements EvolutionaryAlgorithm {
         recomputeBest();
     }
 
+    public void finished() {
+    }
+
     public boolean hasImproved() {
         return lastInnovation == 0;
     }

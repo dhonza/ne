@@ -12,5 +12,7 @@ public interface EvolutionaryAlgorithm {
 
     public void nextGeneration();
 
+    public void finished();
+
     public boolean hasImproved();
 }

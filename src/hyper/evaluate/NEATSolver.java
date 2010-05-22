@@ -1,5 +1,6 @@
 package hyper.evaluate;
 
+import common.evolution.EvolutionaryAlgorithmSolver;
 import common.pmatrix.ParameterCombination;
 import common.stats.Stats;
 import hyper.builder.NetSubstrateBuilder;
@@ -48,7 +49,7 @@ public class NEATSolver implements Solver {
 
         NEATEvaluator evaluator = new NEATEvaluator(substrateBuilder, problem);
 
-        NEAT aNEAT = new NEAT();
+        NEAT neat = new NEAT();
         NEATConfig config = NEAT.getConfig();
         config.populationSize = 1000;
         config.lastGeneration = 15000;
@@ -57,10 +58,14 @@ public class NEATSolver implements Solver {
 
         FitnessSharingPopulation population = new FitnessSharingPopulation(evaluator, getPrototype(inputsCPPN, outputsCPPN));
 
-        aNEAT.setPopulation(population);
-        ProgressPrinter progressPrinter = new NetProgressPrinter1D(population, substrateBuilder.getSubstrate(), problem);
-        aNEAT.setProgressPrinter(progressPrinter);
-        aNEAT.run(false);
+        neat.setPopulation(population);
+
+        EvolutionaryAlgorithmSolver solver = new EvolutionaryAlgorithmSolver(neat);
+        solver.addProgressPrinter(new NetProgressPrinter1D(population, substrateBuilder.getSubstrate(), problem));
+        solver.addStopCondition(new LastGenerationStopCondition(neat));
+        solver.addStopCondition(new TargetFitnessStopCondition(neat));
+        solver.addStopCondition(new SolvedStopCondition(problem));
+        solver.run();
 
         stats.addSample("STAT_GENERATIONS", population.getGeneration());
     }

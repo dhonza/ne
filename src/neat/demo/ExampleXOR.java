@@ -1,7 +1,7 @@
 package neat.demo;
 
 import common.RND;
-import common.function.Function3D;
+import common.evolution.EvolutionaryAlgorithmSolver;
 import neat.*;
 
 /**
@@ -23,30 +23,12 @@ import neat.*;
  */
 
 public class ExampleXOR {
-
-    public static final int AXES = 1, XOR = 2;
-
     FitnessSharingPopulation population;
 //    DeterministicCrowdingPopulation population;
 
     Net neval;
 
-//    VNet vn;
-
-    int evals = 0;
-
     EvaluateXOR evaluateXOR;
-
-    class XORDraw implements Function3D {
-        public double getValue(double ox, double oy) {
-            double[] in = {1.0, ox, oy};
-            neval.loadInputs(in);
-            neval.reset();
-            evaluateXOR.activate(neval);
-            double y = neval.getOutputValues()[0];
-            return y;
-        }
-    }
 
     public ExampleXOR() {
         NEAT problem = new NEAT();
@@ -84,11 +66,13 @@ public class ExampleXOR {
 
         population = new FitnessSharingPopulation(evaluateXOR, proto);
 //        population = new DeterministicCrowdingPopulation(evaluateXOR, proto);
-
         problem.setPopulation(population);
-        problem.setProgressPrinter(new BasicProgressPrinter(population));
 
-        problem.run(false);
+        EvolutionaryAlgorithmSolver solver = new EvolutionaryAlgorithmSolver(problem);
+        solver.addProgressPrinter(new BasicProgressPrinter(population));
+        solver.addStopCondition(new LastGenerationStopCondition(problem));
+        solver.addStopCondition(new TargetFitnessStopCondition(problem));
+        solver.run();
 
         neval = population.getBestSoFarNet();
         System.out.println(neval);
