@@ -1,9 +1,7 @@
 package neat;
 
-import java.beans.XMLEncoder;
-import java.io.BufferedOutputStream;
-import java.io.FileOutputStream;
-import java.io.IOException;
+import common.xml.XMLSerialization;
+
 import java.io.OutputStream;
 import java.util.LinkedList;
 
@@ -184,7 +182,6 @@ public abstract class Population {
      *
      * @param oevaluateAll population can be evaluated in two possible ways: 1. (false) All Genomes separately, which is usual.
      *                     2. (true) The whole population of Genomes together, which is usefull for co-evolutionary tasks.
-     * @see ne.Evaluable#evaluate
      */
     void evaluate(boolean oevaluateAll) {
         // System.out.println( " Population.evaluate()" );
@@ -260,7 +257,6 @@ public abstract class Population {
      * also initializes <i>GlobalInnovation </i> structure.
      *
      * @param og prototypal Genome
-     * @see ne.GlobalInnovation
      */
     void spawn(Genome og) {
         // System.out.println( "Population.spawn()" );
@@ -330,15 +326,7 @@ public abstract class Population {
 //            System.out.println("},");
         }
 //        System.out.println("}");
-        try {
-            XMLEncoder xmlEncoder = new XMLEncoder(new BufferedOutputStream(new FileOutputStream("d_" + generation + ".xml")));
-            xmlEncoder.writeObject(d);
-            xmlEncoder.close();
-
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-
+        XMLSerialization.save(d, "d_" + generation + ".xml");
 
         double[][] d2 = new double[n][n];
         for (int i = 0; i < n; i++) {

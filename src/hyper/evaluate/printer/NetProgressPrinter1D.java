@@ -1,11 +1,9 @@
 package hyper.evaluate.printer;
 
-import common.function.Function3D;
 import hyper.builder.NetSubstrateBuilder;
 import hyper.cppn.BasicNetCPPN;
 import hyper.cppn.CPPN;
 import hyper.evaluate.Problem;
-import hyper.substrate.Coordinate1D;
 import hyper.substrate.Substrate;
 import neat.BasicProgressPrinter;
 import neat.Net;
@@ -21,20 +19,6 @@ import neat.Population;
 public class NetProgressPrinter1D extends BasicProgressPrinter {
     final private Substrate substrate;
     final private Problem problem;
-
-
-    class WeightsDraw implements Function3D {
-        private CPPN aCPPN;
-
-        WeightsDraw(CPPN aCPPN) {
-            this.aCPPN = aCPPN;
-        }
-
-        public double getValue(double x, double y) {
-            double val = aCPPN.evaluate(0, new Coordinate1D(x), new Coordinate1D(y));
-            return val;
-        }
-    }
 
     public NetProgressPrinter1D(Population pop, Substrate substrate, Problem problem) {
         super(pop);

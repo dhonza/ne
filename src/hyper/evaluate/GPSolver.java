@@ -1,5 +1,6 @@
 package hyper.evaluate;
 
+import common.evolution.EvolutionaryAlgorithmSolver;
 import common.pmatrix.ParameterCombination;
 import common.pmatrix.Utils;
 import common.stats.Stats;
@@ -45,10 +46,15 @@ public class GPSolver implements Solver {
         Node[] terminals = new Node[]{new Constant(-1.0), new Random()};
 
         GPEvaluator evaluator = new GPEvaluator(substrateBuilder, problem);
-        BasicProgressPrinter progressPrinter = new GPProgressPrinter1D(substrateBuilder.getSubstrate(), problem);
-        GP gp = GPFactory.createByName(parameters.getString("GP.TYPE"), evaluator, progressPrinter, functions, terminals);
 
-        gp.run();
+        GP gp = GPFactory.createByName(parameters.getString("GP.TYPE"), evaluator, functions, terminals);
+
+        EvolutionaryAlgorithmSolver solver = new EvolutionaryAlgorithmSolver(gp);
+        solver.addProgressPrinter(new GPProgressPrinter1D(gp, substrateBuilder.getSubstrate(), problem));
+        solver.addStopCondition(new LastGenerationStopCondition(gp));
+        solver.addStopCondition(new TargetFitnessStopCondition(gp));
+        solver.addStopCondition(new SolvedStopCondition(problem));
+        solver.run();
 
         stats.addSample("STAT_GENERATIONS", gp.getGeneration());
     }

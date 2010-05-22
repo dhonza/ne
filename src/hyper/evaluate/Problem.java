@@ -12,6 +12,8 @@ import neat.Net;
 public interface Problem {
     public double evaluate(Net hyperNet);
 
+    public boolean isSolved();
+
     public void show(Net hyperNet);
 
     public double getTargetFitness();

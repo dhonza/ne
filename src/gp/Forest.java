@@ -14,12 +14,15 @@ import java.util.Arrays;
 public class Forest implements Comparable {
     private Tree[] trees;
     private double fitness = -Double.MAX_VALUE;
-    final private int generationOfOrigin;
-    transient final private TreeInputs treeInputs;
+    private int generationOfOrigin;
+    transient private TreeInputs treeInputs;
 
     private Forest(int generationOfOrigin, TreeInputs treeInputs) {
         this.generationOfOrigin = generationOfOrigin;
         this.treeInputs = treeInputs;
+    }
+
+    public Forest() {
     }
 
     public double getFitness() {

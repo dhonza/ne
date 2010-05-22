@@ -6,8 +6,8 @@ import common.pmatrix.ParameterMatrixManager;
 import common.pmatrix.ParameterMatrixStorage;
 import common.stats.Stats;
 import hyper.builder.NetSubstrateBuilder;
+import hyper.evaluate.GPSolver;
 import hyper.evaluate.Problem;
-import hyper.evaluate.SNEATSolver;
 import hyper.evaluate.Solver;
 import hyper.experiments.reco.problem.RecoSubstrateFactory;
 import hyper.experiments.reco.problem.Recognition1D;
@@ -59,14 +59,14 @@ public class RecoMain {
             Stats stats = new Stats();
             stats.createStat("STAT_GENERATIONS", "EXPERIMENT", "Number of Generations");
 
-            Problem problem = new Recognition1D(combination, 0.001);
+            Problem problem = new Recognition1D(combination);
             System.out.println("TARGET FITNESS " + problem.getTargetFitness());
             for (int i = 0; i < experiments; i++) {
 //                System.out.println("EXPERIMENT: " + (i + 1));
 
 //                Solver solver = new NEATSolver(combination, substrateBuilder, stats, problem);
-                Solver solver = new SNEATSolver(combination, substrateBuilder, stats, problem);
-//                Solver solver = new GPSolver(combination, substrateBuilder, stats, problem);
+//                Solver solver = new SNEATSolver(combination, substrateBuilder, stats, problem);
+                Solver solver = new GPSolver(combination, substrateBuilder, stats, problem);
                 solver.solve();
             }
             stats.printScope("EXPERIMENT");

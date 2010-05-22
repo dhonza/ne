@@ -1,6 +1,6 @@
 package gp;
 
-import common.stats.Stats;
+import common.evolution.ProgressPrinter;
 
 /**
  * Created by IntelliJ IDEA.
@@ -10,9 +10,9 @@ import common.stats.Stats;
  * To change this template use File | Settings | File Templates.
  */
 public class BasicProgressPrinter implements ProgressPrinter {
-    protected GP gp;
+    final protected GP gp;
 
-    public void setGP(GP gp) {
+    public BasicProgressPrinter(GP gp) {
         this.gp = gp;
     }
 

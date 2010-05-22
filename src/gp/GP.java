@@ -1,6 +1,7 @@
 package gp;
 
 import common.RND;
+import common.evolution.EvolutionaryAlgorithm;
 import gp.terminals.Input;
 
 import java.util.Arrays;
@@ -13,11 +14,8 @@ import java.util.Arrays;
  * Time: 11:34:02 AM
  * To change this template use File | Settings | File Templates.
  */
-//@Component(name = "Genetic Programming")
-public class GP {
+public class GP implements EvolutionaryAlgorithm {
 
-    //    @Property(name = "Cauchy mutation probability")
-    //    @Range(from = 0.0, to = 1.0)
     public static double MUTATION_CAUCHY_PROBABILITY = 0.8;
     public static double MUTATION_CAUCHY_POWER = 0.01;
     public static double MUTATION_SUBTREE_PROBABLITY = 0.5;
@@ -25,16 +23,12 @@ public class GP {
     public static int LAST_GENERATION = 1000;
     public static int MAX_DEPTH = 3;
     public static int POPULATION_SIZE = 10;
-    public static boolean PRINT_GENERATION = true;
-    public static boolean PRINT_PROGRESS = true;
-    public static boolean PRINT_FINAL = true;
     public static double TARGET_FITNESS = Double.MAX_VALUE;
 
     final private int inputs;
     final private int outputs;
     final protected NodeCollection nodeCollection;
     final private Evaluable evaluator;
-    final private ProgressPrinter progressPrinter;
     final private TreeInputs treeInputs;
 
     protected Forest[] population;
@@ -44,9 +38,8 @@ public class GP {
     private Forest bestSoFar;
     private int lastInnovation;
 
-    public GP(Evaluable evaluator, ProgressPrinter progressPrinter, Node[] functions, Node[] terminals) {
+    public GP(Evaluable evaluator, Node[] functions, Node[] terminals) {
         this.evaluator = evaluator;
-        this.progressPrinter = progressPrinter;
         this.inputs = evaluator.getNumberOfInputs();
         this.outputs = evaluator.getNumberOfOutputs();
 
@@ -61,41 +54,26 @@ public class GP {
         bestOfGeneration = bestSoFar = Forest.createEmpty();
     }
 
-    public void run() {
+    public void initialGeneration() {
         generation = 1;
         lastInnovation = 0;
 
         createInitialGeneration();
         evaluate(population);
         recomputeBest();
+    }
 
-        if (PRINT_GENERATION) {
-            progressPrinter.printGeneration();
-        }
-
-        if (PRINT_PROGRESS) {
-            progressPrinter.printProgress();
-        }
-
-        while (!toStop()) {
-            generation++;
-
+    public void nextGeneration() {
+        generation++;
 //            distances();
-            selectAndReproduce();
-            evaluate(newPopulation);
-            reduce();
-            recomputeBest();
+        selectAndReproduce();
+        evaluate(newPopulation);
+        reduce();
+        recomputeBest();
+    }
 
-            if (PRINT_GENERATION) {
-                progressPrinter.printGeneration();
-            }
-            if (lastInnovation == 0 && PRINT_PROGRESS) {
-                progressPrinter.printProgress(); //prints only when there is a progress...
-            }
-        }
-        if (PRINT_FINAL) {
-            progressPrinter.printFinished();
-        }
+    public boolean hasImproved() {
+        return lastInnovation == 0;
     }
 
     private void createInitialGeneration() {

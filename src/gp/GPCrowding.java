@@ -15,8 +15,8 @@ import common.RND;
  * TODO create a single common abstract predecessor class (do not use newPopulation from GP)
  */
 public class GPCrowding extends GP {
-    public GPCrowding(Evaluable evaluator, ProgressPrinter progressPrinter, Node[] functions, Node[] terminals) {
-        super(evaluator, progressPrinter, functions, terminals);
+    public GPCrowding(Evaluable evaluator, Node[] functions, Node[] terminals) {
+        super(evaluator, functions, terminals);
         if (GP.POPULATION_SIZE % 2 != 0) {
             throw new IllegalStateException("Population size must be even.");
         }
@@ -73,11 +73,11 @@ public class GPCrowding extends GP {
 //                population[i+1] = c2;
 //            }
 
-            if(c1.getFitness() >= p1.getFitness()) {
+            if (c1.getFitness() >= p1.getFitness()) {
                 population[i] = c1;
             }
-            if(c2.getFitness() >= p2.getFitness()) {
-                population[i+1] = c2;
+            if (c2.getFitness() >= p2.getFitness()) {
+                population[i + 1] = c2;
             }
         }
     }

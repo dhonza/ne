@@ -1,12 +1,12 @@
 package gp.demo;
 
 import common.RND;
-import common.stats.Stats;
+import common.evolution.EvolutionaryAlgorithmSolver;
 import common.pmatrix.ParameterCombination;
 import common.pmatrix.ParameterMatrixManager;
 import common.pmatrix.ParameterMatrixStorage;
+import common.stats.Stats;
 import gp.*;
-import gp.functions.*;
 import gp.terminals.Constant;
 import gp.terminals.Random;
 
@@ -25,7 +25,7 @@ public class GPMain {
 //        RND.initialize(8725627961384450L); //4
 
 
-        ParameterMatrixManager manager = ParameterMatrixStorage.load(new File("gpdemo.properties"));
+        ParameterMatrixManager manager = ParameterMatrixStorage.load(new File("cfg/gpdemo.properties"));
         for (ParameterCombination combination : manager) {
             int experiments = combination.getInteger("EXPERIMENTS");
             Stats stats = new Stats();
@@ -41,11 +41,14 @@ public class GPMain {
                 Node[] terminals = new Node[]{new Constant(-1.0), new Random()};
 
                 Evaluable evaluable = EvaluableFactory.createByName(combination.getString("PROBLEM"));
-                BasicProgressPrinter progressPrinter = new BasicProgressPrinter();
-                GP gp = GPFactory.createByName(combination.getString("GP.TYPE"), evaluable, progressPrinter, functions, terminals);
+                GP gp = GPFactory.createByName(combination.getString("GP.TYPE"), evaluable, functions, terminals);
 
-                gp.run();
-                
+                EvolutionaryAlgorithmSolver solver = new EvolutionaryAlgorithmSolver(gp);
+                solver.addProgressPrinter(new BasicProgressPrinter(gp));
+                solver.addStopCondition(new LastGenerationStopCondition(gp));
+                solver.addStopCondition(new TargetFitnessStopCondition(gp));
+                solver.run();
+
                 stats.addSample("BSF", gp.getBestSoFar().getFitness());
                 stats.addSample("BSFG", gp.getLastInnovation());
             }

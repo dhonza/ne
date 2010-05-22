@@ -11,12 +11,11 @@ import java.lang.reflect.InvocationTargetException;
  * To change this template use File | Settings | File Templates.
  */
 public class GPFactory {
-    public static GP createByName(String className, Evaluable evaluator, BasicProgressPrinter progressPrinter, Node[] functions, Node[] terminals) {
+    public static GP createByName(String className, Evaluable evaluator, Node[] functions, Node[] terminals) {
         GP gp = null;
         try {
-            Constructor constructor = Class.forName(className).getConstructor(Evaluable.class, ProgressPrinter.class, Node[].class, Node[].class);
-            gp = (GP) constructor.newInstance(evaluator, progressPrinter, functions, terminals);
-            progressPrinter.setGP(gp);
+            Constructor constructor = Class.forName(className).getConstructor(Evaluable.class, Node[].class, Node[].class);
+            gp = (GP) constructor.newInstance(evaluator, functions, terminals);
         } catch (NoSuchMethodException e) {
             System.err.println(e.getCause());
             e.printStackTrace();

@@ -7,10 +7,7 @@
 package neat;
 
 import common.RND;
-
-import java.beans.XMLDecoder;
-import java.beans.XMLEncoder;
-import java.io.*;
+import common.xml.XMLSerialization;
 
 /**
  * @author drchal
@@ -20,61 +17,20 @@ import java.io.*;
  */
 public class NetStorage {
 
-    public static Net[] loadMultiple(String ofileName) {
-        Net[] nets = null;
-        try {
-            XMLDecoder xmlDecoder = new XMLDecoder(new BufferedInputStream(new FileInputStream(ofileName)));
-
-            nets = (Net[]) xmlDecoder.readObject();
-
-            xmlDecoder.close();
-        } catch (IOException e) {
-            e.printStackTrace();
-            System.exit(1);
-        }
-        return nets;
+    public static Net[] loadMultiple(String fileName) {
+        return (Net[]) XMLSerialization.load(fileName);
     }
 
-    public static Net load(String ofileName) {
-        Net net = null;
-        try {
-            XMLDecoder xmlDecoder = new XMLDecoder(new BufferedInputStream(new FileInputStream(ofileName)));
-
-            net = (Net) xmlDecoder.readObject();
-
-            xmlDecoder.close();
-        } catch (IOException e) {
-            e.printStackTrace();
-            System.exit(1);
-        }
-
-        return net;
+    public static Net load(String fileName) {
+        return (Net) XMLSerialization.load(fileName);
     }
 
-    public static void save(Net onet, String ofileName) {
-        try {
-            XMLEncoder xmlEncoder = new XMLEncoder(new BufferedOutputStream(new FileOutputStream(ofileName)));
-
-            xmlEncoder.writeObject(onet);
-            xmlEncoder.close();
-
-        } catch (IOException e) {
-            e.printStackTrace();
-            System.exit(1);
-        }
+    public static void save(Net net, String fileName) {
+        XMLSerialization.save(net, fileName);
     }
 
-    public static void saveMultiple(Net[] onets, String ofileName) {
-        BufferedWriter bw;
-        try {
-            XMLEncoder xmlEncoder = new XMLEncoder(new BufferedOutputStream(new FileOutputStream(ofileName)));
-
-            xmlEncoder.writeObject(onets);
-            xmlEncoder.close();
-        } catch (IOException e) {
-            e.printStackTrace();
-            System.exit(1);
-        }
+    public static void saveMultiple(Net[] nets, String fileName) {
+        XMLSerialization.save(nets, fileName);
     }
 
     public static void main(String[] args) {

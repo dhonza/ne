@@ -15,7 +15,7 @@ import neat.*;
  */
 
 /**
- * mela by dostat z venku: parametry NEAT, progress printer (stejny pro GP)
+ * mela by dostat z venku: parametry NEAT, progress printer (stejy pro GP)
  */
 public class NEATSolver implements Solver {
     final private ParameterCombination parameters;

@@ -10,6 +10,9 @@ package hyper.experiments.reco.fitness;
 public class RecognitionFitness1D {
     private HyperEvaluator1D hyperEvaluator;
 
+    private boolean evaluated = false;
+    private boolean solved = false;
+
     public RecognitionFitness1D(HyperEvaluator1D hyperEvaluator) {
         this.hyperEvaluator = hyperEvaluator;
     }
@@ -18,6 +21,7 @@ public class RecognitionFitness1D {
         hyperEvaluator.init();
 
         double error = 0.0;
+        int errors = 0;
 
         for (int i = 0; i < inputPatterns.length; i++) {
             hyperEvaluator.loadPatternToInputs(inputPatterns[i]);
@@ -27,13 +31,19 @@ public class RecognitionFitness1D {
                 throw new IllegalStateException("HyperNet outputs do not match output pattern.");
             }
             for (int j = 0; j < outputPatterns[0].length; j++) {
-//                double output = outputs[j] > 0.5 ? 1.0 : 0.0;
+                double discretizedOutput = outputs[j] > 0.5 ? 1.0 : 0.0;
+                if ((discretizedOutput - outputPatterns[i][j]) != 0.0) {
+                    errors++;
+                }
                 double output = outputs[j];
                 double diff = output - outputPatterns[i][j];
                 error += diff * diff;
             }
 
         }
+
+        evaluated = true;
+        solved = errors == 0;
         return inputPatterns.length * outputPatterns[0].length - error;
     }
 
@@ -42,5 +52,12 @@ public class RecognitionFitness1D {
         hyperEvaluator.loadPatternToInputs(pattern);
         hyperEvaluator.activate();
         return hyperEvaluator.getOutputs();
+    }
+
+    public boolean isSolved() {
+        if (!evaluated) {
+            throw new IllegalStateException("Problem must be evaluated at first!");
+        }
+        return solved;
     }
 }

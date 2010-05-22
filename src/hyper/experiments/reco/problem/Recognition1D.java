@@ -21,6 +21,8 @@ public class Recognition1D implements Problem {
     final private int activations;
     final private double fitnessTolerance;
 
+    private boolean solved = false;
+
     public Recognition1D(ParameterCombination parameters) {
         this(parameters, 0.0);
     }
@@ -37,7 +39,10 @@ public class Recognition1D implements Problem {
         //zatim pouze pro 1D, pak predelat
         RecognitionFitness1D recognition = new RecognitionFitness1D(hyperNetEvaluator);
 
-        return recognition.evaluate(generator.generateInputPatterns(), generator.generateOutputPatterns());
+        double fitness = recognition.evaluate(generator.generateInputPatterns(), generator.generateOutputPatterns());
+        solved = solved || recognition.isSolved();
+
+        return fitness;
     }
 
     public void show(Net hyperNet) {
@@ -59,5 +64,9 @@ public class Recognition1D implements Problem {
         double targetFitness = generator.generateInputPatterns().length * generator.generateOutputPatterns()[0].length;
         targetFitness -= fitnessTolerance * targetFitness;
         return targetFitness;
+    }
+
+    public boolean isSolved() {
+        return solved;
     }
 }
