@@ -1,16 +1,15 @@
 package hyper.evaluate;
 
+import common.evolution.EvolutionaryAlgorithmSolver;
 import common.pmatrix.ParameterCombination;
 import common.stats.Stats;
 import hyper.builder.NetSubstrateBuilder;
-import sneat.evolution.EvolutionAlgorithm;
-import sneat.evolution.IdGenerator;
-import sneat.neatgenome.GenomeFactory;
-import sneat.neatgenome.NeatGenome;
-import sneat.neatgenome.xml.XmlGenomeWriterStatic;
+import sneat.BasicProgressPrinter;
+import sneat.LastGenerationStopCondition;
+import sneat.SNEAT;
+import sneat.TargetFitnessStopCondition;
 import sneat.neuralnetwork.activationfunctions.ActivationFunctionFactory;
 
-import java.io.File;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -53,36 +52,19 @@ public class SNEATSolver implements Solver {
 //        HyperNEATParameters.loadParameterFile();
         setActivationFunctions();
         SNEATExperiment exp = new SNEATExperiment(parameters, substrateBuilder, problem, inputsCPPN, outputsCPPN);
-        IdGenerator idgen = new IdGenerator();
 
-        EvolutionAlgorithm ea = new EvolutionAlgorithm(
-                new sneat.evolution.Population(idgen,
-                        GenomeFactory.createGenomeList(exp.getDefaultNeatParameters(),
-                                idgen,
-                                exp.getInputNeuronCount(),
-                                exp.getOutputNeuronCount(),
-                                exp.getDefaultNeatParameters().pInitialPopulationInterconnections,
-                                exp.getDefaultNeatParameters().populationSize)
-                ),
-                exp.getPopulationEvaluator(),
-                exp.getDefaultNeatParameters());
+        SNEAT sneat = new SNEAT(exp);
 
-        XmlGenomeWriterStatic.Write(new File("seedGenome.xml"), (NeatGenome) ea.getPopulation().getGenomeList().get(0));
+        EvolutionaryAlgorithmSolver solver = new EvolutionaryAlgorithmSolver(sneat);
+//        solver.addProgressPrinter(new NetProgressPrinter1D(population, substrateBuilder.getSubstrate(), problem));
+        solver.addProgressPrinter(new BasicProgressPrinter(sneat));
+        solver.addStopCondition(new LastGenerationStopCondition(sneat));
+        solver.addStopCondition(new TargetFitnessStopCondition(sneat));
+        solver.addStopCondition(new SolvedStopCondition(problem));
+        solver.run();
 
-        double maxFitness = -Double.MAX_VALUE;
-        for (int j = 0; j < exp.getDefaultNeatParameters().maxGenerations; j++) {
-            long dt = System.currentTimeMillis();
-            ea.performOneGeneration();
-            if (ea.getBestGenome().getFitness() > maxFitness) {
-                maxFitness = ea.getBestGenome().getFitness();
-//                XmlGenomeWriterStatic.Write(new File("bestGenome" + j + ".xml"), (NeatGenome) ea.getBestGenome());
-            }
-            System.out.println(ea.getGeneration() + " " + (maxFitness) + " " + (System.currentTimeMillis() - dt));
-            if (problem.isSolved()) {
-                break;
-            }
-        }
-        XmlGenomeWriterStatic.Write(new File("bestGenome.xml"), (NeatGenome) ea.getBestGenome(), ActivationFunctionFactory.getActivationFunction("NullFn"));
+
+//        XmlGenomeWriterStatic.Write(new File("bestGenome.xml"), (NeatGenome) ea.getBestGenome(), ActivationFunctionFactory.getActivationFunction("NullFn"));
 
 
         /*
