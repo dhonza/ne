@@ -65,7 +65,7 @@ class Program {
                 idgen = new IdGenerator();
                 ea = new EvolutionAlgorithm(
                         new Population(idgen,
-                                GenomeFactory.CreateGenomeList(exp.getDefaultNeatParameters(),
+                                GenomeFactory.createGenomeList(exp.getDefaultNeatParameters(),
                                         idgen,
                                         exp.getInputNeuronCount(),
                                         exp.getOutputNeuronCount(),
@@ -77,7 +77,7 @@ class Program {
 
             } else {
                 idgen = new IdGeneratorFactory().CreateIdGenerator(seedGenome);
-                ea = new EvolutionAlgorithm(new Population(idgen, GenomeFactory.CreateGenomeList(seedGenome, populationSize, exp.getDefaultNeatParameters(), idgen)), exp.getPopulationEvaluator(), exp.getDefaultNeatParameters());
+                ea = new EvolutionAlgorithm(new Population(idgen, GenomeFactory.createGenomeList(seedGenome, populationSize, exp.getDefaultNeatParameters(), idgen)), exp.getPopulationEvaluator(), exp.getDefaultNeatParameters());
             }
 
             System.out.println(exp.getDefaultNeatParameters().toString());

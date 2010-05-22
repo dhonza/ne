@@ -46,8 +46,8 @@ public class GenomeFactory {
         // Create output neuron genes.
         //actFunct = ActivationFunctionFactory.getActivationFunction("NullFn");
         for (int i = 0; i < outputNeuronCount; i++) {
-//            actFunct = ActivationFunctionFactory.getActivationFunction("BipolarSigmoid");
-            actFunct = ActivationFunctionFactory.getActivationFunction("SteepenedSigmoid");
+            actFunct = ActivationFunctionFactory.getActivationFunction("BipolarSigmoid");
+//            actFunct = ActivationFunctionFactory.getActivationFunction("SteepenedSigmoid");
             //actFunct = ActivationFunctionFactory.getRandomActivationFunction(neatParameters);
             //TODO: DAVID proper activation function
             neuronGene = new NeuronGene(idGenerator.getNextInnovationId(), NeuronType.OUTPUT, actFunct);
@@ -84,7 +84,7 @@ public class GenomeFactory {
     /// <param name="outputNeuronCount"></param>
     /// <param name="length"></param>
     /// <returns></returns>
-    public static List<IGenome> CreateGenomeList(NeatParameters neatParameters, IdGenerator idGenerator, int inputNeuronCount, int outputNeuronCount, float connectionProportion, int length) {
+    public static List<IGenome> createGenomeList(NeatParameters neatParameters, IdGenerator idGenerator, int inputNeuronCount, int outputNeuronCount, float connectionProportion, int length) {
         List<IGenome> genomeList = new ArrayList<IGenome>();
 
         for (int i = 0; i < length; i++) {
@@ -95,7 +95,7 @@ public class GenomeFactory {
         return genomeList;
     }
 
-    public static List<IGenome> CreateGenomeList(NeatGenome seedGenome, int length, NeatParameters neatParameters, IdGenerator idGenerator) {
+    public static List<IGenome> createGenomeList(NeatGenome seedGenome, int length, NeatParameters neatParameters, IdGenerator idGenerator) {
         //Build the list.
         List<IGenome> genomeList = new ArrayList<IGenome>();
 
@@ -120,7 +120,7 @@ public class GenomeFactory {
         return genomeList;
     }
 
-    public static List<IGenome> CreateGenomeListAddedInputs(NeatGenome seedGenome, int length, NeatParameters neatParameters, IdGenerator idGenerator) {
+    public static List<IGenome> createGenomeListAddedInputs(NeatGenome seedGenome, int length, NeatParameters neatParameters, IdGenerator idGenerator) {
         //Build the list.
         List<IGenome> genomeList = new ArrayList<IGenome>();
 
@@ -146,7 +146,7 @@ public class GenomeFactory {
     }
 
 
-    public static List<IGenome> CreateGenomeList(Population seedPopulation, int length, NeatParameters neatParameters, IdGenerator idGenerator) {
+    public static List<IGenome> createGenomeList(Population seedPopulation, int length, NeatParameters neatParameters, IdGenerator idGenerator) {
         //Build the list.
         List<IGenome> genomeList = new ArrayList<IGenome>();
         int seedIdx = 0;

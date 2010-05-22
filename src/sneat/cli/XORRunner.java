@@ -52,7 +52,7 @@ class XORRunner {
 
         EvolutionAlgorithm ea = new EvolutionAlgorithm(
                 new Population(idgen,
-                        GenomeFactory.CreateGenomeList(exp.getDefaultNeatParameters(),
+                        GenomeFactory.createGenomeList(exp.getDefaultNeatParameters(),
                                 idgen,
                                 exp.getInputNeuronCount(),
                                 exp.getOutputNeuronCount(),

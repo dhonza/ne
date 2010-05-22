@@ -5,13 +5,14 @@ import common.stats.Stats;
 import hyper.builder.NetSubstrateBuilder;
 import sneat.evolution.EvolutionAlgorithm;
 import sneat.evolution.IdGenerator;
-import sneat.experiments.HyperNEATParameters;
 import sneat.neatgenome.GenomeFactory;
 import sneat.neatgenome.NeatGenome;
 import sneat.neatgenome.xml.XmlGenomeWriterStatic;
 import sneat.neuralnetwork.activationfunctions.ActivationFunctionFactory;
 
 import java.io.File;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  * Created by IntelliJ IDEA.
@@ -25,6 +26,8 @@ import java.io.File;
  * mela by dostat z venku: parametry NEAT, progress printer (stejny pro GP)
  */
 public class SNEATSolver implements Solver {
+    private static Logger logger = Logger.getLogger("hyper.evaluate.SNEATSolver");
+
     final private ParameterCombination parameters;
     final private NetSubstrateBuilder substrateBuilder;
     final private Stats stats;
@@ -37,18 +40,24 @@ public class SNEATSolver implements Solver {
         this.problem = problem;
     }
 
+    private void setActivationFunctions() {
+        ActivationFunctionFactory.setSameProbabilitiesForList(parameters.getString("SNEAT.FUNCTIONS"));
+    }
+
     public void solve() {
+        logger.getParent().setLevel(Level.OFF);
         //TODO encapsulate!, je jeste v evaluatoru!
         int inputsCPPN = 2 * substrateBuilder.getSubstrate().getMaxDimension();
         int outputsCPPN = substrateBuilder.getSubstrate().getNumOfConnections();
 
-        HyperNEATParameters.loadParameterFile();
+//        HyperNEATParameters.loadParameterFile();
+        setActivationFunctions();
         SNEATExperiment exp = new SNEATExperiment(parameters, substrateBuilder, problem, inputsCPPN, outputsCPPN);
         IdGenerator idgen = new IdGenerator();
 
         EvolutionAlgorithm ea = new EvolutionAlgorithm(
                 new sneat.evolution.Population(idgen,
-                        GenomeFactory.CreateGenomeList(exp.getDefaultNeatParameters(),
+                        GenomeFactory.createGenomeList(exp.getDefaultNeatParameters(),
                                 idgen,
                                 exp.getInputNeuronCount(),
                                 exp.getOutputNeuronCount(),
@@ -74,22 +83,6 @@ public class SNEATSolver implements Solver {
 
 
         /*
-        NEATEvaluator evaluator = new NEATEvaluator(substrateBuilder, problem);
-
-        NEAT aNEAT = new NEAT();
-        NEATConfig config = NEAT.getConfig();
-        config.populationSize = 1000;
-        config.lastGeneration = 15000;
-        config.netWeightsAmplitude = 10.0;
-        config.targetFitness = problem.getTargetFitness();
-
-        FitnessSharingPopulation population = new FitnessSharingPopulation(evaluator, getPrototype(inputsCPPN, outputsCPPN));
-
-        aNEAT.setPopulation(population);
-        ProgressPrinter progressPrinter = new NetProgressPrinter1D(population, substrateBuilder.getSubstrate(), problem);
-        aNEAT.setProgressPrinter(progressPrinter);
-        aNEAT.run(false);
-
         stats.addSample("STAT_GENERATIONS", population.getGeneration());
         */
     }
