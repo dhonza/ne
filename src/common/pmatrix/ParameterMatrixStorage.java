@@ -3,11 +3,12 @@ package common.pmatrix;
 import org.antlr.runtime.ANTLRStringStream;
 import org.antlr.runtime.CommonTokenStream;
 import org.antlr.runtime.RecognitionException;
+import org.apache.commons.configuration.Configuration;
+import org.apache.commons.configuration.ConfigurationException;
+import org.apache.commons.configuration.PropertiesConfiguration;
 
 import java.io.File;
-import java.io.FileInputStream;
-import java.io.IOException;
-import java.util.Properties;
+import java.util.Iterator;
 
 /**
  * Created by IntelliJ IDEA.
@@ -18,20 +19,21 @@ import java.util.Properties;
  */
 public class ParameterMatrixStorage {
     public static ParameterMatrixManager load(File file) {
-        Properties properties = new Properties();
+        Configuration properties = null;
         try {
-            properties.load(new FileInputStream(file));
-        } catch (IOException e) {
+            properties = new PropertiesConfiguration(file);
+        } catch (ConfigurationException e) {
             e.printStackTrace();
             System.exit(1);
         }
 
         ParameterMatrixBuilder builder = new ParameterMatrixBuilder();
 
-
-        for (Object o : properties.keySet()) {
+        Iterator it = properties.getKeys();
+        while (it.hasNext()) {
+            Object o = it.next();
             String param = (String) o;
-            ANTLRStringStream input = new ANTLRStringStream(properties.getProperty(param));
+            ANTLRStringStream input = new ANTLRStringStream(properties.getString(param));
             PropertyLexer lexer = new PropertyLexer(input);
             CommonTokenStream tokens = new CommonTokenStream(lexer);
             PropertyParser parser = new PropertyParser(tokens);
@@ -44,7 +46,6 @@ public class ParameterMatrixStorage {
                 System.exit(1);
             }
         }
-
         return builder.buildManager();
     }
 

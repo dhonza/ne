@@ -7,8 +7,8 @@ import common.pmatrix.ParameterMatrixStorage;
 import common.stats.Stats;
 import hyper.builder.NetSubstrateBuilder;
 import hyper.evaluate.Problem;
-import hyper.evaluate.SNEATSolver;
 import hyper.evaluate.Solver;
+import hyper.evaluate.SolverFactory;
 import hyper.experiments.reco.problem.RecoSubstrateFactory;
 import hyper.experiments.reco.problem.Recognition1D;
 import hyper.substrate.BasicSubstrate;
@@ -31,7 +31,7 @@ public class RecoMain {
             System.exit(1);
         }
 
-        ParameterMatrixManager manager = ParameterMatrixStorage.load(new File(args[0]));
+        ParameterMatrixManager manager = ParameterMatrixStorage.load(new File(args[0], "experiment.properties"));
 
         System.out.println("INITIALIZED SEED: " + RND.initializeTime());
 //        RND.initialize(8686925819525946L); //4
@@ -53,7 +53,6 @@ public class RecoMain {
 //            BasicSubstrate substrate = RecoSubstrateFactory.createInputToOutput(lineSize, 1);
 //            BasicSubstrate substrate = RecoSubstrateFactory.createInputHiddenOutput(lineSize, 2, 1);
 
-
             NetSubstrateBuilder substrateBuilder = new NetSubstrateBuilder(substrate);
 
             Stats stats = new Stats();
@@ -64,9 +63,7 @@ public class RecoMain {
             for (int i = 0; i < experiments; i++) {
 //                System.out.println("EXPERIMENT: " + (i + 1));
 
-//                Solver solver = new NEATSolver(combination, substrateBuilder, stats, problem);
-                Solver solver = new SNEATSolver(combination, substrateBuilder, stats, problem);
-//                Solver solver = new GPSolver(combination, substrateBuilder, stats, problem);
+                Solver solver = SolverFactory.getSolver(combination, substrateBuilder, stats, problem);
                 solver.solve();
             }
             stats.printScope("EXPERIMENT");
