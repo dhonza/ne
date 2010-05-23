@@ -84,7 +84,7 @@ public class ExampleSpirals {
         problem.setPopulation(population);
 
         EvolutionaryAlgorithmSolver solver = new EvolutionaryAlgorithmSolver(problem);
-        solver.addProgressPrinter(new BasicProgressPrinter(population));
+        solver.addProgressPrinter(new NEATBasicProgressPrinter(problem));
         solver.addStopCondition(new LastGenerationStopCondition(problem));
         solver.addStopCondition(new TargetFitnessStopCondition(problem));
         solver.run();

@@ -9,15 +9,20 @@ import common.evolution.ProgressPrinter;
  * Time: 4:50:27 PM
  * To change this template use File | Settings | File Templates.
  */
-public class BasicProgressPrinter implements ProgressPrinter {
+public class GPBasicProgressPrinter implements ProgressPrinter {
     final protected GP gp;
 
-    public BasicProgressPrinter(GP gp) {
+    public GPBasicProgressPrinter(GP gp) {
         this.gp = gp;
     }
 
     public void printGeneration() {
-        System.out.println("G: " + gp.getGeneration() + " BOG: " + gp.getBestOfGeneration().getFitness() + " BSF: " + gp.getBestSoFar().getFitness());
+        System.out.println("G: " + gp.getGeneration() +
+                " EVA:" + gp.getEvaluations() +
+                " BSF: " + gp.getBestSoFar().getFitness() +
+                " BOG: " + gp.getBestOfGeneration().getFitness() +
+                " LASTIN:" + gp.getLastInnovation()
+        );
     }
 
     public void printProgress() {
@@ -26,11 +31,10 @@ public class BasicProgressPrinter implements ProgressPrinter {
 //        for (Forest forest : population) {
 //            System.out.println(forest);
 //        }
-        System.out.println("BSF: " + gp.getBestSoFar());
+        System.out.println(" NEW CHAMP:" + gp.getBestSoFar());
     }
 
     public void printFinished() {
         System.out.println("FINISHED");
-        System.out.println("BSF: " + gp.getBestSoFar());
     }
 }

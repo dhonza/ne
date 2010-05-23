@@ -53,7 +53,7 @@ public abstract class Population {
     /**
      * The last innovation (based on fitness).
      */
-    protected double lastInnovation = 0;
+    protected int lastInnovation = 0;
 
     /**
      * Here we store Species history (for stats etc.)
@@ -111,7 +111,7 @@ public abstract class Population {
         getGlobalInnovation().setGeneration(generation);
     }
 
-    public int getEvaluation() {
+    public int getEvaluations() {
         return evaluation;
     }
 
@@ -160,11 +160,11 @@ public abstract class Population {
         return bestSoFar.getNet();
     }
 
-    public double getLastInnovation() {
+    public int getLastInnovation() {
         return lastInnovation;
     }
 
-    public void setLastInnovation(double lastInnovation) {
+    public void setLastInnovation(int lastInnovation) {
         this.lastInnovation = lastInnovation;
     }
 

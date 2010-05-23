@@ -1,9 +1,9 @@
 package hyper.evaluate.printer;
 
-import gp.BasicProgressPrinter;
 import gp.Forest;
 import gp.ForestStorage;
 import gp.GP;
+import gp.GPBasicProgressPrinter;
 import hyper.builder.MathematicaHyperGraphSubstrateBuilder2D;
 import hyper.builder.NetSubstrateBuilder;
 import hyper.cppn.BasicGPCPPN;
@@ -19,7 +19,7 @@ import neat.Net;
  * Time: 2:57:42 PM
  * To change this template use File | Settings | File Templates.
  */
-public class GPProgressPrinter1D extends BasicProgressPrinter {
+public class GPProgressPrinter1D extends GPBasicProgressPrinter {
     //TODO opakuje se v NetProgressPrinter
     final private Substrate substrate;
     final private Problem problem;

@@ -84,15 +84,15 @@ public class NEAT implements EvolutionaryAlgorithm {
         return population.getLastInnovation() == 0;
     }
 
-
-    protected boolean toStop() {
-        return !((population.getGeneration() < config.lastGeneration && (population.bestSoFar.fitness < config.targetFitness)));
+    public int getGeneration() {
+        return population.getGeneration();
     }
 
-    /*
-    private void closeGenerationScopeStats() {
-        Stats stats = StatsSingleton.getInstance();
-        stats.addSample("STAT_TIME_GEN", ((double) bench.stop()) / 1000);
+    public int getEvaluations() {
+        return population.getEvaluations();
     }
-    */
+
+    public int getLastInnovation() {
+        return population.getLastInnovation();
+    }
 }

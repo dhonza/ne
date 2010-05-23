@@ -6,8 +6,8 @@ import hyper.cppn.CPPN;
 import hyper.evaluate.Problem;
 import hyper.substrate.Substrate;
 import neat.Net;
-import sneat.BasicProgressPrinter;
 import sneat.SNEAT;
+import sneat.SNEATBasicProgressPrinter;
 import sneat.neuralnetwork.INetwork;
 
 /**
@@ -17,7 +17,7 @@ import sneat.neuralnetwork.INetwork;
  * Time: 2:57:42 PM
  * To change this template use File | Settings | File Templates.
  */
-public class SNEATProgressPrinter1D extends BasicProgressPrinter {
+public class SNEATProgressPrinter1D extends SNEATBasicProgressPrinter {
     final private Substrate substrate;
     final private Problem problem;
 

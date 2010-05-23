@@ -63,6 +63,14 @@ public class SNEAT implements EvolutionaryAlgorithm {
         return generation;
     }
 
+    public int getEvaluations() {
+        return getGeneration() * ea.getPopulation().getPopulationSize();
+    }
+
+    public int getLastInnovation() {
+        return lastInnovation;
+    }
+
     public NeatParameters getNeatParameters() {
         return exp.getDefaultNeatParameters();
     }

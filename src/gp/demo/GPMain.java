@@ -44,7 +44,7 @@ public class GPMain {
                 GP gp = GPFactory.createByName(combination.getString("GP.TYPE"), evaluable, functions, terminals);
 
                 EvolutionaryAlgorithmSolver solver = new EvolutionaryAlgorithmSolver(gp);
-                solver.addProgressPrinter(new BasicProgressPrinter(gp));
+                solver.addProgressPrinter(new GPBasicProgressPrinter(gp));
                 solver.addStopCondition(new LastGenerationStopCondition(gp));
                 solver.addStopCondition(new TargetFitnessStopCondition(gp));
                 solver.run();

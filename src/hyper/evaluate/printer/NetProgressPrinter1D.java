@@ -5,9 +5,9 @@ import hyper.cppn.BasicNetCPPN;
 import hyper.cppn.CPPN;
 import hyper.evaluate.Problem;
 import hyper.substrate.Substrate;
-import neat.BasicProgressPrinter;
+import neat.NEAT;
+import neat.NEATBasicProgressPrinter;
 import neat.Net;
-import neat.Population;
 
 /**
  * Created by IntelliJ IDEA.
@@ -16,12 +16,12 @@ import neat.Population;
  * Time: 2:57:42 PM
  * To change this template use File | Settings | File Templates.
  */
-public class NetProgressPrinter1D extends BasicProgressPrinter {
+public class NetProgressPrinter1D extends NEATBasicProgressPrinter {
     final private Substrate substrate;
     final private Problem problem;
 
-    public NetProgressPrinter1D(Population pop, Substrate substrate, Problem problem) {
-        super(pop);
+    public NetProgressPrinter1D(NEAT neat, Substrate substrate, Problem problem) {
+        super(neat);
         this.substrate = substrate;
         this.problem = problem;
     }

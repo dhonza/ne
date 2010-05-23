@@ -57,7 +57,7 @@ public class NEATSolver implements Solver {
         neat.setPopulation(population);
 
         EvolutionaryAlgorithmSolver solver = new EvolutionaryAlgorithmSolver(neat);
-        solver.addProgressPrinter(new NetProgressPrinter1D(population, substrateBuilder.getSubstrate(), problem));
+        solver.addProgressPrinter(new NetProgressPrinter1D(neat, substrateBuilder.getSubstrate(), problem));
         solver.addStopCondition(new LastGenerationStopCondition(neat));
         solver.addStopCondition(new TargetFitnessStopCondition(neat));
         solver.addStopCondition(new SolvedStopCondition(problem));

@@ -139,16 +139,16 @@ public class GP implements EvolutionaryAlgorithm {
         }
     }
 
-    private boolean toStop() {
-        return !((generation < LAST_GENERATION && (bestSoFar.getFitness() < TARGET_FITNESS)));
-    }
-
     public Forest[] getPopulation() {
         return population.clone();
     }
 
     public int getGeneration() {
         return generation;
+    }
+
+    public int getEvaluations() {
+        return getGeneration() * population.length;
     }
 
     public Forest getBestOfGeneration() {

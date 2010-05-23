@@ -15,4 +15,10 @@ public interface EvolutionaryAlgorithm {
     public void finished();
 
     public boolean hasImproved();
+
+    public int getGeneration();
+
+    public int getEvaluations();
+
+    public int getLastInnovation();
 }

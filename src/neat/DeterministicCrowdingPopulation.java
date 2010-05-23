@@ -104,8 +104,7 @@ public class DeterministicCrowdingPopulation extends Population {
                 if (r < NEAT.getConfig().mutateAddNeuron) {
                     addNeuron = true;
                     structural1 = true;
-                } else
-                if (r < NEAT.getConfig().mutateAddNeuron + NEAT.getConfig().mutateAddLink) {
+                } else if (r < NEAT.getConfig().mutateAddNeuron + NEAT.getConfig().mutateAddLink) {
                     addLink = true;
                     structural1 = true;
                 }
@@ -134,8 +133,7 @@ public class DeterministicCrowdingPopulation extends Population {
                 if (r < NEAT.getConfig().mutateAddNeuron) {
                     addNeuron = true;
                     structural2 = true;
-                } else
-                if (r < NEAT.getConfig().mutateAddNeuron + NEAT.getConfig().mutateAddLink) {
+                } else if (r < NEAT.getConfig().mutateAddNeuron + NEAT.getConfig().mutateAddLink) {
                     addLink = true;
                     structural2 = true;
                 }
@@ -266,6 +264,7 @@ public class DeterministicCrowdingPopulation extends Population {
     *
     * @see ne.Population#select()
     */
+
     void select() {
 
     }
@@ -275,6 +274,7 @@ public class DeterministicCrowdingPopulation extends Population {
     *
     * @see ne.Population#speciate()
     */
+
     void speciate() {
         Species ts;
 
@@ -336,7 +336,7 @@ public class DeterministicCrowdingPopulation extends Population {
      * created. It can be overwritten to perform drawing, writing to files etc..
      */
     public void printNews() {
-        System.out.print("G:" + getGeneration() + " EVA:" + getEvaluation() + " SPE:" + getSpecies().size() + " BSF:" + getBestSoFar().getFitness() + " BOG:"
+        System.out.print("G:" + getGeneration() + " EVA:" + getEvaluations() + " SPE:" + getSpecies().size() + " BSF:" + getBestSoFar().getFitness() + " BOG:"
                 + getBestOfGeneration().getFitness() + " LASTIN:" + getLastInnovation() + " DELTA:" + NEAT.getConfig().distanceDelta + " LIN:"
                 + getGlobalInnovation().getLinkInnovation() + " NIN:" + getGlobalInnovation().getNeuronInnovation() + " BSFL:" + getBestSoFar().getNet().getNumLinks()
                 + " BSFHN:" + getBestSoFar().getNet().getNumHidden());
