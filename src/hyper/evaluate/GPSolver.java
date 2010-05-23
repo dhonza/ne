@@ -35,10 +35,6 @@ public class GPSolver implements Solver {
     }
 
     public void solve() {
-//        TODO encapsulate!, je jeste v evaluatoru!
-//        int inputsCPPN = 2 * substrate.getMaxDimension();
-//        int outputsCPPN = substrate.getNumOfConnections();
-
         GP.TARGET_FITNESS = problem.getTargetFitness();
         Utils.setStaticParameters(parameters, GP.class, "GP");
 

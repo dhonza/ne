@@ -4,7 +4,7 @@ import common.evolution.EvolutionaryAlgorithmSolver;
 import common.pmatrix.ParameterCombination;
 import common.stats.Stats;
 import hyper.builder.NetSubstrateBuilder;
-import sneat.BasicProgressPrinter;
+import hyper.evaluate.printer.SNEATProgressPrinter1D;
 import sneat.LastGenerationStopCondition;
 import sneat.SNEAT;
 import sneat.TargetFitnessStopCondition;
@@ -45,7 +45,6 @@ public class SNEATSolver implements Solver {
 
     public void solve() {
         logger.getParent().setLevel(Level.OFF);
-        //TODO encapsulate!, je jeste v evaluatoru!
         int inputsCPPN = 2 * substrateBuilder.getSubstrate().getMaxDimension();
         int outputsCPPN = substrateBuilder.getSubstrate().getNumOfConnections();
 
@@ -56,8 +55,7 @@ public class SNEATSolver implements Solver {
         SNEAT sneat = new SNEAT(exp);
 
         EvolutionaryAlgorithmSolver solver = new EvolutionaryAlgorithmSolver(sneat);
-//        solver.addProgressPrinter(new NetProgressPrinter1D(population, substrateBuilder.getSubstrate(), problem));
-        solver.addProgressPrinter(new BasicProgressPrinter(sneat));
+        solver.addProgressPrinter(new SNEATProgressPrinter1D(sneat, substrateBuilder.getSubstrate(), problem));
         solver.addStopCondition(new LastGenerationStopCondition(sneat));
         solver.addStopCondition(new TargetFitnessStopCondition(sneat));
         solver.addStopCondition(new SolvedStopCondition(problem));

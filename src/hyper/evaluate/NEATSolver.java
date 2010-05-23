@@ -31,10 +31,10 @@ public class NEATSolver implements Solver {
         this.problem = problem;
     }
 
-    private static Genome getPrototype(int aCPPNInputs, int aCPPNOutputs) {
+    private static Genome getPrototype(Evaluable evaluator) {
         Net net = new Net(1);
-        net.createFeedForward(aCPPNInputs, new int[]{}, aCPPNOutputs);
-        for (int i = 0; i < aCPPNOutputs; i++) {
+        net.createFeedForward(evaluator.getNumberOfInputs(), new int[]{}, evaluator.getNumberOfOutputs());
+        for (int i = 0; i < evaluator.getNumberOfOutputs(); i++) {
             net.getOutputs().get(i).setActivation(Neuron.Activation.BIPOLAR_SIGMOID);
 //            net.getOutputs().get(i).setActivation(Neuron.Activation.LINEAR);
         }
@@ -43,10 +43,6 @@ public class NEATSolver implements Solver {
     }
 
     public void solve() {
-        //TODO encapsulate!, je jeste v evaluatoru!
-        int inputsCPPN = 2 * substrateBuilder.getSubstrate().getMaxDimension();
-        int outputsCPPN = substrateBuilder.getSubstrate().getNumOfConnections();
-
         NEATEvaluator evaluator = new NEATEvaluator(substrateBuilder, problem);
 
         NEAT neat = new NEAT();
@@ -56,7 +52,7 @@ public class NEATSolver implements Solver {
         config.netWeightsAmplitude = 10.0;
         config.targetFitness = problem.getTargetFitness();
 
-        FitnessSharingPopulation population = new FitnessSharingPopulation(evaluator, getPrototype(inputsCPPN, outputsCPPN));
+        FitnessSharingPopulation population = new FitnessSharingPopulation(evaluator, getPrototype(evaluator));
 
         neat.setPopulation(population);
 
