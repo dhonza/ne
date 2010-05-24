@@ -2,6 +2,7 @@ package hyper.evaluate;
 
 import common.evolution.EvolutionaryAlgorithmSolver;
 import common.pmatrix.ParameterCombination;
+import common.pmatrix.Utils;
 import common.stats.Stats;
 import hyper.builder.NetSubstrateBuilder;
 import hyper.evaluate.printer.NetProgressPrinter1D;
@@ -15,9 +16,6 @@ import neat.*;
  * To change this template use File | Settings | File Templates.
  */
 
-/**
- * mela by dostat z venku: parametry NEAT, progress printer (stejy pro GP)
- */
 public class NEATSolver implements Solver {
     final private ParameterCombination parameters;
     final private NetSubstrateBuilder substrateBuilder;
@@ -47,10 +45,8 @@ public class NEATSolver implements Solver {
 
         NEAT neat = new NEAT();
         NEATConfig config = NEAT.getConfig();
-        config.populationSize = 1000;
-        config.lastGeneration = 15000;
-        config.netWeightsAmplitude = 10.0;
         config.targetFitness = problem.getTargetFitness();
+        Utils.setParameters(parameters, config, "NEAT");
 
         FitnessSharingPopulation population = new FitnessSharingPopulation(evaluator, getPrototype(evaluator));
 

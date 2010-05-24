@@ -14,19 +14,19 @@ public class NEATConfig {
     /**
      * The constant needed to determine the Genome distance.
      *
-     * @see ne.Genome#distance
+     * @see neat.Genome#distance
      */
     public double distanceC1 = 1.0;
     /**
      * The constant needed to determine the Genome distance.
      *
-     * @see ne.Genome#distance
+     * @see neat.Genome#distance
      */
     public double distanceC2 = 1.0;
     /**
      * The constant needed to determine the Genome distance.
      *
-     * @see ne.Genome#distance
+     * @see neat.Genome#distance
      */
     public double distanceC3 = 0.4;
 
@@ -36,14 +36,14 @@ public class NEATConfig {
      * This constant determines the threshold while searching the appropriate
      * Species to put a Genome into.
      *
-     * @see ne.FitnessSharingPopulation#speciate
+     * @see neat.FitnessSharingPopulation#speciate
      */
     public double distanceDelta = 3.0;
 
     /**
      * The number of tries of <b>InnovationMatrix.randomLink()</b> method.
      *
-     * @see ne
+     * @see neat
      */
     public int innovationMatrixTries = 30;
 
@@ -65,14 +65,14 @@ public class NEATConfig {
     /**
      * The amount of mutation.
      *
-     * @see ne.Genome#mutateWeights
+     * @see neat.Genome#mutateWeights
      */
     public double mutationPower = 1.0;
 
     /**
      * The probability of a gene mutation.
      *
-     * @see ne.Genome#mutateWeights
+     * @see neat.Genome#mutateWeights
      */
     public double mutationRate = 0.2;
 
@@ -80,9 +80,9 @@ public class NEATConfig {
      * Specifies the interval <i>&lt;-NET_NEW_WEIGHTS_SCATTER; NET_NEW_WEIGHTS_SCATTER&gt;</i> into which
      * the randomized weights fall. It is used when new <i>Link</i> is created due to a structural mutation.
      *
-     * @see ne.Net#randomizeWeights
-     * @see ne.Genome#mutateAddLink
-     * @see ne.Genome#mutateAddNeuron
+     * @see neat.Net#randomizeWeights
+     * @see neat.Genome#mutateAddLink
+     * @see neat.Genome#mutateAddNeuron
      */
     public double netNewWeightsScatter = 0.3;
 
@@ -90,8 +90,8 @@ public class NEATConfig {
      * Specifies the interval <i>&lt;-NET_WEIGHTS_SCATTER; NET_WEIGHTS_SCATTER&gt;</i> into which
      * the randomized weights fall. It is used while spawning the population.
      *
-     * @see ne.Net#randomizeWeights
-     * @see ne.FitnessSharingPopulation#spawn
+     * @see neat.Net#randomizeWeights
+     * @see neat.FitnessSharingPopulation#spawn
      */
     public double netWeightsScatter = 0.3;
 
@@ -114,34 +114,34 @@ public class NEATConfig {
      * Determines whether the species is still innovative
      * (it's the threshold for <code>ageOfLastInnovation</code>.
      *
-     * @see ne.Species#adjustFitness
-     * @see ne.Species#ageOfLastInnovation
+     * @see neat.Species#adjustFitness
+     * @see neat.Species#ageOfLastInnovation
      */
     public int speciesNotInnovative = 15;
     /**
      * The penalty for non innovative Species.
      *
-     * @see ne.Species#adjustFitness
+     * @see neat.Species#adjustFitness
      */
     public double speciesNotInnovativePenalty = 0.01;
 
     /**
      * Determines the amount of Species' Genomes which will take part in reproduction.
      *
-     * @see ne.Species#markForReproduction
+     * @see neat.Species#markForReproduction
      */
     public double speciesReproductionRatio = 0.4;
 
     /**
      * This threshold determines whether the species is young and therefore should be protected
      *
-     * @see ne.Species#adjustFitness
+     * @see neat.Species#adjustFitness
      */
     public int speciesYoung = 10;
     /**
      * The bonus for young Species.
      *
-     * @see ne.Species#adjustFitness
+     * @see neat.Species#adjustFitness
      */
     public double speciesYoungBonus = 1.0;
 
@@ -160,14 +160,14 @@ public class NEATConfig {
      * When a new Neuron is added, this value stands for a  probability of assigning a new Neuron GlobalInnovation number.
      * If new Neuron GlobalInnovation number is not assigned, then some older version of the same GlobalInnovation is used.
      *
-     * @see ne.GlobalInnovationList
+     * @see neat.GlobalInnovationList
      */
     public double globalNeuronInnovationAcceptNewRatio = 0.6;
 
     /**
      * This is used to choose a previous Neuron innovation version. Newer version are more likely to be chosen.
      *
-     * @see ne.GlobalInnovationList
+     * @see neat.GlobalInnovationList
      */
     public double globalNeuronInnovationAttentuationRatio = 0.5;
 

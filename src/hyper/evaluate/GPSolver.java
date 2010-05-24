@@ -18,9 +18,6 @@ import hyper.evaluate.printer.GPProgressPrinter1D;
  * To change this template use File | Settings | File Templates.
  */
 
-/**
- * mela by dostat z venku: parametry NEAT, progress printer (stejy pro GP)
- */
 public class GPSolver implements Solver {
     final private ParameterCombination parameters;
     final private NetSubstrateBuilder substrateBuilder;

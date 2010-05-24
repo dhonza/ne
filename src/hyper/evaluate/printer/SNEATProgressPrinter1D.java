@@ -1,14 +1,18 @@
 package hyper.evaluate.printer;
 
-import hyper.builder.NetSubstrateBuilder;
+import common.evolution.ProgressPrinter;
 import hyper.cppn.BasicSNEATCPPN;
 import hyper.cppn.CPPN;
 import hyper.evaluate.Problem;
 import hyper.substrate.Substrate;
-import neat.Net;
 import sneat.SNEAT;
 import sneat.SNEATBasicProgressPrinter;
+import sneat.neatgenome.NeatGenome;
+import sneat.neatgenome.xml.XmlGenomeWriterStatic;
 import sneat.neuralnetwork.INetwork;
+import sneat.neuralnetwork.activationfunctions.ActivationFunctionFactory;
+
+import java.io.File;
 
 /**
  * Created by IntelliJ IDEA.
@@ -17,32 +21,26 @@ import sneat.neuralnetwork.INetwork;
  * Time: 2:57:42 PM
  * To change this template use File | Settings | File Templates.
  */
-public class SNEATProgressPrinter1D extends SNEATBasicProgressPrinter {
-    final private Substrate substrate;
-    final private Problem problem;
+public class SNEATProgressPrinter1D extends CommonProgressPrinter1D {
+    final private SNEAT sneat;
+
+    public SNEATProgressPrinter1D(SNEAT sneat, ProgressPrinter progressPrinter, Substrate substrate, Problem problem) {
+        super(progressPrinter, substrate, problem);
+        this.sneat = sneat;
+    }
 
     public SNEATProgressPrinter1D(SNEAT sneat, Substrate substrate, Problem problem) {
-        super(sneat);
-        this.substrate = substrate;
-        this.problem = problem;
+        this(sneat, new SNEATBasicProgressPrinter(sneat), substrate, problem);
     }
 
-    public void printProgress() {
+    @Override
+    protected CPPN createBSFCPPN() {
         INetwork network = sneat.getEA().getBestGenome().decode(null);
-        System.out.println("BSF CPPF: " + network);
-        CPPN aCPPN = new BasicSNEATCPPN(network, substrate.getMaxDimension());
-        NetSubstrateBuilder substrateBuilder = new NetSubstrateBuilder(substrate);
-        substrateBuilder.build(aCPPN);
-        Net hyperNet = substrateBuilder.getNet();
-        problem.show(hyperNet);
+        return new BasicSNEATCPPN(network, substrate.getMaxDimension());
     }
 
-    public void printFinished() {
-        INetwork network = sneat.getEA().getBestGenome().decode(null);
-        CPPN aCPPN = new BasicSNEATCPPN(network, substrate.getMaxDimension());
-        NetSubstrateBuilder substrateBuilder = new NetSubstrateBuilder(substrate);
-        substrateBuilder.build(aCPPN);
-        Net hyperNet = substrateBuilder.getNet();
-        System.out.println("hyperNet = " + hyperNet);
+    @Override
+    protected void storeBSFCPPN(String fileName) {
+        XmlGenomeWriterStatic.Write(new File(fileName), (NeatGenome) sneat.getEA().getBestGenome(), ActivationFunctionFactory.getActivationFunction("NullFn"));
     }
 }

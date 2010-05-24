@@ -1,13 +1,14 @@
 package hyper.evaluate.printer;
 
-import hyper.builder.NetSubstrateBuilder;
+import common.evolution.ProgressPrinter;
 import hyper.cppn.BasicNetCPPN;
 import hyper.cppn.CPPN;
 import hyper.evaluate.Problem;
 import hyper.substrate.Substrate;
 import neat.NEAT;
 import neat.NEATBasicProgressPrinter;
-import neat.Net;
+import neat.NetStorage;
+import neat.Population;
 
 /**
  * Created by IntelliJ IDEA.
@@ -16,32 +17,27 @@ import neat.Net;
  * Time: 2:57:42 PM
  * To change this template use File | Settings | File Templates.
  */
-public class NetProgressPrinter1D extends NEATBasicProgressPrinter {
-    final private Substrate substrate;
-    final private Problem problem;
+public class NetProgressPrinter1D extends CommonProgressPrinter1D {
+    final private NEAT neat;
+    final private Population pop;
+
+    public NetProgressPrinter1D(NEAT neat, ProgressPrinter progressPrinter, Substrate substrate, Problem problem) {
+        super(progressPrinter, substrate, problem);
+        this.neat = neat;
+        this.pop = neat.getPopulation();
+    }
 
     public NetProgressPrinter1D(NEAT neat, Substrate substrate, Problem problem) {
-        super(neat);
-        this.substrate = substrate;
-        this.problem = problem;
+        this(neat, new NEATBasicProgressPrinter(neat), substrate, problem);
     }
 
     @Override
-    public void printProgress() {
-        System.out.println("pop.getBestSoFarNet() = " + pop.getBestSoFarNet());
-        CPPN aCPPN = new BasicNetCPPN(pop.getBestSoFarNet(), substrate.getMaxDimension());
-        NetSubstrateBuilder substrateBuilder = new NetSubstrateBuilder(substrate);
-        substrateBuilder.build(aCPPN);
-        Net hyperNet = substrateBuilder.getNet();
-        problem.show(hyperNet);
+    protected CPPN createBSFCPPN() {
+        return new BasicNetCPPN(pop.getBestSoFarNet(), substrate.getMaxDimension());
     }
 
     @Override
-    public void printFinished() {
-        CPPN aCPPN = new BasicNetCPPN(pop.getBestSoFarNet(), substrate.getMaxDimension());
-        NetSubstrateBuilder substrateBuilder = new NetSubstrateBuilder(substrate);
-        substrateBuilder.build(aCPPN);
-        Net hyperNet = substrateBuilder.getNet();
-        System.out.println("hyperNet = " + hyperNet);
+    protected void storeBSFCPPN(String fileName) {
+        NetStorage.save(pop.getBestSoFarNet(), fileName);
     }
 }

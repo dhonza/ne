@@ -60,6 +60,7 @@ public class SNEATExperiment implements IExperiment {
     public NeatParameters getDefaultNeatParameters() {
         if (neatParams == null) {
             NeatParameters np = new NeatParameters();
+            np.targetFitness = problem.getTargetFitness();
             Utils.setParameters(parameters, np, "SNEAT");
             np.activationProbabilities = new double[4];
             np.activationProbabilities[0] = .25;

@@ -21,9 +21,6 @@ import java.util.logging.Logger;
  * To change this template use File | Settings | File Templates.
  */
 
-/**
- * mela by dostat z venku: parametry NEAT, progress printer (stejny pro GP)
- */
 public class SNEATSolver implements Solver {
     private static Logger logger = Logger.getLogger("hyper.evaluate.SNEATSolver");
 
@@ -61,12 +58,6 @@ public class SNEATSolver implements Solver {
         solver.addStopCondition(new SolvedStopCondition(problem));
         solver.run();
 
-
-//        XmlGenomeWriterStatic.Write(new File("bestGenome.xml"), (NeatGenome) ea.getBestGenome(), ActivationFunctionFactory.getActivationFunction("NullFn"));
-
-
-        /*
-        stats.addSample("STAT_GENERATIONS", population.getGeneration());
-        */
+        stats.addSample("STAT_GENERATIONS", sneat.getGeneration());
     }
 }

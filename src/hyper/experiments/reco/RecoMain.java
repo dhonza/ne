@@ -42,12 +42,12 @@ public class RecoMain {
             int experiments = combination.getInteger("EXPERIMENTS");
             int lineSize = combination.getInteger("RECO.LINE_SIZE");
 
-            BasicSubstrate substrate = RecoSubstrateFactory.createInputToOutput(lineSize);
+//            BasicSubstrate substrate = RecoSubstrateFactory.createInputToOutput(lineSize);
 //            BasicSubstrate substrate = RecoSubstrateFactory.createInputHiddenOutput(lineSize, 2, lineSize);
 //            BasicSubstrate substrate = RecoSubstrateFactory.createInputHiddenOutput(lineSize, 3, 1);
 
             //XOR
-//            BasicSubstrate substrate = RecoSubstrateFactory.createInputHiddenOutput(2, 2, 1);
+            BasicSubstrate substrate = RecoSubstrateFactory.createInputHiddenOutput(2, 2, 1);
 
             //AND
 //            BasicSubstrate substrate = RecoSubstrateFactory.createInputToOutput(lineSize, 1);
