@@ -31,7 +31,7 @@ public class PMatrixTest {
 //        builder.add(stringParam2);
 
 
-        ParameterMatrixManager manager = ParameterMatrixStorage.load(new File("test.properties"));
+        ParameterMatrixManager manager = ParameterMatrixStorage.load(new File("cfg/pmatrix/test.properties"));
         for (ParameterCombination parameterCombination : manager) {
             System.out.println(parameterCombination);
         }

@@ -28,8 +28,6 @@ public void setName(String name) {
 }
 
 expr
-	: object (','  object)* ;
-object
 	: number | range | bool | string;
 range
 	: '(' from=INT ';' to=INT ';' step=INT ')' {builder.addRange(name, Integer.parseInt($from.text), Integer.parseInt($to.text), Integer.parseInt($step.text));}

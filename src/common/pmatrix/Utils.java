@@ -11,7 +11,7 @@ import java.lang.reflect.Field;
  */
 public class Utils {
     public static String[] extractIdentificators(String source) {
-        return source.split("\\s*,\\s*");
+        return source.split("\\s*;\\s*");
     }
 
     public static void setStaticParameters(ParameterCombination parameters, Class targetClass, String prefix) {
@@ -42,19 +42,19 @@ public class Utils {
                 int v = parameters.getInteger(parameterName);
                 field.setInt(targetInstance, v);
                 value = v;
-            } else if(field.getType() == double.class) {
+            } else if (field.getType() == double.class) {
                 double v = parameters.getDouble(parameterName);
                 field.setDouble(targetInstance, v);
                 value = v;
-            } else if(field.getType() == float.class) {
+            } else if (field.getType() == float.class) {
                 double v = parameters.getDouble(parameterName);
                 field.setFloat(targetInstance, (float) v);
                 value = v;
-            } else if(field.getType() == boolean.class) {
+            } else if (field.getType() == boolean.class) {
                 boolean v = parameters.getBoolean(parameterName);
                 field.setBoolean(targetInstance, v);
                 value = v;
-            } else if(field.getType() == String.class) {
+            } else if (field.getType() == String.class) {
                 String v = parameters.getString(parameterName);
                 field.set(targetInstance, v);
                 value = v;

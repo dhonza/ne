@@ -21,6 +21,7 @@ public class ParameterMatrixStorage {
     public static ParameterMatrixManager load(File file) {
         Configuration properties = null;
         try {
+            //I use apache commons configurations instead of JDK Properties, mainly because ability to include other property files
             properties = new PropertiesConfiguration(file);
         } catch (ConfigurationException e) {
             e.printStackTrace();
@@ -32,18 +33,21 @@ public class ParameterMatrixStorage {
         Iterator it = properties.getKeys();
         while (it.hasNext()) {
             Object o = it.next();
-            String param = (String) o;
-            ANTLRStringStream input = new ANTLRStringStream(properties.getString(param));
-            PropertyLexer lexer = new PropertyLexer(input);
-            CommonTokenStream tokens = new CommonTokenStream(lexer);
-            PropertyParser parser = new PropertyParser(tokens);
-            parser.setBuilder(builder);
-            parser.setName(param);
-            try {
-                parser.expr();
-            } catch (RecognitionException e) {
-                e.printStackTrace();
-                System.exit(1);
+            String paramName = (String) o;
+            String[] listOfParams = properties.getStringArray(paramName);
+            for (String param : listOfParams) {
+                ANTLRStringStream input = new ANTLRStringStream(param);
+                PropertyLexer lexer = new PropertyLexer(input);
+                CommonTokenStream tokens = new CommonTokenStream(lexer);
+                PropertyParser parser = new PropertyParser(tokens);
+                parser.setBuilder(builder);
+                parser.setName(paramName);
+                try {
+                    parser.expr();
+                } catch (RecognitionException e) {
+                    e.printStackTrace();
+                    System.exit(1);
+                }
             }
         }
         return builder.buildManager();

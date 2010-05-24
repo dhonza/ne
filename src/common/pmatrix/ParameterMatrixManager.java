@@ -1,6 +1,7 @@
 package common.pmatrix;
 
-import java.util.*;
+import java.util.Iterator;
+import java.util.List;
 
 /**
  * Created by IntelliJ IDEA.
@@ -20,7 +21,7 @@ public class ParameterMatrixManager implements Iterable<ParameterCombination> {
         }
 
         public ParameterCombination next() {
-            return combinations.get(idx++);  //To change body of implemented methods use File | Settings | File Templates.
+            return combinations.get(idx++);
         }
 
         public void remove() {
@@ -38,7 +39,7 @@ public class ParameterMatrixManager implements Iterable<ParameterCombination> {
 
     @Override
     public String toString() {
-        if(combinations.size() == 0) {
+        if (combinations.size() == 0) {
             return "NO PARAMETERS";
         }
         return combinations.get(0).toStringNotChannging();
