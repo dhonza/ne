@@ -40,6 +40,7 @@ abstract public class CommonProgressPrinter1D implements ProgressPrinter {
 
     public void printFinished() {
         progressPrinter.printFinished();
+        System.out.println("");
         storeBSFCPPN("best.xml");
         /*
         CPPN aCPPN = new BasicGPCPPN(forestBSF, substrate.getMaxDimension());
