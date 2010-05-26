@@ -3,7 +3,7 @@ package hyper.evaluate;
 import common.evolution.EvolutionaryAlgorithmSolver;
 import common.pmatrix.ParameterCombination;
 import common.stats.Stats;
-import hyper.builder.NetSubstrateBuilder;
+import hyper.builder.NEATSubstrateBuilder;
 import hyper.evaluate.printer.SNEATProgressPrinter1D;
 import sneat.LastGenerationStopCondition;
 import sneat.SNEAT;
@@ -25,11 +25,11 @@ public class SNEATSolver implements Solver {
     private static Logger logger = Logger.getLogger("hyper.evaluate.SNEATSolver");
 
     final private ParameterCombination parameters;
-    final private NetSubstrateBuilder substrateBuilder;
+    final private NEATSubstrateBuilder substrateBuilder;
     final private Stats stats;
     final private Problem problem;
 
-    public SNEATSolver(ParameterCombination parameters, NetSubstrateBuilder substrateBuilder, Stats stats, Problem problem) {
+    public SNEATSolver(ParameterCombination parameters, NEATSubstrateBuilder substrateBuilder, Stats stats, Problem problem) {
         this.parameters = parameters;
         this.substrateBuilder = substrateBuilder;
         this.stats = stats;
@@ -52,7 +52,7 @@ public class SNEATSolver implements Solver {
         SNEAT sneat = new SNEAT(exp);
 
         EvolutionaryAlgorithmSolver solver = new EvolutionaryAlgorithmSolver(sneat);
-        solver.addProgressPrinter(new SNEATProgressPrinter1D(sneat, substrateBuilder.getSubstrate(), problem));
+        solver.addProgressPrinter(new SNEATProgressPrinter1D(sneat, substrateBuilder.getSubstrate(), problem, parameters));
         solver.addStopCondition(new LastGenerationStopCondition(sneat));
         solver.addStopCondition(new TargetFitnessStopCondition(sneat));
         solver.addStopCondition(new SolvedStopCondition(problem));

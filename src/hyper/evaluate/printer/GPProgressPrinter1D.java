@@ -1,6 +1,7 @@
 package hyper.evaluate.printer;
 
 import common.evolution.ProgressPrinter;
+import common.pmatrix.ParameterCombination;
 import gp.Forest;
 import gp.ForestStorage;
 import gp.GP;
@@ -20,13 +21,13 @@ import hyper.substrate.Substrate;
 public class GPProgressPrinter1D extends CommonProgressPrinter1D {
     final private GP gp;
 
-    public GPProgressPrinter1D(GP gp, ProgressPrinter progressPrinter, Substrate substrate, Problem problem) {
-        super(progressPrinter, substrate, problem);
+    public GPProgressPrinter1D(GP gp, ProgressPrinter progressPrinter, Substrate substrate, Problem problem, ParameterCombination parameters) {
+        super(progressPrinter, substrate, problem, parameters);
         this.gp = gp;
     }
 
-    public GPProgressPrinter1D(GP gp, Substrate substrate, Problem problem) {
-        this(gp, new GPBasicProgressPrinter(gp), substrate, problem);
+    public GPProgressPrinter1D(GP gp, Substrate substrate, Problem problem, ParameterCombination parameters) {
+        this(gp, new GPBasicProgressPrinter(gp), substrate, problem, parameters);
     }
 
     @Override

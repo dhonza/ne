@@ -1,6 +1,6 @@
 package hyper.evaluate;
 
-import hyper.builder.NetSubstrateBuilder;
+import hyper.builder.NEATSubstrateBuilder;
 import hyper.cppn.BasicSNEATCPPN;
 import hyper.cppn.CPPN;
 import neat.Net;
@@ -17,10 +17,10 @@ import java.util.concurrent.Semaphore;
  * To change this template use File | Settings | File Templates.
  */
 public class SNEATNetworkEvaluator implements INetworkEvaluator {
-    final private NetSubstrateBuilder substrateBuilder;
+    final private NEATSubstrateBuilder substrateBuilder;
     final private Problem problem;
 
-    public SNEATNetworkEvaluator(NetSubstrateBuilder substrateBuilder, Problem problem) {
+    public SNEATNetworkEvaluator(NEATSubstrateBuilder substrateBuilder, Problem problem) {
         this.substrateBuilder = substrateBuilder;
         this.problem = problem;
     }

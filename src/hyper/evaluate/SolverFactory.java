@@ -2,7 +2,7 @@ package hyper.evaluate;
 
 import common.pmatrix.ParameterCombination;
 import common.stats.Stats;
-import hyper.builder.NetSubstrateBuilder;
+import hyper.builder.NEATSubstrateBuilder;
 
 /**
  * Created by IntelliJ IDEA.
@@ -12,7 +12,7 @@ import hyper.builder.NetSubstrateBuilder;
  * To change this template use File | Settings | File Templates.
  */
 public class SolverFactory {
-    public static Solver getSolver(ParameterCombination parameters, NetSubstrateBuilder substrateBuilder, Stats stats, Problem problem) {
+    public static Solver getSolver(ParameterCombination parameters, NEATSubstrateBuilder substrateBuilder, Stats stats, Problem problem) {
         String name = parameters.getString("SOLVER");
         if (name.equalsIgnoreCase("GP")) {
             return new GPSolver(parameters, substrateBuilder, stats, problem);

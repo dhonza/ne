@@ -4,8 +4,8 @@ import common.evolution.EvolutionaryAlgorithmSolver;
 import common.pmatrix.ParameterCombination;
 import common.pmatrix.Utils;
 import common.stats.Stats;
-import hyper.builder.NetSubstrateBuilder;
-import hyper.evaluate.printer.NetProgressPrinter1D;
+import hyper.builder.NEATSubstrateBuilder;
+import hyper.evaluate.printer.NEATProgressPrinter1D;
 import neat.*;
 
 /**
@@ -18,11 +18,11 @@ import neat.*;
 
 public class NEATSolver implements Solver {
     final private ParameterCombination parameters;
-    final private NetSubstrateBuilder substrateBuilder;
+    final private NEATSubstrateBuilder substrateBuilder;
     final private Stats stats;
     final private Problem problem;
 
-    public NEATSolver(ParameterCombination parameters, NetSubstrateBuilder substrateBuilder, Stats stats, Problem problem) {
+    public NEATSolver(ParameterCombination parameters, NEATSubstrateBuilder substrateBuilder, Stats stats, Problem problem) {
         this.parameters = parameters;
         this.substrateBuilder = substrateBuilder;
         this.stats = stats;
@@ -53,7 +53,7 @@ public class NEATSolver implements Solver {
         neat.setPopulation(population);
 
         EvolutionaryAlgorithmSolver solver = new EvolutionaryAlgorithmSolver(neat);
-        solver.addProgressPrinter(new NetProgressPrinter1D(neat, substrateBuilder.getSubstrate(), problem));
+        solver.addProgressPrinter(new NEATProgressPrinter1D(neat, substrateBuilder.getSubstrate(), problem, parameters));
         solver.addStopCondition(new LastGenerationStopCondition(neat));
         solver.addStopCondition(new TargetFitnessStopCondition(neat));
         solver.addStopCondition(new SolvedStopCondition(problem));

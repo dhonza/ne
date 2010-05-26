@@ -1,6 +1,7 @@
 package hyper.evaluate.printer;
 
 import common.evolution.ProgressPrinter;
+import common.pmatrix.ParameterCombination;
 import hyper.cppn.BasicNetCPPN;
 import hyper.cppn.CPPN;
 import hyper.evaluate.Problem;
@@ -17,18 +18,18 @@ import neat.Population;
  * Time: 2:57:42 PM
  * To change this template use File | Settings | File Templates.
  */
-public class NetProgressPrinter1D extends CommonProgressPrinter1D {
+public class NEATProgressPrinter1D extends CommonProgressPrinter1D {
     final private NEAT neat;
     final private Population pop;
 
-    public NetProgressPrinter1D(NEAT neat, ProgressPrinter progressPrinter, Substrate substrate, Problem problem) {
-        super(progressPrinter, substrate, problem);
+    public NEATProgressPrinter1D(NEAT neat, ProgressPrinter progressPrinter, Substrate substrate, Problem problem, ParameterCombination parameters) {
+        super(progressPrinter, substrate, problem, parameters);
         this.neat = neat;
         this.pop = neat.getPopulation();
     }
 
-    public NetProgressPrinter1D(NEAT neat, Substrate substrate, Problem problem) {
-        this(neat, new NEATBasicProgressPrinter(neat), substrate, problem);
+    public NEATProgressPrinter1D(NEAT neat, Substrate substrate, Problem problem, ParameterCombination parameters) {
+        this(neat, new NEATBasicProgressPrinter(neat), substrate, problem, parameters);
     }
 
     @Override

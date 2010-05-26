@@ -7,7 +7,7 @@ import common.stats.Stats;
 import gp.*;
 import gp.terminals.Constant;
 import gp.terminals.Random;
-import hyper.builder.NetSubstrateBuilder;
+import hyper.builder.NEATSubstrateBuilder;
 import hyper.evaluate.printer.GPProgressPrinter1D;
 
 /**
@@ -20,11 +20,11 @@ import hyper.evaluate.printer.GPProgressPrinter1D;
 
 public class GPSolver implements Solver {
     final private ParameterCombination parameters;
-    final private NetSubstrateBuilder substrateBuilder;
+    final private NEATSubstrateBuilder substrateBuilder;
     final private Stats stats;
     final private Problem problem;
 
-    public GPSolver(ParameterCombination parameters, NetSubstrateBuilder substrateBuilder, Stats stats, Problem problem) {
+    public GPSolver(ParameterCombination parameters, NEATSubstrateBuilder substrateBuilder, Stats stats, Problem problem) {
         this.parameters = parameters;
         this.substrateBuilder = substrateBuilder;
         this.stats = stats;
@@ -43,7 +43,7 @@ public class GPSolver implements Solver {
         GP gp = GPFactory.createByName(parameters.getString("GP.TYPE"), evaluator, functions, terminals);
 
         EvolutionaryAlgorithmSolver solver = new EvolutionaryAlgorithmSolver(gp);
-        solver.addProgressPrinter(new GPProgressPrinter1D(gp, substrateBuilder.getSubstrate(), problem));
+        solver.addProgressPrinter(new GPProgressPrinter1D(gp, substrateBuilder.getSubstrate(), problem, parameters));
         solver.addStopCondition(new LastGenerationStopCondition(gp));
         solver.addStopCondition(new TargetFitnessStopCondition(gp));
         solver.addStopCondition(new SolvedStopCondition(problem));

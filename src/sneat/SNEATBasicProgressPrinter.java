@@ -19,10 +19,10 @@ public class SNEATBasicProgressPrinter implements ProgressPrinter {
 
     public void printGeneration() {
         EvolutionAlgorithm ea = sneat.getEA();
-        System.out.println("G: " + sneat.getGeneration() +
+        System.out.println("G:" + sneat.getGeneration() +
                 " EVA:" + sneat.getEvaluations() +
-                " BSF: " + ea.getBestGenome().getFitness() +
-                " BOG: " + -Integer.MAX_VALUE +
+                " BSF:" + ea.getBestGenome().getFitness() +
+                " BOG:" + -Integer.MAX_VALUE +
                 " LASTIN:" + sneat.getLastInnovation()
         );
     }

@@ -1,8 +1,8 @@
 package common.pmatrix;
 
-import java.util.LinkedHashMap;
 import java.util.HashSet;
 import java.util.Iterator;
+import java.util.LinkedHashMap;
 
 /**
  * Created by IntelliJ IDEA.
@@ -37,7 +37,7 @@ public class ParameterCombination implements Iterable<String> {
         this.combinationNotChanging = new LinkedHashMap<String, Object>();
         this.combinationOnlyChanging = new LinkedHashMap<String, Object>();
         for (String name : combination.keySet()) {
-            if(changes.contains(name)) {
+            if (changes.contains(name)) {
                 combinationOnlyChanging.put(name, combination.get(name));
             } else {
                 combinationNotChanging.put(name, combination.get(name));
@@ -63,6 +63,10 @@ public class ParameterCombination implements Iterable<String> {
 
     public String getString(String name) {
         return (String) get(name, String.class);
+    }
+
+    public boolean contains(String name) {
+        return combination.get(name) != null;
     }
 
     private Object get(String name, Class cls) {

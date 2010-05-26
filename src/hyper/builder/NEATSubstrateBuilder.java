@@ -22,7 +22,7 @@ import java.util.Map;
  * Time: 11:32:18 AM
  * To change this template use File | Settings | File Templates.
  */
-public class NetSubstrateBuilder implements SubstrateBuilder {
+public class NEATSubstrateBuilder implements SubstrateBuilder {
     private class NeuronIndices {
         private int lower;
         private int upper;
@@ -48,7 +48,7 @@ public class NetSubstrateBuilder implements SubstrateBuilder {
     private boolean built = false;
     private Net net;
 
-    public NetSubstrateBuilder(Substrate substrate) {
+    public NEATSubstrateBuilder(Substrate substrate) {
         this.substrate = substrate;
     }
 

@@ -1,7 +1,8 @@
 package hyper.evaluate.printer;
 
 import common.evolution.ProgressPrinter;
-import hyper.builder.NetSubstrateBuilder;
+import common.pmatrix.ParameterCombination;
+import hyper.builder.NEATSubstrateBuilder;
 import hyper.cppn.CPPN;
 import hyper.evaluate.Problem;
 import hyper.substrate.Substrate;
@@ -18,39 +19,66 @@ abstract public class CommonProgressPrinter1D implements ProgressPrinter {
     final private ProgressPrinter progressPrinter;
     final protected Substrate substrate;
     final protected Problem problem;
+    final protected ParameterCombination parameters;
 
-    public CommonProgressPrinter1D(ProgressPrinter progressPrinter, Substrate substrate, Problem problem) {
+    protected boolean generation = true;
+
+    protected boolean progress = true;
+    protected boolean progressShowProblem = true;
+
+    protected boolean finished = true;
+    protected boolean finishedShowProblem = true;
+
+    public CommonProgressPrinter1D(ProgressPrinter progressPrinter, Substrate substrate, Problem problem, ParameterCombination parameters) {
         this.progressPrinter = progressPrinter;
         this.substrate = substrate;
         this.problem = problem;
+        this.parameters = parameters;
+        setParameters();
+    }
+
+    private void setParameters() {
+//        Utils.setParameters(parameters, this, "PRINT"); //this needed public access
+        generation = parameters.contains("PRINT.generation") ? parameters.getBoolean("PRINT.generation") : generation;
+
+        progress = parameters.contains("PRINT.progress") ? parameters.getBoolean("PRINT.progress") : progress;
+        progressShowProblem = parameters.contains("PRINT.progressShowProblem") ? parameters.getBoolean("PRINT.progressShowProblem") : progressShowProblem;
+
+        finished = parameters.contains("PRINT.finished") ? parameters.getBoolean("PRINT.finished") : finished;
     }
 
     public void printGeneration() {
+        if (!generation) {
+            return;
+        }
         progressPrinter.printGeneration();
     }
 
     public void printProgress() {
+        if (!progress) {
+            return;
+        }
+        progressPrinter.printGeneration();
         progressPrinter.printProgress();
-        CPPN aCPPN = createBSFCPPN();
-        NetSubstrateBuilder substrateBuilder = createSubstrateBuilder();
-        substrateBuilder.build(aCPPN);
-        Net hyperNet = createHyperNet(substrateBuilder);
-        problem.show(hyperNet);
+
+        showProblem(progressShowProblem);
     }
 
     public void printFinished() {
+        if (!finished) {
+            return;
+        }
         progressPrinter.printFinished();
+        progressPrinter.printGeneration();
+        progressPrinter.printProgress();
+
+        showProblem(finishedShowProblem);
+        
         System.out.println("");
+        
         storeBSFCPPN("best.xml");
+
         /*
-        CPPN aCPPN = new BasicGPCPPN(forestBSF, substrate.getMaxDimension());
-        NetSubstrateBuilder substrateBuilder = new NetSubstrateBuilder(substrate);
-        substrateBuilder.build(aCPPN);
-        Net hyperNet = substrateBuilder.getNet();
-        System.out.println(hyperNet);
-        problem.show(hyperNet);
-
-
         System.out.println("trees := " + gp.getBestSoFar().toMathematicaExpression());
         MathematicaHyperGraphSubstrateBuilder2D mathematicaBuilder = new MathematicaHyperGraphSubstrateBuilder2D(substrate);
         mathematicaBuilder.build(aCPPN);
@@ -60,13 +88,23 @@ abstract public class CommonProgressPrinter1D implements ProgressPrinter {
         */
     }
 
-    protected abstract CPPN createBSFCPPN();
-
-    protected NetSubstrateBuilder createSubstrateBuilder() {
-        return new NetSubstrateBuilder(substrate);
+    private void showProblem(boolean show) {
+        if (show) {
+            CPPN aCPPN = createBSFCPPN();
+            NEATSubstrateBuilder substrateBuilder = createSubstrateBuilder();
+            substrateBuilder.build(aCPPN);
+            Net hyperNet = createHyperNet(substrateBuilder);
+            problem.show(hyperNet);
+        }
     }
 
-    protected Net createHyperNet(NetSubstrateBuilder substrateBuilder) {
+    protected abstract CPPN createBSFCPPN();
+
+    protected NEATSubstrateBuilder createSubstrateBuilder() {
+        return new NEATSubstrateBuilder(substrate);
+    }
+
+    protected Net createHyperNet(NEATSubstrateBuilder substrateBuilder) {
         return substrateBuilder.getNet();
     }
 

@@ -1,6 +1,7 @@
 package hyper.evaluate.printer;
 
 import common.evolution.ProgressPrinter;
+import common.pmatrix.ParameterCombination;
 import hyper.cppn.BasicSNEATCPPN;
 import hyper.cppn.CPPN;
 import hyper.evaluate.Problem;
@@ -24,13 +25,13 @@ import java.io.File;
 public class SNEATProgressPrinter1D extends CommonProgressPrinter1D {
     final private SNEAT sneat;
 
-    public SNEATProgressPrinter1D(SNEAT sneat, ProgressPrinter progressPrinter, Substrate substrate, Problem problem) {
-        super(progressPrinter, substrate, problem);
+    public SNEATProgressPrinter1D(SNEAT sneat, ProgressPrinter progressPrinter, Substrate substrate, Problem problem, ParameterCombination parameters) {
+        super(progressPrinter, substrate, problem, parameters);
         this.sneat = sneat;
     }
 
-    public SNEATProgressPrinter1D(SNEAT sneat, Substrate substrate, Problem problem) {
-        this(sneat, new SNEATBasicProgressPrinter(sneat), substrate, problem);
+    public SNEATProgressPrinter1D(SNEAT sneat, Substrate substrate, Problem problem, ParameterCombination parameters) {
+        this(sneat, new SNEATBasicProgressPrinter(sneat), substrate, problem, parameters);
     }
 
     @Override
