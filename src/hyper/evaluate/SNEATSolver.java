@@ -29,18 +29,18 @@ public class SNEATSolver implements Solver {
     final private Stats stats;
     final private Problem problem;
 
+    private EvolutionaryAlgorithmSolver solver;
+    private SNEAT sneat;
+
     public SNEATSolver(ParameterCombination parameters, NEATSubstrateBuilder substrateBuilder, Stats stats, Problem problem) {
         this.parameters = parameters;
         this.substrateBuilder = substrateBuilder;
         this.stats = stats;
         this.problem = problem;
+        init();
     }
 
-    private void setActivationFunctions() {
-        ActivationFunctionFactory.setSameProbabilitiesForList(parameters.getString("SNEAT.FUNCTIONS"));
-    }
-
-    public void solve() {
+    private void init() {
         logger.getParent().setLevel(Level.OFF);
         int inputsCPPN = 2 * substrateBuilder.getSubstrate().getMaxDimension();
         int outputsCPPN = substrateBuilder.getSubstrate().getNumOfConnections();
@@ -49,15 +49,27 @@ public class SNEATSolver implements Solver {
         setActivationFunctions();
         SNEATExperiment exp = new SNEATExperiment(parameters, substrateBuilder, problem, inputsCPPN, outputsCPPN);
 
-        SNEAT sneat = new SNEAT(exp);
+        sneat = new SNEAT(exp);
 
-        EvolutionaryAlgorithmSolver solver = new EvolutionaryAlgorithmSolver(sneat);
+        solver = new EvolutionaryAlgorithmSolver(sneat);
         solver.addProgressPrinter(new SNEATProgressPrinter1D(sneat, substrateBuilder.getSubstrate(), problem, parameters));
         solver.addStopCondition(new LastGenerationStopCondition(sneat));
         solver.addStopCondition(new TargetFitnessStopCondition(sneat));
         solver.addStopCondition(new SolvedStopCondition(problem));
+
+    }
+
+    private void setActivationFunctions() {
+        ActivationFunctionFactory.setSameProbabilitiesForList(parameters.getString("SNEAT.FUNCTIONS"));
+    }
+
+    public void solve() {
         solver.run();
 
         stats.addSample("STAT_GENERATIONS", sneat.getGeneration());
+    }
+
+    public String getConfigString() {
+        return sneat.getConfigString();
     }
 }

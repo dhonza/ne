@@ -107,8 +107,7 @@ public class FitnessSharingPopulation extends Population {
                     tpop[tpopi++] = tgnew;
                 }
                 if (!(tpop[tpopi - 1].check() && tpop[tpopi - 1].getNet().check())) {
-//                    System.out.println("  ERROR in reproduction");
-                    NEAT.getConfig().println("  ERROR in reproduction");
+                    System.out.println("  ERROR in reproduction");
                 }
             }
         }
@@ -279,11 +278,9 @@ public class FitnessSharingPopulation extends Population {
                 ts.elitistSize = (int) Math.min(ts.genomes.size(), (ts.expectedOffspring * NEAT.getConfig().elitistProportionPerSpecies));
                 if (ts.elitistSize == 0 && ts.expectedOffspring > 1) { // if we had expecteOffspring = 1, Species won't evolve no more
                     ts.elitistSize = 1;
-//                    System.out.println("NOTE elitistSize:" + ts.elitistSize + " expectedOffspring:" + ts.expectedOffspring);
-                    NEAT.getConfig().println("NOTE elitistSize:" + ts.elitistSize + " expectedOffspring:" + ts.expectedOffspring);
+                    System.out.println("NOTE elitistSize:" + ts.elitistSize + " expectedOffspring:" + ts.expectedOffspring);
                 }
 //                System.out.println("elitistSize:" + ts.elitistSize + " expectedOffspring:" + ts.expectedOffspring);
-//                NEAT.getConfig().println("elitistSize:" + ts.elitistSize + " expectedOffspring:" + ts.expectedOffspring);
 
                 assigned += ts.expectedOffspring;
             }

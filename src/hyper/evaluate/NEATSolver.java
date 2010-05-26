@@ -22,11 +22,35 @@ public class NEATSolver implements Solver {
     final private Stats stats;
     final private Problem problem;
 
+    private NEAT neat;
+    private FitnessSharingPopulation population;
+    private EvolutionaryAlgorithmSolver solver;
+
     public NEATSolver(ParameterCombination parameters, NEATSubstrateBuilder substrateBuilder, Stats stats, Problem problem) {
         this.parameters = parameters;
         this.substrateBuilder = substrateBuilder;
         this.stats = stats;
         this.problem = problem;
+        init();
+    }
+
+    private void init() {
+        NEATEvaluator evaluator = new NEATEvaluator(substrateBuilder, problem);
+
+       neat = new NEAT();
+        NEATConfig config = NEAT.getConfig();
+        config.targetFitness = problem.getTargetFitness();
+        Utils.setParameters(parameters, config, "NEAT");
+
+        population = new FitnessSharingPopulation(evaluator, getPrototype(evaluator));
+
+        neat.setPopulation(population);
+
+        solver = new EvolutionaryAlgorithmSolver(neat);
+        solver.addProgressPrinter(new NEATProgressPrinter1D(neat, substrateBuilder.getSubstrate(), problem, parameters));
+        solver.addStopCondition(new LastGenerationStopCondition(neat));
+        solver.addStopCondition(new TargetFitnessStopCondition(neat));
+        solver.addStopCondition(new SolvedStopCondition(problem));
     }
 
     private static Genome getPrototype(Evaluable evaluator) {
@@ -41,24 +65,12 @@ public class NEATSolver implements Solver {
     }
 
     public void solve() {
-        NEATEvaluator evaluator = new NEATEvaluator(substrateBuilder, problem);
-
-        NEAT neat = new NEAT();
-        NEATConfig config = NEAT.getConfig();
-        config.targetFitness = problem.getTargetFitness();
-        Utils.setParameters(parameters, config, "NEAT");
-
-        FitnessSharingPopulation population = new FitnessSharingPopulation(evaluator, getPrototype(evaluator));
-
-        neat.setPopulation(population);
-
-        EvolutionaryAlgorithmSolver solver = new EvolutionaryAlgorithmSolver(neat);
-        solver.addProgressPrinter(new NEATProgressPrinter1D(neat, substrateBuilder.getSubstrate(), problem, parameters));
-        solver.addStopCondition(new LastGenerationStopCondition(neat));
-        solver.addStopCondition(new TargetFitnessStopCondition(neat));
-        solver.addStopCondition(new SolvedStopCondition(problem));
         solver.run();
 
         stats.addSample("STAT_GENERATIONS", population.getGeneration());
+    }
+
+    public String getConfigString() {
+        return neat.getConfigString();
     }
 }

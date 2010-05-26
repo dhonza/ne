@@ -2,6 +2,10 @@ package neat;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.List;
 
 /**
  * User: honza
@@ -208,57 +212,26 @@ public class NEATConfig {
     //    public double activationGaussProbability = 1.0;
     //    public double activationAbsProbability = 0.0;
     //    public double activationSinProbability = 0.0;
-    public Object logger;
 
     public String toString() {
         String result = "";
-        Field[] field = getClass().getDeclaredFields();
-        for (Field f : field) {
+        Field[] fieldArray = getClass().getDeclaredFields();
+        List<Field> fields = Arrays.asList(fieldArray);
+        Collections.sort(fields, new Comparator<Field>() {
+            public int compare(Field f1, Field f2) {
+                return f1.getName().compareTo(f2.getName());
+            }
+        });
+        for (Field f : fields) {
             String fname = f.getName();
-            String fTypeName = f.getType().toString();
+//            String fTypeName = f.getType().toString();
             try {
-                result += fTypeName + " " + fname + "=" + f.get(this).toString() + "\n";
+                result += fname + " = " + f.get(this).toString() + "\n";
             } catch (IllegalAccessException iae) {
                 iae.printStackTrace();
             }
             //System.out.println(fname+" "+type);
         }
         return result;
-    }
-
-    public void registerLogger(Object logger) {
-        this.logger = logger;
-    }
-
-    /**
-     * The println method uses reflections to avoid dependencies on the logger class
-     * and implementation.
-     *
-     * @param s
-     */
-
-    public void println(String s) {
-        if (logger == null) {
-            System.out.println(s);
-        } else {
-            Class lc = logger.getClass();
-            try {
-                Class[] par = new Class[1];
-                par[0] = String.class;
-                //String[] ars = new String[1];
-                String[] ars = {s};
-                Method m = lc.getDeclaredMethod("outLn", par);
-                m.invoke(logger, ars);
-            } catch (NoSuchMethodException nsme) {
-                System.out.println("Invalid logger class");
-                nsme.printStackTrace();
-            } catch (IllegalAccessException iae) {
-                System.out.println("Illegal access in logger class");
-                iae.printStackTrace();
-            } catch (java.lang.reflect.InvocationTargetException ite) {
-                System.out.println("Invocation exception in logger class");
-                ite.printStackTrace();
-            }
-        }
     }
 }

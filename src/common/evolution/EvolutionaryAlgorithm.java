@@ -21,4 +21,6 @@ public interface EvolutionaryAlgorithm {
     public int getEvaluations();
 
     public int getLastInnovation();
+
+    public String getConfigString();
 }

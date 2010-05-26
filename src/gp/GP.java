@@ -15,13 +15,12 @@ import java.util.Arrays;
  * To change this template use File | Settings | File Templates.
  */
 public class GP implements EvolutionaryAlgorithm {
-
-    public static double MUTATION_CAUCHY_PROBABILITY = 0.8;
-    public static double MUTATION_CAUCHY_POWER = 0.01;
-    public static double MUTATION_SUBTREE_PROBABLITY = 0.5;
     public static double CONSTANT_AMPLITUDE = 5.0;
     public static int LAST_GENERATION = 1000;
     public static int MAX_DEPTH = 3;
+    public static double MUTATION_CAUCHY_PROBABILITY = 0.8;
+    public static double MUTATION_CAUCHY_POWER = 0.01;
+    public static double MUTATION_SUBTREE_PROBABLITY = 0.5;
     public static int POPULATION_SIZE = 10;
     public static double TARGET_FITNESS = Double.MAX_VALUE;
 
@@ -73,6 +72,20 @@ public class GP implements EvolutionaryAlgorithm {
     }
 
     public void finished() {
+    }
+
+    public String getConfigString() {
+        StringBuilder s = new StringBuilder();
+        s.append("CONSTANT_AMPLITUDE = ").append(CONSTANT_AMPLITUDE);
+        s.append("\nLAST_GENERATION = ").append(LAST_GENERATION);
+        s.append("\nMAX_DEPTH = ").append(MAX_DEPTH);
+        s.append("\nMUTATION_CAUCHY_PROBABILITY = ").append(MUTATION_CAUCHY_PROBABILITY);
+        s.append("\nMUTATION_CAUCHY_POWER = ").append(MUTATION_CAUCHY_POWER);
+        s.append("\nMUTATION_SUBTREE_PROBABLITY = ").append(MUTATION_SUBTREE_PROBABLITY);
+        s.append("\nPOPULATION_SIZE = ").append(POPULATION_SIZE);
+        s.append("\nTARGET_FITNESS = ").append(TARGET_FITNESS);
+        s.append("\n");
+        return s.toString();
     }
 
     public boolean hasImproved() {
@@ -162,4 +175,6 @@ public class GP implements EvolutionaryAlgorithm {
     public int getLastInnovation() {
         return lastInnovation;
     }
+
+
 }

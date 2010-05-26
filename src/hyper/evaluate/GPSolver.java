@@ -24,14 +24,18 @@ public class GPSolver implements Solver {
     final private Stats stats;
     final private Problem problem;
 
+    private GP gp;
+    private EvolutionaryAlgorithmSolver solver;
+
     public GPSolver(ParameterCombination parameters, NEATSubstrateBuilder substrateBuilder, Stats stats, Problem problem) {
         this.parameters = parameters;
         this.substrateBuilder = substrateBuilder;
         this.stats = stats;
         this.problem = problem;
+        init();
     }
 
-    public void solve() {
+    private void init() {
         GP.TARGET_FITNESS = problem.getTargetFitness();
         Utils.setStaticParameters(parameters, GP.class, "GP");
 
@@ -40,15 +44,23 @@ public class GPSolver implements Solver {
 
         GPEvaluator evaluator = new GPEvaluator(substrateBuilder, problem);
 
-        GP gp = GPFactory.createByName(parameters.getString("GP.TYPE"), evaluator, functions, terminals);
+        gp = GPFactory.createByName(parameters.getString("GP.TYPE"), evaluator, functions, terminals);
 
-        EvolutionaryAlgorithmSolver solver = new EvolutionaryAlgorithmSolver(gp);
+        solver = new EvolutionaryAlgorithmSolver(gp);
         solver.addProgressPrinter(new GPProgressPrinter1D(gp, substrateBuilder.getSubstrate(), problem, parameters));
         solver.addStopCondition(new LastGenerationStopCondition(gp));
         solver.addStopCondition(new TargetFitnessStopCondition(gp));
         solver.addStopCondition(new SolvedStopCondition(problem));
+    }
+
+    public void solve() {
+
         solver.run();
 
         stats.addSample("STAT_GENERATIONS", gp.getGeneration());
+    }
+
+    public String getConfigString() {
+        return gp.getConfigString();
     }
 }

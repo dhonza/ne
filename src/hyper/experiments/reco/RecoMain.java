@@ -63,6 +63,9 @@ public class RecoMain {
 //                System.out.println("EXPERIMENT: " + (i + 1));
 
                 Solver solver = SolverFactory.getSolver(combination, substrateBuilder, stats, problem);
+                if (i == 0) {
+                    System.out.println(solver.getConfigString());
+                }
                 solver.solve();
             }
             stats.printScope("EXPERIMENT");

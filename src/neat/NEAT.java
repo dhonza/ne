@@ -80,6 +80,10 @@ public class NEAT implements EvolutionaryAlgorithm {
 //        population.storeDistanceMatrix();
     }
 
+    public String getConfigString() {
+        return getConfig().toString();
+    }
+
     public boolean hasImproved() {
         return population.getLastInnovation() == 0;
     }

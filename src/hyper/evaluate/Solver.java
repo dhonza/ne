@@ -9,4 +9,6 @@ package hyper.evaluate;
  */
 public interface Solver {
     public void solve();
+
+    public String getConfigString();
 }
