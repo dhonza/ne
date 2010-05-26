@@ -1,5 +1,7 @@
 package hyper.experiments.reco.fitness;
 
+import java.util.Arrays;
+
 /**
  * Created by IntelliJ IDEA.
  * User: drchaj1
@@ -32,7 +34,7 @@ public class RecognitionFitness1D {
             }
             for (int j = 0; j < outputPatterns[0].length; j++) {
                 double discretizedOutput = outputs[j] > 0.5 ? 1.0 : 0.0;
-                if ((discretizedOutput - outputPatterns[i][j]) != 0.0) {
+                if (Math.abs(discretizedOutput - outputPatterns[i][j]) != 0.0) {
                     errors++;
                 }
                 double output = outputs[j];
@@ -43,7 +45,11 @@ public class RecognitionFitness1D {
         }
 
         evaluated = true;
-        solved = errors == 0;
+        if(errors == 0) {
+            solved = true;
+            return inputPatterns.length * outputPatterns[0].length; // set the fitness to maximum
+        }
+
         return inputPatterns.length * outputPatterns[0].length - error;
     }
 

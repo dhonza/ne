@@ -125,6 +125,14 @@ public class PatternUtils {
     public static void printPattern(double[] pattern) {
         StringBuilder sb = new StringBuilder();
         for (double element : pattern) {
+            sb.append(element).append(" ");
+        }
+        System.out.print(sb);
+    }
+
+    public static void printFormattedPattern(double[] pattern) {
+        StringBuilder sb = new StringBuilder();
+        for (double element : pattern) {
             sb.append(format.format(element)).append(" ");
         }
         System.out.print(sb);
@@ -132,9 +140,9 @@ public class PatternUtils {
 
     public static void printInputOutputPatterns(double[][] inputPatterns, double[][] outputPatterns) {
         for (int p = 0; p < inputPatterns.length; p++) {
-            printPattern(inputPatterns[p]);
+            printFormattedPattern(inputPatterns[p]);
             System.out.print(" ");
-            printPattern(outputPatterns[p]);
+            printFormattedPattern(outputPatterns[p]);
             System.out.println();
         }
     }

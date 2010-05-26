@@ -49,13 +49,15 @@ public class Recognition1D implements Problem {
         HyperNetEvaluator1D hyperNetEvaluator = new HyperNetEvaluator1D(hyperNet, activations);
         //zatim pouze pro 1D, pak predelat
         RecognitionFitness1D recognition = new RecognitionFitness1D(hyperNetEvaluator);
-        for (int i = 0; i < generator.generateInputPatterns().length; i++) {
-            PatternUtils.printPattern(generator.generateInputPatterns()[i]);
+        double[][] inputPatterns = generator.generateInputPatterns();
+        double[][] outputPatterns = generator.generateOutputPatterns();
+        for (int i = 0; i < inputPatterns.length; i++) {
+            PatternUtils.printFormattedPattern(inputPatterns[i]);
             System.out.print(" ");
-            PatternUtils.printPattern(generator.generateOutputPatterns()[i]);
+            PatternUtils.printFormattedPattern(outputPatterns[i]);
             System.out.print(" ");
-            double[] output = recognition.propagate(generator.generateInputPatterns()[i]);
-            PatternUtils.printPattern(output);
+            double[] output = recognition.propagate(inputPatterns[i]);
+            PatternUtils.printFormattedPattern(output);
             System.out.println("");
         }
     }

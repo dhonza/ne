@@ -50,11 +50,12 @@ public class EvolutionaryAlgorithmSolver {
     }
 
     private boolean toStop() {
-        boolean stop = false;
         for (StopCondition stopCondition : stopConditionList) {
-            stop = stop || stopCondition.isMet();
+            if (stopCondition.isMet()) {
+                return true;
+            }
         }
-        return stop;
+        return false;
     }
 
     public void addProgressPrinter(ProgressPrinter progressPrinter) {

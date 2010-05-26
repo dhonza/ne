@@ -29,7 +29,7 @@ public class PatternGeneratorZoomAll1D implements PatternGenerator {
                 }
             }
 //            System.out.print("I:");
-//            PatternUtils.printPattern(pattern);
+//            PatternUtils.printFormattedPattern(pattern);
 //            System.out.print(" l=" + l);
             if (l == -1) {
 //                System.out.println("");
@@ -58,7 +58,7 @@ public class PatternGeneratorZoomAll1D implements PatternGenerator {
                 outputPatterns[p][i] = pattern[((int) Math.round(pos))];
             }
 //            System.out.print(" O:");
-//            PatternUtils.printPattern(outputPatterns[p]);
+//            PatternUtils.printFormattedPattern(outputPatterns[p]);
 //            System.out.println("");
         }
     }
