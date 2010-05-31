@@ -66,7 +66,8 @@ public class SNEATSolver implements Solver {
     public void solve() {
         solver.run();
 
-        stats.addSample("STAT_GENERATIONS", sneat.getGeneration());
+        stats.addSample("GENERATIONS", sneat.getGeneration());
+        stats.addSample("EVALUATIONS", sneat.getEvaluations());
     }
 
     public String getConfigString() {

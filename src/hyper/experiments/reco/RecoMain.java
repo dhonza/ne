@@ -31,19 +31,29 @@ public class RecoMain {
             System.exit(1);
         }
 
+        ReportStorage reportStorage = new ReportStorage();
+
         ParameterMatrixManager manager = ParameterMatrixStorage.load(new File(args[0], "experiment.properties"));
 
         System.out.println("INITIALIZED SEED: " + RND.initializeTime());
 //        RND.initialize(8686925819525946L); //4
 
         System.out.println("PARAMETER SETTINGS: " + manager);
+
+        int combinationId = 1;
         for (ParameterCombination combination : manager) {
+            StringBuilder parameterString = new StringBuilder();
+            parameterString.append("FIXED:\n").append("-----\n").append(manager.toStringNewLines());
+            parameterString.append("\nCHANGING:\n").append("--------\n").append(combination.toStringOnlyChanngingNewLines());
+
             System.out.println("PARAMETER COMBINATION: " + combination.toStringOnlyChannging());
             int experiments = combination.getInteger("EXPERIMENTS");
             int lineSize = combination.getInteger("RECO.LINE_SIZE");
 
             Stats stats = new Stats();
-            stats.createStat("STAT_GENERATIONS", "EXPERIMENT", "Number of Generations");
+            stats.createStat("GENERATIONS", "EXPERIMENT", "Number of Generations");
+            stats.createStat("EVALUATIONS", "EXPERIMENT", "Number of Evaluations");
+
             for (int i = 0; i < experiments; i++) {
 //            BasicSubstrate substrate = RecoSubstrateFactory.createInputToOutput(lineSize);
 //            BasicSubstrate substrate = RecoSubstrateFactory.createInputHiddenOutput(lineSize, 2, lineSize);
@@ -65,11 +75,17 @@ public class RecoMain {
                 Solver solver = SolverFactory.getSolver(combination, substrateBuilder, stats, problem);
                 if (i == 0) {
                     System.out.println(solver.getConfigString());
+                    parameterString.append("\nSOLVER:\n").append("------\n").append(solver.getConfigString());
+                    reportStorage.storeParameters(combinationId, parameterString.toString());
+
                 }
                 solver.solve();
             }
-            stats.printScope("EXPERIMENT");
-
+            reportStorage.storeExperimentResults(combinationId, stats);
+            reportStorage.appendExperimentsOverallResults(combinationId, combination.toStringOnlyChannging(), stats);
+            System.out.println(stats.scopeToString("EXPERIMENT"));
+            combinationId++;
         }
+        reportStorage.storeExperimentsOverallResults();
     }
 }

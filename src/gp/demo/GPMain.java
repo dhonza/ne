@@ -52,7 +52,7 @@ public class GPMain {
                 stats.addSample("BSF", gp.getBestSoFar().getFitness());
                 stats.addSample("BSFG", gp.getLastInnovation());
             }
-            stats.printScope("EXPERIMENT");
+            System.out.println(stats.scopeToString("EXPERIMENT"));
         }
     }
 }

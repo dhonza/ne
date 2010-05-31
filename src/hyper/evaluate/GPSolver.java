@@ -57,7 +57,8 @@ public class GPSolver implements Solver {
 
         solver.run();
 
-        stats.addSample("STAT_GENERATIONS", gp.getGeneration());
+        stats.addSample("GENERATIONS", gp.getGeneration());
+        stats.addSample("EVALUATIONS", gp.getEvaluations());
     }
 
     public String getConfigString() {

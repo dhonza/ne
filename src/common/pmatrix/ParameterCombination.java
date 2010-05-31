@@ -65,6 +65,10 @@ public class ParameterCombination implements Iterable<String> {
         return (String) get(name, String.class);
     }
 
+    public String getAsString(String name) {
+        return combination.get(name).toString();
+    }
+
     public boolean contains(String name) {
         return combination.get(name) != null;
     }
@@ -91,6 +95,14 @@ public class ParameterCombination implements Iterable<String> {
 
     public String toStringOnlyChannging() {
         return combinationOnlyChanging.toString();
+    }
+
+    public String toStringOnlyChanngingNewLines() {
+        StringBuilder builder = new StringBuilder();
+        for (String paramName : combinationOnlyChanging.keySet()) {
+            builder.append(paramName).append(" = ").append(combinationOnlyChanging.get(paramName)).append('\n');
+        }
+        return builder.toString();
     }
 
 }

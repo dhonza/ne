@@ -37,7 +37,7 @@ public class NEATSolver implements Solver {
     private void init() {
         NEATEvaluator evaluator = new NEATEvaluator(substrateBuilder, problem);
 
-       neat = new NEAT();
+        neat = new NEAT();
         NEATConfig config = NEAT.getConfig();
         config.targetFitness = problem.getTargetFitness();
         Utils.setParameters(parameters, config, "NEAT");
@@ -67,7 +67,8 @@ public class NEATSolver implements Solver {
     public void solve() {
         solver.run();
 
-        stats.addSample("STAT_GENERATIONS", population.getGeneration());
+        stats.addSample("GENERATIONS", population.getGeneration());
+        stats.addSample("EVALUATIONS", population.getEvaluations());
     }
 
     public String getConfigString() {

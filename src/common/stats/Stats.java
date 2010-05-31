@@ -1,7 +1,6 @@
 package common.stats;
 
-import java.util.LinkedHashMap;
-import java.util.Set;
+import java.util.*;
 
 /**
  * User: honza
@@ -204,12 +203,50 @@ public class Stats {
         return stats.keySet();
     }
 
-    public void printScope(String oscope) {
-        for (Stat stat : stats.values()) {
-            if (stat.getScope().equals(oscope)) {
-                System.out.println(stat);
-            }
+    public String scopeToString(String scope) {
+        StringBuilder builder = new StringBuilder();
+        for (Stat stat : getStatsInScope(scope)) {
+            builder.append(stat).append("\n");
         }
+        return builder.toString();
     }
 
+    public String dataToString(String scope) {
+        List<Stat> sstats = getStatsInScope(scope);
+        if (sstats.size() == 0) {
+            return "";
+        }
+        int len = sstats.get(0).getData().getDataArray().length;
+        StringBuilder builder = new StringBuilder();
+
+        List<Stat> sstatsWithoutLast = sstats.subList(0, sstats.size() - 1);
+        Stat lastStat = sstats.get(sstats.size() - 1);
+
+        //header
+        for (Stat stat : sstatsWithoutLast) {
+            builder.append(stat.getName()).append("\t");
+        }
+        builder.append(lastStat.getName()).append("\n");
+
+        //data
+        for (int i = 0; i < len; i++) {
+            for (Stat stat : sstatsWithoutLast) {
+                builder.append(stat.getData().getDataArray()[i]).append("\t");
+            }
+            builder.append(lastStat.getData().getDataArray()[i]).append("\n");
+        }
+
+        return builder.toString();
+    }
+
+    private List<Stat> getStatsInScope(String scope) {
+        Collection<Stat> tstats = stats.values();
+        List<Stat> sstats = new ArrayList<Stat>();
+        for (Stat tstat : tstats) {
+            if (tstat.getScope().equals(scope)) {
+                sstats.add(tstat);
+            }
+        }
+        return sstats;
+    }
 }

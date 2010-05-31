@@ -44,4 +44,16 @@ public class ParameterMatrixManager implements Iterable<ParameterCombination> {
         }
         return combinations.get(0).toStringNotChannging();
     }
+
+    public String toStringNewLines() {
+        if (combinations.size() == 0) {
+            return "NO PARAMETERS";
+        }
+
+        StringBuilder builder = new StringBuilder();
+        for (String paramName : combinations.get(0)) {
+            builder.append(paramName).append(" = ").append(combinations.get(0).getAsString(paramName)).append('\n');
+        }
+        return builder.toString();
+    }
 }
