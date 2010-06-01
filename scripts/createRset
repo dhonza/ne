@@ -1,0 +1,14 @@
+#!/bin/bash
+
+read header < experiments_001.txt
+header="EXP	${header}"
+
+echo ${header} > exp_all.txt
+
+for file in experiments*.txt
+do
+    #extract experiment number
+    exp=`echo ${file} | sed 's/.*\_\(.*\)\..*/\1/'`
+    #add first column with experiment number to all files and concatenate them
+    tail -n +2 ${file} | sed 's/\(.*\)/'${exp}'\t\1/' >> exp_all.txt
+done
