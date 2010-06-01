@@ -37,7 +37,7 @@ public class ExampleXOR {
 
         config.populationSize = 150;
         config.targetFitness = 15.9;
-        config.lastGeneration = 1000;
+        config.maxGenerations = 1000;
         config.distanceDelta = 15;
 
         config.distanceC1 = 1.0;
@@ -70,7 +70,7 @@ public class ExampleXOR {
 
         EvolutionaryAlgorithmSolver solver = new EvolutionaryAlgorithmSolver(problem);
         solver.addProgressPrinter(new NEATBasicProgressPrinter(problem));
-        solver.addStopCondition(new LastGenerationStopCondition(problem));
+        solver.addStopCondition(new MaxGenerationsStopCondition(problem));
         solver.addStopCondition(new TargetFitnessStopCondition(problem));
         solver.run();
 

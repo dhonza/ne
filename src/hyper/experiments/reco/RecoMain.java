@@ -27,7 +27,7 @@ public class RecoMain {
     public static void main(String[] args) {
 
         if (args.length != 1) {
-            System.err.println("No configuration file given!");
+            System.err.println("No configuration directory given!");
             System.exit(1);
         }
 

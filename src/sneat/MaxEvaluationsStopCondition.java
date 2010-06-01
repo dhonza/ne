@@ -9,14 +9,14 @@ import common.evolution.StopCondition;
  * Time: 3:51:16 PM
  * To change this template use File | Settings | File Templates.
  */
-public class LastGenerationStopCondition implements StopCondition {
+public class MaxEvaluationsStopCondition implements StopCondition {
     final private SNEAT sneat;
 
-    public LastGenerationStopCondition(SNEAT sneat) {
+    public MaxEvaluationsStopCondition(SNEAT sneat) {
         this.sneat = sneat;
     }
 
     public boolean isMet() {
-        return sneat.getGeneration() >= sneat.getNeatParameters().maxGenerations;
+        return sneat.getEvaluations() >= sneat.getNeatParameters().maxEvaluations;
     }
 }

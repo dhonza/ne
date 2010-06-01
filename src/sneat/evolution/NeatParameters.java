@@ -58,12 +58,15 @@ public class NeatParameters {
     public static double DEFAULT_ACTIVATION_PROBABILITY = 1.0;
 
     public static int DEFAULT_MAX_GENERATIONS = 1000;
+    public static int DEFAULT_MAX_EVALUATIONS = Integer.MAX_VALUE;
     public static double DEFAULT_TARGET_FITNESS = Double.MAX_VALUE;//drchaj1
 
     public int populationSize;
     public float pInitialPopulationInterconnections;
 
     public int maxGenerations;
+    public int maxEvaluations;
+
     public double targetFitness;
 
     public double pOffspringAsexual;
@@ -141,6 +144,7 @@ public class NeatParameters {
     public NeatParameters() {
         populationSize = DEFAULT_POPULATION_SIZE;
         maxGenerations = DEFAULT_MAX_GENERATIONS;
+        maxEvaluations = DEFAULT_MAX_EVALUATIONS;
         targetFitness = DEFAULT_TARGET_FITNESS;
 
         pInitialPopulationInterconnections = DEFAULT_P_INITIAL_POPULATION_INTERCONNECTIONS;
@@ -208,6 +212,7 @@ public class NeatParameters {
     public NeatParameters(NeatParameters copyFrom) {
         populationSize = copyFrom.populationSize;
         maxGenerations = copyFrom.maxGenerations;
+        maxEvaluations = copyFrom.maxEvaluations;
         targetFitness = copyFrom.targetFitness;
 
         pOffspringAsexual = copyFrom.pOffspringAsexual;

@@ -56,7 +56,9 @@ public class NEATConfig {
      *
      * @see
      */
-    public int lastGeneration = 100;
+    public int maxGenerations = 100;
+
+    public int maxEvaluations = Integer.MAX_VALUE;
 
     public double mutateAddLink = 0.3;
 

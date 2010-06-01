@@ -37,7 +37,7 @@ public class ExampleSpirals {
 
         config.populationSize = 150;
         config.targetFitness = 200;
-        config.lastGeneration = 100;
+        config.maxGenerations = 100;
         config.distanceDelta = 15;
 
 //        config.distanceC1 = 1.0;
@@ -85,7 +85,7 @@ public class ExampleSpirals {
 
         EvolutionaryAlgorithmSolver solver = new EvolutionaryAlgorithmSolver(problem);
         solver.addProgressPrinter(new NEATBasicProgressPrinter(problem));
-        solver.addStopCondition(new LastGenerationStopCondition(problem));
+        solver.addStopCondition(new MaxGenerationsStopCondition(problem));
         solver.addStopCondition(new TargetFitnessStopCondition(problem));
         solver.run();
 

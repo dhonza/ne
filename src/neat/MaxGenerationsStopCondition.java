@@ -9,14 +9,14 @@ import common.evolution.StopCondition;
  * Time: 3:51:16 PM
  * To change this template use File | Settings | File Templates.
  */
-public class LastGenerationStopCondition implements StopCondition {
+public class MaxGenerationsStopCondition implements StopCondition {
     final private NEAT neat;
 
-    public LastGenerationStopCondition(NEAT neat) {
+    public MaxGenerationsStopCondition(NEAT neat) {
         this.neat = neat;
     }
 
     public boolean isMet() {
-        return neat.getPopulation().getGeneration() >= NEAT.getConfig().lastGeneration;
+        return neat.getPopulation().getGeneration() >= NEAT.getConfig().maxGenerations;
     }
 }

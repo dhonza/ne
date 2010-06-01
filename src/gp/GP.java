@@ -16,7 +16,8 @@ import java.util.Arrays;
  */
 public class GP implements EvolutionaryAlgorithm {
     public static double CONSTANT_AMPLITUDE = 5.0;
-    public static int LAST_GENERATION = 1000;
+    public static int MAX_GENERATIONS = 1000;
+    public static int MAX_EVALUATIONS = Integer.MAX_VALUE;
     public static int MAX_DEPTH = 3;
     public static double MUTATION_CAUCHY_PROBABILITY = 0.8;
     public static double MUTATION_CAUCHY_POWER = 0.01;
@@ -77,7 +78,8 @@ public class GP implements EvolutionaryAlgorithm {
     public String getConfigString() {
         StringBuilder s = new StringBuilder();
         s.append("CONSTANT_AMPLITUDE = ").append(CONSTANT_AMPLITUDE);
-        s.append("\nLAST_GENERATION = ").append(LAST_GENERATION);
+        s.append("\nMAX_GENERATIONS = ").append(MAX_GENERATIONS);
+        s.append("\nMAX_EVALUATIONS = ").append(MAX_EVALUATIONS);
         s.append("\nMAX_DEPTH = ").append(MAX_DEPTH);
         s.append("\nMUTATION_CAUCHY_PROBABILITY = ").append(MUTATION_CAUCHY_PROBABILITY);
         s.append("\nMUTATION_CAUCHY_POWER = ").append(MUTATION_CAUCHY_POWER);

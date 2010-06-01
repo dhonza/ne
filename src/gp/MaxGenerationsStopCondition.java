@@ -9,14 +9,14 @@ import common.evolution.StopCondition;
  * Time: 3:51:16 PM
  * To change this template use File | Settings | File Templates.
  */
-public class LastGenerationStopCondition implements StopCondition {
+public class MaxGenerationsStopCondition implements StopCondition {
     final private GP gp;
 
-    public LastGenerationStopCondition(GP gp) {
+    public MaxGenerationsStopCondition(GP gp) {
         this.gp = gp;
     }
 
     public boolean isMet() {
-        return gp.getGeneration() >= GP.LAST_GENERATION;
+        return gp.getGeneration() >= GP.MAX_GENERATIONS;
     }
 }

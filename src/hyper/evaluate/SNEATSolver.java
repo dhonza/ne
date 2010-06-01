@@ -5,7 +5,8 @@ import common.pmatrix.ParameterCombination;
 import common.stats.Stats;
 import hyper.builder.NEATSubstrateBuilder;
 import hyper.evaluate.printer.SNEATProgressPrinter1D;
-import sneat.LastGenerationStopCondition;
+import sneat.MaxEvaluationsStopCondition;
+import sneat.MaxGenerationsStopCondition;
 import sneat.SNEAT;
 import sneat.TargetFitnessStopCondition;
 import sneat.neuralnetwork.activationfunctions.ActivationFunctionFactory;
@@ -53,7 +54,8 @@ public class SNEATSolver implements Solver {
 
         solver = new EvolutionaryAlgorithmSolver(sneat);
         solver.addProgressPrinter(new SNEATProgressPrinter1D(sneat, substrateBuilder.getSubstrate(), problem, parameters));
-        solver.addStopCondition(new LastGenerationStopCondition(sneat));
+        solver.addStopCondition(new MaxGenerationsStopCondition(sneat));
+        solver.addStopCondition(new MaxEvaluationsStopCondition(sneat));
         solver.addStopCondition(new TargetFitnessStopCondition(sneat));
         solver.addStopCondition(new SolvedStopCondition(problem));
 

@@ -48,7 +48,8 @@ public class GPSolver implements Solver {
 
         solver = new EvolutionaryAlgorithmSolver(gp);
         solver.addProgressPrinter(new GPProgressPrinter1D(gp, substrateBuilder.getSubstrate(), problem, parameters));
-        solver.addStopCondition(new LastGenerationStopCondition(gp));
+        solver.addStopCondition(new MaxGenerationsStopCondition(gp));
+        solver.addStopCondition(new MaxEvaluationsStopCondition(gp));
         solver.addStopCondition(new TargetFitnessStopCondition(gp));
         solver.addStopCondition(new SolvedStopCondition(problem));
     }

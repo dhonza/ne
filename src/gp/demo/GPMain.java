@@ -33,7 +33,8 @@ public class GPMain {
             stats.createStat("BSFG", "EXPERIMENT", "Best So Far Fitness Generation");
             for (int i = 1; i <= experiments; i++) {
                 System.out.println("PARAMETER SETTING: " + combination);
-                GP.LAST_GENERATION = combination.getInteger("GP.LAST_GENERATION");
+                GP.MAX_GENERATIONS = combination.getInteger("GP.MAX_GENERATIONS");
+                GP.MAX_EVALUATIONS = combination.getInteger("GP.MAX_EVALUATIONS");
                 GP.POPULATION_SIZE = combination.getInteger("GP.POPULATION_SIZE");
                 GP.TARGET_FITNESS = combination.getDouble("GP.TARGET_FITNESS");
 
@@ -45,7 +46,8 @@ public class GPMain {
 
                 EvolutionaryAlgorithmSolver solver = new EvolutionaryAlgorithmSolver(gp);
                 solver.addProgressPrinter(new GPBasicProgressPrinter(gp));
-                solver.addStopCondition(new LastGenerationStopCondition(gp));
+                solver.addStopCondition(new MaxGenerationsStopCondition(gp));
+                solver.addStopCondition(new MaxEvaluationsStopCondition(gp));
                 solver.addStopCondition(new TargetFitnessStopCondition(gp));
                 solver.run();
 
