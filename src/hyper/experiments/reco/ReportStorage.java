@@ -21,10 +21,12 @@ public class ReportStorage {
     final private static String PARAMETER_FILE_PREFIX = "parameters_";
     final private static String EXPERIMENT_FILE_PREFIX = "experiments_";
     final private static String EXPERIMENTS_OVERALL_FILE_PREFIX = "experiments_overall";
+    final private static String SINGLE_RUN_FILE_PREFIX = "run_";
     final private static String SUFFIX = ".txt";
 
     private File baseDir;
     final private StringBuilder experimentOverallBuilder = new StringBuilder();
+    private String generationInfo;
 
     public ReportStorage(String baseDir) {
         this.baseDir = new File(baseDir);
@@ -80,6 +82,21 @@ public class ReportStorage {
             FileUtils.writeStringToFile(file, experimentOverallBuilder.toString());
         } catch (IOException e) {
             System.err.println("Cannot save experiments result file: " + file);
+        }
+    }
+
+    public void prepareSingleRunResults(String generationInfo) {
+        this.generationInfo = generationInfo;
+    }
+
+    public void storeSingleRunResults(int parameterCombinationId, int experimentId) {
+        File file = new File(baseDir, SINGLE_RUN_FILE_PREFIX +
+                String.format("%03d", parameterCombinationId) + "_" +
+                String.format("%03d", experimentId + 1) + SUFFIX);
+        try {
+            FileUtils.writeStringToFile(file, generationInfo);
+        } catch (IOException e) {
+            System.err.println("Cannot save single run result file: " + file);
         }
     }
 }

@@ -24,6 +24,8 @@ public interface EvolutionaryAlgorithm {
 
     public double getMaxFitnessReached();
 
+    public double[] getFitnessVector();
+
     public boolean isSolved();
 
     public String getConfigString();

@@ -6,6 +6,8 @@ import common.pmatrix.Utils;
 import common.stats.Stats;
 import hyper.builder.NEATSubstrateBuilder;
 import hyper.evaluate.printer.NEATProgressPrinter1D;
+import hyper.experiments.reco.FileProgressPrinter;
+import hyper.experiments.reco.ReportStorage;
 import neat.*;
 
 /**
@@ -21,16 +23,18 @@ public class NEATSolver implements Solver {
     final private NEATSubstrateBuilder substrateBuilder;
     final private Stats stats;
     final private Problem problem;
+    final private ReportStorage reportStorage;
 
     private NEAT neat;
     private FitnessSharingPopulation population;
     private EvolutionaryAlgorithmSolver solver;
 
-    public NEATSolver(ParameterCombination parameters, NEATSubstrateBuilder substrateBuilder, Stats stats, Problem problem) {
+    public NEATSolver(ParameterCombination parameters, NEATSubstrateBuilder substrateBuilder, Stats stats, Problem problem, ReportStorage reportStorage) {
         this.parameters = parameters;
         this.substrateBuilder = substrateBuilder;
         this.stats = stats;
         this.problem = problem;
+        this.reportStorage = reportStorage;
         init();
     }
 
@@ -48,6 +52,7 @@ public class NEATSolver implements Solver {
 
         solver = new EvolutionaryAlgorithmSolver(neat, stats);
         solver.addProgressPrinter(new NEATProgressPrinter1D(neat, substrateBuilder.getSubstrate(), problem, parameters));
+        solver.addProgressPrinter(new FileProgressPrinter(neat, reportStorage));
         solver.addStopCondition(new MaxGenerationsStopCondition(neat));
         solver.addStopCondition(new MaxEvaluationsStopCondition(neat));
         solver.addStopCondition(new TargetFitnessStopCondition(neat));

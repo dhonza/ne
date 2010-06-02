@@ -37,6 +37,17 @@ public class Stats {
         }
     }
 
+    public void createStringStat(String statName, String scope, String description) {
+        Stat stat = new Stat(statName, scope, description, new StringStatSeries());
+        stats.put(statName, stat);
+    }
+
+    public void createStringStatIfNotExists(String statName, String scope, String description) {
+        if (!stats.containsKey(statName)) {
+            createStringStat(statName, scope, description);
+        }
+    }
+
     private BooleanStatSeries getBooleanStatSeries(Stat stat) {
         if (stat.getStatSeries() instanceof BooleanStatSeries) {
             return (BooleanStatSeries) stat.getStatSeries();
@@ -48,7 +59,14 @@ public class Stats {
         if (stat.getStatSeries() instanceof DoubleStatSeries) {
             return (DoubleStatSeries) stat.getStatSeries();
         }
-        throw new IllegalStateException("Not a boolean stat series: " + stat.getName());
+        throw new IllegalStateException("Not a double stat series: " + stat.getName());
+    }
+
+    private StringStatSeries getStringStatSeries(Stat stat) {
+        if (stat.getStatSeries() instanceof StringStatSeries) {
+            return (StringStatSeries) stat.getStatSeries();
+        }
+        throw new IllegalStateException("Not a String stat series: " + stat.getName());
     }
 
     public void resetScope(String scope) {
@@ -77,6 +95,13 @@ public class Stats {
         Stat stat = stats.get(statName);
         if (stat != null && stat.isEnabled()) {
             getBooleanStatSeries(stat).addSample(sample);
+        }
+    }
+
+    public void addSample(String statName, String sample) {
+        Stat stat = stats.get(statName);
+        if (stat != null && stat.isEnabled()) {
+            getStringStatSeries(stat).addSample(sample);
         }
     }
 

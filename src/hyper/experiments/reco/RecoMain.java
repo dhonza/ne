@@ -34,10 +34,6 @@ public class RecoMain {
         ReportStorage reportStorage = new ReportStorage();
 
         ParameterMatrixManager manager = ParameterMatrixStorage.load(new File(args[0], "experiment.properties"));
-
-        System.out.println("INITIALIZED SEED: " + RND.initializeTime());
-//        RND.initialize(8686925819525946L); //4
-
         System.out.println("PARAMETER SETTINGS: " + manager);
 
         int combinationId = 1;
@@ -51,8 +47,14 @@ public class RecoMain {
             int lineSize = combination.getInteger("RECO.LINE_SIZE");
 
             Stats stats = new Stats();
+            stats.createStringStat("RND_SEED", "EXPERIMENT", "Random seed used to initialize generator");
 
             for (int i = 0; i < experiments; i++) {
+                long seed = RND.initializeTime();
+                stats.addSample("RND_SEED", Long.toString(seed));
+                System.out.println("INITIALIZED SEED: " + seed);
+//        RND.initialize(8686925819525946L); //4
+
 //            BasicSubstrate substrate = RecoSubstrateFactory.createInputToOutput(lineSize);
 //            BasicSubstrate substrate = RecoSubstrateFactory.createInputHiddenOutput(lineSize, 2, lineSize);
 //            BasicSubstrate substrate = RecoSubstrateFactory.createInputHiddenOutput(lineSize, 3, 1);
@@ -70,7 +72,7 @@ public class RecoMain {
                 System.out.println("TARGET FITNESS " + problem.getTargetFitness());
 //                System.out.println("EXPERIMENT: " + (i + 1));
 
-                Solver solver = SolverFactory.getSolver(combination, substrateBuilder, stats, problem);
+                Solver solver = SolverFactory.getSolver(combination, substrateBuilder, stats, problem, reportStorage);
                 if (i == 0) {
                     System.out.println(solver.getConfigString());
                     parameterString.append("\nSOLVER:\n").append("------\n").append(solver.getConfigString());
@@ -78,6 +80,8 @@ public class RecoMain {
 
                 }
                 solver.solve();
+
+                reportStorage.storeSingleRunResults(combinationId, i);
             }
             reportStorage.storeExperimentResults(combinationId, stats);
             reportStorage.appendExperimentsOverallResults(combinationId, combination.toStringOnlyChannging(), stats);

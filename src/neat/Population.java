@@ -355,4 +355,13 @@ public abstract class Population {
         }
         NetStorage.saveMultiple(nets, ofileName);
     }
+
+    public double[] getFitnessVector() {
+        double[] fv = new double[genomes.length];
+        for (int i = 0; i < genomes.length; i++) {
+            fv[i] = genomes[i].fitness;
+
+        }
+        return fv;
+    }
 }

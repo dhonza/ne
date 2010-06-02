@@ -9,6 +9,8 @@ import gp.terminals.Constant;
 import gp.terminals.Random;
 import hyper.builder.NEATSubstrateBuilder;
 import hyper.evaluate.printer.GPProgressPrinter1D;
+import hyper.experiments.reco.FileProgressPrinter;
+import hyper.experiments.reco.ReportStorage;
 
 /**
  * Created by IntelliJ IDEA.
@@ -23,15 +25,17 @@ public class GPSolver implements Solver {
     final private NEATSubstrateBuilder substrateBuilder;
     final private Stats stats;
     final private Problem problem;
+    final private ReportStorage reportStorage;
 
     private GP gp;
     private EvolutionaryAlgorithmSolver solver;
 
-    public GPSolver(ParameterCombination parameters, NEATSubstrateBuilder substrateBuilder, Stats stats, Problem problem) {
+    public GPSolver(ParameterCombination parameters, NEATSubstrateBuilder substrateBuilder, Stats stats, Problem problem, ReportStorage reportStorage) {
         this.parameters = parameters;
         this.substrateBuilder = substrateBuilder;
         this.stats = stats;
         this.problem = problem;
+        this.reportStorage = reportStorage;
         init();
     }
 
@@ -48,6 +52,7 @@ public class GPSolver implements Solver {
 
         solver = new EvolutionaryAlgorithmSolver(gp, stats);
         solver.addProgressPrinter(new GPProgressPrinter1D(gp, substrateBuilder.getSubstrate(), problem, parameters));
+        solver.addProgressPrinter(new FileProgressPrinter(gp, reportStorage));
         solver.addStopCondition(new MaxGenerationsStopCondition(gp));
         solver.addStopCondition(new MaxEvaluationsStopCondition(gp));
         solver.addStopCondition(new TargetFitnessStopCondition(gp));

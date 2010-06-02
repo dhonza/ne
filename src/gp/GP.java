@@ -186,5 +186,11 @@ public class GP implements EvolutionaryAlgorithm {
         return lastInnovation;
     }
 
-
+    public double[] getFitnessVector() {
+        double[] fv = new double[population.length];
+        for (int i = 0; i < population.length; i++) {
+            fv[i] = population[i].getFitness();
+        }
+        return fv;
+    }
 }

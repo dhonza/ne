@@ -90,6 +90,10 @@ public class SNEAT implements EvolutionaryAlgorithm {
         return ea;
     }
 
+    public double[] getFitnessVector() {
+        return ea.getPopulation().getFitnessVector();
+    }
+
     private void checkIfInnovation() {
         if (ea.getBestGenome().getFitness() > bsf) {
             bsf = ea.getBestGenome().getFitness();

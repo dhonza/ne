@@ -104,6 +104,10 @@ public class NEAT implements EvolutionaryAlgorithm {
         return population.getBestSoFar().getFitness();
     }
 
+    public double[] getFitnessVector() {
+        return population.getFitnessVector();
+    }
+
     public boolean isSolved() {
         return population.evaluator.isSolved();
     }

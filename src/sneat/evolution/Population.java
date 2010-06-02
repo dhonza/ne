@@ -494,4 +494,13 @@ public class Population {
         //IGenome compareWithGenome = compareWithSpecies.Members[(int)Math.Floor(compareWithSpecies.Members.Count * Utilities.nextDouble())];
         return genome.isCompatibleWithGenome(compareWithGenome, ea.getNeatParameters());
     }
+
+    public double[] getFitnessVector() {
+        double[] fv = new double[genomeList.size()];
+        int i = 0;
+        for (IGenome genome : genomeList) {
+            fv[i] = genome.getFitness();
+        }
+        return fv;
+    }
 }

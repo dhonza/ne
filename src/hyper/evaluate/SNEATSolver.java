@@ -5,6 +5,8 @@ import common.pmatrix.ParameterCombination;
 import common.stats.Stats;
 import hyper.builder.NEATSubstrateBuilder;
 import hyper.evaluate.printer.SNEATProgressPrinter1D;
+import hyper.experiments.reco.FileProgressPrinter;
+import hyper.experiments.reco.ReportStorage;
 import sneat.MaxEvaluationsStopCondition;
 import sneat.MaxGenerationsStopCondition;
 import sneat.SNEAT;
@@ -29,15 +31,17 @@ public class SNEATSolver implements Solver {
     final private NEATSubstrateBuilder substrateBuilder;
     final private Stats stats;
     final private Problem problem;
+    final private ReportStorage reportStorage;
 
     private EvolutionaryAlgorithmSolver solver;
     private SNEAT sneat;
 
-    public SNEATSolver(ParameterCombination parameters, NEATSubstrateBuilder substrateBuilder, Stats stats, Problem problem) {
+    public SNEATSolver(ParameterCombination parameters, NEATSubstrateBuilder substrateBuilder, Stats stats, Problem problem, ReportStorage reportStorage) {
         this.parameters = parameters;
         this.substrateBuilder = substrateBuilder;
         this.stats = stats;
         this.problem = problem;
+        this.reportStorage = reportStorage;
         init();
     }
 
@@ -54,6 +58,7 @@ public class SNEATSolver implements Solver {
 
         solver = new EvolutionaryAlgorithmSolver(sneat, stats);
         solver.addProgressPrinter(new SNEATProgressPrinter1D(sneat, substrateBuilder.getSubstrate(), problem, parameters));
+        solver.addProgressPrinter(new FileProgressPrinter(sneat, reportStorage));
         solver.addStopCondition(new MaxGenerationsStopCondition(sneat));
         solver.addStopCondition(new MaxEvaluationsStopCondition(sneat));
         solver.addStopCondition(new TargetFitnessStopCondition(sneat));
