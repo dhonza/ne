@@ -51,8 +51,6 @@ public class RecoMain {
             int lineSize = combination.getInteger("RECO.LINE_SIZE");
 
             Stats stats = new Stats();
-            stats.createStat("GENERATIONS", "EXPERIMENT", "Number of Generations");
-            stats.createStat("EVALUATIONS", "EXPERIMENT", "Number of Evaluations");
 
             for (int i = 0; i < experiments; i++) {
 //            BasicSubstrate substrate = RecoSubstrateFactory.createInputToOutput(lineSize);

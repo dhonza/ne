@@ -74,6 +74,14 @@ public class SNEAT implements EvolutionaryAlgorithm {
         return lastInnovation;
     }
 
+    public double getMaxFitnessReached() {
+        return bsf;
+    }
+
+    public boolean isSolved() {
+        return exp.getPopulationEvaluator().isSolved();
+    }
+
     public NeatParameters getNeatParameters() {
         return exp.getDefaultNeatParameters();
     }

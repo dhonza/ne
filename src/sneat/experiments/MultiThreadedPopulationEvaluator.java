@@ -67,6 +67,9 @@ public class MultiThreadedPopulationEvaluator implements IPopulationEvaluator {
 
     }
 
+    public boolean isSolved() {
+        return networkEvaluator.isSolved();
+    }
 
     public long getEvaluationCount() {
         return evaluationCount;

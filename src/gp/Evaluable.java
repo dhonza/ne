@@ -10,6 +10,8 @@ package gp;
 public interface Evaluable {
     public double evaluate(Forest forest);
 
+    public boolean isSolved();
+
     public int getNumberOfInputs();
 
     public int getNumberOfOutputs();

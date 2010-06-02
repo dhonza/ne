@@ -22,5 +22,9 @@ public interface EvolutionaryAlgorithm {
 
     public int getLastInnovation();
 
+    public double getMaxFitnessReached();
+
+    public boolean isSolved();
+
     public String getConfigString();
 }

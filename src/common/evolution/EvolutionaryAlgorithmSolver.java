@@ -1,5 +1,7 @@
 package common.evolution;
 
+import common.stats.Stats;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -12,11 +14,17 @@ import java.util.List;
  */
 public class EvolutionaryAlgorithmSolver {
     final private EvolutionaryAlgorithm evolutionaryAlgorithm;
+    final private Stats stats;
     final private List<ProgressPrinter> progressPrinterList = new ArrayList<ProgressPrinter>();
     final private List<StopCondition> stopConditionList = new ArrayList<StopCondition>();
 
-    public EvolutionaryAlgorithmSolver(EvolutionaryAlgorithm evolutionaryAlgorithm) {
+    public EvolutionaryAlgorithmSolver(EvolutionaryAlgorithm evolutionaryAlgorithm, Stats stats) {
         this.evolutionaryAlgorithm = evolutionaryAlgorithm;
+        this.stats = stats;
+        stats.createDoubleStatIfNotExists("GENERATIONS", "EXPERIMENT", "Number of Generations");
+        stats.createDoubleStatIfNotExists("EVALUATIONS", "EXPERIMENT", "Number of Evaluations");
+        stats.createDoubleStatIfNotExists("MAX_FITNESS", "EXPERIMENT", "Maximum fitness reached");
+        stats.createBooleanStatIfNotExists("SUCCESS", "EXPERIMENT", "Problem solved");
     }
 
     public void run() {
@@ -33,6 +41,14 @@ public class EvolutionaryAlgorithmSolver {
         for (ProgressPrinter progressPrinter : progressPrinterList) {
             progressPrinter.printFinished();
         }
+        storeFinalStats();
+    }
+
+    private void storeFinalStats() {
+        stats.addSample("GENERATIONS", evolutionaryAlgorithm.getGeneration());
+        stats.addSample("EVALUATIONS", evolutionaryAlgorithm.getEvaluations());
+        stats.addSample("MAX_FITNESS", evolutionaryAlgorithm.getMaxFitnessReached());
+        stats.addSample("SUCCESS", evolutionaryAlgorithm.isSolved());
     }
 
     private void printProgress() {

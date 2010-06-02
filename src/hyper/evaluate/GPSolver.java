@@ -46,7 +46,7 @@ public class GPSolver implements Solver {
 
         gp = GPFactory.createByName(parameters.getString("GP.TYPE"), evaluator, functions, terminals);
 
-        solver = new EvolutionaryAlgorithmSolver(gp);
+        solver = new EvolutionaryAlgorithmSolver(gp, stats);
         solver.addProgressPrinter(new GPProgressPrinter1D(gp, substrateBuilder.getSubstrate(), problem, parameters));
         solver.addStopCondition(new MaxGenerationsStopCondition(gp));
         solver.addStopCondition(new MaxEvaluationsStopCondition(gp));
@@ -57,9 +57,6 @@ public class GPSolver implements Solver {
     public void solve() {
 
         solver.run();
-
-        stats.addSample("GENERATIONS", gp.getGeneration());
-        stats.addSample("EVALUATIONS", gp.getEvaluations());
     }
 
     public String getConfigString() {

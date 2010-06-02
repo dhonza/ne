@@ -36,6 +36,10 @@ public class NEATEvaluator implements Evaluable {
         throw new UnsupportedOperationException("Not implemented!");
     }
 
+    public boolean isSolved() {
+        return problem.isSolved();
+    }
+
     public int getNumberOfInputs() {
         return 2 * substrateBuilder.getSubstrate().getMaxDimension();
     }

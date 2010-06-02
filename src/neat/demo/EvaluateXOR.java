@@ -1,8 +1,8 @@
 package neat.demo;
 
 import neat.Evaluable;
-import neat.Net;
 import neat.Genome;
+import neat.Net;
 
 /**
  * User: honza
@@ -43,6 +43,10 @@ public class EvaluateXOR implements Evaluable {
             }
             ofitnessValues[i] = Math.pow((4.0 - tg.getError()), 2);
         }
+    }
+
+    public boolean isSolved() {
+        return false; //TODO implement check for solved problem
     }
 
     public int getNumberOfInputs() {

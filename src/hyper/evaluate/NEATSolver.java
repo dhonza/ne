@@ -46,7 +46,7 @@ public class NEATSolver implements Solver {
 
         neat.setPopulation(population);
 
-        solver = new EvolutionaryAlgorithmSolver(neat);
+        solver = new EvolutionaryAlgorithmSolver(neat, stats);
         solver.addProgressPrinter(new NEATProgressPrinter1D(neat, substrateBuilder.getSubstrate(), problem, parameters));
         solver.addStopCondition(new MaxGenerationsStopCondition(neat));
         solver.addStopCondition(new MaxEvaluationsStopCondition(neat));
@@ -67,9 +67,6 @@ public class NEATSolver implements Solver {
 
     public void solve() {
         solver.run();
-
-        stats.addSample("GENERATIONS", population.getGeneration());
-        stats.addSample("EVALUATIONS", population.getEvaluations());
     }
 
     public String getConfigString() {

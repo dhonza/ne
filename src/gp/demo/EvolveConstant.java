@@ -16,6 +16,10 @@ public class EvolveConstant implements Evaluable {
         return 0.0 - Math.abs(2.1 - output);
     }
 
+    public boolean isSolved() {
+        return false;
+    }
+
     public int getNumberOfInputs() {
         return 0;
     }

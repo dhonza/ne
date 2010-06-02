@@ -52,7 +52,7 @@ public class SNEATSolver implements Solver {
 
         sneat = new SNEAT(exp);
 
-        solver = new EvolutionaryAlgorithmSolver(sneat);
+        solver = new EvolutionaryAlgorithmSolver(sneat, stats);
         solver.addProgressPrinter(new SNEATProgressPrinter1D(sneat, substrateBuilder.getSubstrate(), problem, parameters));
         solver.addStopCondition(new MaxGenerationsStopCondition(sneat));
         solver.addStopCondition(new MaxEvaluationsStopCondition(sneat));
@@ -67,9 +67,6 @@ public class SNEATSolver implements Solver {
 
     public void solve() {
         solver.run();
-
-        stats.addSample("GENERATIONS", sneat.getGeneration());
-        stats.addSample("EVALUATIONS", sneat.getEvaluations());
     }
 
     public String getConfigString() {

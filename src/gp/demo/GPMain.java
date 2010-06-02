@@ -29,8 +29,8 @@ public class GPMain {
         for (ParameterCombination combination : manager) {
             int experiments = combination.getInteger("EXPERIMENTS");
             Stats stats = new Stats();
-            stats.createStat("BSF", "EXPERIMENT", "Best So Far Fitness");
-            stats.createStat("BSFG", "EXPERIMENT", "Best So Far Fitness Generation");
+            stats.createDoubleStat("BSF", "EXPERIMENT", "Best So Far Fitness");
+            stats.createDoubleStat("BSFG", "EXPERIMENT", "Best So Far Fitness Generation");
             for (int i = 1; i <= experiments; i++) {
                 System.out.println("PARAMETER SETTING: " + combination);
                 GP.MAX_GENERATIONS = combination.getInteger("GP.MAX_GENERATIONS");
@@ -44,7 +44,7 @@ public class GPMain {
                 Evaluable evaluable = EvaluableFactory.createByName(combination.getString("PROBLEM"));
                 GP gp = GPFactory.createByName(combination.getString("GP.TYPE"), evaluable, functions, terminals);
 
-                EvolutionaryAlgorithmSolver solver = new EvolutionaryAlgorithmSolver(gp);
+                EvolutionaryAlgorithmSolver solver = new EvolutionaryAlgorithmSolver(gp, stats);
                 solver.addProgressPrinter(new GPBasicProgressPrinter(gp));
                 solver.addStopCondition(new MaxGenerationsStopCondition(gp));
                 solver.addStopCondition(new MaxEvaluationsStopCondition(gp));

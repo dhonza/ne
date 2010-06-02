@@ -28,6 +28,8 @@ public interface INetworkEvaluator {
     //TODO X .NET threading
     double threadSafeEvaluateNetwork(INetwork network, Semaphore sem);
 
+    boolean isSolved();
+
     /// <summary>
     /// A human readable message that describes the state of the evaluator. This is useful if the
     /// evaluator has several modes (e.g. difficulty levels in incremenetal evolution) and we want

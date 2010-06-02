@@ -32,6 +32,10 @@ public class GPEvaluator implements Evaluable {
         return problem.evaluate(hyperNet);
     }
 
+    public boolean isSolved() {
+        return problem.isSolved();
+    }
+
     public int getNumberOfInputs() {
         return 2 * substrateBuilder.getSubstrate().getMaxDimension();
     }

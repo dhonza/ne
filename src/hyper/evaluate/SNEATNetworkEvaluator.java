@@ -38,6 +38,10 @@ public class SNEATNetworkEvaluator implements INetworkEvaluator {
         throw new UnsupportedOperationException("not yet implemented");
     }
 
+    public boolean isSolved() {
+        return problem.isSolved();
+    }
+
     public String getEvaluatorStateMessage() {
         return "";
     }

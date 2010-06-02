@@ -28,6 +28,10 @@ public class SymbolicRegression implements Evaluable {
         return error / steps;
     }
 
+    public boolean isSolved() {
+        return false;
+    }
+
     public int getNumberOfInputs() {
         return 1;
     }

@@ -34,6 +34,10 @@ public class SkirmishNetworkEvaluator implements INetworkEvaluator {
         }
     }
 
+    public boolean isSolved() {
+        return false;  //TODO implement
+    }
+
     public double threadSafeEvaluateNetwork(INetwork network, Semaphore sem) {
         double fitness = 0;
         INetwork tempNet = null;

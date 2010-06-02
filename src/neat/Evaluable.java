@@ -8,20 +8,20 @@ public interface Evaluable {
      * @param og Genome to evaluate
      * @return the Genome's fitness
      * @see #evaluateAll
-     * @see ne.NE#run
      */
     public double evaluate(Genome og);
 
     /**
      * Evaluates the whole Population - useful for Co-evolution. For example: put all robots to arena to fight with each
      * other. This method is used when oevaluateAll is set to true in NE.run().
-     * @param opop all Genomes in population
+     *
+     * @param opop           all Genomes in population
      * @param ofitnessValues array which should be filled with fitness values of the whole population
      * @see #evaluate
-     * @see ne.NE#run
      */
     public void evaluateAll(Genome[] opop, double[] ofitnessValues);
 
+    public boolean isSolved();
 
     /**
      * Returns the number of ANN's inputs excluding bias (input No. 0);

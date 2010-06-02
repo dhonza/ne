@@ -148,6 +148,10 @@ public class EvaluateSpirals implements Evaluable {
     public void evaluateAll(Genome[] opop, double[] ofitnessValues) {
     }
 
+    public boolean isSolved() {
+        return false; //TODO implement check for solved problem
+    }
+
     public int getNumberOfInputs() {
         return 2;
     }

@@ -55,6 +55,10 @@ public class SingleFilePopulationEvaluator implements IPopulationEvaluator {
         }
     }
 
+    public boolean isSolved() {
+        return networkEvaluator.isSolved();
+    }
+
     public long getEvaluationCount() {
         return evaluationCount;
     }

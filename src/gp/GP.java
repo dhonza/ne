@@ -166,6 +166,14 @@ public class GP implements EvolutionaryAlgorithm {
         return getGeneration() * population.length;
     }
 
+    public double getMaxFitnessReached() {
+        return getBestSoFar().getFitness();
+    }
+
+    public boolean isSolved() {
+        return evaluator.isSolved();
+    }
+
     public Forest getBestOfGeneration() {
         return bestOfGeneration;
     }

@@ -10,6 +10,9 @@ public interface IPopulationEvaluator {
     /// obtain statistical information. Most experiments though do not require this parameter.</param>
     void evaluatePopulation(Population pop, EvolutionAlgorithm ea);
 
+    //added by dhonza
+    boolean isSolved();
+
     /// <summary>
     /// The total number of evaluations performed.
     /// </summary>
