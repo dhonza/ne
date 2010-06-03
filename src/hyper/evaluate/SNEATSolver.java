@@ -58,7 +58,7 @@ public class SNEATSolver implements Solver {
 
         solver = new EvolutionaryAlgorithmSolver(sneat, stats);
         solver.addProgressPrinter(new SNEATProgressPrinter1D(sneat, substrateBuilder.getSubstrate(), problem, parameters));
-        solver.addProgressPrinter(new FileProgressPrinter(sneat, reportStorage));
+        solver.addProgressPrinter(new FileProgressPrinter(sneat, reportStorage, parameters));
         solver.addStopCondition(new MaxGenerationsStopCondition(sneat));
         solver.addStopCondition(new MaxEvaluationsStopCondition(sneat));
         solver.addStopCondition(new TargetFitnessStopCondition(sneat));

@@ -45,6 +45,7 @@ public class RecoMain {
             System.out.println("PARAMETER COMBINATION: " + combination.toStringOnlyChannging());
             int experiments = combination.getInteger("EXPERIMENTS");
             int lineSize = combination.getInteger("RECO.LINE_SIZE");
+            boolean storeRun = combination.getBoolean("PRINT.storeRun");
 
             Stats stats = new Stats();
             stats.createStringStat("RND_SEED", "EXPERIMENT", "Random seed used to initialize generator");
@@ -81,7 +82,9 @@ public class RecoMain {
                 }
                 solver.solve();
 
-                reportStorage.storeSingleRunResults(combinationId, i);
+                if (storeRun) {
+                    reportStorage.storeSingleRunResults(combinationId, i);
+                }
             }
             reportStorage.storeExperimentResults(combinationId, stats);
             reportStorage.appendExperimentsOverallResults(combinationId, combination.toStringOnlyChannging(), stats);

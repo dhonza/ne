@@ -2,6 +2,7 @@ package hyper.experiments.reco;
 
 import common.evolution.EvolutionaryAlgorithm;
 import common.evolution.ProgressPrinter;
+import common.pmatrix.ParameterCombination;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -21,14 +22,22 @@ public class FileProgressPrinter implements ProgressPrinter {
 
     final private EvolutionaryAlgorithm ea;
     final private ReportStorage reportStorage;
+    final private ParameterCombination parameters;
+    private boolean storeRun;
+
     final private List<InfoContainer> generations = new ArrayList<InfoContainer>();
 
-    public FileProgressPrinter(EvolutionaryAlgorithm ea, ReportStorage reportStorage) {
+    public FileProgressPrinter(EvolutionaryAlgorithm ea, ReportStorage reportStorage, ParameterCombination parameters) {
         this.ea = ea;
         this.reportStorage = reportStorage;
+        this.parameters = parameters;
+        storeRun = parameters.contains("PRINT.storeRun") ? parameters.getBoolean("PRINT.generation") : storeRun;
     }
 
     public void printGeneration() {
+        if (!storeRun) {
+            return;
+        }
         InfoContainer container = new InfoContainer();
         container.bsf = ea.getMaxFitnessReached();
         container.fitnessVector = ea.getFitnessVector();
@@ -39,6 +48,9 @@ public class FileProgressPrinter implements ProgressPrinter {
     }
 
     public void printFinished() {
+        if (!storeRun) {
+            return;
+        }
         StringBuilder builder = new StringBuilder();
         int last = generations.get(0).fitnessVector.length - 1;
 
