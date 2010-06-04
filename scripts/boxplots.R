@@ -7,5 +7,5 @@ dev.off()
 
 pdf("evaluations_sorted.pdf")
 sortedByMedians <- reorder(ea.data$EXP, ea.data$EVALUATIONS, median)
-boxplot(ea.data$EVALUATIONS ~ sortedByMedians, col="bisque", notch=TRUE, range=0)
+boxplot(ea.data$EVALUATIONS ~ sortedByMedians, col="bisque", notch=TRUE, cex.axis=0.5)
 dev.off()
