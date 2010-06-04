@@ -1,11 +1,11 @@
 #!/bin/bash
 
-read header < experiments_001.txt
+read header < results/experiments_001.txt
 header="EXP	${header}"
 
 echo ${header} > exp_all.txt
 
-for file in experiments*.txt
+for file in results/experiments_???.txt
 do
     #extract experiment number
     exp=`echo ${file} | sed 's/.*\_\(.*\)\..*/\1/'`

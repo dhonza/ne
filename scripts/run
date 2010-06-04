@@ -1,2 +1,3 @@
 #!/bin/bash
+./createRset
 R --no-save < boxplots.R
