@@ -1,5 +1,6 @@
 package common;
 
+import java.io.Serializable;
 import java.util.Random;
 
 /**
@@ -15,7 +16,7 @@ import java.util.Random;
  * This class performs operations with random numbers.
  */
 
-public class RND {
+public class RND implements Serializable {
 
     /**
      * The seed of random numbers.
@@ -104,6 +105,7 @@ public class RND {
      * Returns a random number from the Cauchy distribution.
      * see http://en.wikipedia.org/wiki/Cauchy_distribution#Cumulative_distribution_function
      * and http://en.wikipedia.org/wiki/Inverse_transform_sampling
+     *
      * @return random number from the Cauchy distribution
      */
     public static double getCauchy() {

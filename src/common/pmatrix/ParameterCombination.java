@@ -1,5 +1,6 @@
 package common.pmatrix;
 
+import java.io.Serializable;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.LinkedHashMap;
@@ -11,7 +12,7 @@ import java.util.LinkedHashMap;
  * Time: 11:27:40 PM
  * To change this template use File | Settings | File Templates.
  */
-public class ParameterCombination implements Iterable<String> {
+public class ParameterCombination implements Iterable<String>, Serializable {
     final private LinkedHashMap<String, Object> combination;
     final private LinkedHashMap<String, Object> combinationNotChanging;
     final private LinkedHashMap<String, Object> combinationOnlyChanging;

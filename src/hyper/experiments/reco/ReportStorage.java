@@ -5,6 +5,7 @@ import org.apache.commons.io.FileUtils;
 
 import java.io.File;
 import java.io.IOException;
+import java.io.Serializable;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
@@ -16,7 +17,7 @@ import java.util.Date;
  * Time: 3:58:44 PM
  * To change this template use File | Settings | File Templates.
  */
-public class ReportStorage {
+public class ReportStorage implements Serializable {
     final private static String BASE_DIR_PREFIX = "exp";
     final private static String PARAMETER_FILE_PREFIX = "parameters_";
     final private static String EXPERIMENT_FILE_PREFIX = "experiments_";

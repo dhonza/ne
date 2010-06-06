@@ -1,9 +1,11 @@
 package hyper.substrate.layer;
 
+import java.io.Serializable;
+
 /**
  * This class is immutable.
  */
-public class SubstrateInterLayerConnection implements Connectable {
+public class SubstrateInterLayerConnection implements Connectable, Serializable {
     final private SubstrateLayer from;
     final private SubstrateLayer to;
 

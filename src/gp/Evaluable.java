@@ -1,5 +1,7 @@
 package gp;
 
+import java.io.Serializable;
+
 /**
  * Created by IntelliJ IDEA.
  * User: drchaj1
@@ -7,7 +9,7 @@ package gp;
  * Time: 3:40:04 PM
  * To change this template use File | Settings | File Templates.
  */
-public interface Evaluable {
+public interface Evaluable extends Serializable {
     public double evaluate(Forest forest);
 
     public boolean isSolved();

@@ -1,5 +1,7 @@
 package common.stats;
 
+import java.io.Serializable;
+
 /**
  * Created by IntelliJ IDEA.
  * User: drchaj1
@@ -7,7 +9,7 @@ package common.stats;
  * Time: 12:54:46 PM
  * To change this template use File | Settings | File Templates.
  */
-class Stat {
+class Stat implements Serializable {
     private String name;
     private String description;
     private boolean enabled;

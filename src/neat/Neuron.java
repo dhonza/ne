@@ -2,6 +2,7 @@ package neat;
 
 import common.RND;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 
 /**
@@ -22,8 +23,8 @@ import java.util.ArrayList;
  * @version 0001
  */
 
-public class Neuron {
-    public enum Type {
+public class Neuron implements Serializable {
+    public enum Type implements Serializable {
         /**
          * the input neuron
          */
@@ -38,7 +39,7 @@ public class Neuron {
         OUTPUT
     }
 
-    public enum Activation {
+    public enum Activation implements Serializable {
         SIGMOID,
         BIPOLAR_SIGMOID,
         LINEAR,
@@ -297,7 +298,7 @@ public class Neuron {
                     output = 1.0 / (1.0 + Math.exp(-alpha * sum));
                     break;
                 case BIPOLAR_SIGMOID:
-                    output = 2.0 / (1.0 + Math.exp(-alpha * sum)) -1.0;
+                    output = 2.0 / (1.0 + Math.exp(-alpha * sum)) - 1.0;
                     break;
                 case LINEAR:
                     output = sum;

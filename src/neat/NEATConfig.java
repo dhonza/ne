@@ -1,7 +1,7 @@
 package neat;
 
+import java.io.Serializable;
 import java.lang.reflect.Field;
-import java.lang.reflect.Method;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.Comparator;
@@ -12,7 +12,7 @@ import java.util.List;
  * Date: Apr 10, 2006
  * Time: 10:51:32 PM
  */
-public class NEATConfig {
+public class NEATConfig implements Serializable {
     //TODO Gettery a settery - vyhazovat vyjimky pri spatnem pouziti (enable flag false)
 
     /**

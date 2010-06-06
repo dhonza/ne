@@ -12,7 +12,7 @@ import gp.TreeInputs;
  */
 public class Input extends Node {
     final private int index;
-    transient final private TreeInputs treeInputs;
+    final private TreeInputs treeInputs;
 
     public Input(int index, TreeInputs treeInputs) {
         this(0, index, treeInputs);

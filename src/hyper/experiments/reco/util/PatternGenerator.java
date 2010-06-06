@@ -1,5 +1,7 @@
 package hyper.experiments.reco.util;
 
+import java.io.Serializable;
+
 /**
  * Created by IntelliJ IDEA.
  * User: drchaj1
@@ -7,7 +9,7 @@ package hyper.experiments.reco.util;
  * Time: 3:47:59 PM
  * To change this template use File | Settings | File Templates.
  */
-public interface PatternGenerator {
+public interface PatternGenerator extends Serializable {
     double[][] generateInputPatterns();
 
     double[][] generateOutputPatterns();

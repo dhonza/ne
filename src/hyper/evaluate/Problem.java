@@ -2,6 +2,8 @@ package hyper.evaluate;
 
 import neat.Net;
 
+import java.io.Serializable;
+
 /**
  * Created by IntelliJ IDEA.
  * User: drchaj1
@@ -9,7 +11,7 @@ import neat.Net;
  * Time: 12:17:00 PM
  * To change this template use File | Settings | File Templates.
  */
-public interface Problem {
+public interface Problem extends Serializable {
     public double evaluate(Net hyperNet);
 
     public boolean isSolved();

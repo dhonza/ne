@@ -2,6 +2,7 @@ package gp;
 
 import common.RND;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -14,7 +15,7 @@ import java.util.Map;
  * Time: 10:27:34 AM
  * To change this template use File | Settings | File Templates.
  */
-public class NodeCollection {
+public class NodeCollection implements Serializable {
     final private Node[] functions;
     final private Node[] terminals;
     final private Node[] all;

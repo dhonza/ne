@@ -3,6 +3,8 @@ package hyper.builder;
 import hyper.cppn.CPPN;
 import hyper.substrate.Substrate;
 
+import java.io.Serializable;
+
 /**
  * Created by IntelliJ IDEA.
  * User: drchaj1
@@ -10,7 +12,7 @@ import hyper.substrate.Substrate;
  * Time: 11:30:47 AM
  * To change this template use File | Settings | File Templates.
  */
-public interface SubstrateBuilder {
+public interface SubstrateBuilder extends Serializable {
 
     public Substrate getSubstrate();
 

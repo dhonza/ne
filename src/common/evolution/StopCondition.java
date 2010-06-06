@@ -1,5 +1,7 @@
 package common.evolution;
 
+import java.io.Serializable;
+
 /**
  * Created by IntelliJ IDEA.
  * User: drchaj1
@@ -7,6 +9,6 @@ package common.evolution;
  * Time: 2:54:46 PM
  * To change this template use File | Settings | File Templates.
  */
-public interface StopCondition {
+public interface StopCondition extends Serializable {
     public boolean isMet();
 }

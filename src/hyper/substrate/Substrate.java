@@ -4,6 +4,7 @@ import hyper.substrate.layer.Connectable;
 import hyper.substrate.layer.SubstrateInterLayerConnection;
 import hyper.substrate.layer.SubstrateLayer;
 
+import java.io.Serializable;
 import java.util.Set;
 
 /**
@@ -13,7 +14,7 @@ import java.util.Set;
  * Time: 12:26:59 PM
  * To change this template use File | Settings | File Templates.
  */
-public interface Substrate {
+public interface Substrate extends Serializable {
     public void addLayer(final SubstrateLayer layer);
 
     /**

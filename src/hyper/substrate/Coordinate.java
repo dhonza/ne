@@ -1,5 +1,7 @@
 package hyper.substrate;
 
+import java.io.Serializable;
+
 /**
  * Created by IntelliJ IDEA.
  * User: drchaj1
@@ -12,7 +14,7 @@ package hyper.substrate;
  * Implementing class must be immutable.
  */
 
-public interface Coordinate {
+public interface Coordinate extends Serializable {
     public double[] asArray();
 
     public int getDimension();

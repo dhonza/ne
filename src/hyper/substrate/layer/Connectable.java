@@ -1,5 +1,7 @@
 package hyper.substrate.layer;
 
+import java.io.Serializable;
+
 /**
  * Created by IntelliJ IDEA.
  * User: drchaj1
@@ -11,5 +13,5 @@ package hyper.substrate.layer;
 /**
  * Marker interface.
  */
-public interface Connectable {
+public interface Connectable extends Serializable {
 }

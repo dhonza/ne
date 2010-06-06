@@ -2,6 +2,7 @@ package common.evolution;
 
 import common.stats.Stats;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -12,7 +13,7 @@ import java.util.List;
  * Time: 2:59:10 PM
  * To change this template use File | Settings | File Templates.
  */
-public class EvolutionaryAlgorithmSolver {
+public class EvolutionaryAlgorithmSolver implements Serializable {
     final private EvolutionaryAlgorithm evolutionaryAlgorithm;
     final private Stats stats;
     final private List<ProgressPrinter> progressPrinterList = new ArrayList<ProgressPrinter>();

@@ -1,5 +1,7 @@
 package common.evolution;
 
+import java.io.Serializable;
+
 /**
  * Created by IntelliJ IDEA.
  * User: drchaj1
@@ -7,7 +9,7 @@ package common.evolution;
  * Time: 4:53:00 PM
  * To change this template use File | Settings | File Templates.
  */
-public interface ProgressPrinter {
+public interface ProgressPrinter extends Serializable {
     public void printGeneration();
 
     public void printProgress();

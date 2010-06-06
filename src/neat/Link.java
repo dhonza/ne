@@ -1,5 +1,7 @@
 package neat;
 
+import java.io.Serializable;
+
 /**
  * <p/>
  * Title: NeuroEvolution
@@ -18,7 +20,7 @@ package neat;
  * @version 0001
  */
 
-public class Link implements Comparable {
+public class Link implements Comparable, Serializable {
 
     /** TODO add id? */
 

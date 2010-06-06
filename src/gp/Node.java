@@ -1,5 +1,7 @@
 package gp;
 
+import java.io.Serializable;
+
 /**
  * Created by IntelliJ IDEA.
  * User: drchaj1
@@ -7,7 +9,7 @@ package gp;
  * Time: 11:12:01 AM
  * To change this template use File | Settings | File Templates.
  */
-public abstract class Node {
+public abstract class Node implements Serializable {
     final protected Node[] nodes;
     final protected int depth;
     final protected long innovation;

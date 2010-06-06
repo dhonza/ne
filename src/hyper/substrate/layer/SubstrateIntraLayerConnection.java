@@ -2,6 +2,8 @@ package hyper.substrate.layer;
 
 import hyper.substrate.node.Node;
 
+import java.io.Serializable;
+
 /**
  * Created by IntelliJ IDEA.
  * User: drchaj1
@@ -13,7 +15,7 @@ import hyper.substrate.node.Node;
 /**
  * This class is immutable.
  */
-public class SubstrateIntraLayerConnection {
+public class SubstrateIntraLayerConnection implements Serializable {
     final private Node from;
     final private Node to;
 

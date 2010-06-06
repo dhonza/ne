@@ -2,6 +2,7 @@ package neat;
 
 import common.RND;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -24,10 +25,10 @@ import java.util.List;
  * @version 0001
  */
 
-public class Net {
+public class Net implements Serializable {
     public static final int INPUT = 1, HIDDEN = 2, OUTPUT = 3;
 
-    class NetRuntimeException extends RuntimeException {
+    class NetRuntimeException extends RuntimeException implements Serializable {
         NetRuntimeException() {
         }
 

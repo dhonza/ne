@@ -1,5 +1,7 @@
 package common.evolution;
 
+import java.io.Serializable;
+
 /**
  * Created by IntelliJ IDEA.
  * User: drchaj1
@@ -7,7 +9,7 @@ package common.evolution;
  * Time: 2:44:39 PM
  * To change this template use File | Settings | File Templates.
  */
-public interface EvolutionaryAlgorithm {
+public interface EvolutionaryAlgorithm extends Serializable {
     public void initialGeneration();
 
     public void nextGeneration();

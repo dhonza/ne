@@ -1,5 +1,6 @@
 package common.stats;
 
+import java.io.Serializable;
 import java.util.*;
 
 /**
@@ -7,7 +8,7 @@ import java.util.*;
  * Date: Aug 10, 2006
  * Time: 1:24:20 PM
  */
-public class Stats {
+public class Stats implements Serializable {
 
     private LinkedHashMap<String, Stat> stats;
 

@@ -3,6 +3,8 @@ package hyper.substrate.layer;
 import hyper.substrate.node.Node;
 import hyper.substrate.node.NodeType;
 
+import java.io.Serializable;
+
 /**
  * Created by IntelliJ IDEA.
  * User: drchaj1
@@ -16,7 +18,7 @@ import hyper.substrate.node.NodeType;
  * To combine more layers use the same CPPN output.
  * Implementing class must be immutable.
  */
-public interface SubstrateLayer extends Connectable {
+public interface SubstrateLayer extends Connectable, Serializable {
     public int getNumber();
 
     public Node[] getNodes();

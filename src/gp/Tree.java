@@ -3,6 +3,7 @@ package gp;
 import common.RND;
 import gp.terminals.Random;
 
+import java.io.Serializable;
 import java.util.*;
 
 /**
@@ -12,7 +13,7 @@ import java.util.*;
  * Time: 6:21:29 PM
  * To change this template use File | Settings | File Templates.
  */
-public class Tree {
+public class Tree implements Serializable {
     private Node root;
 
     transient private List<Node> nodes = new ArrayList<Node>();

@@ -1,5 +1,7 @@
 package hyper.evaluate;
 
+import java.io.Serializable;
+
 /**
  * Created by IntelliJ IDEA.
  * User: drchaj1
@@ -7,7 +9,7 @@ package hyper.evaluate;
  * Time: 9:50:27 PM
  * To change this template use File | Settings | File Templates.
  */
-public interface Solver {
+public interface Solver extends Serializable {
     public void solve();
 
     public String getConfigString();

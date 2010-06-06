@@ -11,6 +11,7 @@ import neat.Link;
 import neat.Net;
 import neat.Neuron;
 
+import java.io.Serializable;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.Map;
@@ -23,7 +24,7 @@ import java.util.Map;
  * To change this template use File | Settings | File Templates.
  */
 public class NEATSubstrateBuilder implements SubstrateBuilder {
-    private class NeuronIndices {
+    private class NeuronIndices implements Serializable {
         private int lower;
         private int upper;
 
