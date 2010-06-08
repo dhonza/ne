@@ -1,0 +1,42 @@
+<project name='NE' default="run" basedir=".">
+
+    <!-- ========================================================================= -->
+    <!--                          Property definitions                             -->
+    <!-- ========================================================================= -->
+
+    <property name="lib.dir" value="${basedir}/lib"/>
+    <property name="config.dir" value="${basedir}/cfg"/>
+    <property name="classes.dir" value="${basedir}/out/production/Ne"/>
+
+    <!-- ========================================================================= -->
+    <!--                           Classpath definitions                           -->
+    <!-- ========================================================================= -->
+
+    <path id="run.classpath">
+        <pathelement location="${classes.dir}"/>
+        <pathelement location="${config.dir}"/>
+        <fileset dir="${lib.dir}" includes="**/*.jar"/>
+    </path>
+
+
+    <!-- ========================================================================= -->
+    <!--                           Run tasks                                       -->
+    <!-- ========================================================================= -->
+
+    <target name="run">
+        <java fork="yes" classname="hyper.experiments.reco.RecoMain" classpathref="run.classpath">
+            <arg value="cfg/reco"/>
+        </java>
+    </target>
+
+    <target name="runjppf">
+        <java fork="yes" classname="hyper.experiments.reco.RecoMainJPPF" classpathref="run.classpath">
+            <arg value="cfg/reco"/>
+            <jvmarg value="-Dlog4j.configuration=log4j.properties"/>
+            <jvmarg value="-Djppf.config=jppf.properties"/>
+            <jvmarg value="-Xmx256m"/>
+        </java>
+    </target>
+
+
+</project> 
