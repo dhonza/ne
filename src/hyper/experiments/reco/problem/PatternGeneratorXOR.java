@@ -2,6 +2,7 @@ package hyper.experiments.reco.problem;
 
 import common.pmatrix.ParameterCombination;
 import hyper.experiments.reco.util.PatternGenerator;
+import hyper.experiments.reco.util.PatternUtils;
 
 /**
  * Created by IntelliJ IDEA.
@@ -11,19 +12,29 @@ import hyper.experiments.reco.util.PatternGenerator;
  * To change this template use File | Settings | File Templates.
  */
 public class PatternGeneratorXOR implements PatternGenerator {
-    final private double[][] inputpatterns = {{0, 0}, {0, 1}, {1, 0}, {1, 1}};
-    final private double[][] outputpatterns = {{0}, {1}, {1}, {0}};
+    final private double[][] inputPatterns;
+    final private double[][] outputPatterns;
 
     public PatternGeneratorXOR(ParameterCombination parameters) {
+        inputPatterns = PatternUtils.generateAllPatterns(parameters.getInteger("RECO.LINE_SIZE"));
+        outputPatterns = new double[inputPatterns.length][1];
+        for (int i = 0; i < inputPatterns.length; i++) {
+            double[] inputPattern = inputPatterns[i];
+            int xor = (int) inputPattern[0];
+            for (int j = 1; j < inputPattern.length; j++) {
+                xor ^= (int) inputPattern[j];
+            }
+            outputPatterns[i][0] = xor;
+        }
     }
 
     public double[][] generateInputPatterns() {
         //TODO make a defensive copy
-        return inputpatterns;
+        return inputPatterns;
     }
 
     public double[][] generateOutputPatterns() {
         //TODO make a defensive copy
-        return outputpatterns;
+        return outputPatterns;
     }
 }

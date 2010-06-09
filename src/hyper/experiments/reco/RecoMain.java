@@ -61,7 +61,7 @@ public class RecoMain {
 //            BasicSubstrate substrate = RecoSubstrateFactory.createInputHiddenOutput(lineSize, 3, 1);
 
                 //XOR
-                BasicSubstrate substrate = RecoSubstrateFactory.createInputHiddenOutput(2, 2, 1);
+                BasicSubstrate substrate = RecoSubstrateFactory.createInputHiddenOutput(lineSize, lineSize, 1);
 
                 //AND
 //            BasicSubstrate substrate = RecoSubstrateFactory.createInputToOutput(lineSize, 1);
