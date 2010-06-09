@@ -5,7 +5,7 @@ import hyper.cppn.BasicNetCPPN;
 import hyper.cppn.CPPN;
 import neat.Evaluable;
 import neat.Genome;
-import neat.Net;
+import neat.INet;
 
 /**
  * Created by IntelliJ IDEA.
@@ -27,7 +27,7 @@ public class NEATEvaluator implements Evaluable {
         CPPN aCPPN = new BasicNetCPPN(og.getNet(), substrateBuilder.getSubstrate().getMaxDimension());
         substrateBuilder.build(aCPPN);
 
-        Net hyperNet = substrateBuilder.getNet();
+        INet hyperNet = substrateBuilder.getNet();
 
         return problem.evaluate(hyperNet);
     }

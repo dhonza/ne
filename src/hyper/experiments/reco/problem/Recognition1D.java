@@ -7,7 +7,7 @@ import hyper.experiments.reco.fitness.RecognitionFitness1D;
 import hyper.experiments.reco.util.PatternGenerator;
 import hyper.experiments.reco.util.PatternGeneratorFactory;
 import hyper.experiments.reco.util.PatternUtils;
-import neat.Net;
+import neat.INet;
 
 /**
  * Created by IntelliJ IDEA.
@@ -33,7 +33,7 @@ public class Recognition1D implements Problem {
         this.fitnessTolerance = fitnessTolerance;
     }
 
-    public double evaluate(Net hyperNet) {
+    public double evaluate(INet hyperNet) {
         HyperNetEvaluator1D hyperNetEvaluator = new HyperNetEvaluator1D(hyperNet, activations);
 
         //zatim pouze pro 1D, pak predelat
@@ -45,7 +45,7 @@ public class Recognition1D implements Problem {
         return fitness;
     }
 
-    public void show(Net hyperNet) {
+    public void show(INet hyperNet) {
         HyperNetEvaluator1D hyperNetEvaluator = new HyperNetEvaluator1D(hyperNet, activations);
         //zatim pouze pro 1D, pak predelat
         RecognitionFitness1D recognition = new RecognitionFitness1D(hyperNetEvaluator);

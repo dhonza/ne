@@ -1,7 +1,6 @@
 package hyper.experiments.reco.fitness;
 
-import neat.Net;
-import neat.Neuron;
+import neat.INet;
 
 /**
  * Created by IntelliJ IDEA.
@@ -17,35 +16,20 @@ import neat.Neuron;
  * TODO does not check sizes of pattern and output vectors
  */
 public class HyperNetEvaluator1D implements HyperEvaluator1D {
-    final private Net hyperNet;
-    final private int bias;
-    final private int inStart;
-    final private int outStart;
+    final private INet hyperNet;
     final private int activations;
-    private Neuron[] neurons;
 
-    public HyperNetEvaluator1D(Net hyperNet, int activations) {
+    public HyperNetEvaluator1D(INet hyperNet, int activations) {
         this.hyperNet = hyperNet;
-        this.bias = 0;
-        this.inStart = 1;
-        this.outStart = hyperNet.getNumInputs() + hyperNet.getNumHidden();
         this.activations = activations;
     }
 
     public void init() {
-        neurons = hyperNet.getAllNeurons();
-        neurons[bias].setOutput(1.0);
-        neurons[bias].setUpdated(true);
-        for (int i = inStart; i < outStart; i++) {
-            neurons[i].setUpdated(true);
-        }
+        hyperNet.initSetBias();
     }
 
     public void loadPatternToInputs(double[] pattern) {
-        int cnt = inStart;
-        for (double patternItem : pattern) {
-            neurons[cnt++].setOutput(patternItem);
-        }
+        hyperNet.loadInputsNotBias(pattern);
         hyperNet.reset();
     }
 
@@ -56,10 +40,6 @@ public class HyperNetEvaluator1D implements HyperEvaluator1D {
     }
 
     public double[] getOutputs() {
-        double[] outputs = new double[hyperNet.getNumOutputs()];
-        for (int i = 0; i < 0 + hyperNet.getNumOutputs(); i++) {
-            outputs[i] = neurons[i + outStart].getOutput();
-        }
-        return outputs;
+        return hyperNet.getOutputValues();
     }
 }

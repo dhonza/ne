@@ -5,7 +5,7 @@ import gp.Forest;
 import hyper.builder.NEATSubstrateBuilder;
 import hyper.cppn.BasicGPCPPN;
 import hyper.cppn.CPPN;
-import neat.Net;
+import neat.INet;
 
 /**
  * Created by IntelliJ IDEA.
@@ -27,7 +27,7 @@ public class GPEvaluator implements Evaluable {
         CPPN aCPPN = new BasicGPCPPN(forest, substrateBuilder.getSubstrate().getMaxDimension());
         substrateBuilder.build(aCPPN);
 
-        Net hyperNet = substrateBuilder.getNet();
+        INet hyperNet = substrateBuilder.getNet();
 
         return problem.evaluate(hyperNet);
     }

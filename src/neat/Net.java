@@ -25,7 +25,7 @@ import java.util.List;
  * @version 0001
  */
 
-public class Net implements Serializable {
+public class Net implements INet, Serializable {
     public static final int INPUT = 1, HIDDEN = 2, OUTPUT = 3;
 
     class NetRuntimeException extends RuntimeException implements Serializable {
@@ -301,7 +301,7 @@ public class Net implements Serializable {
         links = new ArrayList<Link>();
 
         int counterN = 0;
-        ArrayList<Neuron>[] layerMap = new ArrayList[tlayers.length];
+        ArrayList[] layerMap = new ArrayList[tlayers.length];
         for (int i = 0; i < tlayers.length; i++) {
             ArrayList<Neuron> layerNeurons = new ArrayList<Neuron>();
             layerMap[i] = layerNeurons;
@@ -681,26 +681,31 @@ public class Net implements Serializable {
      * to use one additional input with constant value (the bias neuron) and to
      * connect this neuron to inputs of all neurons in hidden and output layers.
      *
-     * @param oinputs array of input values, it's preffered to have <i>oinputs[0] =
-     *                const. </i> for biasing
+     * @param inputs array of input values, it's preffered to have <i>inputs[0] =
+     *               const. </i> for biasing
      */
-    public void loadInputs(double[] oinputs) {
+    public void loadInputs(double[] inputs) {
         for (int i = 0; i < numInputs; i++) {
-            inputs.get(i).setOutput(oinputs[i]);
+            this.inputs.get(i).setOutput(inputs[i]);
         }
     }
 
+    public void loadInputsNotBias(double[] inputs) {
+        for (int i = 1; i < numInputs; i++) {
+            this.inputs.get(i).setOutput(inputs[i - 1]);
+        }
+    }
 
-    public Neuron[] getAllNeurons() {
-        Neuron[] neurons = new Neuron[getNumNeurons()];
-        int cnt = 0;
-        for (Neuron input : inputs) {
-            neurons[cnt++] = input;
+    public void initSetBias() {
+        getBiasNeuron().setOutput(1.0);
+        for (Neuron input : this.inputs) {
+            input.setUpdated(true);
         }
-        for (Neuron aHidout : hidout) {
-            neurons[cnt++] = aHidout;
+        for (Neuron hidout : this.hidout) {
+            if (hidout.getType() == Neuron.Type.HIDDEN) {
+                hidout.setUpdated(true);
+            }
         }
-        return neurons;
     }
 
     /**

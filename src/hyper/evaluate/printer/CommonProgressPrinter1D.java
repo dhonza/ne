@@ -6,7 +6,7 @@ import hyper.builder.NEATSubstrateBuilder;
 import hyper.cppn.CPPN;
 import hyper.evaluate.Problem;
 import hyper.substrate.Substrate;
-import neat.Net;
+import neat.INet;
 
 /**
  * Created by IntelliJ IDEA.
@@ -73,9 +73,9 @@ abstract public class CommonProgressPrinter1D implements ProgressPrinter {
         progressPrinter.printProgress();
 
         showProblem(finishedShowProblem);
-        
+
         System.out.println("");
-        
+
         storeBSFCPPN("best.xml");
 
         /*
@@ -93,7 +93,7 @@ abstract public class CommonProgressPrinter1D implements ProgressPrinter {
             CPPN aCPPN = createBSFCPPN();
             NEATSubstrateBuilder substrateBuilder = createSubstrateBuilder();
             substrateBuilder.build(aCPPN);
-            Net hyperNet = createHyperNet(substrateBuilder);
+            INet hyperNet = createHyperNet(substrateBuilder);
             problem.show(hyperNet);
         }
     }
@@ -104,7 +104,7 @@ abstract public class CommonProgressPrinter1D implements ProgressPrinter {
         return new NEATSubstrateBuilder(substrate);
     }
 
-    protected Net createHyperNet(NEATSubstrateBuilder substrateBuilder) {
+    protected INet createHyperNet(NEATSubstrateBuilder substrateBuilder) {
         return substrateBuilder.getNet();
     }
 

@@ -1,6 +1,6 @@
 package hyper.evaluate;
 
-import neat.Net;
+import neat.INet;
 
 import java.io.Serializable;
 
@@ -12,11 +12,11 @@ import java.io.Serializable;
  * To change this template use File | Settings | File Templates.
  */
 public interface Problem extends Serializable {
-    public double evaluate(Net hyperNet);
+    public double evaluate(INet hyperNet);
 
     public boolean isSolved();
 
-    public void show(Net hyperNet);
+    public void show(INet hyperNet);
 
     public double getTargetFitness();
 }

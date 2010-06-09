@@ -3,7 +3,7 @@ package hyper.evaluate;
 import hyper.builder.NEATSubstrateBuilder;
 import hyper.cppn.BasicSNEATCPPN;
 import hyper.cppn.CPPN;
-import neat.Net;
+import neat.INet;
 import sneat.experiments.INetworkEvaluator;
 import sneat.neuralnetwork.INetwork;
 
@@ -29,7 +29,7 @@ public class SNEATNetworkEvaluator implements INetworkEvaluator {
         CPPN aCPPN = new BasicSNEATCPPN(network, substrateBuilder.getSubstrate().getMaxDimension());
         substrateBuilder.build(aCPPN);
 
-        Net hyperNet = substrateBuilder.getNet();
+        INet hyperNet = substrateBuilder.getNet();
 
         return problem.evaluate(hyperNet);
     }

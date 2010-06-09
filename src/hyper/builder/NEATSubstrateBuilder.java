@@ -7,6 +7,7 @@ import hyper.substrate.layer.SubstrateIntraLayerConnection;
 import hyper.substrate.layer.SubstrateLayer;
 import hyper.substrate.node.Node;
 import hyper.substrate.node.NodeType;
+import neat.INet;
 import neat.Link;
 import neat.Net;
 import neat.Neuron;
@@ -143,7 +144,7 @@ public class NEATSubstrateBuilder implements SubstrateBuilder {
         built = true;
     }
 
-    public Net getNet() throws IllegalStateException {
+    public INet getNet() throws IllegalStateException {
         if (!built) {
             throw new IllegalStateException("Network not built yet.");
         }
