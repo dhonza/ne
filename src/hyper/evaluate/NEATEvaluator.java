@@ -1,6 +1,6 @@
 package hyper.evaluate;
 
-import hyper.builder.NEATSubstrateBuilder;
+import hyper.builder.EvaluableSubstrateBuilder;
 import hyper.cppn.BasicNetCPPN;
 import hyper.cppn.CPPN;
 import neat.Evaluable;
@@ -15,10 +15,10 @@ import neat.INet;
  * To change this template use File | Settings | File Templates.
  */
 public class NEATEvaluator implements Evaluable {
-    final private NEATSubstrateBuilder substrateBuilder;
+    final private EvaluableSubstrateBuilder substrateBuilder;
     final private Problem problem;
 
-    public NEATEvaluator(NEATSubstrateBuilder substrateBuilder, Problem problem) {
+    public NEATEvaluator(EvaluableSubstrateBuilder substrateBuilder, Problem problem) {
         this.substrateBuilder = substrateBuilder;
         this.problem = problem;
     }

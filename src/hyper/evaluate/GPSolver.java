@@ -7,7 +7,7 @@ import common.stats.Stats;
 import gp.*;
 import gp.terminals.Constant;
 import gp.terminals.Random;
-import hyper.builder.NEATSubstrateBuilder;
+import hyper.builder.EvaluableSubstrateBuilder;
 import hyper.evaluate.printer.GPProgressPrinter1D;
 import hyper.experiments.reco.FileProgressPrinter;
 import hyper.experiments.reco.ReportStorage;
@@ -22,7 +22,7 @@ import hyper.experiments.reco.ReportStorage;
 
 public class GPSolver implements Solver {
     final private ParameterCombination parameters;
-    final private NEATSubstrateBuilder substrateBuilder;
+    final private EvaluableSubstrateBuilder substrateBuilder;
     final private Stats stats;
     final private Problem problem;
     final private ReportStorage reportStorage;
@@ -30,7 +30,7 @@ public class GPSolver implements Solver {
     private GP gp;
     private EvolutionaryAlgorithmSolver solver;
 
-    public GPSolver(ParameterCombination parameters, NEATSubstrateBuilder substrateBuilder, Stats stats, Problem problem, ReportStorage reportStorage) {
+    public GPSolver(ParameterCombination parameters, EvaluableSubstrateBuilder substrateBuilder, Stats stats, Problem problem, ReportStorage reportStorage) {
         this.parameters = parameters;
         this.substrateBuilder = substrateBuilder;
         this.stats = stats;

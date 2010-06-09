@@ -4,7 +4,7 @@ import common.evolution.EvolutionaryAlgorithmSolver;
 import common.pmatrix.ParameterCombination;
 import common.pmatrix.Utils;
 import common.stats.Stats;
-import hyper.builder.NEATSubstrateBuilder;
+import hyper.builder.EvaluableSubstrateBuilder;
 import hyper.evaluate.printer.NEATProgressPrinter1D;
 import hyper.experiments.reco.FileProgressPrinter;
 import hyper.experiments.reco.ReportStorage;
@@ -20,7 +20,7 @@ import neat.*;
 
 public class NEATSolver implements Solver {
     final private ParameterCombination parameters;
-    final private NEATSubstrateBuilder substrateBuilder;
+    final private EvaluableSubstrateBuilder substrateBuilder;
     final private Stats stats;
     final private Problem problem;
     final private ReportStorage reportStorage;
@@ -29,7 +29,7 @@ public class NEATSolver implements Solver {
     private FitnessSharingPopulation population;
     private EvolutionaryAlgorithmSolver solver;
 
-    public NEATSolver(ParameterCombination parameters, NEATSubstrateBuilder substrateBuilder, Stats stats, Problem problem, ReportStorage reportStorage) {
+    public NEATSolver(ParameterCombination parameters, EvaluableSubstrateBuilder substrateBuilder, Stats stats, Problem problem, ReportStorage reportStorage) {
         this.parameters = parameters;
         this.substrateBuilder = substrateBuilder;
         this.stats = stats;

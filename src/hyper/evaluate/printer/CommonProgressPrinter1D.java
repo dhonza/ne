@@ -2,7 +2,7 @@ package hyper.evaluate.printer;
 
 import common.evolution.ProgressPrinter;
 import common.pmatrix.ParameterCombination;
-import hyper.builder.NEATSubstrateBuilder;
+import hyper.builder.NetSubstrateBuilder;
 import hyper.cppn.CPPN;
 import hyper.evaluate.Problem;
 import hyper.substrate.Substrate;
@@ -91,7 +91,7 @@ abstract public class CommonProgressPrinter1D implements ProgressPrinter {
     private void showProblem(boolean show) {
         if (show) {
             CPPN aCPPN = createBSFCPPN();
-            NEATSubstrateBuilder substrateBuilder = createSubstrateBuilder();
+            NetSubstrateBuilder substrateBuilder = createSubstrateBuilder();
             substrateBuilder.build(aCPPN);
             INet hyperNet = createHyperNet(substrateBuilder);
             problem.show(hyperNet);
@@ -100,11 +100,11 @@ abstract public class CommonProgressPrinter1D implements ProgressPrinter {
 
     protected abstract CPPN createBSFCPPN();
 
-    protected NEATSubstrateBuilder createSubstrateBuilder() {
-        return new NEATSubstrateBuilder(substrate);
+    protected NetSubstrateBuilder createSubstrateBuilder() {
+        return new NetSubstrateBuilder(substrate);
     }
 
-    protected INet createHyperNet(NEATSubstrateBuilder substrateBuilder) {
+    protected INet createHyperNet(NetSubstrateBuilder substrateBuilder) {
         return substrateBuilder.getNet();
     }
 

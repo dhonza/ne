@@ -24,7 +24,7 @@ import java.util.Map;
  * Time: 11:32:18 AM
  * To change this template use File | Settings | File Templates.
  */
-public class NEATSubstrateBuilder implements SubstrateBuilder {
+public class NetSubstrateBuilder implements EvaluableSubstrateBuilder {
     private class NeuronIndices implements Serializable {
         private int lower;
         private int upper;
@@ -50,7 +50,7 @@ public class NEATSubstrateBuilder implements SubstrateBuilder {
     private boolean built = false;
     private Net net;
 
-    public NEATSubstrateBuilder(Substrate substrate) {
+    public NetSubstrateBuilder(Substrate substrate) {
         this.substrate = substrate;
     }
 

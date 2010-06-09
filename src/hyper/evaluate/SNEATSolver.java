@@ -3,7 +3,7 @@ package hyper.evaluate;
 import common.evolution.EvolutionaryAlgorithmSolver;
 import common.pmatrix.ParameterCombination;
 import common.stats.Stats;
-import hyper.builder.NEATSubstrateBuilder;
+import hyper.builder.EvaluableSubstrateBuilder;
 import hyper.evaluate.printer.SNEATProgressPrinter1D;
 import hyper.experiments.reco.FileProgressPrinter;
 import hyper.experiments.reco.ReportStorage;
@@ -28,7 +28,7 @@ public class SNEATSolver implements Solver {
     private static Logger logger = Logger.getLogger("hyper.evaluate.SNEATSolver");
 
     final private ParameterCombination parameters;
-    final private NEATSubstrateBuilder substrateBuilder;
+    final private EvaluableSubstrateBuilder substrateBuilder;
     final private Stats stats;
     final private Problem problem;
     final private ReportStorage reportStorage;
@@ -36,7 +36,7 @@ public class SNEATSolver implements Solver {
     private EvolutionaryAlgorithmSolver solver;
     private SNEAT sneat;
 
-    public SNEATSolver(ParameterCombination parameters, NEATSubstrateBuilder substrateBuilder, Stats stats, Problem problem, ReportStorage reportStorage) {
+    public SNEATSolver(ParameterCombination parameters, EvaluableSubstrateBuilder substrateBuilder, Stats stats, Problem problem, ReportStorage reportStorage) {
         this.parameters = parameters;
         this.substrateBuilder = substrateBuilder;
         this.stats = stats;

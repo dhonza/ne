@@ -2,7 +2,7 @@ package hyper.evaluate;
 
 import common.pmatrix.ParameterCombination;
 import common.stats.Stats;
-import hyper.builder.NEATSubstrateBuilder;
+import hyper.builder.EvaluableSubstrateBuilder;
 import hyper.experiments.reco.ReportStorage;
 
 /**
@@ -13,7 +13,7 @@ import hyper.experiments.reco.ReportStorage;
  * To change this template use File | Settings | File Templates.
  */
 public class SolverFactory {
-    public static Solver getSolver(ParameterCombination parameters, NEATSubstrateBuilder substrateBuilder, Stats stats, Problem problem, ReportStorage reportStorage) {
+    public static Solver getSolver(ParameterCombination parameters, EvaluableSubstrateBuilder substrateBuilder, Stats stats, Problem problem, ReportStorage reportStorage) {
         String name = parameters.getString("SOLVER");
         if (name.equalsIgnoreCase("GP")) {
             return new GPSolver(parameters, substrateBuilder, stats, problem, reportStorage);

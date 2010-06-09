@@ -2,7 +2,7 @@ package hyper.evaluate;
 
 import common.pmatrix.ParameterCombination;
 import common.pmatrix.Utils;
-import hyper.builder.NEATSubstrateBuilder;
+import hyper.builder.EvaluableSubstrateBuilder;
 import sneat.evolution.IPopulationEvaluator;
 import sneat.evolution.NeatParameters;
 import sneat.experiments.AbstractExperimentView;
@@ -22,7 +22,7 @@ public class SNEATExperiment implements IExperiment {
     private final int numOfInputs;
     private final int numOfOutputs;
     private final ParameterCombination parameters;
-    private final NEATSubstrateBuilder substrateBuilder;
+    private final EvaluableSubstrateBuilder substrateBuilder;
     private final Problem problem;
 
     NeatParameters neatParams = null;
@@ -30,7 +30,7 @@ public class SNEATExperiment implements IExperiment {
     IPopulationEvaluator populationEvaluator = null;
     IActivationFunction activationFunction = new SteepenedSigmoid();
 
-    public SNEATExperiment(ParameterCombination parameters, NEATSubstrateBuilder substrateBuilder, Problem problem, int numOfInputs, int numOfOutputs) {
+    public SNEATExperiment(ParameterCombination parameters, EvaluableSubstrateBuilder substrateBuilder, Problem problem, int numOfInputs, int numOfOutputs) {
         this.parameters = parameters;
         this.numOfInputs = numOfInputs;
         this.numOfOutputs = numOfOutputs;
