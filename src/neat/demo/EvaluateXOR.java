@@ -1,8 +1,8 @@
 package neat.demo;
 
+import common.net.linked.Net;
 import neat.Evaluable;
 import neat.Genome;
-import neat.Net;
 
 /**
  * User: honza

@@ -1,5 +1,6 @@
 package hyper.experiments.reco.problem;
 
+import common.net.INet;
 import common.pmatrix.ParameterCombination;
 import hyper.evaluate.Problem;
 import hyper.experiments.reco.fitness.HyperNetEvaluator1D;
@@ -7,7 +8,6 @@ import hyper.experiments.reco.fitness.RecognitionFitness1D;
 import hyper.experiments.reco.util.PatternGenerator;
 import hyper.experiments.reco.util.PatternGeneratorFactory;
 import hyper.experiments.reco.util.PatternUtils;
-import neat.INet;
 
 /**
  * Created by IntelliJ IDEA.

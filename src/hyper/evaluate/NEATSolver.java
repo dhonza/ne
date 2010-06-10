@@ -1,6 +1,8 @@
 package hyper.evaluate;
 
 import common.evolution.EvolutionaryAlgorithmSolver;
+import common.net.linked.Net;
+import common.net.linked.Neuron;
 import common.pmatrix.ParameterCombination;
 import common.pmatrix.Utils;
 import common.stats.Stats;

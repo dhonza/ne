@@ -1,4 +1,4 @@
-package neat;
+package common.net;
 
 /**
  * Created by IntelliJ IDEA.

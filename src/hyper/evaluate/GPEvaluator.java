@@ -1,11 +1,11 @@
 package hyper.evaluate;
 
+import common.net.INet;
 import gp.Evaluable;
 import gp.Forest;
 import hyper.builder.EvaluableSubstrateBuilder;
 import hyper.cppn.BasicGPCPPN;
 import hyper.cppn.CPPN;
-import neat.INet;
 
 /**
  * Created by IntelliJ IDEA.

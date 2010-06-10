@@ -1,6 +1,6 @@
 package hyper.evaluate;
 
-import neat.INet;
+import common.net.INet;
 
 import java.io.Serializable;
 

@@ -4,9 +4,10 @@
  * TODO To change the template for this generated file go to
  * Window - Preferences - Java - Code Style - Code Templates
  */
-package neat;
+package common.net.linked;
 
 import common.RND;
+import common.net.linked.Net;
 import common.xml.XMLSerialization;
 
 /**

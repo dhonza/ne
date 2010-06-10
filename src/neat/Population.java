@@ -1,5 +1,7 @@
 package neat;
 
+import common.net.linked.Net;
+import common.net.linked.NetStorage;
 import common.xml.XMLSerialization;
 
 import java.io.OutputStream;

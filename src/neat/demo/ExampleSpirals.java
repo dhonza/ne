@@ -2,6 +2,8 @@ package neat.demo;
 
 import common.RND;
 import common.evolution.EvolutionaryAlgorithmSolver;
+import common.net.linked.Net;
+import common.net.linked.Neuron;
 import common.stats.Stats;
 import neat.*;
 

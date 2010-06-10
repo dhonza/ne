@@ -1,6 +1,6 @@
 package hyper.experiments.reco.fitness;
 
-import neat.INet;
+import common.net.INet;
 
 /**
  * Created by IntelliJ IDEA.

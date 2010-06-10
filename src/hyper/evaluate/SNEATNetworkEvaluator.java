@@ -1,9 +1,9 @@
 package hyper.evaluate;
 
+import common.net.INet;
 import hyper.builder.EvaluableSubstrateBuilder;
 import hyper.cppn.BasicSNEATCPPN;
 import hyper.cppn.CPPN;
-import neat.INet;
 import sneat.experiments.INetworkEvaluator;
 import sneat.neuralnetwork.INetwork;
 

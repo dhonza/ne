@@ -6,7 +6,7 @@ import hyper.builder.NetSubstrateBuilder;
 import hyper.cppn.CPPN;
 import hyper.evaluate.Problem;
 import hyper.substrate.Substrate;
-import neat.INet;
+import common.net.INet;
 
 /**
  * Created by IntelliJ IDEA.

@@ -5,7 +5,7 @@ import hyper.cppn.BasicNetCPPN;
 import hyper.cppn.CPPN;
 import neat.Evaluable;
 import neat.Genome;
-import neat.INet;
+import common.net.INet;
 
 /**
  * Created by IntelliJ IDEA.

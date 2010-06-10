@@ -1,7 +1,7 @@
 package hyper.cppn;
 
 import hyper.substrate.Coordinate;
-import neat.Net;
+import common.net.linked.Net;
 
 /**
  * Created by IntelliJ IDEA.

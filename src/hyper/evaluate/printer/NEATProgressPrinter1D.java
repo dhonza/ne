@@ -8,7 +8,7 @@ import hyper.evaluate.Problem;
 import hyper.substrate.Substrate;
 import neat.NEAT;
 import neat.NEATBasicProgressPrinter;
-import neat.NetStorage;
+import common.net.linked.NetStorage;
 import neat.Population;
 
 /**

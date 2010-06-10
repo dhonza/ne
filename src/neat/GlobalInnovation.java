@@ -1,5 +1,7 @@
 package neat;
 
+import common.net.linked.Net;
+
 /**
  * <p>Title: </p>
  * <p>Description: Records innovations</p>

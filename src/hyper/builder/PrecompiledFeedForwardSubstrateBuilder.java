@@ -8,7 +8,7 @@ import hyper.substrate.layer.SubstrateInterLayerConnection;
 import hyper.substrate.layer.SubstrateLayer;
 import hyper.substrate.node.Node;
 import hyper.substrate.node.NodeType;
-import neat.INet;
+import common.net.INet;
 
 import javax.tools.JavaCompiler;
 import javax.tools.ToolProvider;

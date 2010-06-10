@@ -1,6 +1,6 @@
 package common.net.precompiled;
 
-import neat.INet;
+import common.net.INet;
 
 /**
  * Created by IntelliJ IDEA.

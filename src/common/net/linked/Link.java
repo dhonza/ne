@@ -1,4 +1,6 @@
-package neat;
+package common.net.linked;
+
+import neat.NEAT;
 
 import java.io.Serializable;
 
@@ -205,7 +207,7 @@ public class Link implements Comparable, Serializable {
      *
      * @return clone of this Link
      */
-    protected Object clone() {
+    public Object clone() {
         Link tl = new Link(id, weight);
         tl.enabled = enabled;
         tl.recurrent = recurrent;

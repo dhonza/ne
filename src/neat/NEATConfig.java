@@ -86,7 +86,7 @@ public class NEATConfig implements Serializable {
      * Specifies the interval <i>&lt;-NET_NEW_WEIGHTS_SCATTER; NET_NEW_WEIGHTS_SCATTER&gt;</i> into which
      * the randomized weights fall. It is used when new <i>Link</i> is created due to a structural mutation.
      *
-     * @see neat.Net#randomizeWeights
+     * @see common.net.linked.Net#randomizeWeights
      * @see neat.Genome#mutateAddLink
      * @see neat.Genome#mutateAddNeuron
      */
@@ -96,7 +96,7 @@ public class NEATConfig implements Serializable {
      * Specifies the interval <i>&lt;-NET_WEIGHTS_SCATTER; NET_WEIGHTS_SCATTER&gt;</i> into which
      * the randomized weights fall. It is used while spawning the population.
      *
-     * @see neat.Net#randomizeWeights
+     * @see common.net.linked.Net#randomizeWeights
      * @see neat.FitnessSharingPopulation#spawn
      */
     public double netWeightsScatter = 0.3;

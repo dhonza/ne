@@ -1,6 +1,9 @@
 package neat;
 
 import common.RND;
+import common.net.linked.Link;
+import common.net.linked.Net;
+import common.net.linked.Neuron;
 
 import java.util.HashMap;
 import java.util.Map;

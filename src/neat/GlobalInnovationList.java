@@ -1,6 +1,7 @@
 package neat;
 
 import common.RND;
+import common.net.linked.Net;
 
 import java.util.*;
 

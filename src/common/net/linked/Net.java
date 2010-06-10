@@ -1,6 +1,8 @@
-package neat;
+package common.net.linked;
 
 import common.RND;
+import common.net.INet;
+import common.net.linked.NetStorage;
 
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -600,7 +602,7 @@ public class Net implements INet, Serializable {
      * @param oid
      * @return true if found, false if not
      */
-    boolean testForHidOut(int oid) {
+    public boolean testForHidOut(int oid) {
         for (Neuron neuron : hidout) {
             if (neuron.getId() == oid) {
                 return true;

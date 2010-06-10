@@ -1,6 +1,7 @@
-package neat;
+package common.net.linked;
 
 import common.RND;
+import neat.NEAT;
 
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -175,7 +176,7 @@ public class Neuron implements Serializable {
      *
      * @return clone of this Neuron
      */
-    protected Object clone() {
+    public Object clone() {
         Neuron t = new Neuron(id, type, activation);
         t.incoming = new ArrayList<Link>(incoming.size());
         t.outgoing = new ArrayList<Link>(outgoing.size());

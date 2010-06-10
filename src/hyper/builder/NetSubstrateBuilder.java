@@ -1,5 +1,8 @@
 package hyper.builder;
 
+import common.net.linked.Link;
+import common.net.linked.Net;
+import common.net.linked.Neuron;
 import hyper.cppn.CPPN;
 import hyper.substrate.Substrate;
 import hyper.substrate.layer.SubstrateInterLayerConnection;
@@ -7,10 +10,7 @@ import hyper.substrate.layer.SubstrateIntraLayerConnection;
 import hyper.substrate.layer.SubstrateLayer;
 import hyper.substrate.node.Node;
 import hyper.substrate.node.NodeType;
-import neat.INet;
-import neat.Link;
-import neat.Net;
-import neat.Neuron;
+import common.net.INet;
 
 import java.io.Serializable;
 import java.util.HashMap;
