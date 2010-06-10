@@ -10,6 +10,21 @@ import common.net.INet;
  * To change this template use File | Settings | File Templates.
  */
 public class PrecompiledFeedForwardNet implements INet {
+    final private IPrecompiledFeedForwardStub stub;
+
+    private double bias = 1.0;
+    private double[] inputs;
+    private double[] outputs;
+
+    final private double weights[];
+
+    private boolean activated = false;
+
+    public PrecompiledFeedForwardNet(IPrecompiledFeedForwardStub stub, double[] weights) {
+        this.stub = stub;
+        this.weights = weights;
+    }
+
     public int getNumInputs() {
         return 0;  //To change body of implemented methods use File | Settings | File Templates.
     }
@@ -27,26 +42,36 @@ public class PrecompiledFeedForwardNet implements INet {
     }
 
     public void loadInputs(double[] inputs) {
-        //To change body of implemented methods use File | Settings | File Templates.
+        bias = inputs[0];
+        System.arraycopy(inputs, 1, this.inputs, 0, inputs.length - 1);
     }
 
     public void loadInputsNotBias(double[] inputs) {
-        //To change body of implemented methods use File | Settings | File Templates.
+        bias = 1.0;
+        this.inputs = inputs;
     }
 
     public void activate() {
-        //To change body of implemented methods use File | Settings | File Templates.
+        if (activated) {
+            throw new IllegalStateException("FF precompiled network activated more than once!");
+        }
+        outputs = stub.propagate(bias, inputs, weights);
     }
 
     public void reset() {
-        //To change body of implemented methods use File | Settings | File Templates.
+        if (activated) {
+            activated = false;
+        }
     }
 
     public void initSetBias() {
-        //To change body of implemented methods use File | Settings | File Templates.
+        //not needed for this implementation
     }
 
     public double[] getOutputValues() {
-        return new double[0];  //To change body of implemented methods use File | Settings | File Templates.
+        if (!activated) {
+            throw new IllegalStateException("FF precompiled network not activated");
+        }
+        return outputs;
     }
 }

@@ -55,9 +55,9 @@ public class RecoSubstrateFactory {
         SubstrateLayer hiddenLayer = new LineLayer1D(NodeType.HIDDEN, hiddenNodes, 1.0, 1.0);
         SubstrateLayer outputLayer = new LineLayer1D(NodeType.OUTPUT, outputNodes, 1.0, 1.0);
 
-        SubstrateInterLayerConnection biasToOutput = new SubstrateInterLayerConnection(biasLayer, outputLayer);
         SubstrateInterLayerConnection biasToHidden = new SubstrateInterLayerConnection(biasLayer, hiddenLayer);
         SubstrateInterLayerConnection inputToHidden = new SubstrateInterLayerConnection(inputLayer, hiddenLayer);
+        SubstrateInterLayerConnection biasToOutput = new SubstrateInterLayerConnection(biasLayer, outputLayer);
         SubstrateInterLayerConnection hiddenToOutput = new SubstrateInterLayerConnection(hiddenLayer, outputLayer);
 
         substrate.addLayer(biasLayer);
@@ -65,9 +65,9 @@ public class RecoSubstrateFactory {
         substrate.addLayer(hiddenLayer);
         substrate.addLayer(outputLayer);
 
-        substrate.connect(biasToOutput);
         substrate.connect(biasToHidden);
         substrate.connect(inputToHidden);
+        substrate.connect(biasToOutput);
         substrate.connect(hiddenToOutput);
         substrate.complete();
         return substrate;
