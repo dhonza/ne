@@ -1,6 +1,8 @@
 package hyper.builder;
 
+import common.net.INet;
 import common.net.precompiled.IPrecompiledFeedForwardStub;
+import common.net.precompiled.PrecompiledFeedForwardNet;
 import hyper.cppn.CPPN;
 import hyper.substrate.Substrate;
 import hyper.substrate.layer.IBias;
@@ -8,7 +10,6 @@ import hyper.substrate.layer.SubstrateInterLayerConnection;
 import hyper.substrate.layer.SubstrateLayer;
 import hyper.substrate.node.Node;
 import hyper.substrate.node.NodeType;
-import common.net.INet;
 
 import javax.tools.JavaCompiler;
 import javax.tools.ToolProvider;
@@ -26,11 +27,26 @@ import java.util.*;
  * To change this template use File | Settings | File Templates.
  */
 public class PrecompiledFeedForwardSubstrateBuilder implements EvaluableSubstrateBuilder {
+    private class PreviousLayerConnectionContainer {
+        public SubstrateInterLayerConnection bias;
+        public SubstrateInterLayerConnection connection;
+
+        private PreviousLayerConnectionContainer(SubstrateInterLayerConnection bias, SubstrateInterLayerConnection connection) {
+            this.bias = bias;
+            this.connection = connection;
+        }
+    }
+
     final private Substrate substrate;
 
     private SubstrateLayer inputLayer = null;
     private SubstrateLayer biasLayer = null;
-    private List<SubstrateInterLayerConnection> successiveConnections = null;
+    private List<PreviousLayerConnectionContainer> successiveConnections = null;
+
+    private IPrecompiledFeedForwardStub stub;
+    private double[] weights;
+
+    private boolean built = false;
 
     public PrecompiledFeedForwardSubstrateBuilder(Substrate substrate) {
         this.substrate = substrate;
@@ -40,8 +56,9 @@ public class PrecompiledFeedForwardSubstrateBuilder implements EvaluableSubstrat
     private void prepare() {
         findBiasAndInputLayers();
         createListOfSuccessiveLayers();
+        prepareWeightVector();
         String sourceCode = generateSourceCode();
-        System.out.println(sourceCode);
+//        System.out.println(sourceCode);
         compile(sourceCode);
         loadStubClass();
     }
@@ -81,20 +98,38 @@ public class PrecompiledFeedForwardSubstrateBuilder implements EvaluableSubstrat
     private void createListOfSuccessiveLayers() {
         Set<SubstrateInterLayerConnection> layerConnections = substrate.getConnections();
         Map<SubstrateLayer, SubstrateInterLayerConnection> layerConnectionMap = new HashMap<SubstrateLayer, SubstrateInterLayerConnection>();
+        Map<SubstrateLayer, SubstrateInterLayerConnection> biasConnectionMap = new HashMap<SubstrateLayer, SubstrateInterLayerConnection>();
         for (SubstrateInterLayerConnection layerConnection : layerConnections) {
             //ignore all bias connections, build only fully connected neural networks with all
             //non-input layers biased
             if (layerConnection.getFrom() != biasLayer) {
                 layerConnectionMap.put(layerConnection.getFrom(), layerConnection);
+            } else {
+                biasConnectionMap.put(layerConnection.getTo(), layerConnection);
             }
         }
         SubstrateLayer currentLayer = inputLayer;
-        successiveConnections = new ArrayList<SubstrateInterLayerConnection>();
+        successiveConnections = new ArrayList<PreviousLayerConnectionContainer>();
         for (int i = 0; i < layerConnectionMap.size(); i++) {
             SubstrateLayer nextLayer = layerConnectionMap.get(currentLayer).getTo();
-            successiveConnections.add(layerConnectionMap.get(currentLayer));
+            successiveConnections.add(new PreviousLayerConnectionContainer(biasConnectionMap.get(nextLayer), layerConnectionMap.get(currentLayer)));
             currentLayer = nextLayer;
         }
+    }
+
+    private void prepareWeightVector() {
+        int weightCount = 0;
+        for (PreviousLayerConnectionContainer successiveConnection : successiveConnections) {
+            SubstrateInterLayerConnection connection = successiveConnection.bias;
+            Node[] nodes = connection.getTo().getNodes();
+            //bias
+            if (successiveConnection.bias != null) {
+                weightCount += nodes.length;
+            }
+            //all connections to neuron
+            weightCount += successiveConnection.connection.getFrom().getNodes().length * nodes.length;
+        }
+        weights = new double[weightCount];
     }
 
     private String generateSourceCode() {
@@ -119,7 +154,7 @@ public class PrecompiledFeedForwardSubstrateBuilder implements EvaluableSubstrat
     private void generateLayers(StringBuilder src) {
         int weightCnt = 0;
         for (int i = 0; i < successiveConnections.size(); i++) {
-            SubstrateInterLayerConnection connection = successiveConnections.get(i);
+            SubstrateInterLayerConnection connection = successiveConnections.get(i).connection;
             Node[] tNodes = connection.getTo().getNodes();
             Node[] fNodes = connection.getFrom().getNodes();
             src.append("\tn = new double[").append(tNodes.length).append("];\n");
@@ -169,12 +204,7 @@ public class PrecompiledFeedForwardSubstrateBuilder implements EvaluableSubstrat
             URL[] urls = new URL[]{url};
             ClassLoader loader = new URLClassLoader(urls);
             Class cls = loader.loadClass("PrecompiledStub");
-            IPrecompiledFeedForwardStub stub = (IPrecompiledFeedForwardStub) cls.newInstance();
-            System.out.println("res = " + stub.propagate(1.0,
-                    new double[]{1, 0},
-                    new double[]{-1, 0, 0, 0, 0, 0, -1, 1, 0})[0]
-            );
-
+            stub = (IPrecompiledFeedForwardStub) cls.newInstance();
         } catch (MalformedURLException e) {
             e.printStackTrace();
             System.exit(1);
@@ -195,10 +225,31 @@ public class PrecompiledFeedForwardSubstrateBuilder implements EvaluableSubstrat
     }
 
     public void build(CPPN aCPPN) {
-        //To change body of implemented methods use File | Settings | File Templates.
+        int cnt = 0;
+        for (PreviousLayerConnectionContainer successiveConnection : successiveConnections) {
+            SubstrateInterLayerConnection connection = successiveConnection.bias;
+            Node[] nodes = connection.getTo().getNodes();
+            for (Node nodeTo : nodes) {
+                //bias
+                if (successiveConnection.bias != null) {
+                    int aCPPNOutput = substrate.getConnectionCPPNOutput(successiveConnection.bias);
+                    weights[cnt++] = 3.0 * aCPPN.evaluate(aCPPNOutput, successiveConnection.bias.getFrom().getNodes()[0].getCoordinate(),
+                            nodeTo.getCoordinate());
+                }
+                //all connections to neuron
+                int aCPPNOutput = substrate.getConnectionCPPNOutput(successiveConnection.connection);
+                for (Node nodeFrom : successiveConnection.connection.getFrom().getNodes()) {
+                    weights[cnt++] = 3.0 * aCPPN.evaluate(aCPPNOutput, nodeFrom.getCoordinate(), nodeTo.getCoordinate());
+                }
+            }
+        }
+        built = true;
     }
 
     public INet getNet() throws IllegalStateException {
-        return null;
+        if (!built) {
+            throw new IllegalStateException("Network not built yet.");
+        }
+        return new PrecompiledFeedForwardNet(stub, weights.clone());
     }
 }

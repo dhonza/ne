@@ -1,6 +1,9 @@
 package common.net.precompiled;
 
 import common.net.INet;
+import org.apache.commons.lang.ArrayUtils;
+
+import java.util.Arrays;
 
 /**
  * Created by IntelliJ IDEA.
@@ -26,19 +29,19 @@ public class PrecompiledFeedForwardNet implements INet {
     }
 
     public int getNumInputs() {
-        return 0;  //To change body of implemented methods use File | Settings | File Templates.
+        throw new IllegalStateException("NOT YET IMPLEMENTED!");
     }
 
     public int getNumOutputs() {
-        return 0;  //To change body of implemented methods use File | Settings | File Templates.
+        throw new IllegalStateException("NOT YET IMPLEMENTED!");
     }
 
     public int getNumHidden() {
-        return 0;  //To change body of implemented methods use File | Settings | File Templates.
+        throw new IllegalStateException("NOT YET IMPLEMENTED!");
     }
 
     public int getNumLinks() {
-        return 0;  //To change body of implemented methods use File | Settings | File Templates.
+        return weights.length;
     }
 
     public void loadInputs(double[] inputs) {
@@ -53,9 +56,11 @@ public class PrecompiledFeedForwardNet implements INet {
 
     public void activate() {
         if (activated) {
-            throw new IllegalStateException("FF precompiled network activated more than once!");
+//            throw new IllegalStateException("FF precompiled network activated more than once!");
+            return;
         }
         outputs = stub.propagate(bias, inputs, weights);
+        activated = true;
     }
 
     public void reset() {
@@ -73,5 +78,12 @@ public class PrecompiledFeedForwardNet implements INet {
             throw new IllegalStateException("FF precompiled network not activated");
         }
         return outputs;
+    }
+
+    @Override
+    public String toString() {
+        return "PrecompiledFeedForwardNet{" +
+                "weights=" + Arrays.asList(ArrayUtils.toObject(weights)) +
+                '}';
     }
 }

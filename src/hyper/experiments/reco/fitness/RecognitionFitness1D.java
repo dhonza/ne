@@ -24,11 +24,12 @@ public class RecognitionFitness1D {
 
         double error = 0.0;
         int errors = 0;
+        double[] outputs = null;
 
         for (int i = 0; i < inputPatterns.length; i++) {
             hyperEvaluator.loadPatternToInputs(inputPatterns[i]);
             hyperEvaluator.activate();
-            double[] outputs = hyperEvaluator.getOutputs();
+            outputs = hyperEvaluator.getOutputs();
             if (outputs.length != outputPatterns[0].length) {
                 throw new IllegalStateException("HyperNet outputs do not match output pattern.");
             }

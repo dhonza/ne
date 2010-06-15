@@ -7,6 +7,7 @@ import common.pmatrix.ParameterMatrixStorage;
 import common.stats.Stats;
 import hyper.builder.EvaluableSubstrateBuilder;
 import hyper.builder.PrecompiledFeedForwardSubstrateBuilder;
+import hyper.builder.SubstrateBuilderFactory;
 import hyper.evaluate.Problem;
 import hyper.evaluate.Solver;
 import hyper.evaluate.SolverFactory;
@@ -68,8 +69,7 @@ public class RecoMain {
 //            BasicSubstrate substrate = RecoSubstrateFactory.createInputToOutput(lineSize, 1);
 //            BasicSubstrate substrate = RecoSubstrateFactory.createInputHiddenOutput(lineSize, 2, 1);
 
-//                EvaluableSubstrateBuilder substrateBuilder = new NetSubstrateBuilder(substrate);
-                EvaluableSubstrateBuilder substrateBuilder = new PrecompiledFeedForwardSubstrateBuilder(substrate);
+                EvaluableSubstrateBuilder substrateBuilder = SubstrateBuilderFactory.createEvaluableSubstrateBuilder(substrate,combination);
 
                 Problem problem = new Recognition1D(combination);
                 System.out.println("TARGET FITNESS " + problem.getTargetFitness());
