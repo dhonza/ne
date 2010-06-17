@@ -29,7 +29,7 @@ public class PrecompiledFeedForwardNet implements INet {
     }
 
     public int getNumInputs() {
-        throw new IllegalStateException("NOT YET IMPLEMENTED!");
+        return stub.getNumberOfInputs();
     }
 
     public int getNumOutputs() {

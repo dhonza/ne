@@ -48,6 +48,7 @@ public class MeshLayer2D implements SubstrateLayer {
     }
 
     private void createNodes() {
+        System.out.println("MeshLayer2D: SEVERE ROUNDOFF ERROR POSSIBLE, REPLACE THIS CODE!");
         double xStep = xScale / (xNodes - 1);
         double yStep = yScale / (yNodes - 1);
         double xPos = xMin;
@@ -56,7 +57,6 @@ public class MeshLayer2D implements SubstrateLayer {
         for (int i = 0; i < yNodes; i++) {
             for (int j = 0; j < xNodes; j++) {
                 nodes[cnt++] = new Node2D(xPos, yPos, nodeType);
-                System.out.println("MeshLayer2D: SEVERE ROUNDOFF ERROR POSSIBLE!");
                 xPos += xStep;
             }
             xPos = xMin;

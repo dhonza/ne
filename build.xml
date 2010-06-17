@@ -24,13 +24,13 @@
     <!-- ========================================================================= -->
 
     <target name="run">
-        <java fork="yes" classname="hyper.experiments.reco.RecoMain" classpathref="run.classpath">
+        <java fork="yes" classname="hyper.experiments.Main" classpathref="run.classpath">
             <arg value="cfg/reco"/>
         </java>
     </target>
 
     <target name="runjppf">
-        <java fork="yes" classname="hyper.experiments.reco.RecoMainJPPF" classpathref="run.classpath">
+        <java fork="yes" classname="hyper.experiments.RecoMainJPPF" classpathref="run.classpath">
             <arg value="cfg/reco"/>
             <jvmarg value="-Dlog4j.configuration=log4j.properties"/>
             <jvmarg value="-Djppf.config=jppf.properties"/>

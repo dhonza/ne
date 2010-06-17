@@ -1,4 +1,4 @@
-package hyper.experiments.reco;
+package hyper.experiments;
 
 import common.RND;
 import common.pmatrix.ParameterCombination;
@@ -6,21 +6,18 @@ import common.pmatrix.ParameterMatrixManager;
 import common.pmatrix.ParameterMatrixStorage;
 import common.stats.Stats;
 import hyper.builder.EvaluableSubstrateBuilder;
-import hyper.builder.NetSubstrateBuilder;
-import hyper.evaluate.JPPFSolver;
+import hyper.builder.SubstrateBuilderFactory;
 import hyper.evaluate.Problem;
 import hyper.evaluate.Solver;
 import hyper.evaluate.SolverFactory;
+import hyper.experiments.findcluster.FindCluster;
+import hyper.experiments.findcluster.FindClusterSubstrateFactory;
+import hyper.experiments.reco.ReportStorage;
 import hyper.experiments.reco.problem.RecoSubstrateFactory;
 import hyper.experiments.reco.problem.Recognition1D;
 import hyper.substrate.BasicSubstrate;
-import org.jppf.JPPFException;
-import org.jppf.client.JPPFClient;
-import org.jppf.client.JPPFJob;
-import org.jppf.server.protocol.JPPFTask;
 
 import java.io.File;
-import java.util.List;
 
 /**
  * Created by IntelliJ IDEA.
@@ -29,8 +26,7 @@ import java.util.List;
  * Time: 9:50:01 PM
  * To change this template use File | Settings | File Templates.
  */
-public class RecoMainJPPF {
-    private static JPPFClient jppfClient = null;
+public class Main {
 
     public static void main(String[] args) {
 
@@ -44,25 +40,20 @@ public class RecoMainJPPF {
         ParameterMatrixManager manager = ParameterMatrixStorage.load(new File(args[0], "experiment.properties"));
         System.out.println("PARAMETER SETTINGS: " + manager);
 
-        jppfClient = new JPPFClient();
-        JPPFJob job = new JPPFJob();
-        job.setId("Pokus");
-        job.setBlocking(true);
-
         int combinationId = 1;
-
         for (ParameterCombination combination : manager) {
             StringBuilder parameterString = new StringBuilder();
             parameterString.append("FIXED:\n").append("-----\n").append(manager.toStringNewLines());
             parameterString.append("\nCHANGING:\n").append("--------\n").append(combination.toStringOnlyChanngingNewLines());
 
             System.out.println("PARAMETER COMBINATION: " + combination.toStringOnlyChannging());
+            int experiments = combination.getInteger("EXPERIMENTS");
             int lineSize = combination.getInteger("RECO.LINE_SIZE");
+            boolean storeRun = combination.getBoolean("PRINT.storeRun");
 
             Stats stats = new Stats();
             stats.createStringStat("RND_SEED", "EXPERIMENT", "Random seed used to initialize generator");
 
-            int experiments = combination.getInteger("EXPERIMENTS");
             for (int i = 0; i < experiments; i++) {
                 long seed = RND.initializeTime();
                 stats.addSample("RND_SEED", Long.toString(seed));
@@ -74,15 +65,19 @@ public class RecoMainJPPF {
 //            BasicSubstrate substrate = RecoSubstrateFactory.createInputHiddenOutput(lineSize, 3, 1);
 
                 //XOR
-                BasicSubstrate substrate = RecoSubstrateFactory.createInputHiddenOutput(2, 2, 1);
+//                BasicSubstrate substrate = RecoSubstrateFactory.createInputHiddenOutput(lineSize, lineSize, 1);
 
                 //AND
 //            BasicSubstrate substrate = RecoSubstrateFactory.createInputToOutput(lineSize, 1);
 //            BasicSubstrate substrate = RecoSubstrateFactory.createInputHiddenOutput(lineSize, 2, 1);
+                //Find Cluster
+                BasicSubstrate substrate = FindClusterSubstrateFactory.createInputToOutputNoBias(11, 11);
 
-                EvaluableSubstrateBuilder substrateBuilder = new NetSubstrateBuilder(substrate);
+                EvaluableSubstrateBuilder substrateBuilder = SubstrateBuilderFactory.createEvaluableSubstrateBuilder(substrate, combination);
 
-                Problem problem = new Recognition1D(combination);
+//                Problem problem = new Recognition1D(combination);
+                Problem problem = new FindCluster(combination);
+
                 System.out.println("TARGET FITNESS " + problem.getTargetFitness());
 //                System.out.println("EXPERIMENT: " + (i + 1));
 
@@ -93,38 +88,16 @@ public class RecoMainJPPF {
                     reportStorage.storeParameters(combinationId, parameterString.toString());
 
                 }
+                solver.solve();
 
-                try {
-                    job.addTask(new JPPFSolver(solver, combinationId, i, combination, reportStorage, stats));
-                } catch (JPPFException e) {
-                    e.printStackTrace();
+                if (storeRun) {
+                    reportStorage.storeSingleRunResults(combinationId, i);
                 }
             }
+            reportStorage.storeExperimentResults(combinationId, stats);
+            reportStorage.appendExperimentsOverallResults(combinationId, combination.toStringOnlyChannging(), stats);
+            System.out.println(stats.scopeToString("EXPERIMENT"));
             combinationId++;
-        }
-
-        try {
-            List<JPPFTask> results = jppfClient.submit(job);
-            int counter = 0;
-            for (ParameterCombination combination : manager) {
-                int experiments = combination.getInteger("EXPERIMENTS");
-                for (int i = 0; i < experiments; i++) {
-                    JPPFSolver task = (JPPFSolver) results.get(counter++);
-                    if (task.getException() != null) {
-                        task.getException().printStackTrace();
-                    } else {
-                        System.out.println("OK: " + task.getResult());
-//                        reportStorage.storeExperimentResults(task.getCombinationId(), task.getStats());
-//                        reportStorage.appendExperimentsOverallResults(combinationId, combination.toStringOnlyChannging(), task.getStats());
-                        System.out.println(task.getStats().scopeToString("EXPERIMENT"));
-                    }
-                }
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        finally {
-            if (jppfClient != null) jppfClient.close();
         }
         reportStorage.storeExperimentsOverallResults();
     }

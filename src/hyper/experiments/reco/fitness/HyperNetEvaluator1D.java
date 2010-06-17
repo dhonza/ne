@@ -12,6 +12,7 @@ import common.net.INet;
 
 /**
  * Warning this class uses Net and Neuron classes which are not immutable!
+ * TODO do we really need this
  * TODO does not check current state: order of method calls
  * TODO does not check sizes of pattern and output vectors
  */

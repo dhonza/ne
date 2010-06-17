@@ -29,7 +29,7 @@ public class Recognition1D implements Problem {
 
     public Recognition1D(ParameterCombination parameters, double fitnessTolerance) {
         this.generator = PatternGeneratorFactory.createByName(parameters);
-        this.activations = parameters.getInteger("RECO.ACTIVATIONS");
+        this.activations = parameters.getInteger("NET_ACTIVATIONS");
         this.fitnessTolerance = fitnessTolerance;
     }
 

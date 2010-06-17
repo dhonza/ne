@@ -28,7 +28,9 @@ import java.util.*;
  */
 public class PrecompiledFeedForwardSubstrateBuilder implements EvaluableSubstrateBuilder {
     private class PreviousLayerConnectionContainer {
+        // bias connection to given layer
         public SubstrateInterLayerConnection bias;
+        // connection from previous layer to given layer
         public SubstrateInterLayerConnection connection;
 
         private PreviousLayerConnectionContainer(SubstrateInterLayerConnection bias, SubstrateInterLayerConnection connection) {
@@ -45,6 +47,7 @@ public class PrecompiledFeedForwardSubstrateBuilder implements EvaluableSubstrat
 
     private IPrecompiledFeedForwardStub stub;
     private double[] weights;
+    private int numberOfInputs;
 
     private boolean built = false;
 
@@ -88,11 +91,12 @@ public class PrecompiledFeedForwardSubstrateBuilder implements EvaluableSubstrat
             }
         }
         if (!foundBias) {
-            throw new IllegalStateException("None bias substrate layer found!");
+            System.out.println("WARNING: None bias substrate layer found!");
         }
         if (!foundInput) {
             throw new IllegalStateException("None input substrate layer found!");
         }
+        numberOfInputs = inputLayer.getNumber();
     }
 
     private void createListOfSuccessiveLayers() {
@@ -120,14 +124,13 @@ public class PrecompiledFeedForwardSubstrateBuilder implements EvaluableSubstrat
     private void prepareWeightVector() {
         int weightCount = 0;
         for (PreviousLayerConnectionContainer successiveConnection : successiveConnections) {
-            SubstrateInterLayerConnection connection = successiveConnection.bias;
-            Node[] nodes = connection.getTo().getNodes();
             //bias
             if (successiveConnection.bias != null) {
-                weightCount += nodes.length;
+                weightCount += successiveConnection.bias.getTo().getNodes().length;
             }
             //all connections to neuron
-            weightCount += successiveConnection.connection.getFrom().getNodes().length * nodes.length;
+            weightCount += successiveConnection.connection.getFrom().getNodes().length *
+                    successiveConnection.connection.getTo().getNodes().length;
         }
         weights = new double[weightCount];
     }
@@ -159,7 +162,10 @@ public class PrecompiledFeedForwardSubstrateBuilder implements EvaluableSubstrat
             Node[] fNodes = connection.getFrom().getNodes();
             src.append("\tn = new double[").append(tNodes.length).append("];\n");
             for (int t = 0; t < tNodes.length; t++) {
-                src.append("\tn[").append(t).append("] = a(w[").append(weightCnt++).append("]*b + ");
+                src.append("\tn[").append(t).append("] = a(");
+                if (biasLayer != null) {
+                    src.append("w[").append(weightCnt++).append("]*b + ");
+                }
                 for (int f = 0; f < fNodes.length - 1; f++) {
                     src.append("w[").append(weightCnt++).append("]*p[").append(f).append("] + ");
                 }
@@ -173,6 +179,9 @@ public class PrecompiledFeedForwardSubstrateBuilder implements EvaluableSubstrat
         src.append("\treturn n;\n}\n\n");
         src.append("public double a(double s) {\n");
         src.append("\treturn 1/(1+Math.exp(-4.924273 * s));\n");
+        src.append("}\n");
+        src.append("public int getNumberOfInputs() {\n");
+        src.append("\treturn ").append(numberOfInputs).append(";\n");
         src.append("}\n}\n");
     }
 
@@ -227,9 +236,7 @@ public class PrecompiledFeedForwardSubstrateBuilder implements EvaluableSubstrat
     public void build(CPPN aCPPN) {
         int cnt = 0;
         for (PreviousLayerConnectionContainer successiveConnection : successiveConnections) {
-            SubstrateInterLayerConnection connection = successiveConnection.bias;
-            Node[] nodes = connection.getTo().getNodes();
-            for (Node nodeTo : nodes) {
+            for (Node nodeTo : successiveConnection.connection.getTo().getNodes()) {
                 //bias
                 if (successiveConnection.bias != null) {
                     int aCPPNOutput = substrate.getConnectionCPPNOutput(successiveConnection.bias);
