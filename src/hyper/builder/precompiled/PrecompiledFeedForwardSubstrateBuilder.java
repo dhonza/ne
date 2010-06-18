@@ -138,9 +138,11 @@ public class PrecompiledFeedForwardSubstrateBuilder implements EvaluableSubstrat
 
     private String generateSourceCode() {
         StringBuilder src = new StringBuilder();
-        NoCyclesGenerator generator = new NoCyclesGenerator(successiveConnections, numberOfInputs, biasLayer);
+//        NoCyclesGenerator generator = new NoCyclesGenerator(successiveConnections, numberOfInputs, biasLayer);
+        NeuronsByCycleGenerator generator = new NeuronsByCycleGenerator(successiveConnections, numberOfInputs, biasLayer);
         generator.generateHeader(src);
         generator.generateLayers(src);
+        generator.generateHelperMethods(src);
         generator.generateFooter(src);
         return src.toString();
     }

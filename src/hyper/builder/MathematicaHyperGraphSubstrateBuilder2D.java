@@ -1,5 +1,6 @@
 package hyper.builder;
 
+import common.mathematica.MathematicaUtils;
 import hyper.cppn.CPPN;
 import hyper.substrate.Substrate;
 import hyper.substrate.layer.SubstrateInterLayerConnection;
@@ -72,7 +73,7 @@ public class MathematicaHyperGraphSubstrateBuilder2D implements SubstrateBuilder
             for (int i = 0; i < fromNodes.length; i++) {
                 for (int j = 0; j < toNodes.length; j++) {
                     double weight = 1.0 * aCPPN.evaluate(aCPPNOutput, fromNodes[i].getCoordinate(), toNodes[j].getCoordinate());
-                    vertices.append("{" + indexMap.get(fromNodes[i]) + "->" + indexMap.get(toNodes[j]) + ", " + Double.toString(weight).replace("E", "*10^") + "}");
+                    vertices.append("{" + indexMap.get(fromNodes[i]) + "->" + indexMap.get(toNodes[j]) + ", " + MathematicaUtils.toMathematica(weight) + "}");
                     printComma = true;
                     if (i != (fromNodes.length - 1) || j != (toNodes.length - 1) || itConnection.hasNext()) {
                         vertices.append(", ");
@@ -96,7 +97,7 @@ public class MathematicaHyperGraphSubstrateBuilder2D implements SubstrateBuilder
                     Node fromNode = connection.getFrom();
                     Node toNode = connection.getTo();
                     double weight = 1.0 * aCPPN.evaluate(aCPPNOutput, fromNode.getCoordinate(), toNode.getCoordinate());
-                    vertices.append("{" + indexMap.get(fromNode) + "->" + indexMap.get(toNode) + ", " + Double.toString(weight).replace("E", "*10^") + "}");
+                    vertices.append("{" + indexMap.get(fromNode) + "->" + indexMap.get(toNode) + ", " + MathematicaUtils.toMathematica(weight) + "}");
 
                     if (layerCounter != (substrate.getLayers().size() - 1) || connectionCounter != (layer.getIntraLayerConnections().length - 1)) {
                         vertices.append(", ");

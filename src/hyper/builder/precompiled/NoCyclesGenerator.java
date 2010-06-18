@@ -26,13 +26,15 @@ public class NoCyclesGenerator {
 
     protected void generateHeader(StringBuilder src) {
         src.append("public class PrecompiledStub implements common.net.precompiled.IPrecompiledFeedForwardStub {\n");
+        src.append("\t double[] w;\n");
+        src.append("\t double[] p;\n");
         src.append("public double[] propagate(double b, double[] in, double[] w) {\n");
+        src.append("\tthis.w = w;\n");
+        src.append("\tp = in;\n");
+        src.append("\tdouble[] n;\n");
     }
 
     protected void generateLayers(StringBuilder src) {
-        src.append("\tdouble[] p = in;\n");
-        src.append("\tdouble[] n;\n");
-
         int weightCnt = 0;
         for (int i = 0; i < successiveConnections.size(); i++) {
             SubstrateInterLayerConnection connection = successiveConnections.get(i).connection;
@@ -51,15 +53,19 @@ public class NoCyclesGenerator {
             }
             src.append("\tp = n;\n");
         }
+        src.append("\treturn n;\n}\n\n");
+    }
+
+    protected void generateHelperMethods(StringBuilder src) {
+        src.append("public double a(double s) {\n");
+        src.append("\treturn 1/(1+Math.exp(-4.924273 * s));\n");
+        src.append("}\n\n");
+        src.append("public int getNumberOfInputs() {\n");
+        src.append("\treturn ").append(numberOfInputs).append(";\n");
+        src.append("}\n\n");
     }
 
     protected void generateFooter(StringBuilder src) {
-        src.append("\treturn n;\n}\n\n");
-        src.append("public double a(double s) {\n");
-        src.append("\treturn 1/(1+Math.exp(-4.924273 * s));\n");
         src.append("}\n");
-        src.append("public int getNumberOfInputs() {\n");
-        src.append("\treturn ").append(numberOfInputs).append(";\n");
-        src.append("}\n}\n");
     }
 }

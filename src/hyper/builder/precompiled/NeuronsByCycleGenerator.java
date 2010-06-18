@@ -20,10 +20,6 @@ public class NeuronsByCycleGenerator extends NoCyclesGenerator {
 
     @Override
     protected void generateLayers(StringBuilder src) {
-        src.append("\tdouble[] p = in;\n");
-        src.append("\tdouble[] n;\n");
-        src.append("\tdouble sum;\n");
-
         int weightCnt = 0;
         for (int i = 0; i < successiveConnections.size(); i++) {
             SubstrateInterLayerConnection connection = successiveConnections.get(i).connection;
@@ -32,13 +28,21 @@ public class NeuronsByCycleGenerator extends NoCyclesGenerator {
             src.append("\tn = new double[").append(tNodes.length).append("];\n");
 
             for (int t = 0; t < tNodes.length; t++) {
-                src.append("\tsum = 0;\n");
-                src.append("\tfor(int i = 0; i < " + fNodes.length + "; i++) {");
-                src.append("sum += w[" + (weightCnt + i) + "] * p[" + i + "]; }\n ");
+                src.append("\tn[").append(t).append("] = a(s(" + fNodes.length + ", " + weightCnt + "));\n");
                 weightCnt += fNodes.length;
-                src.append("\tn[").append(t).append("] = a(sum);\n");
             }
         }
+        src.append("\treturn n;\n}\n\n");
+    }
 
+    @Override
+    protected void generateHelperMethods(StringBuilder src) {
+        super.generateHelperMethods(src);
+        src.append("public double s(int n, int wc) {\n");
+        src.append("\tdouble sum = 0;\n");
+        src.append("\tfor(int i = 0; i < n; i++) {");
+        src.append("sum += w[(wc + i)] * p[i]; }\n");
+        src.append("\treturn sum;\n");
+        src.append("}\n\n");
     }
 }
