@@ -13,8 +13,6 @@ import hyper.evaluate.SolverFactory;
 import hyper.experiments.findcluster.FindCluster;
 import hyper.experiments.findcluster.FindClusterSubstrateFactory;
 import hyper.experiments.reco.ReportStorage;
-import hyper.experiments.reco.problem.RecoSubstrateFactory;
-import hyper.experiments.reco.problem.Recognition1D;
 import hyper.substrate.BasicSubstrate;
 
 import java.io.File;
@@ -71,7 +69,9 @@ public class Main {
 //            BasicSubstrate substrate = RecoSubstrateFactory.createInputToOutput(lineSize, 1);
 //            BasicSubstrate substrate = RecoSubstrateFactory.createInputHiddenOutput(lineSize, 2, 1);
                 //Find Cluster
-                BasicSubstrate substrate = FindClusterSubstrateFactory.createInputToOutputNoBias(11, 11);
+                BasicSubstrate substrate = FindClusterSubstrateFactory.createInputToOutputNoBias(
+                        combination.getInteger("FIND_CLUSTER.NODES_X"),
+                        combination.getInteger("FIND_CLUSTER.NODES_Y"));
 
                 EvaluableSubstrateBuilder substrateBuilder = SubstrateBuilderFactory.createEvaluableSubstrateBuilder(substrate, combination);
 

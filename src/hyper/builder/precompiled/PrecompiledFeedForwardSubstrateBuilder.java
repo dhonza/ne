@@ -1,8 +1,9 @@
-package hyper.builder;
+package hyper.builder.precompiled;
 
 import common.net.INet;
 import common.net.precompiled.IPrecompiledFeedForwardStub;
 import common.net.precompiled.PrecompiledFeedForwardNet;
+import hyper.builder.EvaluableSubstrateBuilder;
 import hyper.cppn.CPPN;
 import hyper.substrate.Substrate;
 import hyper.substrate.layer.IBias;
@@ -27,7 +28,7 @@ import java.util.*;
  * To change this template use File | Settings | File Templates.
  */
 public class PrecompiledFeedForwardSubstrateBuilder implements EvaluableSubstrateBuilder {
-    private class PreviousLayerConnectionContainer {
+    class PreviousLayerConnectionContainer {
         // bias connection to given layer
         public SubstrateInterLayerConnection bias;
         // connection from previous layer to given layer
@@ -137,53 +138,14 @@ public class PrecompiledFeedForwardSubstrateBuilder implements EvaluableSubstrat
 
     private String generateSourceCode() {
         StringBuilder src = new StringBuilder();
-        generateHeader(src);
-        generateInputs(src);
-        generateLayers(src);
-        generateFooter(src);
+        NoCyclesGenerator generator = new NoCyclesGenerator(successiveConnections, numberOfInputs, biasLayer);
+        generator.generateHeader(src);
+        generator.generateLayers(src);
+        generator.generateFooter(src);
         return src.toString();
     }
 
-    private void generateHeader(StringBuilder src) {
-        src.append("public class PrecompiledStub implements common.net.precompiled.IPrecompiledFeedForwardStub {\n");
-        src.append("public double[] propagate(double b, double[] in, double[] w) {\n");
-    }
 
-    private void generateInputs(StringBuilder src) {
-        src.append("\tdouble[] p = in;\n");
-        src.append("\tdouble[] n;\n");
-    }
-
-    private void generateLayers(StringBuilder src) {
-        int weightCnt = 0;
-        for (int i = 0; i < successiveConnections.size(); i++) {
-            SubstrateInterLayerConnection connection = successiveConnections.get(i).connection;
-            Node[] tNodes = connection.getTo().getNodes();
-            Node[] fNodes = connection.getFrom().getNodes();
-            src.append("\tn = new double[").append(tNodes.length).append("];\n");
-            for (int t = 0; t < tNodes.length; t++) {
-                src.append("\tn[").append(t).append("] = a(");
-                if (biasLayer != null) {
-                    src.append("w[").append(weightCnt++).append("]*b + ");
-                }
-                for (int f = 0; f < fNodes.length - 1; f++) {
-                    src.append("w[").append(weightCnt++).append("]*p[").append(f).append("] + ");
-                }
-                src.append("w[").append(weightCnt++).append("]*p[").append(fNodes.length - 1).append("]);\n");
-            }
-            src.append("\tp = n;\n");
-        }
-    }
-
-    private void generateFooter(StringBuilder src) {
-        src.append("\treturn n;\n}\n\n");
-        src.append("public double a(double s) {\n");
-        src.append("\treturn 1/(1+Math.exp(-4.924273 * s));\n");
-        src.append("}\n");
-        src.append("public int getNumberOfInputs() {\n");
-        src.append("\treturn ").append(numberOfInputs).append(";\n");
-        src.append("}\n}\n");
-    }
 
     private void compile(String sourceCode) {
         try {

@@ -1,6 +1,7 @@
 package hyper.builder;
 
 import common.pmatrix.ParameterCombination;
+import hyper.builder.precompiled.PrecompiledFeedForwardSubstrateBuilder;
 import hyper.substrate.Substrate;
 
 /**

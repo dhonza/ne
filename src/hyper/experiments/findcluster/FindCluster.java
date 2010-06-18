@@ -1,5 +1,6 @@
 package hyper.experiments.findcluster;
 
+import common.mathematica.MathematicaUtils;
 import common.net.INet;
 import common.pmatrix.ParameterCombination;
 import hyper.evaluate.Problem;
@@ -42,8 +43,8 @@ public class FindCluster implements Problem {
     private boolean solved = false;
 
     public FindCluster(ParameterCombination parameters) {
-        numNodesX = 11;
-        numNodesY = 11;
+        numNodesX = parameters.getInteger("FIND_CLUSTER.NODES_X");
+        numNodesY = parameters.getInteger("FIND_CLUSTER.NODES_Y");
         sizeMultiplier = 1;
         this.activations = parameters.getInteger("NET_ACTIVATIONS");
     }
@@ -192,12 +193,12 @@ public class FindCluster implements Problem {
             }
         }
 
-        if (fitness >= maxFitness * .95) {//original setting
-            solved = true;
-        }
-//        if (fitness >= maxFitness * .99) {
+//        if (fitness >= maxFitness * .95) {//original setting
 //            solved = true;
 //        }
+        if (fitness >= maxFitness * .99) {
+            solved = true;
+        }
 
         return fitness;
     }
@@ -349,11 +350,14 @@ public class FindCluster implements Problem {
 
                 System.out.println("{");
                 printMatrix(pattern.in, numNodesX);
-                System.out.println("},{");
+                System.out.println(",");
 
                 printMatrix(pattern.out, numNodesX);
-                System.out.println("}");
-                System.out.println("");
+                if (y1 >= (numNodesY - 2) && x1 >= (numNodesX - 2)) {
+                    System.out.println("\n}");
+                } else {
+                    System.out.println("\n},");
+                }
             }
         }
     }
@@ -364,22 +368,23 @@ public class FindCluster implements Problem {
 
 
     public static void printMatrix(double[] m, int numNodesX) {
-        System.out.print("{");
+        System.out.print("{{");
         for (int i = 0; i < m.length; i++) {
             if ((i + 1) % numNodesX != 0) {
 //                System.out.printf("%1.3f, ", 1 * m[i]);
-                System.out.printf("%g, ", 1 * m[i]);
+                System.out.print(MathematicaUtils.toMathematica(1 * m[i]) + ", ");
             } else {
 //                System.out.printf("%1.3f", 1 * m[i]);
-                System.out.printf("%g", 1 * m[i]);
+                System.out.print(MathematicaUtils.toMathematica(1 * m[i]));
             }
             if ((i + 1) % numNodesX == 0) {
-                System.out.println("},");
+                System.out.print("}");
                 if (i < m.length - 1) {
-                    System.out.print("{");
+                    System.out.print(",\n{");
                 }
             }
         }
+        System.out.print("}");
     }
 
     public static void main(String[] args) {
