@@ -336,19 +336,25 @@ public class FindCluster implements Problem {
                     x1Big--;
                 }
 
+                System.out.println("{");
                 if (x1 > 0 && x1 + 1 < numNodesX) {
-//                    fitness += evaluateNetForSingleConfiguration(hyperNet, x1, y1, x1, y1Big);
-                } else {
+                    Pattern pattern = evaluateNetForSingleConfiguration(hyperNet, x1, y1, x1, y1Big);
+                    printMatrix(pattern.in, numNodesX);
+                    System.out.println(",");
+                    printMatrix(pattern.out, numNodesX);
+                    System.out.println("\n},\n{");
                 }
 
                 if (y1 > 0 && y1 + 1 < numNodesY) {
-//                    fitness += evaluateNetForSingleConfiguration(hyperNet, x1, y1, x1Big, y1);
-                } else {
+                    Pattern pattern = evaluateNetForSingleConfiguration(hyperNet, x1, y1, x1Big, y1);
+                    printMatrix(pattern.in, numNodesX);
+                    System.out.println(",");
+                    printMatrix(pattern.out, numNodesX);
+                    System.out.println("\n},\n{");
                 }
 
                 Pattern pattern = evaluateNetForSingleConfiguration(hyperNet, x1, y1, x1Big, y1Big);
 
-                System.out.println("{");
                 printMatrix(pattern.in, numNodesX);
                 System.out.println(",");
 
