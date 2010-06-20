@@ -48,8 +48,8 @@ public class Tree implements Serializable {
         return node;
     }
 
-    public double evaluate() {
-        return root.evaluate();
+    public double evaluate(TreeInputs treeInputs) {
+        return root.evaluate(treeInputs);
     }
 
     public Tree mutateNode(NodeCollection nodeCollection) {

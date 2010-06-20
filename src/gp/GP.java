@@ -104,7 +104,7 @@ public class GP implements EvolutionaryAlgorithm, Serializable {
         population = new Forest[POPULATION_SIZE];
         newPopulation = new Forest[POPULATION_SIZE];
         for (int i = 0; i < population.length; i++) {
-            population[i] = Forest.createRandom(generation, treeInputs, outputs, nodeCollection);
+            population[i] = Forest.createRandom(generation, inputs, outputs, nodeCollection);
         }
     }
 

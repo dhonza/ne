@@ -38,7 +38,7 @@ public abstract class Node implements Serializable {
 
     abstract protected Node copy(Node[] children);
 
-    abstract public double evaluate();
+    abstract public double evaluate(TreeInputs treeInputs);
 
     abstract public int getArity();
 

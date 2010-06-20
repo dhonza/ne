@@ -1,6 +1,7 @@
 package gp.functions;
 
 import gp.Node;
+import gp.TreeInputs;
 
 /**
  * Created by IntelliJ IDEA.
@@ -31,8 +32,8 @@ public class Gauss extends Node {
         return new Gauss(depth, children, innovation);
     }
 
-    public double evaluate() {
-        double x = nodes[0].evaluate();
+    public double evaluate(TreeInputs treeInputs) {
+        double x = nodes[0].evaluate(treeInputs);
         return Math.exp(-(x * x));
     }
 

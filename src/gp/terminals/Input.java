@@ -12,33 +12,30 @@ import gp.TreeInputs;
  */
 public class Input extends Node {
     final private int index;
-    final private TreeInputs treeInputs;
 
     public Input(int index, TreeInputs treeInputs) {
-        this(0, index, treeInputs);
+        this(0, index);
     }
 
-    private Input(int depth, int index, TreeInputs treeInputs) {
+    private Input(int depth, int index) {
         super(depth, new Node[0]);
         this.index = index;
-        this.treeInputs = treeInputs;
     }
 
-    private Input(int depth, Node[] nodes, long innovation, int index, TreeInputs treeInputs) {
+    private Input(int depth, Node[] nodes, long innovation, int index) {
         super(depth, nodes, innovation);
         this.index = index;
-        this.treeInputs = treeInputs;
     }
 
     protected Node create(int depth, Node[] children) {
-        return new Input(depth, index, treeInputs);
+        return new Input(depth, index);
     }
 
     protected Node copy(Node[] children) {
-        return new Input(depth, children, innovation, index, treeInputs);
+        return new Input(depth, children, innovation, index);
     }
 
-    public double evaluate() {
+    public double evaluate(TreeInputs treeInputs) {
         return treeInputs.get(index);
     }
 

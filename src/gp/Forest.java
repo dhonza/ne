@@ -16,11 +16,11 @@ public class Forest implements Comparable, Serializable {
     private Tree[] trees;
     private double fitness = -Double.MAX_VALUE;
     private int generationOfOrigin;
-    transient private TreeInputs treeInputs;
+    private TreeInputs treeInputs;
 
-    private Forest(int generationOfOrigin, TreeInputs treeInputs) {
+    private Forest(int generationOfOrigin, int numOfInputs) {
         this.generationOfOrigin = generationOfOrigin;
-        this.treeInputs = treeInputs;
+        this.treeInputs = new TreeInputs(numOfInputs);
     }
 
     public Forest() {
@@ -35,11 +35,11 @@ public class Forest implements Comparable, Serializable {
     }
 
     public static Forest createEmpty() {
-        return new Forest(0, null);
+        return new Forest(0, 0);
     }
 
-    public static Forest createRandom(int generationOfOrigin, TreeInputs treeInputs, int numOfOutputs, NodeCollection nodeCollection) {
-        Forest forest = new Forest(generationOfOrigin, treeInputs);
+    public static Forest createRandom(int generationOfOrigin, int numOfInputs, int numOfOutputs, NodeCollection nodeCollection) {
+        Forest forest = new Forest(generationOfOrigin, numOfInputs);
         forest.trees = new Tree[numOfOutputs];
         for (int i = 0; i < numOfOutputs; i++) {
             forest.trees[i] = Tree.createRandom(nodeCollection);
@@ -48,7 +48,7 @@ public class Forest implements Comparable, Serializable {
     }
 
     public Forest mutate(NodeCollection nodeCollection, int generationOfOrigin) {
-        Forest forest = new Forest(generationOfOrigin, treeInputs);
+        Forest forest = new Forest(generationOfOrigin, this.getNumOfInputs());
         forest.trees = new Tree[trees.length];
         //TODO nebo vybrat jeden?
         for (int i = 0; i < trees.length; i++) {
@@ -82,7 +82,7 @@ public class Forest implements Comparable, Serializable {
     public double[] getOutputs() {
         double[] outputs = new double[trees.length];
         for (int i = 0; i < trees.length; i++) {
-            outputs[i] = trees[i].evaluate();
+            outputs[i] = trees[i].evaluate(treeInputs);
         }
         return outputs;
     }

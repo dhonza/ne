@@ -3,6 +3,7 @@ package gp.terminals;
 import common.RND;
 import gp.GP;
 import gp.Node;
+import gp.TreeInputs;
 
 /**
  * Created by IntelliJ IDEA.
@@ -44,7 +45,7 @@ public class Random extends Node {
         return new Random(depth, value + GP.MUTATION_CAUCHY_POWER * RND.getCauchy());
     }
 
-    public double evaluate() {
+    public double evaluate(TreeInputs treeInputs) {
         return value;
     }
 

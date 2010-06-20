@@ -1,6 +1,7 @@
 package gp.functions;
 
 import gp.Node;
+import gp.TreeInputs;
 
 /**
  * Created by IntelliJ IDEA.
@@ -31,8 +32,8 @@ public class Atan extends Node {
         return new Atan(depth, children, innovation);
     }
 
-    public double evaluate() {
-        return Math.atan(nodes[0].evaluate());
+    public double evaluate(TreeInputs treeInputs) {
+        return Math.atan(nodes[0].evaluate(treeInputs));
     }
 
     public int getArity() {

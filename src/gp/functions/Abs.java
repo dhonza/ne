@@ -1,6 +1,7 @@
 package gp.functions;
 
 import gp.Node;
+import gp.TreeInputs;
 
 /**
  * Created by IntelliJ IDEA.
@@ -31,8 +32,8 @@ public class Abs extends Node {
         return new Abs(depth, children, innovation);
     }
 
-    public double evaluate() {
-        return Math.abs(nodes[0].evaluate());
+    public double evaluate(TreeInputs treeInputs) {
+        return Math.abs(nodes[0].evaluate(treeInputs));
     }
 
     public int getArity() {

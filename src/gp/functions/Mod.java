@@ -1,6 +1,7 @@
 package gp.functions;
 
 import gp.Node;
+import gp.TreeInputs;
 
 /**
  * Created by IntelliJ IDEA.
@@ -31,12 +32,12 @@ public class Mod extends Node {
         return new Mod(depth, children, innovation);
     }
 
-    public double evaluate() {
-        double n = nodes[1].evaluate();
+    public double evaluate(TreeInputs treeInputs) {
+        double n = nodes[1].evaluate(treeInputs);
         if (n == 0.0) {
             return 0.0;
         }
-        double a = nodes[0].evaluate();
+        double a = nodes[0].evaluate(treeInputs);
         double q = Math.floor(a / n);
         return a - n * q;
     }

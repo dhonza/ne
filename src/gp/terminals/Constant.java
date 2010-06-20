@@ -1,6 +1,7 @@
 package gp.terminals;
 
 import gp.Node;
+import gp.TreeInputs;
 
 /**
  * Created by IntelliJ IDEA.
@@ -35,7 +36,7 @@ public class Constant extends Node {
         return new Constant(depth, children, innovation, value);
     }
 
-    public double evaluate() {
+    public double evaluate(TreeInputs treeInputs) {
         return value;
     }
 

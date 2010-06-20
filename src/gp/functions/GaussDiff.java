@@ -1,6 +1,7 @@
 package gp.functions;
 
 import gp.Node;
+import gp.TreeInputs;
 
 /**
  * Created by IntelliJ IDEA.
@@ -31,9 +32,9 @@ public class GaussDiff extends Node {
         return new GaussDiff(depth, children, innovation);
     }
 
-    public double evaluate() {
-        double x = nodes[0].evaluate();
-        double y = nodes[1].evaluate();
+    public double evaluate(TreeInputs treeInputs) {
+        double x = nodes[0].evaluate(treeInputs);
+        double y = nodes[1].evaluate(treeInputs);
         double diff = x - y;
         return Math.exp(-(diff * diff));
     }
