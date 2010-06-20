@@ -4,9 +4,11 @@ import common.evolution.EvolutionaryAlgorithmSolver;
 import common.pmatrix.ParameterCombination;
 import common.stats.Stats;
 import hyper.builder.EvaluableSubstrateBuilder;
+import hyper.builder.SubstrateBuilderFactory;
 import hyper.evaluate.printer.SNEATProgressPrinter1D;
 import hyper.experiments.reco.FileProgressPrinter;
 import hyper.experiments.reco.ReportStorage;
+import hyper.substrate.Substrate;
 import sneat.MaxEvaluationsStopCondition;
 import sneat.MaxGenerationsStopCondition;
 import sneat.SNEAT;
@@ -28,7 +30,7 @@ public class SNEATSolver implements Solver {
     private static Logger logger = Logger.getLogger("hyper.evaluate.SNEATSolver");
 
     final private ParameterCombination parameters;
-    final private EvaluableSubstrateBuilder substrateBuilder;
+    final private Substrate substrate;
     final private Stats stats;
     final private Problem problem;
     final private ReportStorage reportStorage;
@@ -36,9 +38,9 @@ public class SNEATSolver implements Solver {
     private EvolutionaryAlgorithmSolver solver;
     private SNEAT sneat;
 
-    public SNEATSolver(ParameterCombination parameters, EvaluableSubstrateBuilder substrateBuilder, Stats stats, Problem problem, ReportStorage reportStorage) {
+    public SNEATSolver(ParameterCombination parameters, Substrate substrate, Stats stats, Problem problem, ReportStorage reportStorage) {
         this.parameters = parameters;
-        this.substrateBuilder = substrateBuilder;
+        this.substrate = substrate;
         this.stats = stats;
         this.problem = problem;
         this.reportStorage = reportStorage;
@@ -47,6 +49,8 @@ public class SNEATSolver implements Solver {
 
     private void init() {
         logger.getParent().setLevel(Level.OFF);
+
+        EvaluableSubstrateBuilder substrateBuilder = SubstrateBuilderFactory.createEvaluableSubstrateBuilder(substrate, parameters);
         int inputsCPPN = 2 * substrateBuilder.getSubstrate().getMaxDimension();
         int outputsCPPN = substrateBuilder.getSubstrate().getNumOfConnections();
 

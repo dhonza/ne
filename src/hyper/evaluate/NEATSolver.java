@@ -1,5 +1,6 @@
 package hyper.evaluate;
 
+import common.evolution.Evaluable;
 import common.evolution.EvolutionaryAlgorithmSolver;
 import common.net.linked.Net;
 import common.net.linked.Neuron;
@@ -7,9 +8,11 @@ import common.pmatrix.ParameterCombination;
 import common.pmatrix.Utils;
 import common.stats.Stats;
 import hyper.builder.EvaluableSubstrateBuilder;
+import hyper.builder.SubstrateBuilderFactory;
 import hyper.evaluate.printer.NEATProgressPrinter1D;
 import hyper.experiments.reco.FileProgressPrinter;
 import hyper.experiments.reco.ReportStorage;
+import hyper.substrate.Substrate;
 import neat.*;
 
 /**
@@ -22,7 +25,7 @@ import neat.*;
 
 public class NEATSolver implements Solver {
     final private ParameterCombination parameters;
-    final private EvaluableSubstrateBuilder substrateBuilder;
+    final private Substrate substrate;
     final private Stats stats;
     final private Problem problem;
     final private ReportStorage reportStorage;
@@ -31,9 +34,9 @@ public class NEATSolver implements Solver {
     private FitnessSharingPopulation population;
     private EvolutionaryAlgorithmSolver solver;
 
-    public NEATSolver(ParameterCombination parameters, EvaluableSubstrateBuilder substrateBuilder, Stats stats, Problem problem, ReportStorage reportStorage) {
+    public NEATSolver(ParameterCombination parameters, Substrate substrate, Stats stats, Problem problem, ReportStorage reportStorage) {
         this.parameters = parameters;
-        this.substrateBuilder = substrateBuilder;
+        this.substrate = substrate;
         this.stats = stats;
         this.problem = problem;
         this.reportStorage = reportStorage;
@@ -41,6 +44,7 @@ public class NEATSolver implements Solver {
     }
 
     private void init() {
+        EvaluableSubstrateBuilder substrateBuilder = SubstrateBuilderFactory.createEvaluableSubstrateBuilder(substrate, parameters);
         NEATEvaluator evaluator = new NEATEvaluator(substrateBuilder, problem);
 
         neat = new NEAT();
@@ -48,7 +52,7 @@ public class NEATSolver implements Solver {
         config.targetFitness = problem.getTargetFitness();
         Utils.setParameters(parameters, config, "NEAT");
 
-        population = new FitnessSharingPopulation(evaluator, getPrototype(evaluator));
+        population = new FitnessSharingPopulation(new Evaluable[]{evaluator}, getPrototype(evaluator));
 
         neat.setPopulation(population);
 
@@ -61,7 +65,7 @@ public class NEATSolver implements Solver {
         solver.addStopCondition(new SolvedStopCondition(problem));
     }
 
-    private static Genome getPrototype(Evaluable evaluator) {
+    private static Genome getPrototype(Evaluable<Genome> evaluator) {
         Net net = new Net(1);
         net.createFeedForward(evaluator.getNumberOfInputs(), new int[]{}, evaluator.getNumberOfOutputs());
         for (int i = 0; i < evaluator.getNumberOfOutputs(); i++) {

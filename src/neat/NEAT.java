@@ -1,5 +1,6 @@
 package neat;
 
+import common.evolution.Evaluable;
 import common.evolution.EvolutionaryAlgorithm;
 
 /**
@@ -20,7 +21,6 @@ import common.evolution.EvolutionaryAlgorithm;
  */
 public class NEAT implements EvolutionaryAlgorithm {
     private static NEATConfig config = new NEATConfig();
-    private boolean evaluateAll;
 
     /**
      * The reference to Population
@@ -32,14 +32,6 @@ public class NEAT implements EvolutionaryAlgorithm {
      * the population. Typically it would be !!!!!!!!!!!!!!!!!!!!!!!
      */
     public NEAT() {
-        this(false);
-    }
-
-//  Population can be evaluated in two possible ways: 1. (false) All Genomes separately, which is usual.
-//  2. (true) The whole population of Genomes together, which is usefull for co-evolutionary tasks.
-
-    public NEAT(boolean evaluateAll) {
-        this.evaluateAll = evaluateAll;
     }
 
     public static NEATConfig getConfig() {
@@ -56,7 +48,7 @@ public class NEAT implements EvolutionaryAlgorithm {
 
     public void initialGeneration() {
         population.incrementGeneration();
-        population.evaluate(evaluateAll); //obtain the fitness of all Genomes
+        population.evaluate(); //obtain the fitness of all Genomes
         population.speciate(); //assign Genomes to Species, if needed create new Species
         //+ compute sharedFitness of all Genomes, penalize unimproved Species etc...
         // + estimate the amount of offspring for all Species
@@ -66,13 +58,13 @@ public class NEAT implements EvolutionaryAlgorithm {
     public void nextGeneration() {
         population.incrementGeneration();
         population.select(); //eliminate inferior genomes
-        population.reproduce(evaluateAll); //reproduce the Population - the current Population is completely replaced by its offspring
+        population.reproduce(); //reproduce the Population - the current Population is completely replaced by its offspring
 
         if (population.getGeneration() % config.clearHistoryGenerations == 0) {
             population.getGlobalInnovation().cleanHistory(); //? clear memory of innovations? after one generation ?
         }
 
-        population.evaluate(evaluateAll);
+        population.evaluate();
         population.speciate();
     }
 
@@ -109,6 +101,11 @@ public class NEAT implements EvolutionaryAlgorithm {
     }
 
     public boolean isSolved() {
-        return population.evaluator.isSolved();
+        for (Evaluable<Genome> evaluator : population.perThreadEvaluators) {
+            if(evaluator.isSolved()) {
+                return true;
+            }
+        }
+        return false;
     }
 }

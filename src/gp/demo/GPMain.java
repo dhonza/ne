@@ -1,6 +1,7 @@
 package gp.demo;
 
 import common.RND;
+import common.evolution.Evaluable;
 import common.evolution.EvolutionaryAlgorithmSolver;
 import common.pmatrix.ParameterCombination;
 import common.pmatrix.ParameterMatrixManager;
@@ -9,6 +10,7 @@ import common.stats.Stats;
 import gp.*;
 import gp.terminals.Constant;
 import gp.terminals.Random;
+import hyper.evaluate.GPEvaluator;
 
 import java.io.File;
 
@@ -42,7 +44,7 @@ public class GPMain {
                 Node[] terminals = new Node[]{new Constant(-1.0), new Random()};
 
                 Evaluable evaluable = EvaluableFactory.createByName(combination.getString("PROBLEM"));
-                GP gp = GPFactory.createByName(combination.getString("GP.TYPE"), evaluable, functions, terminals);
+                GP gp = GPFactory.createByName(combination.getString("GP.TYPE"), new Evaluable[]{evaluable}, functions, terminals);
 
                 EvolutionaryAlgorithmSolver solver = new EvolutionaryAlgorithmSolver(gp, stats);
                 solver.addProgressPrinter(new GPBasicProgressPrinter(gp));

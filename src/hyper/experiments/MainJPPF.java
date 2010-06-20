@@ -5,15 +5,11 @@ import common.pmatrix.ParameterCombination;
 import common.pmatrix.ParameterMatrixManager;
 import common.pmatrix.ParameterMatrixStorage;
 import common.stats.Stats;
-import hyper.builder.EvaluableSubstrateBuilder;
-import hyper.builder.NetSubstrateBuilder;
 import hyper.evaluate.JPPFSolver;
-import hyper.evaluate.Problem;
 import hyper.evaluate.Solver;
 import hyper.evaluate.SolverFactory;
 import hyper.experiments.reco.ReportStorage;
 import hyper.experiments.reco.problem.RecoSubstrateFactory;
-import hyper.experiments.reco.problem.Recognition1D;
 import hyper.substrate.BasicSubstrate;
 import org.jppf.JPPFException;
 import org.jppf.client.JPPFClient;
@@ -30,7 +26,7 @@ import java.util.List;
  * Time: 9:50:01 PM
  * To change this template use File | Settings | File Templates.
  */
-public class RecoMainJPPF {
+public class MainJPPF {
     private static JPPFClient jppfClient = null;
 
     public static void main(String[] args) {
@@ -81,13 +77,10 @@ public class RecoMainJPPF {
 //            BasicSubstrate substrate = RecoSubstrateFactory.createInputToOutput(lineSize, 1);
 //            BasicSubstrate substrate = RecoSubstrateFactory.createInputHiddenOutput(lineSize, 2, 1);
 
-                EvaluableSubstrateBuilder substrateBuilder = new NetSubstrateBuilder(substrate);
-
-                Problem problem = new Recognition1D(combination);
-                System.out.println("TARGET FITNESS " + problem.getTargetFitness());
+//                System.out.println("TARGET FITNESS " + problem.getTargetFitness());
 //                System.out.println("EXPERIMENT: " + (i + 1));
 
-                Solver solver = SolverFactory.getSolver(combination, substrateBuilder, stats, problem, reportStorage);
+                Solver solver = SolverFactory.getSolver(combination, substrate, stats, reportStorage);
                 if (i == 0) {
                     System.out.println(solver.getConfigString());
                     parameterString.append("\nSOLVER:\n").append("------\n").append(solver.getConfigString());

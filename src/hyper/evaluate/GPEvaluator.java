@@ -1,7 +1,7 @@
 package hyper.evaluate;
 
 import common.net.INet;
-import gp.Evaluable;
+import common.evolution.Evaluable;
 import gp.Forest;
 import hyper.builder.EvaluableSubstrateBuilder;
 import hyper.cppn.BasicGPCPPN;
@@ -14,7 +14,7 @@ import hyper.cppn.CPPN;
  * Time: 3:45:28 PM
  * To change this template use File | Settings | File Templates.
  */
-public class GPEvaluator implements Evaluable {
+public class GPEvaluator implements Evaluable<Forest> {
     final private EvaluableSubstrateBuilder substrateBuilder;
     final private Problem problem;
 
@@ -26,8 +26,13 @@ public class GPEvaluator implements Evaluable {
     public double evaluate(Forest forest) {
         CPPN aCPPN = new BasicGPCPPN(forest, substrateBuilder.getSubstrate().getMaxDimension());
         substrateBuilder.build(aCPPN);
+//        System.out.println("forest: " + forest);
 
         INet hyperNet = substrateBuilder.getNet();
+        //TODO TADY SE NEKDY PRI PARALELNIM VYHODNOENI NASTAVI JINE VAHY
+        //TODO PROBLEM JE VE VYHODNOCOVANI STROMU - Nodes jsou nekdy sdilene (zatim jsem si vsiml jen vstupu)!!!
+        //TODO TreeInputs jsou u vsech take spolecne
+//        System.out.println("hyperNet: " + hyperNet);
 
         return problem.evaluate(hyperNet);
     }
@@ -42,5 +47,15 @@ public class GPEvaluator implements Evaluable {
 
     public int getNumberOfOutputs() {
         return substrateBuilder.getSubstrate().getNumOfConnections();
+    }
+
+    public Problem getProblem() {
+        //TODO REMOVE FOR DEBUG ONLY
+        return problem;
+    }
+
+    public EvaluableSubstrateBuilder getSubstrateBuilder() {
+        //TODO REMOVE FOR DEBUG ONLY
+        return substrateBuilder;
     }
 }

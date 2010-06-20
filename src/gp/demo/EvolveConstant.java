@@ -1,6 +1,6 @@
 package gp.demo;
 
-import gp.Evaluable;
+import common.evolution.Evaluable;
 import gp.Forest;
 
 /**
@@ -10,7 +10,7 @@ import gp.Forest;
  * Time: 5:02:46 PM
  * To change this template use File | Settings | File Templates.
  */
-public class EvolveConstant implements Evaluable {
+public class EvolveConstant implements Evaluable<Forest> {
     public double evaluate(Forest forest) {
         double output = forest.getOutputs()[0];
         return 0.0 - Math.abs(2.1 - output);

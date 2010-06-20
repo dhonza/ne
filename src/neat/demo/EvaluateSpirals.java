@@ -1,8 +1,8 @@
 package neat.demo;
 
 import common.RND;
+import common.evolution.Evaluable;
 import common.net.linked.Net;
-import neat.Evaluable;
 import neat.Genome;
 
 /**
@@ -10,7 +10,7 @@ import neat.Genome;
  * Date: May 19, 2006
  * Time: 8:52:38 AM
  */
-public class EvaluateSpirals implements Evaluable {
+public class EvaluateSpirals implements Evaluable<Genome> {
     public static double DENSITY = 1.0,
             MAX_RADIUS = 0.8,
             CENTER = 0.0;
@@ -145,9 +145,6 @@ public class EvaluateSpirals implements Evaluable {
         return c1 + c2;
     }
 
-    public void evaluateAll(Genome[] opop, double[] ofitnessValues) {
-    }
-
     public boolean isSolved() {
         return false; //TODO implement check for solved problem
     }
@@ -161,22 +158,8 @@ public class EvaluateSpirals implements Evaluable {
 //        return 2;
     }
 
-    public void storeEvaluation(Genome og) {
-        //To change body of implemented methods use File | Settings | File Templates.
-    }
-
-    public double[][][] getStoredInputs() {
-        return new double[0][][];  //To change body of implemented methods use File | Settings | File Templates.
-    }
-
-    public double[][][] getStoredOutputs() {
-        return new double[0][][];  //To change body of implemented methods use File | Settings | File Templates.
-    }
-
-
     public void activate(Net on) {
         for (int i = 0; i < 5; i++)
             on.activate();
     }
-
 }

@@ -1,6 +1,7 @@
 package neat;
 
 import common.RND;
+import common.evolution.Evaluable;
 
 import java.util.Collections;
 import java.util.Iterator;
@@ -31,25 +32,23 @@ public class FitnessSharingPopulation extends Population {
      */
     private int unassignedForReproduction = 0;
 
-    public FitnessSharingPopulation(Evaluable oevaluator) {
-        super(oevaluator);
+    public FitnessSharingPopulation(Evaluable<Genome>[] perThreadEvaluators) {
+        super(perThreadEvaluators);
     }
 
-    public FitnessSharingPopulation(Evaluable oevaluator, Genome oproto) {
-        super(oevaluator, oproto);
+    public FitnessSharingPopulation(Evaluable<Genome>[] perThreadEvaluators, Genome oproto) {
+        super(perThreadEvaluators, oproto);
     }
 
-    public FitnessSharingPopulation(Evaluable oevaluator, String ofileName) {
-        super(oevaluator, ofileName);
+    public FitnessSharingPopulation(Evaluable<Genome>[] perThreadEvaluators, String ofileName) {
+        super(perThreadEvaluators, ofileName);
     }
 
     /**
      * Reproduces the Population. New Genomes are recombined by using genetic
      * operators.
-     *
-     * @param oevaluateAll strategy of evaluation - all together (true) or separately (false).
      */
-    void reproduce(boolean oevaluateAll) {
+    void reproduce() {
         // System.out.println( " Population.reproduce()" );
         Genome[] tpop = new Genome[NEAT.getConfig().populationSize]; // here we store a new
         // Population
@@ -185,15 +184,14 @@ public class FitnessSharingPopulation extends Population {
     /**
      * Sets the <b>Genome.sharedFitness </b> of all Genomes.
      *
-     * @see ne.Species#adjustFitness
      */
     void adjustFitness() {
         // System.out.println( " Population.adjustFitness()" );
         for (Species specie : species) specie.adjustFitness();
     }
 
-    void evaluate(boolean oevaluateAll) {
-        super.evaluate(oevaluateAll);
+    void evaluate() {
+        super.evaluate();
         this.incrementEvaluation(NEAT.getConfig().populationSize);
     }
 

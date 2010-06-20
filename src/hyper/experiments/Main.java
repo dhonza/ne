@@ -13,6 +13,7 @@ import hyper.evaluate.SolverFactory;
 import hyper.experiments.findcluster.FindCluster;
 import hyper.experiments.findcluster.FindClusterSubstrateFactory;
 import hyper.experiments.reco.ReportStorage;
+import hyper.experiments.reco.problem.RecoSubstrateFactory;
 import hyper.substrate.BasicSubstrate;
 
 import java.io.File;
@@ -63,25 +64,20 @@ public class Main {
 //            BasicSubstrate substrate = RecoSubstrateFactory.createInputHiddenOutput(lineSize, 3, 1);
 
                 //XOR
-//                BasicSubstrate substrate = RecoSubstrateFactory.createInputHiddenOutput(lineSize, lineSize, 1);
+                BasicSubstrate substrate = RecoSubstrateFactory.createInputHiddenOutput(lineSize, lineSize, 1);
 
                 //AND
 //            BasicSubstrate substrate = RecoSubstrateFactory.createInputToOutput(lineSize, 1);
 //            BasicSubstrate substrate = RecoSubstrateFactory.createInputHiddenOutput(lineSize, 2, 1);
                 //Find Cluster
-                BasicSubstrate substrate = FindClusterSubstrateFactory.createInputToOutputNoBias(
-                        combination.getInteger("FIND_CLUSTER.NODES_X"),
-                        combination.getInteger("FIND_CLUSTER.NODES_Y"));
+//                BasicSubstrate substrate = FindClusterSubstrateFactory.createInputToOutputNoBias(
+//                        combination.getInteger("FIND_CLUSTER.NODES_X"),
+//                        combination.getInteger("FIND_CLUSTER.NODES_Y"));
 
-                EvaluableSubstrateBuilder substrateBuilder = SubstrateBuilderFactory.createEvaluableSubstrateBuilder(substrate, combination);
-
-//                Problem problem = new Recognition1D(combination);
-                Problem problem = new FindCluster(combination);
-
-                System.out.println("TARGET FITNESS " + problem.getTargetFitness());
+//                System.out.println("TARGET FITNESS " + problem.getTargetFitness());
 //                System.out.println("EXPERIMENT: " + (i + 1));
 
-                Solver solver = SolverFactory.getSolver(combination, substrateBuilder, stats, problem, reportStorage);
+                Solver solver = SolverFactory.getSolver(combination, substrate, stats, reportStorage);
                 if (i == 0) {
                     System.out.println(solver.getConfigString());
                     parameterString.append("\nSOLVER:\n").append("------\n").append(solver.getConfigString());

@@ -1,4 +1,4 @@
-package gp;
+package common.evolution;
 
 import java.io.Serializable;
 
@@ -9,8 +9,8 @@ import java.io.Serializable;
  * Time: 3:40:04 PM
  * To change this template use File | Settings | File Templates.
  */
-public interface Evaluable extends Serializable {
-    public double evaluate(Forest forest);
+public interface Evaluable<T> extends Serializable {
+    public double evaluate(T individual);
 
     public boolean isSolved();
 

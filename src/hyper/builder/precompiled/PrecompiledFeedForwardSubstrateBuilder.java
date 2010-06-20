@@ -11,6 +11,7 @@ import hyper.substrate.layer.SubstrateInterLayerConnection;
 import hyper.substrate.layer.SubstrateLayer;
 import hyper.substrate.node.Node;
 import hyper.substrate.node.NodeType;
+import org.apache.commons.lang.ArrayUtils;
 
 import javax.tools.JavaCompiler;
 import javax.tools.ToolProvider;
@@ -222,5 +223,10 @@ public class PrecompiledFeedForwardSubstrateBuilder implements EvaluableSubstrat
             throw new IllegalStateException("Network not built yet.");
         }
         return new PrecompiledFeedForwardNet(stub, weights.clone());
+    }
+
+    @Override
+    public String toString() {
+        return "WEIGHTS: " + ArrayUtils.toString(weights);
     }
 }

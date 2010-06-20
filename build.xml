@@ -30,7 +30,7 @@
     </target>
 
     <target name="runjppf">
-        <java fork="yes" classname="hyper.experiments.RecoMainJPPF" classpathref="run.classpath">
+        <java fork="yes" classname="hyper.experiments.MainJPPF" classpathref="run.classpath">
             <arg value="cfg/reco"/>
             <jvmarg value="-Dlog4j.configuration=log4j.properties"/>
             <jvmarg value="-Djppf.config=jppf.properties"/>

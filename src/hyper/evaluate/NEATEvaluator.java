@@ -1,9 +1,9 @@
 package hyper.evaluate;
 
+import common.evolution.Evaluable;
 import hyper.builder.EvaluableSubstrateBuilder;
 import hyper.cppn.BasicNetCPPN;
 import hyper.cppn.CPPN;
-import neat.Evaluable;
 import neat.Genome;
 import common.net.INet;
 
@@ -14,7 +14,7 @@ import common.net.INet;
  * Time: 11:09:48 PM
  * To change this template use File | Settings | File Templates.
  */
-public class NEATEvaluator implements Evaluable {
+public class NEATEvaluator implements Evaluable<Genome> {
     final private EvaluableSubstrateBuilder substrateBuilder;
     final private Problem problem;
 
@@ -32,10 +32,6 @@ public class NEATEvaluator implements Evaluable {
         return problem.evaluate(hyperNet);
     }
 
-    public void evaluateAll(Genome[] opop, double[] ofitnessValues) {
-        throw new UnsupportedOperationException("Not implemented!");
-    }
-
     public boolean isSolved() {
         return problem.isSolved();
     }
@@ -46,17 +42,5 @@ public class NEATEvaluator implements Evaluable {
 
     public int getNumberOfOutputs() {
         return substrateBuilder.getSubstrate().getNumOfConnections();
-    }
-
-    public void storeEvaluation(Genome og) {
-        throw new UnsupportedOperationException("Not implemented!");
-    }
-
-    public double[][][] getStoredInputs() {
-        throw new UnsupportedOperationException("Not implemented!");
-    }
-
-    public double[][][] getStoredOutputs() {
-        throw new UnsupportedOperationException("Not implemented!");
     }
 }

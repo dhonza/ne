@@ -1,6 +1,6 @@
 package gp.demo;
 
-import gp.Evaluable;
+import common.evolution.Evaluable;
 import gp.Forest;
 
 /**
@@ -10,7 +10,7 @@ import gp.Forest;
  * Time: 5:02:46 PM
  * To change this template use File | Settings | File Templates.
  */
-public class SymbolicRegression implements Evaluable {
+public class SymbolicRegression implements Evaluable<Forest> {
     public double evaluate(Forest forest) {
         int steps = 20;
         double startX = -10.0;

@@ -1,5 +1,8 @@
 package gp;
 
+import common.evolution.Evaluable;
+import hyper.evaluate.GPEvaluator;
+
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
 
@@ -11,11 +14,11 @@ import java.lang.reflect.InvocationTargetException;
  * To change this template use File | Settings | File Templates.
  */
 public class GPFactory {
-    public static GP createByName(String className, Evaluable evaluator, Node[] functions, Node[] terminals) {
+    public static GP createByName(String className, Evaluable[] perThreadEvaluators, Node[] functions, Node[] terminals) {
         GP gp = null;
         try {
-            Constructor constructor = Class.forName(className).getConstructor(Evaluable.class, Node[].class, Node[].class);
-            gp = (GP) constructor.newInstance(evaluator, functions, terminals);
+            Constructor constructor = Class.forName(className).getConstructor(Evaluable[].class, Node[].class, Node[].class);
+            gp = (GP) constructor.newInstance(perThreadEvaluators, functions, terminals);
         } catch (NoSuchMethodException e) {
             System.err.println(e.getCause());
             e.printStackTrace();

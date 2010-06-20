@@ -1,6 +1,7 @@
 package gp;
 
 import common.RND;
+import common.evolution.Evaluable;
 
 /**
  * Created by IntelliJ IDEA.
@@ -15,7 +16,7 @@ import common.RND;
  * TODO create a single common abstract predecessor class (do not use newPopulation from GP)
  */
 public class GPCrowding extends GP {
-    public GPCrowding(Evaluable evaluator, Node[] functions, Node[] terminals) {
+    public GPCrowding(Evaluable<Forest>[] evaluator, Node[] functions, Node[] terminals) {
         super(evaluator, functions, terminals);
         if (GP.POPULATION_SIZE % 2 != 0) {
             throw new IllegalStateException("Population size must be even.");

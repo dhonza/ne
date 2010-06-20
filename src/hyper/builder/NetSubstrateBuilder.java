@@ -111,11 +111,13 @@ public class NetSubstrateBuilder implements EvaluableSubstrateBuilder {
                     Neuron from = nodeMap.get(nodeFrom);
                     Neuron to = nodeMap.get(nodeTo);
                     double weight = 3.0 * aCPPN.evaluate(aCPPNOutput, nodeFrom.getCoordinate(), nodeTo.getCoordinate());
+                    System.out.println(this.toString() + ": "  + nodeFrom.getCoordinate() + "--->" + nodeTo.getCoordinate() + " = " + weight);
                     Link newLink = new Link(linkIdCounter++, weight, from, to);
                     net.addLink(newLink);
                 }
             }
         }
+        System.out.println(this.toString() + "--------------END CPPN");
 
         // intra-layer connections
         for (SubstrateLayer layer : substrate.getLayers()) {

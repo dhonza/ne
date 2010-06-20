@@ -1,10 +1,13 @@
 package neat;
 
+import common.evolution.Evaluable;
+import common.evolution.ParallelPopulationEvaluator;
 import common.net.linked.Net;
 import common.net.linked.NetStorage;
 import common.xml.XMLSerialization;
 
 import java.io.OutputStream;
+import java.util.Arrays;
 import java.util.LinkedList;
 
 /**
@@ -68,34 +71,35 @@ public abstract class Population {
     /**
      * You have to implement Evaluable interface in order to compute fitness.
      */
-    protected Evaluable evaluator;
+    protected Evaluable<Genome>[] perThreadEvaluators;
+    protected ParallelPopulationEvaluator<Genome> populationEvaluator;
 
     protected double[][][] bsfInputs;
 
     protected double[][][] bsfOutputs;
 
 
-    public Population(Evaluable oevaluator) {
-        evaluator = oevaluator;
+    public Population(Evaluable<Genome>[] perThreadEvaluators) {
+        this.perThreadEvaluators = perThreadEvaluators;
+        populationEvaluator = new ParallelPopulationEvaluator<Genome>();
         genomes = new Genome[NEAT.getConfig().populationSize];
         species = new LinkedList<Species>();
 //        speciesHistory = new SpeciesHistory(); //(NE.POPULATION_SIZE);
     }
 
-    public Population(Evaluable oevaluator, Genome oproto) {
-        this(oevaluator);
+    public Population(Evaluable<Genome>[] perThreadEvaluators, Genome oproto) {
+        this(perThreadEvaluators);
         spawn(oproto);
     }
 
     /**
      * Creates population using ANNs stored in a file
      *
-     * @param oevaluator fitness evaluator
      * @param ofileName  file name
      */
-    public Population(Evaluable oevaluator, String ofileName) {
+    public Population(Evaluable<Genome>[] perThreadEvaluators, String ofileName) {
         Net[] nets = NetStorage.loadMultiple(ofileName);
-        evaluator = oevaluator;
+        this.perThreadEvaluators = perThreadEvaluators;
         NEAT.getConfig().populationSize = nets.length;
         genomes = new Genome[nets.length];
         for (int i = 0; i < nets.length; i++) {
@@ -181,34 +185,22 @@ public abstract class Population {
     /**
      * Evaluates the whole Population. This method computes fitness for all
      * Genomes.
-     *
-     * @param oevaluateAll population can be evaluated in two possible ways: 1. (false) All Genomes separately, which is usual.
-     *                     2. (true) The whole population of Genomes together, which is usefull for co-evolutionary tasks.
      */
-    void evaluate(boolean oevaluateAll) {
+    void evaluate() {
         // System.out.println( " Population.evaluate()" );
         Genome tg;
         int n = NEAT.getConfig().populationSize;
 
-        if (oevaluateAll) {
-            double[] fitnessValues = new double[n];
-            evaluator.evaluateAll(genomes, fitnessValues);
-            for (int i = 0; i < n; i++) {
-                genomes[i].evaluated = true; //mark evaluated
-                if (fitnessValues[i] > bestOfGeneration.fitness) {
-                    bestOfGeneration = genomes[i];
-                }
-            }
-        } else {
-            for (int i = 0; i < n; i++) {
-                tg = genomes[i];
-                tg.fitness = evaluator.evaluate(tg);
-                tg.evaluated = true; //mark evaluated
-                if (tg.fitness > bestOfGeneration.fitness) {
-                    bestOfGeneration = tg;
-                }
+        double[] fitnessVector = populationEvaluator.evaluate(perThreadEvaluators, Arrays.asList(genomes));
+        for (int i = 0; i < n; i++) {
+            tg = genomes[i];
+            tg.fitness = fitnessVector[i];
+            tg.evaluated = true; //mark evaluated
+            if (tg.fitness > bestOfGeneration.fitness) {
+                bestOfGeneration = tg;
             }
         }
+
         if (bestOfGeneration.fitness > bestSoFar.fitness) {
             bestSoFar = bestOfGeneration;
             lastInnovation = 0;
@@ -228,10 +220,8 @@ public abstract class Population {
     /**
      * Reproduces the Population. New Genomes are recombined by using genetic
      * operators.
-     *
-     * @param oevaluateAll strategy of evaluation - all together (true) or separately (false).
      */
-    abstract void reproduce(boolean oevaluateAll);
+    abstract void reproduce();
 
     /**
      * Selects the Genomes to survive.

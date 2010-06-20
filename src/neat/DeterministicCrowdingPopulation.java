@@ -7,7 +7,9 @@
 package neat;
 
 import common.RND;
+import common.evolution.Evaluable;
 
+import java.util.Arrays;
 import java.util.Iterator;
 
 /**
@@ -20,21 +22,20 @@ public class DeterministicCrowdingPopulation extends Population {
 
     private boolean eval = true;
 
-    public DeterministicCrowdingPopulation(Evaluable oevaluator) {
-        super(oevaluator);
+    public DeterministicCrowdingPopulation(Evaluable<Genome>[] perThreadEvaluators) {
+        super(perThreadEvaluators);
     }
 
     /**
      * @param oproto
      */
-    public DeterministicCrowdingPopulation(Evaluable oevaluator, Genome oproto) {
-        super(oevaluator, oproto);
+    public DeterministicCrowdingPopulation(Evaluable<Genome>[] perThreadEvaluators, Genome oproto) {
+        super(perThreadEvaluators, oproto);
     }
 
     /**
-     * @param oevaluateAll strategy of evaluation - all together (true) or separately (false).
      */
-    void reproduce(boolean oevaluateAll) {
+    void reproduce() {
         int n = NEAT.getConfig().populationSize; // population size
 
         Genome[] tpop = new Genome[n]; // here we store a new
@@ -148,11 +149,6 @@ public class DeterministicCrowdingPopulation extends Population {
                 //c2.mutateToggleEnabled();
             }
 
-            if (!oevaluateAll) {
-                c1.fitness = evaluator.evaluate(c1); // evaluate them
-                c2.fitness = evaluator.evaluate(c2);
-                this.incrementEvaluation(2);
-            }
             // copy to arrays for final fight of parents vs. children
             parents[tpopi] = p1;
             children[tpopi] = c1;
@@ -166,13 +162,10 @@ public class DeterministicCrowdingPopulation extends Population {
 //            }
         }
 
-        if (oevaluateAll) {
-            double[] fitnessValues = new double[n];
-            evaluator.evaluateAll(children, fitnessValues);
-            this.incrementEvaluation(n);
-            for (int i = 0; i < n; i++) {
-                children[i].fitness = fitnessValues[i];
-            }
+        double[] fitnessValues = populationEvaluator.evaluate(perThreadEvaluators, Arrays.asList(children));
+        this.incrementEvaluation(n);
+        for (int i = 0; i < n; i++) {
+            children[i].fitness = fitnessValues[i];
         }
 
         tpopi = 0;
@@ -217,36 +210,23 @@ public class DeterministicCrowdingPopulation extends Population {
         genomes = tpop;// we don't need the previous generation no more...
     }
 
-    void evaluate(boolean oevaluateAll) {
+    void evaluate() {
         // System.out.println( " Population.evaluate()" );
         Genome tg;
         int n = NEAT.getConfig().populationSize;
-        if (oevaluateAll) {
-
+        double[] fitnessVector = null;
+        if (eval) {
+            fitnessVector = populationEvaluator.evaluate(perThreadEvaluators, Arrays.asList(genomes));
+        }
+        populationEvaluator.evaluate(perThreadEvaluators, Arrays.asList(genomes));
+        for (int i = 0; i < n; i++) {
+            tg = genomes[i];
             if (eval) {
-                double[] fitnessValues = new double[n];
-                evaluator.evaluateAll(genomes, fitnessValues);
-                this.incrementEvaluation(n);
-                for (int i = 0; i < n; i++) {
-                    genomes[i].fitness = fitnessValues[i];
-                }
+                tg.fitness = fitnessVector[i];
+                this.incrementEvaluation();
             }
-
-            for (int i = 0; i < n; i++) {
-                if (genomes[i].fitness > bestOfGeneration.fitness) {
-                    bestOfGeneration = genomes[i];
-                }
-            }
-        } else {
-            for (int i = 0; i < n; i++) {
-                tg = genomes[i];
-                if (eval) {
-                    tg.fitness = evaluator.evaluate(tg);
-                    this.incrementEvaluation();
-                }
-                if (tg.fitness > bestOfGeneration.fitness) {
-                    bestOfGeneration = tg;
-                }
+            if (tg.fitness > bestOfGeneration.fitness) {
+                bestOfGeneration = tg;
             }
         }
 

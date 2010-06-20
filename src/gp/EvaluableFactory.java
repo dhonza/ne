@@ -1,5 +1,7 @@
 package gp;
 
+import common.evolution.Evaluable;
+
 /**
  * Created by IntelliJ IDEA.
  * User: drchaj1
