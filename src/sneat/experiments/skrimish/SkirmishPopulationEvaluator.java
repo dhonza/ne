@@ -7,8 +7,8 @@ import sneat.neuralnetwork.INetwork;
 //class SkirmishPopulationEvaluator extends MultiThreadedPopulationEvaluator {
 class SkirmishPopulationEvaluator extends SingleFilePopulationEvaluator {
 
-    public SkirmishPopulationEvaluator(Evaluable<INetwork> eval) {
-        super(eval, null);
+    public SkirmishPopulationEvaluator(Evaluable<INetwork>[] perThreadEvaluators) {
+        super(perThreadEvaluators, null);
     }
 }
 

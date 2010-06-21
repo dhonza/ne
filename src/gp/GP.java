@@ -179,7 +179,6 @@ public class GP implements EvolutionaryAlgorithm, Serializable {
     }
 
     public boolean isSolved() {
-        boolean solved = false;
         for (Evaluable<Forest> evaluator : perThreadEvaluators) {
             if(evaluator.isSolved()) {
                 return true;

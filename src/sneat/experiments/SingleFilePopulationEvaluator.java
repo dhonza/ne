@@ -1,12 +1,16 @@
 package sneat.experiments;
 
 import common.evolution.Evaluable;
+import common.evolution.ParallelPopulationEvaluator;
 import sneat.evolution.EvolutionAlgorithm;
 import sneat.evolution.IGenome;
 import sneat.evolution.IPopulationEvaluator;
 import sneat.evolution.Population;
 import sneat.neuralnetwork.IActivationFunction;
 import sneat.neuralnetwork.INetwork;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /// <summary>
 /// An implementation of IPopulationEvaluator that evaluates all new genomes(EvaluationCount==0)
@@ -19,15 +23,14 @@ import sneat.neuralnetwork.INetwork;
 /// a simulated world) using a fixed evaluation function that can be described by an INetworkEvaluator.
 /// </summary>
 public class SingleFilePopulationEvaluator implements IPopulationEvaluator {
-    public Evaluable<INetwork> networkEvaluator;
+    final private Evaluable<INetwork>[] perThreadEvaluators;
+    final private ParallelPopulationEvaluator<INetwork> populationEvaluator;
     public IActivationFunction activationFn;
     public long evaluationCount = 0;
 
-    public SingleFilePopulationEvaluator() {
-    }
-
-    public SingleFilePopulationEvaluator(Evaluable<INetwork>[] networkEvaluator, IActivationFunction activationFn) {
-        this.networkEvaluator = networkEvaluator;
+    public SingleFilePopulationEvaluator(Evaluable<INetwork>[] perThreadEvaluators, IActivationFunction activationFn) {
+        this.perThreadEvaluators = perThreadEvaluators;
+        populationEvaluator = new ParallelPopulationEvaluator<INetwork>();
         this.activationFn = activationFn;
     }
 
@@ -35,29 +38,49 @@ public class SingleFilePopulationEvaluator implements IPopulationEvaluator {
         // Evaluate in single-file each genome within the population.
         // Only evaluate new genomes (those with EvaluationCount==0).
         int count = pop.getGenomeList().size();
+        boolean[] toEvaluate = new boolean[count];
+        List<INetwork> populationToEvaluate = new ArrayList<INetwork>();
         for (int i = 0; i < count; i++) {
             IGenome g = pop.getGenomeList().get(i);
-            if (g.getEvaluationCount() != 0)
+            if (g.getEvaluationCount() != 0) {
                 continue;
-
+            }
             INetwork network = g.decode(activationFn);
-            if (network == null) {    // Future genomes may not decode - handle the possibility.
-                g.setFitness(EvolutionAlgorithm.MIN_GENOME_FITNESS);
+            if (network != null) { // Future genomes may not decode - handle the possibility.
+                toEvaluate[i] = true;
+                populationToEvaluate.add(network);
             } else {
-                g.setFitness(Math.max(networkEvaluator.evaluate(network), EvolutionAlgorithm.MIN_GENOME_FITNESS));
+                g.setFitness(EvolutionAlgorithm.MIN_GENOME_FITNESS);
+            }
+        }
+        
+        double[] fitness = populationEvaluator.evaluate(perThreadEvaluators, populationToEvaluate);
+
+        int cnt = 0;
+        for (int i = 0; i < count; i++) {
+            IGenome g = pop.getGenomeList().get(i);
+            if (toEvaluate[i]) {
+                g.setFitness(Math.max(fitness[cnt++], EvolutionAlgorithm.MIN_GENOME_FITNESS));
             }
 
-            // Reset these genome level statistics.
-            g.setTotalFitness(g.getFitness());
-            g.setEvaluationCount(1);
+            if (g.getEvaluationCount() == 0) {
+                // Reset these genome level statistics.
+                g.setTotalFitness(g.getFitness());
+                g.setEvaluationCount(1);
 
-            // Update master evaluation counter.
-            evaluationCount++;
+                // Update master evaluation counter.
+                evaluationCount++;
+            }
         }
     }
 
     public boolean isSolved() {
-        return networkEvaluator.isSolved();
+        for (Evaluable<INetwork> evaluator : perThreadEvaluators) {
+            if (evaluator.isSolved()) {
+                return true;
+            }
+        }
+        return false;
     }
 
     public long getEvaluationCount() {

@@ -64,10 +64,10 @@ public class FileProgressPrinter implements ProgressPrinter {
         //data
         for (InfoContainer generation : generations) {
             builder.append(generation.bsf).append("\t");
-            for (int i = 0; i < last; i++) {
+            for (int i = 0; i < generation.fitnessVector.length - 1; i++) {
                 builder.append(generation.fitnessVector[i]).append("\t");
             }
-            builder.append(generation.fitnessVector[last]).append("\n");
+            builder.append(generation.fitnessVector[generation.fitnessVector.length - 1]).append("\n");
         }
         reportStorage.prepareSingleRunResults(builder.toString());
     }

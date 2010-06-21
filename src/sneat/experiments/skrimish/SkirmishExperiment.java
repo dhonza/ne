@@ -1,5 +1,6 @@
 package sneat.experiments.skrimish;
 
+import common.evolution.Evaluable;
 import sneat.evolution.IPopulationEvaluator;
 import sneat.evolution.NeatParameters;
 import sneat.experiments.AbstractExperimentView;
@@ -40,9 +41,9 @@ public class SkirmishExperiment implements IExperiment {
 
     public void resetEvaluator(IActivationFunction activationFn) {
         if (multiple)
-            populationEvaluator = new SkirmishPopulationEvaluator(new SkirmishNetworkEvaluator(5, shape));
+            populationEvaluator = new SkirmishPopulationEvaluator(new Evaluable[]{new SkirmishNetworkEvaluator(5, shape)});
         else
-            populationEvaluator = new SkirmishPopulationEvaluator(new SkirmishNetworkEvaluator(1, shape));
+            populationEvaluator = new SkirmishPopulationEvaluator(new Evaluable[]{new SkirmishNetworkEvaluator(1, shape)});
     }
 
     public IPopulationEvaluator getPopulationEvaluator() {

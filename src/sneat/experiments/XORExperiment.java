@@ -1,5 +1,6 @@
 package sneat.experiments;
 
+import common.evolution.Evaluable;
 import common.pmatrix.ParameterCombination;
 import common.pmatrix.Utils;
 import sneat.evolution.IPopulationEvaluator;
@@ -33,7 +34,7 @@ public class XORExperiment implements IExperiment {
     }
 
     public void resetEvaluator(IActivationFunction activationFn) {
-        populationEvaluator = new SingleFilePopulationEvaluator(new XORNetworkEvaluator(), null);
+        populationEvaluator = new SingleFilePopulationEvaluator(new Evaluable[]{new XORNetworkEvaluator()}, null);
     }
 
     public int getInputNeuronCount() {

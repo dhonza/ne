@@ -41,7 +41,7 @@ public class SNEATExperiment implements IExperiment {
     }
 
     public void resetEvaluator(IActivationFunction activationFn) {
-        populationEvaluator = new SingleFilePopulationEvaluator(perThreadEvaluators);
+        populationEvaluator = new SingleFilePopulationEvaluator(perThreadEvaluators, null);
     }
 
     public int getInputNeuronCount() {
