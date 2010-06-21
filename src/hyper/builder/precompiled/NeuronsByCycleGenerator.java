@@ -28,9 +28,14 @@ public class NeuronsByCycleGenerator extends NoCyclesGenerator {
             src.append("\tn = new double[").append(tNodes.length).append("];\n");
 
             for (int t = 0; t < tNodes.length; t++) {
-                src.append("\tn[").append(t).append("] = a(s(" + fNodes.length + ", " + weightCnt + "));\n");
+                src.append("\tn[").append(t).append("] = a(");
+                if (biasLayer != null) {
+                    src.append("w[").append(weightCnt++).append("]*b + ");
+                }
+                src.append("s(" + fNodes.length + ", " + weightCnt + "));\n");
                 weightCnt += fNodes.length;
             }
+            src.append("\tp = n;\n");
         }
         src.append("\treturn n;\n}\n\n");
     }
