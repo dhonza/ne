@@ -1,5 +1,6 @@
 package common.evolution;
 
+import common.Bench;
 import common.stats.Stats;
 
 import java.io.Serializable;
@@ -18,6 +19,7 @@ public class EvolutionaryAlgorithmSolver implements Serializable {
     final private Stats stats;
     final private List<ProgressPrinter> progressPrinterList = new ArrayList<ProgressPrinter>();
     final private List<StopCondition> stopConditionList = new ArrayList<StopCondition>();
+    private Bench bench;
 
     public EvolutionaryAlgorithmSolver(EvolutionaryAlgorithm evolutionaryAlgorithm, Stats stats) {
         this.evolutionaryAlgorithm = evolutionaryAlgorithm;
@@ -26,9 +28,11 @@ public class EvolutionaryAlgorithmSolver implements Serializable {
         stats.createDoubleStatIfNotExists("EVALUATIONS", "EXPERIMENT", "Number of Evaluations");
         stats.createDoubleStatIfNotExists("MAX_FITNESS", "EXPERIMENT", "Maximum fitness reached");
         stats.createBooleanStatIfNotExists("SUCCESS", "EXPERIMENT", "Problem solved");
+        stats.createLongStatIfNotExists("TIME", "EXPERIMENT", "Time to solve");
     }
 
     public void run() {
+        bench = new Bench();
         evolutionaryAlgorithm.initialGeneration();
 
         printGeneration();
@@ -38,6 +42,7 @@ public class EvolutionaryAlgorithmSolver implements Serializable {
             printGeneration();
             printProgress();
         }
+        bench.stop();
 
         for (ProgressPrinter progressPrinter : progressPrinterList) {
             progressPrinter.printFinished();
@@ -46,10 +51,11 @@ public class EvolutionaryAlgorithmSolver implements Serializable {
     }
 
     private void storeFinalStats() {
-        stats.addSample("GENERATIONS", evolutionaryAlgorithm.getGeneration());
-        stats.addSample("EVALUATIONS", evolutionaryAlgorithm.getEvaluations());
+        stats.addSample("GENERATIONS", (double)evolutionaryAlgorithm.getGeneration());
+        stats.addSample("EVALUATIONS", (double)evolutionaryAlgorithm.getEvaluations());
         stats.addSample("MAX_FITNESS", evolutionaryAlgorithm.getMaxFitnessReached());
         stats.addSample("SUCCESS", evolutionaryAlgorithm.isSolved());
+        stats.addSample("TIME", bench.getLastTimeInterval());
     }
 
     private void printProgress() {

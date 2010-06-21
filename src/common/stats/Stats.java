@@ -27,6 +27,17 @@ public class Stats implements Serializable {
         }
     }
 
+    public void createLongStat(String statName, String scope, String description) {
+        Stat stat = new Stat(statName, scope, description, new LongStatSeries());
+        stats.put(statName, stat);
+    }
+
+    public void createLongStatIfNotExists(String statName, String scope, String description) {
+        if (!stats.containsKey(statName)) {
+            createLongStat(statName, scope, description);
+        }
+    }
+
     public void createBooleanStat(String statName, String scope, String description) {
         Stat stat = new Stat(statName, scope, description, new BooleanStatSeries());
         stats.put(statName, stat);
@@ -63,6 +74,13 @@ public class Stats implements Serializable {
         throw new IllegalStateException("Not a double stat series: " + stat.getName());
     }
 
+    private LongStatSeries getLongStatSeries(Stat stat) {
+        if (stat.getStatSeries() instanceof LongStatSeries) {
+            return (LongStatSeries) stat.getStatSeries();
+        }
+        throw new IllegalStateException("Not a long stat series: " + stat.getName());
+    }
+
     private StringStatSeries getStringStatSeries(Stat stat) {
         if (stat.getStatSeries() instanceof StringStatSeries) {
             return (StringStatSeries) stat.getStatSeries();
@@ -89,6 +107,13 @@ public class Stats implements Serializable {
         Stat stat = stats.get(statName);
         if (stat != null && stat.isEnabled()) {
             getDoubleStatSeries(stat).addSample(sample);
+        }
+    }
+
+    public void addSample(String statName, long sample) {
+        Stat stat = stats.get(statName);
+        if (stat != null && stat.isEnabled()) {
+            getLongStatSeries(stat).addSample(sample);
         }
     }
 
