@@ -35,7 +35,14 @@ abstract public class AbstractSolver implements Solver {
 
     private void initPerThreadEvaluators() {
         boolean parallel = parameters.getBoolean("PARALLEL");
-        int threads = parallel ? ParallelPopulationEvaluator.getNumberOfThreads() : 1;
+        int threads = 1;
+        if (parallel) {
+            if (parameters.contains("PARALLEL.FORCE_THREADS")) {
+                threads = parameters.getInteger("PARALLEL.FORCE_THREADS");
+            } else {
+                threads = ParallelPopulationEvaluator.getNumberOfThreads();
+            }
+        }
         perThreadEvaluators = new Evaluable[threads];
         for (int i = (threads - 1); i >= 0; i--) {
             EvaluableSubstrateBuilder substrateBuilder = SubstrateBuilderFactory.createEvaluableSubstrateBuilder(substrate, parameters);
