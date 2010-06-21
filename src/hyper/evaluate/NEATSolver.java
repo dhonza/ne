@@ -23,41 +23,29 @@ import neat.*;
  * To change this template use File | Settings | File Templates.
  */
 
-public class NEATSolver implements Solver {
-    final private ParameterCombination parameters;
-    final private Substrate substrate;
-    final private Stats stats;
-    final private Problem problem;
-    final private ReportStorage reportStorage;
-
+public class NEATSolver extends AbstractSolver {
     private NEAT neat;
     private FitnessSharingPopulation population;
     private EvolutionaryAlgorithmSolver solver;
 
-    public NEATSolver(ParameterCombination parameters, Substrate substrate, Stats stats, Problem problem, ReportStorage reportStorage) {
-        this.parameters = parameters;
-        this.substrate = substrate;
-        this.stats = stats;
-        this.problem = problem;
-        this.reportStorage = reportStorage;
+    protected NEATSolver(ParameterCombination parameters, Substrate substrate, Stats stats, ReportStorage reportStorage) {
+        super(parameters, substrate, stats, reportStorage);
         init();
     }
 
-    private void init() {
-        EvaluableSubstrateBuilder substrateBuilder = SubstrateBuilderFactory.createEvaluableSubstrateBuilder(substrate, parameters);
-        NEATEvaluator evaluator = new NEATEvaluator(substrateBuilder, problem);
 
+    private void init() {
         neat = new NEAT();
         NEATConfig config = NEAT.getConfig();
         config.targetFitness = problem.getTargetFitness();
         Utils.setParameters(parameters, config, "NEAT");
 
-        population = new FitnessSharingPopulation(new Evaluable[]{evaluator}, getPrototype(evaluator));
+        population = new FitnessSharingPopulation(perThreadEvaluators, getPrototype(perThreadEvaluators[0]));
 
         neat.setPopulation(population);
 
         solver = new EvolutionaryAlgorithmSolver(neat, stats);
-        solver.addProgressPrinter(new NEATProgressPrinter1D(neat, substrateBuilder.getSubstrate(), problem, parameters));
+        solver.addProgressPrinter(new NEATProgressPrinter1D(neat, substrate, problem, parameters));
         solver.addProgressPrinter(new FileProgressPrinter(neat, reportStorage, parameters));
         solver.addStopCondition(new MaxGenerationsStopCondition(neat));
         solver.addStopCondition(new MaxEvaluationsStopCondition(neat));

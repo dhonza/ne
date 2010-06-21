@@ -16,17 +16,17 @@ import hyper.substrate.Substrate;
  * To change this template use File | Settings | File Templates.
  */
 public class SolverFactory {
+    private SolverFactory() {
+    }
+
     public static Solver getSolver(ParameterCombination parameters, Substrate substrate, Stats stats, ReportStorage reportStorage) {
-//                Problem problem = new Recognition1D(combination);
         Problem problem = new FindCluster(parameters);
 
         String name = parameters.getString("SOLVER");
         if (name.equalsIgnoreCase("GP")) {
             return new GPSolver(parameters, substrate, stats, reportStorage);
         } else if (name.equalsIgnoreCase("NEAT")) {
-            System.out.println("SolverFactory!");
-            System.exit(1);
-            return new NEATSolver(parameters, substrate, stats, problem, reportStorage);
+            return new NEATSolver(parameters, substrate, stats, reportStorage);
         } else if (name.equalsIgnoreCase("SNEAT")) {
             System.out.println("SolverFactory!");
             System.exit(1);

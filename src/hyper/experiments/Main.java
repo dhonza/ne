@@ -64,15 +64,16 @@ public class Main {
 //            BasicSubstrate substrate = RecoSubstrateFactory.createInputHiddenOutput(lineSize, 3, 1);
 
                 //XOR
-                BasicSubstrate substrate = RecoSubstrateFactory.createInputHiddenOutput(lineSize, lineSize, 1);
+//                BasicSubstrate substrate = RecoSubstrateFactory.createInputHiddenOutput(lineSize, lineSize, 1);
 
                 //AND
 //            BasicSubstrate substrate = RecoSubstrateFactory.createInputToOutput(lineSize, 1);
 //            BasicSubstrate substrate = RecoSubstrateFactory.createInputHiddenOutput(lineSize, 2, 1);
+
                 //Find Cluster
-//                BasicSubstrate substrate = FindClusterSubstrateFactory.createInputToOutputNoBias(
-//                        combination.getInteger("FIND_CLUSTER.NODES_X"),
-//                        combination.getInteger("FIND_CLUSTER.NODES_Y"));
+                BasicSubstrate substrate = FindClusterSubstrateFactory.createInputToOutputNoBias(
+                        combination.getInteger("FIND_CLUSTER.NODES_X"),
+                        combination.getInteger("FIND_CLUSTER.NODES_Y"));
 
 //                System.out.println("TARGET FITNESS " + problem.getTargetFitness());
 //                System.out.println("EXPERIMENT: " + (i + 1));

@@ -1,7 +1,5 @@
 package common.evolution;
 
-import gp.Forest;
-import hyper.evaluate.GPEvaluator;
 import org.apache.commons.lang.ArrayUtils;
 
 import java.util.ArrayList;
@@ -30,9 +28,6 @@ public class ParallelPopulationEvaluator<T> {
         }
 
         public void run() {
-            System.out.println("EVALUATOR: " + evaluator +
-                    " SB: " + ((GPEvaluator)evaluator).getSubstrateBuilder() +
-                    " PROBLEM: " + ((GPEvaluator)evaluator).getProblem());
             for (int i = 0; i < part.size(); i++) {
                 fitness[i] = evaluator.evaluate(part.get(i));
             }
@@ -45,14 +40,17 @@ public class ParallelPopulationEvaluator<T> {
     }
 
     public double[] evaluate(Evaluable<T>[] perThreadEvaluators, List<T> population) {
-        double[] fitness2 = new double[population.size()];
-        for (int i = 0; i < population.size(); i++) {
-            fitness2[i] = perThreadEvaluators[0].evaluate(population.get(i));
+        //sequential run
+        if (perThreadEvaluators.length == 1) {
+            return sequentialEvaluate(perThreadEvaluators[0], population);
         }
 
         int threads = ParallelPopulationEvaluator.getNumberOfThreads();
+        if (threads > population.size()) {
+            threads = population.size();
+        }
 
-        System.out.println("Using threads:" + threads);
+//        System.out.println("Using threads:" + threads);
         int minEvalsPerThread = population.size() / threads;
         int remainingEvals = population.size() % threads;
 
@@ -64,6 +62,7 @@ public class ParallelPopulationEvaluator<T> {
             threadEvaluators.add(
                     new ThreadEvaluator(stopLatch, perThreadEvaluators[i], population.subList(start, start + evalsPerThisThread))
             );
+//            System.out.println(start + ", " + (start + evalsPerThisThread));
             start += evalsPerThisThread;
         }
 
@@ -89,20 +88,36 @@ public class ParallelPopulationEvaluator<T> {
             start += fitnessPart.length;
         }
 
-        System.out.println(ArrayUtils.toString(fitness));
-        System.out.println(ArrayUtils.toString(fitness2));
-
-        if(ArrayUtils.isEquals(fitness, fitness2)) {
-            System.out.println("OK");
-        } else {
-            System.out.println("different");
-        }
+//        checkAgainstSequential(perThreadEvaluators[0], population, fitness);
 
         return fitness;
     }
 
+    private double[] sequentialEvaluate(Evaluable<T> perThreadEvaluator, List<T> population) {
+        double[] fitness = new double[population.size()];
+        for (int i = 0; i < population.size(); i++) {
+            fitness[i] = perThreadEvaluator.evaluate(population.get(i));
+        }
+        return fitness;
+    }
+
+    private void checkAgainstSequential(Evaluable<T> perThreadEvaluator, List<T> population, double[] fitness) {
+        //checking parallel vs. sequential
+        double[] fitness2 = new double[population.size()];
+        for (int i = 0; i < population.size(); i++) {
+            fitness2[i] = perThreadEvaluator.evaluate(population.get(i));
+        }
+
+
+        if (!ArrayUtils.isEquals(fitness, fitness2)) {
+            System.out.println("DIFFERENT");
+            System.out.println(ArrayUtils.toString(fitness));
+            System.out.println(ArrayUtils.toString(fitness2));
+        }
+    }
+
     public static int getNumberOfThreads() {
-//        return Runtime.getRuntime().availableProcessors();
-        return 2;
+        return Runtime.getRuntime().availableProcessors();
+//        return 2;
     }
 }

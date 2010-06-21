@@ -26,22 +26,16 @@ import hyper.substrate.Substrate;
  * To change this template use File | Settings | File Templates.
  */
 
-public class GPSolver implements Solver {
-    final private ParameterCombination parameters;
-    final private Substrate substrate;
-    final private Stats stats;
-    final private ReportStorage reportStorage;
+public class GPSolver extends AbstractSolver {
 
     private GP gp;
     private EvolutionaryAlgorithmSolver solver;
 
-    public GPSolver(ParameterCombination parameters, Substrate substrate, Stats stats, ReportStorage reportStorage) {
-        this.parameters = parameters;
-        this.substrate = substrate;
-        this.stats = stats;
-        this.reportStorage = reportStorage;
+    protected GPSolver(ParameterCombination parameters, Substrate substrate, Stats stats, ReportStorage reportStorage) {
+        super(parameters, substrate, stats, reportStorage);
         init();
     }
+
 
     private void init() {
         Utils.setStaticParameters(parameters, GP.class, "GP");
@@ -49,31 +43,17 @@ public class GPSolver implements Solver {
         Node[] functions = NodeFactory.createByNameList("gp.functions.", parameters.getString("GP.FUNCTIONS"));
         Node[] terminals = new Node[]{new Constant(-1.0), new Random()};
 
-        //TODO ZLEPSIT A AT SE NEOPAKUJE KOD V DALSICH SOLVERECH A ZPREHLEDNIT!!!!
-        int threads = ParallelPopulationEvaluator.getNumberOfThreads();
-        EvaluableSubstrateBuilder[] perThreadSubstrateBuilders = new EvaluableSubstrateBuilder[threads];
-        Evaluable[] perThreadEvaluators = new Evaluable[threads];
-        Problem[] perThreadProblems = new Problem[threads];
-        for (int i = 0; i < threads; i++) {
-            EvaluableSubstrateBuilder substrateBuilder = SubstrateBuilderFactory.createEvaluableSubstrateBuilder(substrate, parameters);
-            Problem problem = new Recognition1D(parameters);
-//            Problem problem = new FindCluster(parameters);
-            GPEvaluator evaluator = new GPEvaluator(substrateBuilder, problem);
-            perThreadProblems[i] = problem;
-            perThreadSubstrateBuilders[i] = substrateBuilder;
-            perThreadEvaluators[i] = evaluator;
-        }
-        GP.TARGET_FITNESS = perThreadProblems[0].getTargetFitness();
+        GP.TARGET_FITNESS = problem.getTargetFitness();
 
         gp = GPFactory.createByName(parameters.getString("GP.TYPE"), perThreadEvaluators, functions, terminals);
 
         solver = new EvolutionaryAlgorithmSolver(gp, stats);
-        solver.addProgressPrinter(new GPProgressPrinter1D(gp, substrate, perThreadProblems[0], parameters));
+        solver.addProgressPrinter(new GPProgressPrinter1D(gp, substrate, problem, parameters));
         solver.addProgressPrinter(new FileProgressPrinter(gp, reportStorage, parameters));
         solver.addStopCondition(new MaxGenerationsStopCondition(gp));
         solver.addStopCondition(new MaxEvaluationsStopCondition(gp));
         solver.addStopCondition(new TargetFitnessStopCondition(gp));
-        solver.addStopCondition(new SolvedStopCondition(perThreadProblems[0]));
+        solver.addStopCondition(new SolvedStopCondition(problem));
     }
 
     public void solve() {

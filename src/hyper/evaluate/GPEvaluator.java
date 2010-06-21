@@ -26,14 +26,7 @@ public class GPEvaluator implements Evaluable<Forest> {
     public double evaluate(Forest forest) {
         CPPN aCPPN = new BasicGPCPPN(forest, substrateBuilder.getSubstrate().getMaxDimension());
         substrateBuilder.build(aCPPN);
-//        System.out.println("forest: " + forest);
-
         INet hyperNet = substrateBuilder.getNet();
-        //TODO TADY SE NEKDY PRI PARALELNIM VYHODNOENI NASTAVI JINE VAHY
-        //TODO PROBLEM JE VE VYHODNOCOVANI STROMU - Nodes jsou nekdy sdilene (zatim jsem si vsiml jen vstupu)!!!
-        //TODO TreeInputs jsou u vsech take spolecne
-//        System.out.println("hyperNet: " + hyperNet);
-
         return problem.evaluate(hyperNet);
     }
 
@@ -47,15 +40,5 @@ public class GPEvaluator implements Evaluable<Forest> {
 
     public int getNumberOfOutputs() {
         return substrateBuilder.getSubstrate().getNumOfConnections();
-    }
-
-    public Problem getProblem() {
-        //TODO REMOVE FOR DEBUG ONLY
-        return problem;
-    }
-
-    public EvaluableSubstrateBuilder getSubstrateBuilder() {
-        //TODO REMOVE FOR DEBUG ONLY
-        return substrateBuilder;
     }
 }
