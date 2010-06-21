@@ -19,13 +19,6 @@ public interface IPopulationEvaluator {
     long getEvaluationCount();
 
     /// <summary>
-    /// A human readable message that describes the state of the evaluator. This is useful if the
-    /// evaluator has several modes (e.g. difficulty levels in incremenetal evolution) and we want
-    /// to let the user know what mode the evaluator is in.
-    /// </summary>
-    String getEvaluatorStateMessage();
-
-    /// <summary>
     /// Indicates that the current best genome is a champion at the current level of difficulty.
     /// If there is only one difficulty level then the 'SearchCompleted' flag should also be set.
     /// </summary>

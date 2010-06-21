@@ -26,42 +26,30 @@ import java.util.logging.Logger;
  * To change this template use File | Settings | File Templates.
  */
 
-public class SNEATSolver implements Solver {
+public class SNEATSolver extends AbstractSolver {
     private static Logger logger = Logger.getLogger("hyper.evaluate.SNEATSolver");
-
-    final private ParameterCombination parameters;
-    final private Substrate substrate;
-    final private Stats stats;
-    final private Problem problem;
-    final private ReportStorage reportStorage;
 
     private EvolutionaryAlgorithmSolver solver;
     private SNEAT sneat;
 
-    public SNEATSolver(ParameterCombination parameters, Substrate substrate, Stats stats, Problem problem, ReportStorage reportStorage) {
-        this.parameters = parameters;
-        this.substrate = substrate;
-        this.stats = stats;
-        this.problem = problem;
-        this.reportStorage = reportStorage;
+    protected SNEATSolver(ParameterCombination parameters, Substrate substrate, Stats stats, ReportStorage reportStorage) {
+        super(parameters, substrate, stats, reportStorage);
         init();
     }
+
 
     private void init() {
         logger.getParent().setLevel(Level.OFF);
 
-        EvaluableSubstrateBuilder substrateBuilder = SubstrateBuilderFactory.createEvaluableSubstrateBuilder(substrate, parameters);
-        int inputsCPPN = 2 * substrateBuilder.getSubstrate().getMaxDimension();
-        int outputsCPPN = substrateBuilder.getSubstrate().getNumOfConnections();
-
 //        HyperNEATParameters.loadParameterFile();
         setActivationFunctions();
-        SNEATExperiment exp = new SNEATExperiment(parameters, substrateBuilder, problem, inputsCPPN, outputsCPPN);
+        double targetFitness = problem.getTargetFitness();
+        SNEATExperiment exp = new SNEATExperiment(parameters, perThreadEvaluators, targetFitness);
 
         sneat = new SNEAT(exp);
 
         solver = new EvolutionaryAlgorithmSolver(sneat, stats);
-        solver.addProgressPrinter(new SNEATProgressPrinter1D(sneat, substrateBuilder.getSubstrate(), problem, parameters));
+        solver.addProgressPrinter(new SNEATProgressPrinter1D(sneat, substrate, problem, parameters));
         solver.addProgressPrinter(new FileProgressPrinter(sneat, reportStorage, parameters));
         solver.addStopCondition(new MaxGenerationsStopCondition(sneat));
         solver.addStopCondition(new MaxEvaluationsStopCondition(sneat));

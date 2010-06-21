@@ -1,5 +1,6 @@
 package sneat.experiments;
 
+import common.evolution.Evaluable;
 import sneat.evolution.EvolutionAlgorithm;
 import sneat.evolution.IGenome;
 import sneat.evolution.IPopulationEvaluator;
@@ -18,14 +19,14 @@ import sneat.neuralnetwork.INetwork;
 /// a simulated world) using a fixed evaluation function that can be described by an INetworkEvaluator.
 /// </summary>
 public class SingleFilePopulationEvaluator implements IPopulationEvaluator {
-    public INetworkEvaluator networkEvaluator;
+    public Evaluable<INetwork> networkEvaluator;
     public IActivationFunction activationFn;
     public long evaluationCount = 0;
 
     public SingleFilePopulationEvaluator() {
     }
 
-    public SingleFilePopulationEvaluator(INetworkEvaluator networkEvaluator, IActivationFunction activationFn) {
+    public SingleFilePopulationEvaluator(Evaluable<INetwork>[] networkEvaluator, IActivationFunction activationFn) {
         this.networkEvaluator = networkEvaluator;
         this.activationFn = activationFn;
     }
@@ -43,7 +44,7 @@ public class SingleFilePopulationEvaluator implements IPopulationEvaluator {
             if (network == null) {    // Future genomes may not decode - handle the possibility.
                 g.setFitness(EvolutionAlgorithm.MIN_GENOME_FITNESS);
             } else {
-                g.setFitness(Math.max(networkEvaluator.evaluateNetwork(network), EvolutionAlgorithm.MIN_GENOME_FITNESS));
+                g.setFitness(Math.max(networkEvaluator.evaluate(network), EvolutionAlgorithm.MIN_GENOME_FITNESS));
             }
 
             // Reset these genome level statistics.
@@ -61,10 +62,6 @@ public class SingleFilePopulationEvaluator implements IPopulationEvaluator {
 
     public long getEvaluationCount() {
         return evaluationCount;
-    }
-
-    public String getEvaluatorStateMessage() {
-        return networkEvaluator.getEvaluatorStateMessage();
     }
 
     // Only relevant to incremental evolution experiments.

@@ -28,9 +28,7 @@ public class SolverFactory {
         } else if (name.equalsIgnoreCase("NEAT")) {
             return new NEATSolver(parameters, substrate, stats, reportStorage);
         } else if (name.equalsIgnoreCase("SNEAT")) {
-            System.out.println("SolverFactory!");
-            System.exit(1);
-            return new SNEATSolver(parameters, substrate, stats, problem, reportStorage);
+            return new SNEATSolver(parameters, substrate, stats, reportStorage);
         } else {
             throw new IllegalStateException("Unknown solver: \"" + name + "\"");
         }

@@ -22,12 +22,9 @@ public class EvaluableFactory {
         } else if (name.equalsIgnoreCase("NEAT")) {
             return new NEATEvaluator(substrateBuilder, problem);
         } else if (name.equalsIgnoreCase("SNEAT")) {
-            System.out.println("EvaluableFactory!");
-            System.exit(1);
-//            return new SNEATNetworkEvaluator(substrateBuilder, problem);
+            return new SNEATEvaluator(substrateBuilder, problem);
         } else {
             throw new IllegalStateException("Unknown solver: \"" + name + "\"");
         }
-        return null;
     }
 }

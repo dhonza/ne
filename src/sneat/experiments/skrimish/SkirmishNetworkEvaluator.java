@@ -1,13 +1,13 @@
 package sneat.experiments.skrimish;
 
+import common.evolution.Evaluable;
 import sneat.experiments.HyperNEATParameters;
-import sneat.experiments.INetworkEvaluator;
 import sneat.neatgenome.NeatGenome;
 import sneat.neuralnetwork.INetwork;
 
 import java.util.concurrent.Semaphore;
 
-public class SkirmishNetworkEvaluator implements INetworkEvaluator {
+public class SkirmishNetworkEvaluator implements Evaluable<INetwork> {
     public static SkirmishSubstrate substrate;
     int numAgents;
     public static boolean trainingSeed = false;
@@ -38,38 +38,7 @@ public class SkirmishNetworkEvaluator implements INetworkEvaluator {
         return false;  //TODO implement
     }
 
-    public double threadSafeEvaluateNetwork(INetwork network, Semaphore sem) {
-        double fitness = 0;
-        INetwork tempNet = null;
-        NeatGenome tempGenome = null;
-        int count = network.getInputNeuronCount();
-
-        if (!SkirmishExperiment.multiple)
-            tempGenome = substrate.generateGenome(network);
-        else
-            tempGenome = substrate.generateMultiGenomeModulus(network, numAgents);
-
-
-        //Currently decoding genomes is NOT thread safe, so we have to do that single file
-//        sem.WaitOne();
-        try {
-            sem.acquire();
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-            System.exit(1);
-        }
-        tempNet = tempGenome.decode(null);
-//        sem.Release();
-        sem.release();
-
-        if (!SkirmishExperiment.multiple)
-            fitness += doEvaluation(tempNet);
-        else
-            fitness += doEvaluationMulti(tempNet);
-        return fitness;
-    }
-
-    public double evaluateNetwork(INetwork network) {
+    public double evaluate(INetwork network) {
         double fitness = 0;
         INetwork tempNet = null;
         NeatGenome tempGenome = null;
@@ -126,15 +95,10 @@ public class SkirmishNetworkEvaluator implements INetworkEvaluator {
         return fitness;
     }
 
-//    public double evaluateNetwork(INetwork network) {
+//    public double evaluate(INetwork network) {
 //        throw new IllegalStateException("Not implemented!");
 //        return 1;
 //    }
-
-    public String getEvaluatorStateMessage() {
-        return "";
-    }
-
 
     private double doEvaluationMulti(INetwork network) {
         float timetaken = 0;
@@ -374,5 +338,13 @@ public class SkirmishNetworkEvaluator implements INetworkEvaluator {
         w.addEnemy(new Prey(middleX - 2 * spacing * (float) Math.cos(angle), bottomY - 2 * spacing * (float) Math.sin(angle), w.agentSize, w.agentSize));
 
         return w;
+    }
+
+    public int getNumberOfInputs() {
+        return substrate.inputCount;
+    }
+
+    public int getNumberOfOutputs() {
+        return substrate.outputCount;
     }
 }

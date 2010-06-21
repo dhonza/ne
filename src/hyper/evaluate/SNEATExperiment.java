@@ -1,8 +1,8 @@
 package hyper.evaluate;
 
+import common.evolution.Evaluable;
 import common.pmatrix.ParameterCombination;
 import common.pmatrix.Utils;
-import hyper.builder.EvaluableSubstrateBuilder;
 import sneat.evolution.IPopulationEvaluator;
 import sneat.evolution.NeatParameters;
 import sneat.experiments.AbstractExperimentView;
@@ -19,23 +19,18 @@ import sneat.neuralnetwork.activationfunctions.SteepenedSigmoid;
  * To change this template use File | Settings | File Templates.
  */
 public class SNEATExperiment implements IExperiment {
-    private final int numOfInputs;
-    private final int numOfOutputs;
-    private final ParameterCombination parameters;
-    private final EvaluableSubstrateBuilder substrateBuilder;
-    private final Problem problem;
-
+    final private ParameterCombination parameters;
+    final private Evaluable[] perThreadEvaluators;
+    final private double targetFitness;
     NeatParameters neatParams = null;
 
     IPopulationEvaluator populationEvaluator = null;
     IActivationFunction activationFunction = new SteepenedSigmoid();
 
-    public SNEATExperiment(ParameterCombination parameters, EvaluableSubstrateBuilder substrateBuilder, Problem problem, int numOfInputs, int numOfOutputs) {
+    public SNEATExperiment(ParameterCombination parameters, Evaluable[] perThreadEvaluators, double targetFitness) {
         this.parameters = parameters;
-        this.numOfInputs = numOfInputs;
-        this.numOfOutputs = numOfOutputs;
-        this.substrateBuilder = substrateBuilder;
-        this.problem = problem;
+        this.perThreadEvaluators = perThreadEvaluators;
+        this.targetFitness = targetFitness;
     }
 
     public IPopulationEvaluator getPopulationEvaluator() {
@@ -46,21 +41,21 @@ public class SNEATExperiment implements IExperiment {
     }
 
     public void resetEvaluator(IActivationFunction activationFn) {
-        populationEvaluator = new SingleFilePopulationEvaluator(new SNEATNetworkEvaluator(substrateBuilder, problem), null);
+        populationEvaluator = new SingleFilePopulationEvaluator(perThreadEvaluators);
     }
 
     public int getInputNeuronCount() {
-        return numOfInputs;
+        return perThreadEvaluators[0].getNumberOfInputs();
     }
 
     public int getOutputNeuronCount() {
-        return numOfOutputs;
+        return perThreadEvaluators[0].getNumberOfOutputs();
     }
 
     public NeatParameters getDefaultNeatParameters() {
         if (neatParams == null) {
             NeatParameters np = new NeatParameters();
-            np.targetFitness = problem.getTargetFitness();
+            np.targetFitness = targetFitness;
             Utils.setParameters(parameters, np, "SNEAT");
             np.activationProbabilities = new double[4];
             np.activationProbabilities[0] = .25;

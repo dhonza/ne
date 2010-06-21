@@ -1,14 +1,13 @@
 package sneat.experiments.skrimish;
 
-import sneat.experiments.INetworkEvaluator;
+import common.evolution.Evaluable;
 import sneat.experiments.SingleFilePopulationEvaluator;
-
-//TODO X was multithreaded
+import sneat.neuralnetwork.INetwork;
 
 //class SkirmishPopulationEvaluator extends MultiThreadedPopulationEvaluator {
 class SkirmishPopulationEvaluator extends SingleFilePopulationEvaluator {
 
-    public SkirmishPopulationEvaluator(INetworkEvaluator eval) {
+    public SkirmishPopulationEvaluator(Evaluable<INetwork> eval) {
         super(eval, null);
     }
 }
