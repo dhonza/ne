@@ -4,26 +4,51 @@
     <!--                          Property definitions                             -->
     <!-- ========================================================================= -->
 
+    <property name="build.dir" value="${basedir}/build"/>
     <property name="lib.dir" value="${basedir}/lib"/>
     <property name="config.dir" value="${basedir}/cfg"/>
-    <property name="classes.dir" value="${basedir}/out/production/Ne"/>
+    <!-- <property name="classes.dir" value="${basedir}/out/production/Ne"/> -->
+    <property name="src.dir" value="${basedir}/src"/>
 
     <!-- ========================================================================= -->
     <!--                           Classpath definitions                           -->
     <!-- ========================================================================= -->
 
     <path id="run.classpath">
-        <pathelement location="${classes.dir}"/>
+        <pathelement location="${basedir}"/>
+        <pathelement location="${build.dir}"/>
         <pathelement location="${config.dir}"/>
         <fileset dir="${lib.dir}" includes="**/*.jar"/>
     </path>
 
+    <path id="libraries">
+        <fileset dir="${lib.dir}" includes="**/*.jar"/>
+    </path>
+
+    <!-- ========================================================================= -->
+    <!--                           Build tasks                                     -->
+    <!-- ========================================================================= -->
+
+    <target name="dist" depends="compile">
+        <jar destfile="${basedir}/ne.jar"
+             basedir="${build.dir}"
+                />
+    </target>
+
+    <target name="compile">
+        <mkdir dir="${build.dir}"/>
+        <javac srcdir="${src.dir}"
+               destdir="build"
+               classpathref="libraries"
+               source="1.6"
+                />
+    </target>
 
     <!-- ========================================================================= -->
     <!--                           Run tasks                                       -->
     <!-- ========================================================================= -->
 
-    <target name="run">
+    <target name="run" depends="compile">
         <java fork="yes" classname="hyper.experiments.Main" classpathref="run.classpath">
             <arg value="cfg/reco"/>
         </java>

@@ -164,7 +164,7 @@ public class PrecompiledFeedForwardSubstrateBuilder implements EvaluableSubstrat
         }
         JavaCompiler compiler = ToolProvider.getSystemJavaCompiler();
         int ret = compiler.run(null, System.out, System.err,
-                "-classpath", ".:out/production/Ne",
+                "-classpath", ".:out/production/Ne:build",
                 "PrecompiledStub.java"
         );
         if (ret != 0) {
