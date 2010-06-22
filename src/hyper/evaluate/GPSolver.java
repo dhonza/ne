@@ -31,8 +31,8 @@ public class GPSolver extends AbstractSolver {
     private GP gp;
     private EvolutionaryAlgorithmSolver solver;
 
-    protected GPSolver(ParameterCombination parameters, Substrate substrate, Stats stats, ReportStorage reportStorage) {
-        super(parameters, substrate, stats, reportStorage);
+    protected GPSolver(ParameterCombination parameters, Stats stats, ReportStorage reportStorage) {
+        super(parameters, stats, reportStorage);
         init();
     }
 
@@ -48,7 +48,7 @@ public class GPSolver extends AbstractSolver {
         gp = GPFactory.createByName(parameters.getString("GP.TYPE"), perThreadEvaluators, functions, terminals);
 
         solver = new EvolutionaryAlgorithmSolver(gp, stats);
-        solver.addProgressPrinter(new GPProgressPrinter1D(gp, substrate, problem, parameters));
+        solver.addProgressPrinter(new GPProgressPrinter1D(gp, problem, parameters));
         solver.addProgressPrinter(new FileProgressPrinter(gp, reportStorage, parameters));
         solver.addStopCondition(new MaxGenerationsStopCondition(gp));
         solver.addStopCondition(new MaxEvaluationsStopCondition(gp));

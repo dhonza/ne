@@ -4,6 +4,7 @@ import common.mathematica.MathematicaUtils;
 import common.net.INet;
 import common.pmatrix.ParameterCombination;
 import hyper.evaluate.Problem;
+import hyper.substrate.Substrate;
 
 /**
  * Created by IntelliJ IDEA.
@@ -366,6 +367,10 @@ public class FindCluster implements Problem {
                 }
             }
         }
+    }
+
+    public Substrate getSubstrate() {
+        return FindClusterSubstrateFactory.createInputToOutputNoBias(numNodesX, numNodesY);
     }
 
     public double getTargetFitness() {

@@ -32,8 +32,8 @@ public class SNEATSolver extends AbstractSolver {
     private EvolutionaryAlgorithmSolver solver;
     private SNEAT sneat;
 
-    protected SNEATSolver(ParameterCombination parameters, Substrate substrate, Stats stats, ReportStorage reportStorage) {
-        super(parameters, substrate, stats, reportStorage);
+    protected SNEATSolver(ParameterCombination parameters, Stats stats, ReportStorage reportStorage) {
+        super(parameters, stats, reportStorage);
         init();
     }
 
@@ -49,7 +49,7 @@ public class SNEATSolver extends AbstractSolver {
         sneat = new SNEAT(exp);
 
         solver = new EvolutionaryAlgorithmSolver(sneat, stats);
-        solver.addProgressPrinter(new SNEATProgressPrinter1D(sneat, substrate, problem, parameters));
+        solver.addProgressPrinter(new SNEATProgressPrinter1D(sneat, problem, parameters));
         solver.addProgressPrinter(new FileProgressPrinter(sneat, reportStorage, parameters));
         solver.addStopCondition(new MaxGenerationsStopCondition(sneat));
         solver.addStopCondition(new MaxEvaluationsStopCondition(sneat));

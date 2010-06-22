@@ -1,6 +1,7 @@
 package hyper.evaluate;
 
 import common.net.INet;
+import hyper.substrate.Substrate;
 
 import java.io.Serializable;
 
@@ -19,4 +20,6 @@ public interface Problem extends Serializable {
     public void show(INet hyperNet);
 
     public double getTargetFitness();
+
+    public Substrate getSubstrate();
 }

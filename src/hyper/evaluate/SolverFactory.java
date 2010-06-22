@@ -19,16 +19,14 @@ public class SolverFactory {
     private SolverFactory() {
     }
 
-    public static Solver getSolver(ParameterCombination parameters, Substrate substrate, Stats stats, ReportStorage reportStorage) {
-        Problem problem = new FindCluster(parameters);
-
+    public static Solver getSolver(ParameterCombination parameters, Stats stats, ReportStorage reportStorage) {
         String name = parameters.getString("SOLVER");
         if (name.equalsIgnoreCase("GP")) {
-            return new GPSolver(parameters, substrate, stats, reportStorage);
+            return new GPSolver(parameters, stats, reportStorage);
         } else if (name.equalsIgnoreCase("NEAT")) {
-            return new NEATSolver(parameters, substrate, stats, reportStorage);
+            return new NEATSolver(parameters, stats, reportStorage);
         } else if (name.equalsIgnoreCase("SNEAT")) {
-            return new SNEATSolver(parameters, substrate, stats, reportStorage);
+            return new SNEATSolver(parameters, stats, reportStorage);
         } else {
             throw new IllegalStateException("Unknown solver: \"" + name + "\"");
         }

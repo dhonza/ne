@@ -8,6 +8,8 @@ import hyper.experiments.reco.fitness.RecognitionFitness1D;
 import hyper.experiments.reco.util.PatternGenerator;
 import hyper.experiments.reco.util.PatternGeneratorFactory;
 import hyper.experiments.reco.util.PatternUtils;
+import hyper.substrate.BasicSubstrate;
+import hyper.substrate.Substrate;
 
 /**
  * Created by IntelliJ IDEA.
@@ -19,6 +21,7 @@ import hyper.experiments.reco.util.PatternUtils;
 public class Recognition1D implements Problem {
     final private PatternGenerator generator;
     final private int activations;
+    final private int lineSize;
     final private double fitnessTolerance;
 
     private boolean solved = false;
@@ -30,6 +33,7 @@ public class Recognition1D implements Problem {
     public Recognition1D(ParameterCombination parameters, double fitnessTolerance) {
         this.generator = PatternGeneratorFactory.createByName(parameters);
         this.activations = parameters.getInteger("NET_ACTIVATIONS");
+        this.lineSize = parameters.getInteger("RECO.LINE_SIZE");
         this.fitnessTolerance = fitnessTolerance;
     }
 
@@ -66,6 +70,21 @@ public class Recognition1D implements Problem {
         double targetFitness = generator.generateInputPatterns().length * generator.generateOutputPatterns()[0].length;
         targetFitness -= fitnessTolerance * targetFitness;
         return targetFitness;
+    }
+
+    public Substrate getSubstrate() {
+//            BasicSubstrate substrate = RecoSubstrateFactory.createInputToOutput(lineSize);
+//            BasicSubstrate substrate = RecoSubstrateFactory.createInputHiddenOutput(lineSize, 2, lineSize);
+//            BasicSubstrate substrate = RecoSubstrateFactory.createInputHiddenOutput(lineSize, 3, 1);
+
+        //XOR
+        BasicSubstrate substrate = RecoSubstrateFactory.createInputHiddenOutput(lineSize, lineSize, 1);
+
+        //AND
+//            BasicSubstrate substrate = RecoSubstrateFactory.createInputToOutput(lineSize, 1);
+//            BasicSubstrate substrate = RecoSubstrateFactory.createInputHiddenOutput(lineSize, 2, 1);
+
+        return substrate;
     }
 
     public boolean isSolved() {

@@ -25,19 +25,19 @@ import java.io.File;
 public class SNEATProgressPrinter1D extends CommonProgressPrinter1D {
     final private SNEAT sneat;
 
-    public SNEATProgressPrinter1D(SNEAT sneat, ProgressPrinter progressPrinter, Substrate substrate, Problem problem, ParameterCombination parameters) {
-        super(progressPrinter, substrate, problem, parameters);
+    public SNEATProgressPrinter1D(SNEAT sneat, ProgressPrinter progressPrinter, Problem problem, ParameterCombination parameters) {
+        super(progressPrinter, problem, parameters);
         this.sneat = sneat;
     }
 
-    public SNEATProgressPrinter1D(SNEAT sneat, Substrate substrate, Problem problem, ParameterCombination parameters) {
-        this(sneat, new SNEATBasicProgressPrinter(sneat), substrate, problem, parameters);
+    public SNEATProgressPrinter1D(SNEAT sneat, Problem problem, ParameterCombination parameters) {
+        this(sneat, new SNEATBasicProgressPrinter(sneat), problem, parameters);
     }
 
     @Override
     protected CPPN createBSFCPPN() {
         INetwork network = sneat.getEA().getBestGenome().decode(null);
-        return new BasicSNEATCPPN(network, substrate.getMaxDimension());
+        return new BasicSNEATCPPN(network, problem.getSubstrate().getMaxDimension());
     }
 
     @Override

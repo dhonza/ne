@@ -22,19 +22,19 @@ public class NEATProgressPrinter1D extends CommonProgressPrinter1D {
     final private NEAT neat;
     final private Population pop;
 
-    public NEATProgressPrinter1D(NEAT neat, ProgressPrinter progressPrinter, Substrate substrate, Problem problem, ParameterCombination parameters) {
-        super(progressPrinter, substrate, problem, parameters);
+    public NEATProgressPrinter1D(NEAT neat, ProgressPrinter progressPrinter, Problem problem, ParameterCombination parameters) {
+        super(progressPrinter, problem, parameters);
         this.neat = neat;
         this.pop = neat.getPopulation();
     }
 
-    public NEATProgressPrinter1D(NEAT neat, Substrate substrate, Problem problem, ParameterCombination parameters) {
-        this(neat, new NEATBasicProgressPrinter(neat), substrate, problem, parameters);
+    public NEATProgressPrinter1D(NEAT neat, Problem problem, ParameterCombination parameters) {
+        this(neat, new NEATBasicProgressPrinter(neat), problem, parameters);
     }
 
     @Override
     protected CPPN createBSFCPPN() {
-        return new BasicNetCPPN(pop.getBestSoFarNet(), substrate.getMaxDimension());
+        return new BasicNetCPPN(pop.getBestSoFarNet(), problem.getSubstrate().getMaxDimension());
     }
 
     @Override

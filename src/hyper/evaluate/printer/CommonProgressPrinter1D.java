@@ -18,7 +18,6 @@ import hyper.substrate.Substrate;
  */
 abstract public class CommonProgressPrinter1D implements ProgressPrinter {
     final private ProgressPrinter progressPrinter;
-    final protected Substrate substrate;
     final protected Problem problem;
     final protected ParameterCombination parameters;
 
@@ -32,9 +31,8 @@ abstract public class CommonProgressPrinter1D implements ProgressPrinter {
     protected boolean finishedShowHyperNet = true;
     protected boolean finishedShowProblem = true;
 
-    public CommonProgressPrinter1D(ProgressPrinter progressPrinter, Substrate substrate, Problem problem, ParameterCombination parameters) {
+    public CommonProgressPrinter1D(ProgressPrinter progressPrinter, Problem problem, ParameterCombination parameters) {
         this.progressPrinter = progressPrinter;
-        this.substrate = substrate;
         this.problem = problem;
         this.parameters = parameters;
         setParameters();
@@ -120,7 +118,7 @@ abstract public class CommonProgressPrinter1D implements ProgressPrinter {
     protected abstract CPPN createBSFCPPN();
 
     protected EvaluableSubstrateBuilder createSubstrateBuilder() {
-        return SubstrateBuilderFactory.createEvaluableSubstrateBuilder(substrate, parameters);
+        return SubstrateBuilderFactory.createEvaluableSubstrateBuilder(problem.getSubstrate(), parameters);
     }
 
     protected INet createHyperNet(EvaluableSubstrateBuilder substrateBuilder) {

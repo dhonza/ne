@@ -21,18 +21,18 @@ import hyper.substrate.Substrate;
 public class GPProgressPrinter1D extends CommonProgressPrinter1D {
     final private GP gp;
 
-    public GPProgressPrinter1D(GP gp, ProgressPrinter progressPrinter, Substrate substrate, Problem problem, ParameterCombination parameters) {
-        super(progressPrinter, substrate, problem, parameters);
+    public GPProgressPrinter1D(GP gp, ProgressPrinter progressPrinter, Problem problem, ParameterCombination parameters) {
+        super(progressPrinter, problem, parameters);
         this.gp = gp;
     }
 
-    public GPProgressPrinter1D(GP gp, Substrate substrate, Problem problem, ParameterCombination parameters) {
-        this(gp, new GPBasicProgressPrinter(gp), substrate, problem, parameters);
+    public GPProgressPrinter1D(GP gp, Problem problem, ParameterCombination parameters) {
+        this(gp, new GPBasicProgressPrinter(gp), problem, parameters);
     }
 
     @Override
     protected CPPN createBSFCPPN() {
-        return new BasicGPCPPN(gp.getBestSoFar(), substrate.getMaxDimension());
+        return new BasicGPCPPN(gp.getBestSoFar(), problem.getSubstrate().getMaxDimension());
     }
 
     @Override

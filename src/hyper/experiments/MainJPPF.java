@@ -66,21 +66,10 @@ public class MainJPPF {
                 System.out.println("INITIALIZED SEED: " + seed);
 //        RND.initialize(8686925819525946L); //4
 
-//            BasicSubstrate substrate = RecoSubstrateFactory.createInputToOutput(lineSize);
-//            BasicSubstrate substrate = RecoSubstrateFactory.createInputHiddenOutput(lineSize, 2, lineSize);
-//            BasicSubstrate substrate = RecoSubstrateFactory.createInputHiddenOutput(lineSize, 3, 1);
-
-                //XOR
-                BasicSubstrate substrate = RecoSubstrateFactory.createInputHiddenOutput(2, 2, 1);
-
-                //AND
-//            BasicSubstrate substrate = RecoSubstrateFactory.createInputToOutput(lineSize, 1);
-//            BasicSubstrate substrate = RecoSubstrateFactory.createInputHiddenOutput(lineSize, 2, 1);
-
 //                System.out.println("TARGET FITNESS " + problem.getTargetFitness());
 //                System.out.println("EXPERIMENT: " + (i + 1));
 
-                Solver solver = SolverFactory.getSolver(combination, substrate, stats, reportStorage);
+                Solver solver = SolverFactory.getSolver(combination, stats, reportStorage);
                 if (i == 0) {
                     System.out.println(solver.getConfigString());
                     parameterString.append("\nSOLVER:\n").append("------\n").append(solver.getConfigString());

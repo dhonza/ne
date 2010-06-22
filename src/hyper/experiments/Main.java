@@ -5,16 +5,9 @@ import common.pmatrix.ParameterCombination;
 import common.pmatrix.ParameterMatrixManager;
 import common.pmatrix.ParameterMatrixStorage;
 import common.stats.Stats;
-import hyper.builder.EvaluableSubstrateBuilder;
-import hyper.builder.SubstrateBuilderFactory;
-import hyper.evaluate.Problem;
 import hyper.evaluate.Solver;
 import hyper.evaluate.SolverFactory;
-import hyper.experiments.findcluster.FindCluster;
-import hyper.experiments.findcluster.FindClusterSubstrateFactory;
 import hyper.experiments.reco.ReportStorage;
-import hyper.experiments.reco.problem.RecoSubstrateFactory;
-import hyper.substrate.BasicSubstrate;
 
 import java.io.File;
 
@@ -47,7 +40,6 @@ public class Main {
 
             System.out.println("PARAMETER COMBINATION: " + combination.toStringOnlyChannging());
             int experiments = combination.getInteger("EXPERIMENTS");
-            int lineSize = combination.getInteger("RECO.LINE_SIZE");
             boolean storeRun = combination.getBoolean("PRINT.storeRun");
 
             Stats stats = new Stats();
@@ -59,26 +51,10 @@ public class Main {
                 System.out.println("INITIALIZED SEED: " + seed);
 //        RND.initialize(8686925819525946L); //4
 
-//            BasicSubstrate substrate = RecoSubstrateFactory.createInputToOutput(lineSize);
-//            BasicSubstrate substrate = RecoSubstrateFactory.createInputHiddenOutput(lineSize, 2, lineSize);
-//            BasicSubstrate substrate = RecoSubstrateFactory.createInputHiddenOutput(lineSize, 3, 1);
-
-                //XOR
-//                BasicSubstrate substrate = RecoSubstrateFactory.createInputHiddenOutput(lineSize, lineSize, 1);
-
-                //AND
-//            BasicSubstrate substrate = RecoSubstrateFactory.createInputToOutput(lineSize, 1);
-//            BasicSubstrate substrate = RecoSubstrateFactory.createInputHiddenOutput(lineSize, 2, 1);
-
-                //Find Cluster
-                BasicSubstrate substrate = FindClusterSubstrateFactory.createInputToOutputNoBias(
-                        combination.getInteger("FIND_CLUSTER.NODES_X"),
-                        combination.getInteger("FIND_CLUSTER.NODES_Y"));
-
 //                System.out.println("TARGET FITNESS " + problem.getTargetFitness());
 //                System.out.println("EXPERIMENT: " + (i + 1));
 
-                Solver solver = SolverFactory.getSolver(combination, substrate, stats, reportStorage);
+                Solver solver = SolverFactory.getSolver(combination, stats, reportStorage);
                 if (i == 0) {
                     System.out.println(solver.getConfigString());
                     parameterString.append("\nSOLVER:\n").append("------\n").append(solver.getConfigString());

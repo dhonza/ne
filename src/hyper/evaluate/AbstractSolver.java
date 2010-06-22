@@ -18,16 +18,14 @@ import hyper.substrate.Substrate;
  */
 abstract public class AbstractSolver implements Solver {
     final protected ParameterCombination parameters;
-    final protected Substrate substrate;
     final protected Stats stats;
     final protected ReportStorage reportStorage;
 
     protected Evaluable[] perThreadEvaluators;
     protected Problem problem;
 
-    protected AbstractSolver(ParameterCombination parameters, Substrate substrate, Stats stats, ReportStorage reportStorage) {
+    protected AbstractSolver(ParameterCombination parameters, Stats stats, ReportStorage reportStorage) {
         this.parameters = parameters;
-        this.substrate = substrate;
         this.stats = stats;
         this.reportStorage = reportStorage;
         initPerThreadEvaluators();
@@ -45,9 +43,10 @@ abstract public class AbstractSolver implements Solver {
         }
         perThreadEvaluators = new Evaluable[threads];
         for (int i = (threads - 1); i >= 0; i--) {
-            EvaluableSubstrateBuilder substrateBuilder = SubstrateBuilderFactory.createEvaluableSubstrateBuilder(substrate, parameters);
 
             problem = ProblemFactory.getProblem(parameters);
+            EvaluableSubstrateBuilder substrateBuilder =
+                    SubstrateBuilderFactory.createEvaluableSubstrateBuilder(problem.getSubstrate(), parameters);
 
             Evaluable evaluator = EvaluableFactory.getEvaluable(parameters, substrateBuilder, problem);
             perThreadEvaluators[i] = evaluator;

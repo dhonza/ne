@@ -28,8 +28,8 @@ public class NEATSolver extends AbstractSolver {
     private FitnessSharingPopulation population;
     private EvolutionaryAlgorithmSolver solver;
 
-    protected NEATSolver(ParameterCombination parameters, Substrate substrate, Stats stats, ReportStorage reportStorage) {
-        super(parameters, substrate, stats, reportStorage);
+    protected NEATSolver(ParameterCombination parameters, Stats stats, ReportStorage reportStorage) {
+        super(parameters, stats, reportStorage);
         init();
     }
 
@@ -45,7 +45,7 @@ public class NEATSolver extends AbstractSolver {
         neat.setPopulation(population);
 
         solver = new EvolutionaryAlgorithmSolver(neat, stats);
-        solver.addProgressPrinter(new NEATProgressPrinter1D(neat, substrate, problem, parameters));
+        solver.addProgressPrinter(new NEATProgressPrinter1D(neat, problem, parameters));
         solver.addProgressPrinter(new FileProgressPrinter(neat, reportStorage, parameters));
         solver.addStopCondition(new MaxGenerationsStopCondition(neat));
         solver.addStopCondition(new MaxEvaluationsStopCondition(neat));
