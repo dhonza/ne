@@ -44,7 +44,7 @@ abstract public class AbstractSolver implements Solver {
         perThreadEvaluators = new Evaluable[threads];
         for (int i = (threads - 1); i >= 0; i--) {
 
-            problem = ProblemFactory.getProblem(parameters);
+            problem = ProblemFactory.getProblem(parameters, reportStorage);
             EvaluableSubstrateBuilder substrateBuilder =
                     SubstrateBuilderFactory.createEvaluableSubstrateBuilder(problem.getSubstrate(), parameters);
 

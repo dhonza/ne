@@ -28,6 +28,8 @@ public class ReportStorage implements Serializable {
     private File baseDir;
     final private StringBuilder experimentOverallBuilder = new StringBuilder();
     private String generationInfo;
+    private int experimentId = 1;
+    private int parameterCombinationId = 1;
 
     public ReportStorage(String baseDir) {
         this.baseDir = new File(baseDir);
@@ -48,7 +50,15 @@ public class ReportStorage implements Serializable {
 
     }
 
-    public void storeParameters(int parameterCombinationId, String parameterInfo) {
+    public void incrementExperimentId() {
+        experimentId++;
+    }
+
+    public void incrementParameterCombinationId() {
+        parameterCombinationId++;
+    }
+
+    public void storeParameters(String parameterInfo) {
         File file = new File(baseDir, PARAMETER_FILE_PREFIX +
                 String.format("%03d", parameterCombinationId) +
                 SUFFIX);
@@ -59,7 +69,7 @@ public class ReportStorage implements Serializable {
         }
     }
 
-    public void storeExperimentResults(int parameterCombinationId, Stats stats) {
+    public void storeExperimentResults(Stats stats) {
         File file = new File(baseDir, EXPERIMENT_FILE_PREFIX +
                 String.format("%03d", parameterCombinationId) +
                 SUFFIX);
@@ -70,7 +80,7 @@ public class ReportStorage implements Serializable {
         }
     }
 
-    public void appendExperimentsOverallResults(int parameterCombinationId, String changingParameters, Stats stats) {
+    public void appendExperimentsOverallResults(String changingParameters, Stats stats) {
         experimentOverallBuilder.append(parameterCombinationId).append(": ").
                 append(changingParameters).append('\n').
                 append(stats.scopeToString("EXPERIMENT")).append('\n');
@@ -90,14 +100,25 @@ public class ReportStorage implements Serializable {
         this.generationInfo = generationInfo;
     }
 
-    public void storeSingleRunResults(int parameterCombinationId, int experimentId) {
+    public void storeSingleRunResults() {
         File file = new File(baseDir, SINGLE_RUN_FILE_PREFIX +
                 String.format("%03d", parameterCombinationId) + "_" +
-                String.format("%03d", experimentId + 1) + SUFFIX);
+                String.format("%03d", experimentId) + SUFFIX);
         try {
             FileUtils.writeStringToFile(file, generationInfo);
         } catch (IOException e) {
             System.err.println("Cannot save single run result file: " + file);
+        }
+    }
+
+    public void storeSingleRunAuxiliaryFile(String fileNamePrefix, String text) {
+        File file = new File(baseDir, fileNamePrefix +
+                String.format("%03d", parameterCombinationId) + "_" +
+                String.format("%03d", experimentId) + SUFFIX);
+        try {
+            FileUtils.writeStringToFile(file, text);
+        } catch (IOException e) {
+            System.err.println("Cannot save single run auxiliary file: " + file);
         }
     }
 }

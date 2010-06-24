@@ -73,7 +73,7 @@ public class MainJPPF {
                 if (i == 0) {
                     System.out.println(solver.getConfigString());
                     parameterString.append("\nSOLVER:\n").append("------\n").append(solver.getConfigString());
-                    reportStorage.storeParameters(combinationId, parameterString.toString());
+                    reportStorage.storeParameters(parameterString.toString());
 
                 }
 
@@ -83,7 +83,7 @@ public class MainJPPF {
                     e.printStackTrace();
                 }
             }
-            combinationId++;
+            reportStorage.incrementParameterCombinationId();
         }
 
         try {

@@ -32,7 +32,6 @@ public class Main {
         ParameterMatrixManager manager = ParameterMatrixStorage.load(new File(args[0], "experiment.properties"));
         System.out.println("PARAMETER SETTINGS: " + manager);
 
-        int combinationId = 1;
         for (ParameterCombination combination : manager) {
             StringBuilder parameterString = new StringBuilder();
             parameterString.append("FIXED:\n").append("-----\n").append(manager.toStringNewLines());
@@ -58,19 +57,20 @@ public class Main {
                 if (i == 0) {
                     System.out.println(solver.getConfigString());
                     parameterString.append("\nSOLVER:\n").append("------\n").append(solver.getConfigString());
-                    reportStorage.storeParameters(combinationId, parameterString.toString());
+                    reportStorage.storeParameters(parameterString.toString());
 
                 }
                 solver.solve();
 
                 if (storeRun) {
-                    reportStorage.storeSingleRunResults(combinationId, i);
+                    reportStorage.storeSingleRunResults();
                 }
+                reportStorage.incrementExperimentId();
             }
-            reportStorage.storeExperimentResults(combinationId, stats);
-            reportStorage.appendExperimentsOverallResults(combinationId, combination.toStringOnlyChannging(), stats);
+            reportStorage.storeExperimentResults(stats);
+            reportStorage.appendExperimentsOverallResults(combination.toStringOnlyChannging(), stats);
             System.out.println(stats.scopeToString("EXPERIMENT"));
-            combinationId++;
+            reportStorage.incrementParameterCombinationId();
         }
         reportStorage.storeExperimentsOverallResults();
     }

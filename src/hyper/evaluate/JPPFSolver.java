@@ -35,7 +35,7 @@ public class JPPFSolver extends JPPFTask {
         solver.solve();
         boolean storeRun = combination.getBoolean("PRINT.storeRun");
         if (storeRun) {
-            reportStorage.storeSingleRunResults(combinationId, experimentId);
+            reportStorage.storeSingleRunResults();
         }
         setResult("Done AAAXCXACSAAC");
     }

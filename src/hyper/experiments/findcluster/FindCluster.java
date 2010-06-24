@@ -4,6 +4,7 @@ import common.mathematica.MathematicaUtils;
 import common.net.INet;
 import common.pmatrix.ParameterCombination;
 import hyper.evaluate.Problem;
+import hyper.experiments.reco.ReportStorage;
 import hyper.substrate.Substrate;
 
 /**
@@ -34,6 +35,8 @@ public class FindCluster implements Problem {
         }
     }
 
+    private final ReportStorage reportStorage;
+
     private int numNodesX;
     private int numNodesY;
 
@@ -43,11 +46,12 @@ public class FindCluster implements Problem {
 
     private boolean solved = false;
 
-    public FindCluster(ParameterCombination parameters) {
+    public FindCluster(ParameterCombination parameters, ReportStorage reportStorage) {
         numNodesX = parameters.getInteger("FIND_CLUSTER.NODES_X");
         numNodesY = parameters.getInteger("FIND_CLUSTER.NODES_Y");
         sizeMultiplier = 1;
         this.activations = parameters.getInteger("NET_ACTIVATIONS");
+        this.reportStorage = reportStorage;
     }
 
     private Pattern evaluateNetForSingleConfiguration(INet hyperNet, int x1, int y1, int x1Big, int y1Big) {
@@ -320,6 +324,8 @@ public class FindCluster implements Problem {
     }
 
     public void show(INet hyperNet) {
+        StringBuilder builder = new StringBuilder();
+        builder.append("{\n");
         for (int y1 = 1; y1 < numNodesY; y1 += 2) {
             for (int x1 = 1; x1 < numNodesX; x1 += 2) {
                 int y1Big = (y1 + numNodesY / 2) % numNodesY;
@@ -337,36 +343,38 @@ public class FindCluster implements Problem {
                     x1Big--;
                 }
 
-                System.out.println("{");
+                builder.append("{\n");
                 if (x1 > 0 && x1 + 1 < numNodesX) {
                     Pattern pattern = evaluateNetForSingleConfiguration(hyperNet, x1, y1, x1, y1Big);
-                    printMatrix(pattern.in, numNodesX);
-                    System.out.println(",");
-                    printMatrix(pattern.out, numNodesX);
-                    System.out.println("\n},\n{");
+                    printMatrix(builder, pattern.in, numNodesX);
+                    builder.append(",\n");
+                    printMatrix(builder, pattern.out, numNodesX);
+                    builder.append("\n},\n{\n");
                 }
 
                 if (y1 > 0 && y1 + 1 < numNodesY) {
                     Pattern pattern = evaluateNetForSingleConfiguration(hyperNet, x1, y1, x1Big, y1);
-                    printMatrix(pattern.in, numNodesX);
-                    System.out.println(",");
-                    printMatrix(pattern.out, numNodesX);
-                    System.out.println("\n},\n{");
+                    printMatrix(builder, pattern.in, numNodesX);
+                    builder.append(",\n");
+                    printMatrix(builder, pattern.out, numNodesX);
+                    builder.append("\n},\n{\n");
                 }
 
                 Pattern pattern = evaluateNetForSingleConfiguration(hyperNet, x1, y1, x1Big, y1Big);
 
-                printMatrix(pattern.in, numNodesX);
-                System.out.println(",");
+                printMatrix(builder, pattern.in, numNodesX);
+                builder.append(",\n");
 
-                printMatrix(pattern.out, numNodesX);
+                printMatrix(builder, pattern.out, numNodesX);
                 if (y1 >= (numNodesY - 2) && x1 >= (numNodesX - 2)) {
-                    System.out.println("\n}");
+                    builder.append("\n}\n");
                 } else {
-                    System.out.println("\n},");
+                    builder.append("\n},\n");
                 }
             }
         }
+        builder.append("}\n");
+        reportStorage.storeSingleRunAuxiliaryFile("find_cluster_", builder.toString());
     }
 
     public Substrate getSubstrate() {
@@ -378,28 +386,26 @@ public class FindCluster implements Problem {
     }
 
 
-    public static void printMatrix(double[] m, int numNodesX) {
-        System.out.print("{{");
+    public static void printMatrix(StringBuilder builder, double[] m, int numNodesX) {
+        builder.append("{{");
         for (int i = 0; i < m.length; i++) {
             if ((i + 1) % numNodesX != 0) {
-//                System.out.printf("%1.3f, ", 1 * m[i]);
-                System.out.print(MathematicaUtils.toMathematica(1 * m[i]) + ", ");
+                builder.append(MathematicaUtils.toMathematica(1 * m[i])).append(", ");
             } else {
-//                System.out.printf("%1.3f", 1 * m[i]);
-                System.out.print(MathematicaUtils.toMathematica(1 * m[i]));
+                builder.append(MathematicaUtils.toMathematica(1 * m[i]));
             }
             if ((i + 1) % numNodesX == 0) {
-                System.out.print("}");
+                builder.append("}");
                 if (i < m.length - 1) {
-                    System.out.print(",\n{");
+                    builder.append(",\n{");
                 }
             }
         }
-        System.out.print("}");
+        builder.append("}");
     }
 
     public static void main(String[] args) {
-        FindCluster f = new FindCluster(null);
+        FindCluster f = new FindCluster(null, null);
         f.evaluate(null);
 
 //        f.processIndividualPostHoc(null);
