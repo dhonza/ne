@@ -63,7 +63,7 @@ public class SingleFilePopulationEvaluator implements IPopulationEvaluator {
             IGenome g = pop.getGenomeList().get(i);
             //TODO dhonza fitness has to be > 0 ?;
             if (toEvaluate[i]) {
-                if (evaluationInfos[cnt++].getFitness() < EvolutionAlgorithm.MIN_GENOME_FITNESS) {
+                if (evaluationInfos[cnt].getFitness() < EvolutionAlgorithm.MIN_GENOME_FITNESS) {
                     throw new IllegalStateException("CHECK this limitation of fitness value");
                 }
 //                g.setFitness(Math.max(evaluationInfos[cnt++].getFitness(), EvolutionAlgorithm.MIN_GENOME_FITNESS));
