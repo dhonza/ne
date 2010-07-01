@@ -1,5 +1,7 @@
 package sneat.evolution;
 
+import common.evolution.EvaluationInfo;
+
 import java.util.*;
 
 public class Population {
@@ -495,11 +497,11 @@ public class Population {
         return genome.isCompatibleWithGenome(compareWithGenome, ea.getNeatParameters());
     }
 
-    public double[] getFitnessVector() {
-        double[] fv = new double[genomeList.size()];
+    public EvaluationInfo[] getEvaluationInfo() {
+        EvaluationInfo[] fv = new EvaluationInfo[genomeList.size()];
         int i = 0;
         for (IGenome genome : genomeList) {
-            fv[i] = genome.getFitness();
+            fv[i] = genome.getEvaluationInfo();
         }
         return fv;
     }

@@ -1,5 +1,6 @@
 package sneat.evolution;
 
+import common.evolution.EvaluationInfo;
 import sneat.neuralnetwork.AbstractNetwork;
 import sneat.neuralnetwork.IActivationFunction;
 import sneat.neuralnetwork.INetwork;
@@ -10,6 +11,7 @@ abstract public class AbstractGenome implements IGenome {
     protected int genomeId;
     long genomeAge = 0;
     double fitness = 0;
+    EvaluationInfo evaluationInfo;
     long evaluationCount = 0;
     double totalFitness = 0;
     int speciesId = -1;
@@ -141,6 +143,14 @@ abstract public class AbstractGenome implements IGenome {
     public void setFitness(double fitness) {
         Debug.Assert(fitness >= EvolutionAlgorithm.MIN_GENOME_FITNESS, "Genome fitness must be non-zero. Use EvolutionAlgorithm.MIN_GENOME_FITNESS");
         this.fitness = fitness;
+    }
+
+    public EvaluationInfo getEvaluationInfo() {
+        return evaluationInfo;
+    }
+
+    public void setEvaluationInfo(EvaluationInfo evaluationInfo) {
+        this.evaluationInfo = evaluationInfo;
     }
 
     /// The number of times this genome has been evaluated.

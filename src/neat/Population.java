@@ -196,6 +196,7 @@ public abstract class Population {
         for (int i = 0; i < n; i++) {
             tg = genomes[i];
             tg.fitness = evaluationInfos[i].getFitness();
+            tg.setEvaluationInfo(evaluationInfos[i]);
             tg.evaluated = true; //mark evaluated
             if (tg.fitness > bestOfGeneration.fitness) {
                 bestOfGeneration = tg;
@@ -353,6 +354,15 @@ public abstract class Population {
         double[] fv = new double[genomes.length];
         for (int i = 0; i < genomes.length; i++) {
             fv[i] = genomes[i].fitness;
+
+        }
+        return fv;
+    }
+
+    public EvaluationInfo[] getEvaluationInfo() {
+        EvaluationInfo[] fv = new EvaluationInfo[genomes.length];
+        for (int i = 0; i < genomes.length; i++) {
+            fv[i] = genomes[i].getEvaluationInfo();
 
         }
         return fv;

@@ -113,7 +113,8 @@ public class GP implements EvolutionaryAlgorithm, Serializable {
         EvaluationInfo[] evaluationInfos = populationEvaluator.evaluate(perThreadEvaluators, Arrays.asList(evalPopulation));
         int cnt = 0;
         for (Forest forest : evalPopulation) {
-            forest.setFitness(evaluationInfos[cnt++].getFitness());
+            forest.setFitness(evaluationInfos[cnt].getFitness());
+            forest.setEvaluationInfo(evaluationInfos[cnt++]);
         }
     }
 
@@ -200,10 +201,10 @@ public class GP implements EvolutionaryAlgorithm, Serializable {
         return lastInnovation;
     }
 
-    public double[] getFitnessVector() {
-        double[] fv = new double[population.length];
+    public EvaluationInfo[] getEvaluationInfo() {
+        EvaluationInfo[] fv = new EvaluationInfo[population.length];
         for (int i = 0; i < population.length; i++) {
-            fv[i] = population[i].getFitness();
+            fv[i] = population[i].getEvaluationInfo();
         }
         return fv;
     }

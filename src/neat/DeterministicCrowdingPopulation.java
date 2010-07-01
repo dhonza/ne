@@ -167,6 +167,7 @@ public class DeterministicCrowdingPopulation extends Population {
         this.incrementEvaluation(n);
         for (int i = 0; i < n; i++) {
             children[i].fitness = evaluationInfos[i].getFitness();
+            children[i].setEvaluationInfo(evaluationInfos[i]);
         }
 
         tpopi = 0;
@@ -224,6 +225,7 @@ public class DeterministicCrowdingPopulation extends Population {
             tg = genomes[i];
             if (eval) {
                 tg.fitness = evaluationInfos[i].getFitness();
+                tg.setEvaluationInfo(evaluationInfos[i]);
                 this.incrementEvaluation();
             }
             if (tg.fitness > bestOfGeneration.fitness) {

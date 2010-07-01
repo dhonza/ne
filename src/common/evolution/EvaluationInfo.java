@@ -1,5 +1,8 @@
 package common.evolution;
 
+import java.util.LinkedHashMap;
+import java.util.Map;
+
 /**
  * Created by IntelliJ IDEA.
  * User: drchaj1
@@ -9,11 +12,18 @@ package common.evolution;
  */
 public class EvaluationInfo {
     final private double fitness;
+    Map<String, Object> infoMap = new LinkedHashMap<String, Object>();
 
 
     public EvaluationInfo(double fitness) {
         this.fitness = fitness;
     }
+
+    public EvaluationInfo(double fitness, Map<String, Object> infoMap) {
+        this.fitness = fitness;
+        this.infoMap.putAll(infoMap);
+    }
+
 
     public double getFitness() {
         return fitness;

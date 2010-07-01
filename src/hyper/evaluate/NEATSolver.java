@@ -7,12 +7,9 @@ import common.net.linked.Neuron;
 import common.pmatrix.ParameterCombination;
 import common.pmatrix.Utils;
 import common.stats.Stats;
-import hyper.builder.EvaluableSubstrateBuilder;
-import hyper.builder.SubstrateBuilderFactory;
 import hyper.evaluate.printer.NEATProgressPrinter1D;
 import hyper.experiments.reco.FileProgressPrinter;
 import hyper.experiments.reco.ReportStorage;
-import hyper.substrate.Substrate;
 import neat.*;
 
 /**
@@ -26,7 +23,6 @@ import neat.*;
 public class NEATSolver extends AbstractSolver {
     private NEAT neat;
     private FitnessSharingPopulation population;
-    private EvolutionaryAlgorithmSolver solver;
 
     protected NEATSolver(ParameterCombination parameters, Stats stats, ReportStorage reportStorage) {
         super(parameters, stats, reportStorage);
@@ -46,7 +42,7 @@ public class NEATSolver extends AbstractSolver {
 
         solver = new EvolutionaryAlgorithmSolver(neat, stats);
         solver.addProgressPrinter(new NEATProgressPrinter1D(neat, problem, parameters));
-        solver.addProgressPrinter(new FileProgressPrinter(neat, reportStorage, parameters));
+        solver.addProgressPrinter(new FileProgressPrinter(neat, problem, reportStorage, parameters));
         solver.addStopCondition(new MaxGenerationsStopCondition(neat));
         solver.addStopCondition(new MaxEvaluationsStopCondition(neat));
         solver.addStopCondition(new TargetFitnessStopCondition(neat));

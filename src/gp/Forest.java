@@ -1,6 +1,7 @@
 package gp;
 
 import common.RND;
+import common.evolution.EvaluationInfo;
 
 import java.io.Serializable;
 import java.util.Arrays;
@@ -15,6 +16,7 @@ import java.util.Arrays;
 public class Forest implements Comparable, Serializable {
     private Tree[] trees;
     private double fitness = -Double.MAX_VALUE;
+    private EvaluationInfo evaluationInfo;
     private int generationOfOrigin;
     private TreeInputs treeInputs;
 
@@ -32,6 +34,14 @@ public class Forest implements Comparable, Serializable {
 
     public void setFitness(double fitness) {
         this.fitness = fitness;
+    }
+
+    public EvaluationInfo getEvaluationInfo() {
+        return evaluationInfo;
+    }
+
+    public void setEvaluationInfo(EvaluationInfo evaluationInfo) {
+        this.evaluationInfo = evaluationInfo;
     }
 
     public static Forest createEmpty() {
@@ -59,6 +69,7 @@ public class Forest implements Comparable, Serializable {
             }
         }
         forest.setFitness(Double.NaN);
+        forest.setEvaluationInfo(new EvaluationInfo(Double.NaN));
         return forest;
 
     }
