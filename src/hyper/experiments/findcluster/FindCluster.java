@@ -159,9 +159,9 @@ public class FindCluster implements Problem {
 
             }
         }
-        double distance = (largestX - x1Big) * (largestX - x1Big) + (largestY - y1Big) * (largestY - y1Big);
-        distances.add(distance);
-        return Math.max(0, 30 - distance);
+        double distanceSquared = (largestX - x1Big) * (largestX - x1Big) + (largestY - y1Big) * (largestY - y1Big);
+        distances.add(Math.sqrt(distanceSquared));
+        return Math.max(0, 30 - distanceSquared);
     }
 
     public EvaluationInfo evaluate(INet hyperNet) {
