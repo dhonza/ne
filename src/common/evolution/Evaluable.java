@@ -10,7 +10,7 @@ import java.io.Serializable;
  * To change this template use File | Settings | File Templates.
  */
 public interface Evaluable<T> extends Serializable {
-    public double evaluate(T individual);
+    public EvaluationInfo evaluate(T individual);
 
     public boolean isSolved();
 

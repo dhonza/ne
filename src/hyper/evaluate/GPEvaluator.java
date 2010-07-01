@@ -1,7 +1,8 @@
 package hyper.evaluate;
 
-import common.net.INet;
 import common.evolution.Evaluable;
+import common.evolution.EvaluationInfo;
+import common.net.INet;
 import gp.Forest;
 import hyper.builder.EvaluableSubstrateBuilder;
 import hyper.cppn.BasicGPCPPN;
@@ -23,7 +24,7 @@ public class GPEvaluator implements Evaluable<Forest> {
         this.problem = problem;
     }
 
-    public double evaluate(Forest forest) {
+    public EvaluationInfo evaluate(Forest forest) {
         CPPN aCPPN = new BasicGPCPPN(forest, substrateBuilder.getSubstrate().getMaxDimension());
         substrateBuilder.build(aCPPN);
         INet hyperNet = substrateBuilder.getNet();

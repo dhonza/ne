@@ -2,6 +2,7 @@ package gp;
 
 import common.RND;
 import common.evolution.Evaluable;
+import common.evolution.EvaluationInfo;
 import common.evolution.EvolutionaryAlgorithm;
 import common.evolution.ParallelPopulationEvaluator;
 import gp.terminals.Input;
@@ -109,10 +110,10 @@ public class GP implements EvolutionaryAlgorithm, Serializable {
     }
 
     private void evaluate(Forest[] evalPopulation) {
-        double[] fitness = populationEvaluator.evaluate(perThreadEvaluators, Arrays.asList(evalPopulation));
+        EvaluationInfo[] evaluationInfos = populationEvaluator.evaluate(perThreadEvaluators, Arrays.asList(evalPopulation));
         int cnt = 0;
         for (Forest forest : evalPopulation) {
-            forest.setFitness(fitness[cnt++]);
+            forest.setFitness(evaluationInfos[cnt++].getFitness());
         }
     }
 
@@ -180,7 +181,7 @@ public class GP implements EvolutionaryAlgorithm, Serializable {
 
     public boolean isSolved() {
         for (Evaluable<Forest> evaluator : perThreadEvaluators) {
-            if(evaluator.isSolved()) {
+            if (evaluator.isSolved()) {
                 return true;
             }
         }

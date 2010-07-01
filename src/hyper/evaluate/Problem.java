@@ -1,5 +1,6 @@
 package hyper.evaluate;
 
+import common.evolution.EvaluationInfo;
 import common.net.INet;
 import hyper.substrate.Substrate;
 
@@ -13,7 +14,7 @@ import java.io.Serializable;
  * To change this template use File | Settings | File Templates.
  */
 public interface Problem extends Serializable {
-    public double evaluate(INet hyperNet);
+    public EvaluationInfo evaluate(INet hyperNet);
 
     public boolean isSolved();
 

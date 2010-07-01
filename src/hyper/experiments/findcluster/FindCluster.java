@@ -1,5 +1,6 @@
 package hyper.experiments.findcluster;
 
+import common.evolution.EvaluationInfo;
 import common.mathematica.MathematicaUtils;
 import common.net.INet;
 import common.pmatrix.ParameterCombination;
@@ -150,7 +151,7 @@ public class FindCluster implements Problem {
         return Math.max(0, 30 - ((largestX - x1Big) * (largestX - x1Big) + (largestY - y1Big) * (largestY - y1Big)));
     }
 
-    public double evaluate(INet hyperNet) {
+    public EvaluationInfo evaluate(INet hyperNet) {
         double fitness = 0;
         double maxFitness = 0;
 
@@ -205,7 +206,7 @@ public class FindCluster implements Problem {
             solved = true;
         }
 
-        return fitness;
+        return new EvaluationInfo(fitness);
     }
 
     /*

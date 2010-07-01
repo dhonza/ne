@@ -8,6 +8,7 @@ package neat;
 
 import common.RND;
 import common.evolution.Evaluable;
+import common.evolution.EvaluationInfo;
 
 import java.util.Arrays;
 import java.util.Iterator;
@@ -162,10 +163,10 @@ public class DeterministicCrowdingPopulation extends Population {
 //            }
         }
 
-        double[] fitnessValues = populationEvaluator.evaluate(perThreadEvaluators, Arrays.asList(children));
+        EvaluationInfo[] evaluationInfos = populationEvaluator.evaluate(perThreadEvaluators, Arrays.asList(children));
         this.incrementEvaluation(n);
         for (int i = 0; i < n; i++) {
-            children[i].fitness = fitnessValues[i];
+            children[i].fitness = evaluationInfos[i].getFitness();
         }
 
         tpopi = 0;
@@ -214,15 +215,15 @@ public class DeterministicCrowdingPopulation extends Population {
         // System.out.println( " Population.evaluate()" );
         Genome tg;
         int n = NEAT.getConfig().populationSize;
-        double[] fitnessVector = null;
+        EvaluationInfo[] evaluationInfos = null;
         if (eval) {
-            fitnessVector = populationEvaluator.evaluate(perThreadEvaluators, Arrays.asList(genomes));
+            evaluationInfos = populationEvaluator.evaluate(perThreadEvaluators, Arrays.asList(genomes));
         }
         populationEvaluator.evaluate(perThreadEvaluators, Arrays.asList(genomes));
         for (int i = 0; i < n; i++) {
             tg = genomes[i];
             if (eval) {
-                tg.fitness = fitnessVector[i];
+                tg.fitness = evaluationInfos[i].getFitness();
                 this.incrementEvaluation();
             }
             if (tg.fitness > bestOfGeneration.fitness) {

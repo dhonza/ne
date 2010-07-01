@@ -1,6 +1,7 @@
 package gp.demo;
 
 import common.evolution.Evaluable;
+import common.evolution.EvaluationInfo;
 import gp.Forest;
 
 /**
@@ -11,9 +12,9 @@ import gp.Forest;
  * To change this template use File | Settings | File Templates.
  */
 public class EvolveConstant implements Evaluable<Forest> {
-    public double evaluate(Forest forest) {
+    public EvaluationInfo evaluate(Forest forest) {
         double output = forest.getOutputs()[0];
-        return 0.0 - Math.abs(2.1 - output);
+        return new EvaluationInfo(0.0 - Math.abs(2.1 - output));
     }
 
     public boolean isSolved() {

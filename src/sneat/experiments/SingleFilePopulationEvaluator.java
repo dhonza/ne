@@ -1,6 +1,7 @@
 package sneat.experiments;
 
 import common.evolution.Evaluable;
+import common.evolution.EvaluationInfo;
 import common.evolution.ParallelPopulationEvaluator;
 import sneat.evolution.EvolutionAlgorithm;
 import sneat.evolution.IGenome;
@@ -53,14 +54,14 @@ public class SingleFilePopulationEvaluator implements IPopulationEvaluator {
                 g.setFitness(EvolutionAlgorithm.MIN_GENOME_FITNESS);
             }
         }
-        
-        double[] fitness = populationEvaluator.evaluate(perThreadEvaluators, populationToEvaluate);
+
+        EvaluationInfo[] evaluationInfos = populationEvaluator.evaluate(perThreadEvaluators, populationToEvaluate);
 
         int cnt = 0;
         for (int i = 0; i < count; i++) {
             IGenome g = pop.getGenomeList().get(i);
             if (toEvaluate[i]) {
-                g.setFitness(Math.max(fitness[cnt++], EvolutionAlgorithm.MIN_GENOME_FITNESS));
+                g.setFitness(Math.max(evaluationInfos[cnt++].getFitness(), EvolutionAlgorithm.MIN_GENOME_FITNESS));
             }
 
             if (g.getEvaluationCount() == 0) {
