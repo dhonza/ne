@@ -55,6 +55,16 @@ public class FileProgressPrinter implements ProgressPrinter {
         if (!storeRun) {
             return;
         }
+        List<ReportStorage.SingleRunFile> itemList = new ArrayList<ReportStorage.SingleRunFile>();
+        StringBuilder builder = extractFitnessInfo();
+        itemList.add(new ReportStorage.SingleRunFile("FITNESS", builder.toString()));
+        for (String name : problem.getEvaluationInfoItemNames()) {
+            itemList.add(new ReportStorage.SingleRunFile(name, extractEvaluationInfo(name).toString()));
+        }
+        reportStorage.prepareSingleRunResults(itemList);
+    }
+
+    private StringBuilder extractFitnessInfo() {
         StringBuilder builder = new StringBuilder();
         int last = generations.get(0).evaluationInfos.length - 1;
 
@@ -71,8 +81,28 @@ public class FileProgressPrinter implements ProgressPrinter {
             for (int i = 0; i < generation.evaluationInfos.length - 1; i++) {
                 builder.append(generation.evaluationInfos[i].getFitness()).append("\t");
             }
-            builder.append(generation.evaluationInfos[generation.evaluationInfos.length - 1]).append("\n");
+            builder.append(generation.evaluationInfos[generation.evaluationInfos.length - 1].getFitness()).append("\n");
         }
-        reportStorage.prepareSingleRunResults(builder.toString());
+        return builder;
+    }
+
+    private StringBuilder extractEvaluationInfo(String name) {
+        StringBuilder builder = new StringBuilder();
+        int last = generations.get(0).evaluationInfos.length - 1;
+
+        //header
+        for (int i = 0; i < last; i++) {
+            builder.append(i + 1).append("\t");
+        }
+        builder.append(last + 1).append("\n");
+
+        //data
+        for (InfoContainer generation : generations) {
+            for (int i = 0; i < generation.evaluationInfos.length - 1; i++) {
+                builder.append(generation.evaluationInfos[i].getInfo(name)).append("\t");
+            }
+            builder.append(generation.evaluationInfos[generation.evaluationInfos.length - 1].getInfo(name)).append("\n");
+        }
+        return builder;
     }
 }

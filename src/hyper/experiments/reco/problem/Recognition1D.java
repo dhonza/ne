@@ -12,6 +12,9 @@ import hyper.experiments.reco.util.PatternUtils;
 import hyper.substrate.BasicSubstrate;
 import hyper.substrate.Substrate;
 
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  * Created by IntelliJ IDEA.
  * User: drchaj1
@@ -90,5 +93,9 @@ public class Recognition1D implements Problem {
 
     public boolean isSolved() {
         return solved;
+    }
+
+    public List<String> getEvaluationInfoItemNames() {
+        return new ArrayList<String>();
     }
 }

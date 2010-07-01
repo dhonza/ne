@@ -425,10 +425,9 @@ public class FindCluster implements Problem {
         builder.append("}");
     }
 
-    public static void main(String[] args) {
-        FindCluster f = new FindCluster(null, null);
-        f.evaluate(null);
-
-//        f.processIndividualPostHoc(null);
+    public List<String> getEvaluationInfoItemNames() {
+        List<String> listOfNames = new ArrayList<String>();
+        listOfNames.add("AVG_DISTANCE");
+        return listOfNames;
     }
 }

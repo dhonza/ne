@@ -24,8 +24,11 @@ public class EvaluationInfo {
         this.infoMap.putAll(infoMap);
     }
 
-
     public double getFitness() {
         return fitness;
+    }
+
+    public Object getInfo(String name) {
+        return infoMap.get(name);
     }
 }
