@@ -27,6 +27,8 @@ public class SolverFactory {
             return new NEATSolver(parameters, stats, reportStorage);
         } else if (name.equalsIgnoreCase("SNEAT")) {
             return new SNEATSolver(parameters, stats, reportStorage);
+        } else if (name.equalsIgnoreCase("DIRECT_ENCODING")) {
+            return new DirectEncodingSolver(parameters, stats, reportStorage);            
         } else {
             throw new IllegalStateException("Unknown solver: \"" + name + "\"");
         }
