@@ -1,22 +1,15 @@
 package hyper.evaluate;
 
-import common.evolution.Evaluable;
 import common.evolution.EvolutionaryAlgorithmSolver;
-import common.evolution.ParallelPopulationEvaluator;
 import common.pmatrix.ParameterCombination;
 import common.pmatrix.Utils;
 import common.stats.Stats;
 import gp.*;
 import gp.terminals.Constant;
 import gp.terminals.Random;
-import hyper.builder.EvaluableSubstrateBuilder;
-import hyper.builder.SubstrateBuilderFactory;
 import hyper.evaluate.printer.GPProgressPrinter1D;
-import hyper.experiments.findcluster.FindCluster;
 import hyper.experiments.reco.FileProgressPrinter;
 import hyper.experiments.reco.ReportStorage;
-import hyper.experiments.reco.problem.Recognition1D;
-import hyper.substrate.Substrate;
 
 /**
  * Created by IntelliJ IDEA.
@@ -29,7 +22,6 @@ import hyper.substrate.Substrate;
 public class GPSolver extends AbstractSolver {
 
     private GP gp;
-    private EvolutionaryAlgorithmSolver solver;
 
     protected GPSolver(ParameterCombination parameters, Stats stats, ReportStorage reportStorage) {
         super(parameters, stats, reportStorage);
@@ -49,7 +41,7 @@ public class GPSolver extends AbstractSolver {
 
         solver = new EvolutionaryAlgorithmSolver(gp, stats);
         solver.addProgressPrinter(new GPProgressPrinter1D(gp, problem, parameters));
-        solver.addProgressPrinter(new FileProgressPrinter(gp, reportStorage, parameters));
+        solver.addProgressPrinter(new FileProgressPrinter(gp, problem, reportStorage, parameters));
         solver.addStopCondition(new MaxGenerationsStopCondition(gp));
         solver.addStopCondition(new MaxEvaluationsStopCondition(gp));
         solver.addStopCondition(new TargetFitnessStopCondition(gp));

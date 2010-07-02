@@ -1,5 +1,6 @@
 package hyper.experiments.reco.problem;
 
+import common.evolution.EvaluationInfo;
 import common.net.INet;
 import common.pmatrix.ParameterCombination;
 import hyper.evaluate.Problem;
@@ -10,6 +11,9 @@ import hyper.experiments.reco.util.PatternGeneratorFactory;
 import hyper.experiments.reco.util.PatternUtils;
 import hyper.substrate.BasicSubstrate;
 import hyper.substrate.Substrate;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Created by IntelliJ IDEA.
@@ -37,7 +41,7 @@ public class Recognition1D implements Problem {
         this.fitnessTolerance = fitnessTolerance;
     }
 
-    public double evaluate(INet hyperNet) {
+    public EvaluationInfo evaluate(INet hyperNet) {
         HyperNetEvaluator1D hyperNetEvaluator = new HyperNetEvaluator1D(hyperNet, activations);
 
         //zatim pouze pro 1D, pak predelat
@@ -46,7 +50,7 @@ public class Recognition1D implements Problem {
         double fitness = recognition.evaluate(generator.generateInputPatterns(), generator.generateOutputPatterns());
         solved = solved || recognition.isSolved();
 
-        return fitness;
+        return new EvaluationInfo(fitness);
     }
 
     public void show(INet hyperNet) {
@@ -89,5 +93,9 @@ public class Recognition1D implements Problem {
 
     public boolean isSolved() {
         return solved;
+    }
+
+    public List<String> getEvaluationInfoItemNames() {
+        return new ArrayList<String>();
     }
 }

@@ -1,13 +1,13 @@
 package hyper.evaluate;
 
 import common.evolution.Evaluable;
+import common.evolution.EvolutionaryAlgorithmSolver;
 import common.evolution.ParallelPopulationEvaluator;
 import common.pmatrix.ParameterCombination;
 import common.stats.Stats;
 import hyper.builder.EvaluableSubstrateBuilder;
 import hyper.builder.SubstrateBuilderFactory;
 import hyper.experiments.reco.ReportStorage;
-import hyper.substrate.Substrate;
 
 /**
  * Created by IntelliJ IDEA.
@@ -20,6 +20,8 @@ abstract public class AbstractSolver implements Solver {
     final protected ParameterCombination parameters;
     final protected Stats stats;
     final protected ReportStorage reportStorage;
+
+    protected EvolutionaryAlgorithmSolver solver;
 
     protected Evaluable[] perThreadEvaluators;
     protected Problem problem;

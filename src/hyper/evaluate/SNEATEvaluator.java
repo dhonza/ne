@@ -1,6 +1,7 @@
 package hyper.evaluate;
 
 import common.evolution.Evaluable;
+import common.evolution.EvaluationInfo;
 import common.net.INet;
 import hyper.builder.EvaluableSubstrateBuilder;
 import hyper.cppn.BasicSNEATCPPN;
@@ -23,7 +24,7 @@ public class SNEATEvaluator implements Evaluable<INetwork> {
         this.problem = problem;
     }
 
-    public double evaluate(INetwork network) {
+    public EvaluationInfo evaluate(INetwork network) {
         CPPN aCPPN = new BasicSNEATCPPN(network, substrateBuilder.getSubstrate().getMaxDimension());
         substrateBuilder.build(aCPPN);
 

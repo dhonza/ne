@@ -1,11 +1,12 @@
 package hyper.evaluate;
 
 import common.evolution.Evaluable;
+import common.evolution.EvaluationInfo;
+import common.net.INet;
 import hyper.builder.EvaluableSubstrateBuilder;
 import hyper.cppn.BasicNetCPPN;
 import hyper.cppn.CPPN;
 import neat.Genome;
-import common.net.INet;
 
 /**
  * Created by IntelliJ IDEA.
@@ -23,7 +24,7 @@ public class NEATEvaluator implements Evaluable<Genome> {
         this.problem = problem;
     }
 
-    public double evaluate(Genome og) {
+    public EvaluationInfo evaluate(Genome og) {
         CPPN aCPPN = new BasicNetCPPN(og.getNet(), substrateBuilder.getSubstrate().getMaxDimension());
         substrateBuilder.build(aCPPN);
 

@@ -1,6 +1,7 @@
 package neat;
 
 import common.RND;
+import common.evolution.EvaluationInfo;
 import common.net.linked.Link;
 import common.net.linked.Net;
 import common.net.linked.Neuron;
@@ -95,6 +96,8 @@ public class Genome implements Comparable {
      */
     protected double fitness;
 
+    protected EvaluationInfo evaluationInfo;
+
     /**
      * The shared fitness = fitness / this species size kde se pocita
      * !!!!!!!!!!!!!!!!!!!!!!!!??????????????????
@@ -183,6 +186,14 @@ public class Genome implements Comparable {
 
     public void setFitness(double fitness) {
         this.fitness = fitness;
+    }
+
+    public EvaluationInfo getEvaluationInfo() {
+        return evaluationInfo;
+    }
+
+    public void setEvaluationInfo(EvaluationInfo evaluationInfo) {
+        this.evaluationInfo = evaluationInfo;
     }
 
     public double getError() {
@@ -782,6 +793,7 @@ public class Genome implements Comparable {
 
         tg.setPop(pop);
         tg.fitness = fitness;
+        tg.evaluationInfo = evaluationInfo;
         tg.evaluated = evaluated;
         tg.sharedFitness = sharedFitness;
         tg.lastNIGeneration = lastNIGeneration;

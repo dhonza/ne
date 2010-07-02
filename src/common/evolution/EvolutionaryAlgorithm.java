@@ -26,7 +26,7 @@ public interface EvolutionaryAlgorithm extends Serializable {
 
     public double getMaxFitnessReached();
 
-    public double[] getFitnessVector();
+    public EvaluationInfo[] getEvaluationInfo();
 
     public boolean isSolved();
 

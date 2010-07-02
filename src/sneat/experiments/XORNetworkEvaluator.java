@@ -1,9 +1,8 @@
 package sneat.experiments;
 
 import common.evolution.Evaluable;
+import common.evolution.EvaluationInfo;
 import sneat.neuralnetwork.INetwork;
-
-import java.util.concurrent.Semaphore;
 
 /**
  * Created by IntelliJ IDEA.
@@ -21,7 +20,7 @@ public class XORNetworkEvaluator implements Evaluable<INetwork> {
 
     private final double[] out = {0.0, 1.0, 1.0, 0.0};
 
-    public double evaluate(INetwork network) {
+    public EvaluationInfo evaluate(INetwork network) {
         float error = 0;
         for (int i = 0; i < 4; i++) {
             network.clearSignals();
@@ -29,7 +28,7 @@ public class XORNetworkEvaluator implements Evaluable<INetwork> {
             network.multipleSteps(5);
             error += Math.abs(out[i] - network.getOutputSignal(0));
         }
-        return Math.pow((4.0 - error), 2);
+        return new EvaluationInfo(Math.pow((4.0 - error), 2));
     }
 
     public boolean isSolved() {

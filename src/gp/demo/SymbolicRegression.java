@@ -1,6 +1,7 @@
 package gp.demo;
 
 import common.evolution.Evaluable;
+import common.evolution.EvaluationInfo;
 import gp.Forest;
 
 /**
@@ -11,7 +12,7 @@ import gp.Forest;
  * To change this template use File | Settings | File Templates.
  */
 public class SymbolicRegression implements Evaluable<Forest> {
-    public double evaluate(Forest forest) {
+    public EvaluationInfo evaluate(Forest forest) {
         int steps = 20;
         double startX = -10.0;
         double endX = 10.0;
@@ -25,7 +26,7 @@ public class SymbolicRegression implements Evaluable<Forest> {
             error -= Math.abs((x * x * x + 1.5) - output);
             x += stepX;
         }
-        return error / steps;
+        return new EvaluationInfo(error / steps);
     }
 
     public boolean isSolved() {

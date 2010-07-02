@@ -9,6 +9,7 @@ import java.io.Serializable;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.List;
 
 /**
  * Created by IntelliJ IDEA.
@@ -18,6 +19,16 @@ import java.util.Date;
  * To change this template use File | Settings | File Templates.
  */
 public class ReportStorage implements Serializable {
+    public static class SingleRunFile {
+        public String name;
+        public String text;
+
+        public SingleRunFile(String name, String text) {
+            this.name = name;
+            this.text = text;
+        }
+    }
+
     final private static String BASE_DIR_PREFIX = "exp";
     final private static String PARAMETER_FILE_PREFIX = "parameters_";
     final private static String EXPERIMENT_FILE_PREFIX = "experiments_";
@@ -27,7 +38,7 @@ public class ReportStorage implements Serializable {
 
     private File baseDir;
     final private StringBuilder experimentOverallBuilder = new StringBuilder();
-    private String generationInfo;
+    private List<SingleRunFile> generationInfo;
     private int experimentId = 1;
     private int parameterCombinationId = 1;
 
@@ -96,18 +107,21 @@ public class ReportStorage implements Serializable {
         }
     }
 
-    public void prepareSingleRunResults(String generationInfo) {
+    public void prepareSingleRunResults(List<SingleRunFile> generationInfo) {
         this.generationInfo = generationInfo;
     }
 
     public void storeSingleRunResults() {
-        File file = new File(baseDir, SINGLE_RUN_FILE_PREFIX +
-                String.format("%03d", parameterCombinationId) + "_" +
-                String.format("%03d", experimentId) + SUFFIX);
-        try {
-            FileUtils.writeStringToFile(file, generationInfo);
-        } catch (IOException e) {
-            System.err.println("Cannot save single run result file: " + file);
+        for (SingleRunFile singleRunFile : generationInfo) {
+
+            File file = new File(baseDir, SINGLE_RUN_FILE_PREFIX +
+                    String.format("%03d", parameterCombinationId) + "_" +
+                    String.format("%03d", experimentId) + "_" + singleRunFile.name + SUFFIX);
+            try {
+                FileUtils.writeStringToFile(file, singleRunFile.text);
+            } catch (IOException e) {
+                System.err.println("Cannot save single run result file: " + file);
+            }
         }
     }
 

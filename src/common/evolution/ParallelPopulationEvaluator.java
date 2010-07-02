@@ -18,28 +18,28 @@ public class ParallelPopulationEvaluator<T> {
         final private CountDownLatch stopLatch;
         final private Evaluable<T> evaluator;
         final private List<T> part;
-        final private double[] fitness;
+        final private EvaluationInfo[] evaluationInfo;
 
         private ThreadEvaluator(CountDownLatch stopLatch, Evaluable<T> evaluator, List<T> part) {
             this.evaluator = evaluator;
             this.part = part;
             this.stopLatch = stopLatch;
-            this.fitness = new double[part.size()];
+            this.evaluationInfo = new EvaluationInfo[part.size()];
         }
 
         public void run() {
             for (int i = 0; i < part.size(); i++) {
-                fitness[i] = evaluator.evaluate(part.get(i));
+                evaluationInfo[i] = evaluator.evaluate(part.get(i));
             }
             stopLatch.countDown();
         }
 
-        public double[] getFitness() {
-            return fitness;
+        public EvaluationInfo[] getEvaluationInfo() {
+            return evaluationInfo;
         }
     }
 
-    public double[] evaluate(Evaluable<T>[] perThreadEvaluators, List<T> population) {
+    public EvaluationInfo[] evaluate(Evaluable<T>[] perThreadEvaluators, List<T> population) {
         //sequential run
         if (perThreadEvaluators.length == 1) {
             return sequentialEvaluate(perThreadEvaluators[0], population);
@@ -80,39 +80,41 @@ public class ParallelPopulationEvaluator<T> {
         }
 //        System.out.println("all threads finished");
 
-        double[] fitness = new double[population.size()];
+        EvaluationInfo[] evaluationInfos = new EvaluationInfo[population.size()];
         start = 0;
         for (ThreadEvaluator threadEvaluator : threadEvaluators) {
-            double[] fitnessPart = threadEvaluator.getFitness();
-            System.arraycopy(fitnessPart, 0, fitness, start, fitnessPart.length);
+            EvaluationInfo[] fitnessPart = threadEvaluator.getEvaluationInfo();
+            System.arraycopy(fitnessPart, 0, evaluationInfos, start, fitnessPart.length);
             start += fitnessPart.length;
         }
 
-//        checkAgainstSequential(perThreadEvaluators[0], population, fitness);
+//        checkAgainstSequential(perThreadEvaluators[0], population, evaluationInfo);
 
-        return fitness;
+        return evaluationInfos;
     }
 
-    private double[] sequentialEvaluate(Evaluable<T> perThreadEvaluator, List<T> population) {
-        double[] fitness = new double[population.size()];
+    private EvaluationInfo[] sequentialEvaluate(Evaluable<T> perThreadEvaluator, List<T> population) {
+        EvaluationInfo[] evaluationInfos = new EvaluationInfo[population.size()];
         for (int i = 0; i < population.size(); i++) {
-            fitness[i] = perThreadEvaluator.evaluate(population.get(i));
+            evaluationInfos[i] = perThreadEvaluator.evaluate(population.get(i));
         }
-        return fitness;
+        return evaluationInfos;
     }
 
-    private void checkAgainstSequential(Evaluable<T> perThreadEvaluator, List<T> population, double[] fitness) {
+    private void checkAgainstSequential(Evaluable<T> perThreadEvaluator, List<T> population, EvaluationInfo[] evaluationInfos) {
         //checking parallel vs. sequential
-        double[] fitness2 = new double[population.size()];
+        EvaluationInfo[] evaluationInfos2 = new EvaluationInfo[population.size()];
         for (int i = 0; i < population.size(); i++) {
-            fitness2[i] = perThreadEvaluator.evaluate(population.get(i));
+            evaluationInfos2[i] = perThreadEvaluator.evaluate(population.get(i));
         }
 
-
-        if (!ArrayUtils.isEquals(fitness, fitness2)) {
-            System.out.println("DIFFERENT");
-            System.out.println(ArrayUtils.toString(fitness));
-            System.out.println(ArrayUtils.toString(fitness2));
+        for (int i = 0; i < evaluationInfos.length; i++) {
+            if (evaluationInfos[i].getFitness() != evaluationInfos2[i].getFitness()) {
+                System.out.println("DIFFERENT");
+                System.out.println(ArrayUtils.toString(evaluationInfos));
+                System.out.println(ArrayUtils.toString(evaluationInfos2));
+                break;
+            }
         }
     }
 

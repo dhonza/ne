@@ -1,9 +1,11 @@
 package hyper.evaluate;
 
+import common.evolution.EvaluationInfo;
 import common.net.INet;
 import hyper.substrate.Substrate;
 
 import java.io.Serializable;
+import java.util.List;
 
 /**
  * Created by IntelliJ IDEA.
@@ -13,13 +15,15 @@ import java.io.Serializable;
  * To change this template use File | Settings | File Templates.
  */
 public interface Problem extends Serializable {
-    public double evaluate(INet hyperNet);
+    EvaluationInfo evaluate(INet hyperNet);
 
-    public boolean isSolved();
+    boolean isSolved();
 
-    public void show(INet hyperNet);
+    void show(INet hyperNet);
 
-    public double getTargetFitness();
+    double getTargetFitness();
 
-    public Substrate getSubstrate();
+    Substrate getSubstrate();
+
+    List<String> getEvaluationInfoItemNames();
 }

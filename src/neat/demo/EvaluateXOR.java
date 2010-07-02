@@ -1,6 +1,7 @@
 package neat.demo;
 
 import common.evolution.Evaluable;
+import common.evolution.EvaluationInfo;
 import common.net.linked.Net;
 import neat.Genome;
 
@@ -16,7 +17,7 @@ public class EvaluateXOR implements Evaluable<Genome> {
     private final double[] out = {0.0, 1.0, 1.0, 0.0};
 
 
-    public double evaluate(Genome og) {
+    public EvaluationInfo evaluate(Genome og) {
         Net n = og.getNet();
 
         og.setError(0.0);
@@ -26,7 +27,7 @@ public class EvaluateXOR implements Evaluable<Genome> {
             activate(n);
             og.setError(og.getError() + Math.abs(out[i] - n.getOutputValues()[0]));
         }
-        return Math.pow((4.0 - og.getError()), 2);
+        return new EvaluationInfo(Math.pow((4.0 - og.getError()), 2));
     }
 
     public boolean isSolved() {

@@ -1,11 +1,10 @@
 package sneat.experiments.skrimish;
 
 import common.evolution.Evaluable;
+import common.evolution.EvaluationInfo;
 import sneat.experiments.HyperNEATParameters;
 import sneat.neatgenome.NeatGenome;
 import sneat.neuralnetwork.INetwork;
-
-import java.util.concurrent.Semaphore;
 
 public class SkirmishNetworkEvaluator implements Evaluable<INetwork> {
     public static SkirmishSubstrate substrate;
@@ -38,7 +37,7 @@ public class SkirmishNetworkEvaluator implements Evaluable<INetwork> {
         return false;  //TODO implement
     }
 
-    public double evaluate(INetwork network) {
+    public EvaluationInfo evaluate(INetwork network) {
         double fitness = 0;
         INetwork tempNet = null;
         NeatGenome tempGenome = null;
@@ -54,7 +53,7 @@ public class SkirmishNetworkEvaluator implements Evaluable<INetwork> {
             fitness += doEvaluation(tempNet);
         else
             fitness += doEvaluationMulti(tempNet);
-        return fitness;
+        return new EvaluationInfo(fitness);
     }
 
     public static void addPredators(World w) {

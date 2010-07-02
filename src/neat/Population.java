@@ -1,6 +1,7 @@
 package neat;
 
 import common.evolution.Evaluable;
+import common.evolution.EvaluationInfo;
 import common.evolution.ParallelPopulationEvaluator;
 import common.net.linked.Net;
 import common.net.linked.NetStorage;
@@ -95,7 +96,7 @@ public abstract class Population {
     /**
      * Creates population using ANNs stored in a file
      *
-     * @param ofileName  file name
+     * @param ofileName file name
      */
     public Population(Evaluable<Genome>[] perThreadEvaluators, String ofileName) {
         Net[] nets = NetStorage.loadMultiple(ofileName);
@@ -191,10 +192,11 @@ public abstract class Population {
         Genome tg;
         int n = NEAT.getConfig().populationSize;
 
-        double[] fitnessVector = populationEvaluator.evaluate(perThreadEvaluators, Arrays.asList(genomes));
+        EvaluationInfo[] evaluationInfos = populationEvaluator.evaluate(perThreadEvaluators, Arrays.asList(genomes));
         for (int i = 0; i < n; i++) {
             tg = genomes[i];
-            tg.fitness = fitnessVector[i];
+            tg.fitness = evaluationInfos[i].getFitness();
+            tg.setEvaluationInfo(evaluationInfos[i]);
             tg.evaluated = true; //mark evaluated
             if (tg.fitness > bestOfGeneration.fitness) {
                 bestOfGeneration = tg;
@@ -352,6 +354,15 @@ public abstract class Population {
         double[] fv = new double[genomes.length];
         for (int i = 0; i < genomes.length; i++) {
             fv[i] = genomes[i].fitness;
+
+        }
+        return fv;
+    }
+
+    public EvaluationInfo[] getEvaluationInfo() {
+        EvaluationInfo[] fv = new EvaluationInfo[genomes.length];
+        for (int i = 0; i < genomes.length; i++) {
+            fv[i] = genomes[i].getEvaluationInfo();
 
         }
         return fv;

@@ -1,8 +1,10 @@
 package hyper.experiments.reco;
 
+import common.evolution.EvaluationInfo;
 import common.evolution.EvolutionaryAlgorithm;
 import common.evolution.ProgressPrinter;
 import common.pmatrix.ParameterCombination;
+import hyper.evaluate.Problem;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -17,18 +19,20 @@ import java.util.List;
 public class FileProgressPrinter implements ProgressPrinter {
     private class InfoContainer {
         double bsf;
-        double[] fitnessVector;
+        EvaluationInfo[] evaluationInfos;
     }
 
     final private EvolutionaryAlgorithm ea;
+    final private Problem problem;
     final private ReportStorage reportStorage;
     final private ParameterCombination parameters;
     private boolean storeRun;
 
     final private List<InfoContainer> generations = new ArrayList<InfoContainer>();
 
-    public FileProgressPrinter(EvolutionaryAlgorithm ea, ReportStorage reportStorage, ParameterCombination parameters) {
+    public FileProgressPrinter(EvolutionaryAlgorithm ea, Problem problem, ReportStorage reportStorage, ParameterCombination parameters) {
         this.ea = ea;
+        this.problem = problem;
         this.reportStorage = reportStorage;
         this.parameters = parameters;
         storeRun = parameters.contains("PRINT.storeRun") ? parameters.getBoolean("PRINT.generation") : storeRun;
@@ -40,7 +44,7 @@ public class FileProgressPrinter implements ProgressPrinter {
         }
         InfoContainer container = new InfoContainer();
         container.bsf = ea.getMaxFitnessReached();
-        container.fitnessVector = ea.getFitnessVector();
+        container.evaluationInfos = ea.getEvaluationInfo();
         generations.add(container);
     }
 
@@ -51,8 +55,18 @@ public class FileProgressPrinter implements ProgressPrinter {
         if (!storeRun) {
             return;
         }
+        List<ReportStorage.SingleRunFile> itemList = new ArrayList<ReportStorage.SingleRunFile>();
+        StringBuilder builder = extractFitnessInfo();
+        itemList.add(new ReportStorage.SingleRunFile("FITNESS", builder.toString()));
+        for (String name : problem.getEvaluationInfoItemNames()) {
+            itemList.add(new ReportStorage.SingleRunFile(name, extractEvaluationInfo(name).toString()));
+        }
+        reportStorage.prepareSingleRunResults(itemList);
+    }
+
+    private StringBuilder extractFitnessInfo() {
         StringBuilder builder = new StringBuilder();
-        int last = generations.get(0).fitnessVector.length - 1;
+        int last = generations.get(0).evaluationInfos.length - 1;
 
         //header
         builder.append("BSF").append("\t");
@@ -64,11 +78,31 @@ public class FileProgressPrinter implements ProgressPrinter {
         //data
         for (InfoContainer generation : generations) {
             builder.append(generation.bsf).append("\t");
-            for (int i = 0; i < generation.fitnessVector.length - 1; i++) {
-                builder.append(generation.fitnessVector[i]).append("\t");
+            for (int i = 0; i < generation.evaluationInfos.length - 1; i++) {
+                builder.append(generation.evaluationInfos[i].getFitness()).append("\t");
             }
-            builder.append(generation.fitnessVector[generation.fitnessVector.length - 1]).append("\n");
+            builder.append(generation.evaluationInfos[generation.evaluationInfos.length - 1].getFitness()).append("\n");
         }
-        reportStorage.prepareSingleRunResults(builder.toString());
+        return builder;
+    }
+
+    private StringBuilder extractEvaluationInfo(String name) {
+        StringBuilder builder = new StringBuilder();
+        int last = generations.get(0).evaluationInfos.length - 1;
+
+        //header
+        for (int i = 0; i < last; i++) {
+            builder.append(i + 1).append("\t");
+        }
+        builder.append(last + 1).append("\n");
+
+        //data
+        for (InfoContainer generation : generations) {
+            for (int i = 0; i < generation.evaluationInfos.length - 1; i++) {
+                builder.append(generation.evaluationInfos[i].getInfo(name)).append("\t");
+            }
+            builder.append(generation.evaluationInfos[generation.evaluationInfos.length - 1].getInfo(name)).append("\n");
+        }
+        return builder;
     }
 }

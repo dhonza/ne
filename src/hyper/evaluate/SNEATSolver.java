@@ -3,12 +3,9 @@ package hyper.evaluate;
 import common.evolution.EvolutionaryAlgorithmSolver;
 import common.pmatrix.ParameterCombination;
 import common.stats.Stats;
-import hyper.builder.EvaluableSubstrateBuilder;
-import hyper.builder.SubstrateBuilderFactory;
 import hyper.evaluate.printer.SNEATProgressPrinter1D;
 import hyper.experiments.reco.FileProgressPrinter;
 import hyper.experiments.reco.ReportStorage;
-import hyper.substrate.Substrate;
 import sneat.MaxEvaluationsStopCondition;
 import sneat.MaxGenerationsStopCondition;
 import sneat.SNEAT;
@@ -29,7 +26,6 @@ import java.util.logging.Logger;
 public class SNEATSolver extends AbstractSolver {
     private static Logger logger = Logger.getLogger("hyper.evaluate.SNEATSolver");
 
-    private EvolutionaryAlgorithmSolver solver;
     private SNEAT sneat;
 
     protected SNEATSolver(ParameterCombination parameters, Stats stats, ReportStorage reportStorage) {
@@ -50,7 +46,7 @@ public class SNEATSolver extends AbstractSolver {
 
         solver = new EvolutionaryAlgorithmSolver(sneat, stats);
         solver.addProgressPrinter(new SNEATProgressPrinter1D(sneat, problem, parameters));
-        solver.addProgressPrinter(new FileProgressPrinter(sneat, reportStorage, parameters));
+        solver.addProgressPrinter(new FileProgressPrinter(sneat, problem, reportStorage, parameters));
         solver.addStopCondition(new MaxGenerationsStopCondition(sneat));
         solver.addStopCondition(new MaxEvaluationsStopCondition(sneat));
         solver.addStopCondition(new TargetFitnessStopCondition(sneat));

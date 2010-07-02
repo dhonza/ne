@@ -1,6 +1,7 @@
 package sneat.experiments;
 
 import common.evolution.Evaluable;
+import common.evolution.EvaluationInfo;
 import common.evolution.ParallelPopulationEvaluator;
 import sneat.evolution.EvolutionAlgorithm;
 import sneat.evolution.IGenome;
@@ -51,16 +52,23 @@ public class SingleFilePopulationEvaluator implements IPopulationEvaluator {
                 populationToEvaluate.add(network);
             } else {
                 g.setFitness(EvolutionAlgorithm.MIN_GENOME_FITNESS);
+                g.setEvaluationInfo(new EvaluationInfo(EvolutionAlgorithm.MIN_GENOME_FITNESS));
             }
         }
-        
-        double[] fitness = populationEvaluator.evaluate(perThreadEvaluators, populationToEvaluate);
+
+        EvaluationInfo[] evaluationInfos = populationEvaluator.evaluate(perThreadEvaluators, populationToEvaluate);
 
         int cnt = 0;
         for (int i = 0; i < count; i++) {
             IGenome g = pop.getGenomeList().get(i);
+            //TODO dhonza fitness has to be > 0 ?;
             if (toEvaluate[i]) {
-                g.setFitness(Math.max(fitness[cnt++], EvolutionAlgorithm.MIN_GENOME_FITNESS));
+                if (evaluationInfos[cnt].getFitness() < EvolutionAlgorithm.MIN_GENOME_FITNESS) {
+                    throw new IllegalStateException("CHECK this limitation of fitness value");
+                }
+//                g.setFitness(Math.max(evaluationInfos[cnt++].getFitness(), EvolutionAlgorithm.MIN_GENOME_FITNESS));
+                g.setFitness(evaluationInfos[cnt].getFitness());
+                g.setEvaluationInfo(evaluationInfos[cnt++]);
             }
 
             if (g.getEvaluationCount() == 0) {

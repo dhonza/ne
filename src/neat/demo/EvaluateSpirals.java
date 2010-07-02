@@ -2,6 +2,7 @@ package neat.demo;
 
 import common.RND;
 import common.evolution.Evaluable;
+import common.evolution.EvaluationInfo;
 import common.net.linked.Net;
 import neat.Genome;
 
@@ -90,7 +91,7 @@ public class EvaluateSpirals implements Evaluable<Genome> {
         return tin;
     }
 
-    public double evaluate(Genome og) {
+    public EvaluationInfo evaluate(Genome og) {
         Net n = og.getNet();
         double[] o;
 
@@ -115,7 +116,7 @@ public class EvaluateSpirals implements Evaluable<Genome> {
                 c2 += 1.0;
             }
         }
-        return c1 + c2;
+        return new EvaluationInfo(c1 + c2);
     }
 
     public double evaluate2(Genome og) {

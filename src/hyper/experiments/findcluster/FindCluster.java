@@ -1,11 +1,17 @@
 package hyper.experiments.findcluster;
 
+import common.evolution.EvaluationInfo;
 import common.mathematica.MathematicaUtils;
 import common.net.INet;
 import common.pmatrix.ParameterCombination;
 import hyper.evaluate.Problem;
 import hyper.experiments.reco.ReportStorage;
 import hyper.substrate.Substrate;
+
+import java.util.ArrayList;
+import java.util.LinkedHashMap;
+import java.util.List;
+import java.util.Map;
 
 /**
  * Created by IntelliJ IDEA.
@@ -46,9 +52,16 @@ public class FindCluster implements Problem {
 
     private boolean solved = false;
 
+    private double fitnessThreshold = 0.95;
+
+    private List<Double> distances = new ArrayList<Double>();
+
     public FindCluster(ParameterCombination parameters, ReportStorage reportStorage) {
         numNodesX = parameters.getInteger("FIND_CLUSTER.NODES_X");
         numNodesY = parameters.getInteger("FIND_CLUSTER.NODES_Y");
+        if (parameters.contains("FIND_CLUSTER.FITNESS_THRESHOLD")) {
+            fitnessThreshold = parameters.getDouble("FIND_CLUSTER.FITNESS_THRESHOLD");
+        }
         sizeMultiplier = 1;
         this.activations = parameters.getInteger("NET_ACTIVATIONS");
         this.reportStorage = reportStorage;
@@ -146,11 +159,13 @@ public class FindCluster implements Problem {
 
             }
         }
-
-        return Math.max(0, 30 - ((largestX - x1Big) * (largestX - x1Big) + (largestY - y1Big) * (largestY - y1Big)));
+        double distanceSquared = (largestX - x1Big) * (largestX - x1Big) + (largestY - y1Big) * (largestY - y1Big);
+        distances.add(Math.sqrt(distanceSquared));
+        return Math.max(0, 30 - distanceSquared);
     }
 
-    public double evaluate(INet hyperNet) {
+    public EvaluationInfo evaluate(INet hyperNet) {
+        distances.clear();
         double fitness = 0;
         double maxFitness = 0;
 
@@ -198,14 +213,20 @@ public class FindCluster implements Problem {
             }
         }
 
-//        if (fitness >= maxFitness * .95) {//original setting
-//            solved = true;
-//        }
-        if (fitness >= maxFitness * .99) {
+        if (fitness >= maxFitness * fitnessThreshold) {//original setting
             solved = true;
         }
 
-        return fitness;
+        double avg = 0;
+        for (Double distance : distances) {
+            avg += distance;
+        }
+        avg /= distances.size();
+
+        Map<String, Object> infoMap = new LinkedHashMap<String, Object>();
+        infoMap.put("AVG_DISTANCE", avg);
+
+        return new EvaluationInfo(fitness, infoMap);
     }
 
     /*
@@ -289,7 +310,7 @@ public class FindCluster implements Problem {
 
 //        individual - > reward(fitness);
 
-       if (fitness >= maxFitness * .95) {
+       if (fitness >= maxFitness * fitnessThreshold) {
            System.out.println("PROBLEM DOMAIN SOLVED!!!");
        }
    }
@@ -404,10 +425,9 @@ public class FindCluster implements Problem {
         builder.append("}");
     }
 
-    public static void main(String[] args) {
-        FindCluster f = new FindCluster(null, null);
-        f.evaluate(null);
-
-//        f.processIndividualPostHoc(null);
+    public List<String> getEvaluationInfoItemNames() {
+        List<String> listOfNames = new ArrayList<String>();
+        listOfNames.add("AVG_DISTANCE");
+        return listOfNames;
     }
 }

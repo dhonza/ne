@@ -1,5 +1,6 @@
 package sneat.evolution;
 
+import common.evolution.EvaluationInfo;
 import sneat.neuralnetwork.AbstractNetwork;
 import sneat.neuralnetwork.IActivationFunction;
 import sneat.neuralnetwork.INetwork;
@@ -55,6 +56,10 @@ public interface IGenome extends Comparable {
     double getFitness();
 
     void setFitness(double fitness);
+
+    EvaluationInfo getEvaluationInfo();
+
+    void setEvaluationInfo(EvaluationInfo EvaluationInfo);
 
     /// <summary>
     /// The number of times this genome has been evaluated.

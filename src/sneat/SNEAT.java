@@ -1,5 +1,6 @@
 package sneat;
 
+import common.evolution.EvaluationInfo;
 import common.evolution.EvolutionaryAlgorithm;
 import hyper.evaluate.SNEATExperiment;
 import sneat.evolution.EvolutionAlgorithm;
@@ -90,8 +91,8 @@ public class SNEAT implements EvolutionaryAlgorithm {
         return ea;
     }
 
-    public double[] getFitnessVector() {
-        return ea.getPopulation().getFitnessVector();
+    public EvaluationInfo[] getEvaluationInfo() {
+        return ea.getPopulation().getEvaluationInfo();
     }
 
     private void checkIfInnovation() {

@@ -2,6 +2,7 @@ package gp;
 
 import common.RND;
 import common.evolution.Evaluable;
+import common.evolution.EvaluationInfo;
 import common.evolution.EvolutionaryAlgorithm;
 import common.evolution.ParallelPopulationEvaluator;
 import gp.terminals.Input;
@@ -109,10 +110,11 @@ public class GP implements EvolutionaryAlgorithm, Serializable {
     }
 
     private void evaluate(Forest[] evalPopulation) {
-        double[] fitness = populationEvaluator.evaluate(perThreadEvaluators, Arrays.asList(evalPopulation));
+        EvaluationInfo[] evaluationInfos = populationEvaluator.evaluate(perThreadEvaluators, Arrays.asList(evalPopulation));
         int cnt = 0;
         for (Forest forest : evalPopulation) {
-            forest.setFitness(fitness[cnt++]);
+            forest.setFitness(evaluationInfos[cnt].getFitness());
+            forest.setEvaluationInfo(evaluationInfos[cnt++]);
         }
     }
 
@@ -180,7 +182,7 @@ public class GP implements EvolutionaryAlgorithm, Serializable {
 
     public boolean isSolved() {
         for (Evaluable<Forest> evaluator : perThreadEvaluators) {
-            if(evaluator.isSolved()) {
+            if (evaluator.isSolved()) {
                 return true;
             }
         }
@@ -199,10 +201,10 @@ public class GP implements EvolutionaryAlgorithm, Serializable {
         return lastInnovation;
     }
 
-    public double[] getFitnessVector() {
-        double[] fv = new double[population.length];
+    public EvaluationInfo[] getEvaluationInfo() {
+        EvaluationInfo[] fv = new EvaluationInfo[population.length];
         for (int i = 0; i < population.length; i++) {
-            fv[i] = population[i].getFitness();
+            fv[i] = population[i].getEvaluationInfo();
         }
         return fv;
     }
