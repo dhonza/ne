@@ -2,11 +2,7 @@ package hyper.evaluate;
 
 import common.pmatrix.ParameterCombination;
 import common.stats.Stats;
-import hyper.builder.EvaluableSubstrateBuilder;
-import hyper.builder.SubstrateBuilderFactory;
-import hyper.experiments.findcluster.FindCluster;
 import hyper.experiments.reco.ReportStorage;
-import hyper.substrate.Substrate;
 
 /**
  * Created by IntelliJ IDEA.
@@ -27,8 +23,8 @@ public class SolverFactory {
             return new NEATSolver(parameters, stats, reportStorage);
         } else if (name.equalsIgnoreCase("SNEAT")) {
             return new SNEATSolver(parameters, stats, reportStorage);
-        } else if (name.equalsIgnoreCase("DIRECT_ENCODING")) {
-            return new DirectEncodingSolver(parameters, stats, reportStorage);            
+        } else if (name.equalsIgnoreCase("DIRECT_SADE")) {
+            return new DirectSADESolver(parameters, stats, reportStorage);
         } else {
             throw new IllegalStateException("Unknown solver: \"" + name + "\"");
         }

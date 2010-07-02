@@ -7,6 +7,7 @@ import java.io.File;
 import java.io.IOException;
 import java.io.Serializable;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
@@ -38,7 +39,7 @@ public class ReportStorage implements Serializable {
 
     private File baseDir;
     final private StringBuilder experimentOverallBuilder = new StringBuilder();
-    private List<SingleRunFile> generationInfo;
+    private List<SingleRunFile> generationInfo = new ArrayList<SingleRunFile>();
     private int experimentId = 1;
     private int parameterCombinationId = 1;
 
@@ -108,7 +109,8 @@ public class ReportStorage implements Serializable {
     }
 
     public void prepareSingleRunResults(List<SingleRunFile> generationInfo) {
-        this.generationInfo = generationInfo;
+        this.generationInfo.clear();
+        this.generationInfo.addAll(generationInfo);
     }
 
     public void storeSingleRunResults() {
