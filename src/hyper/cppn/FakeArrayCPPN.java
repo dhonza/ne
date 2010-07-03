@@ -22,7 +22,7 @@ public class FakeArrayCPPN implements CPPN {
 
     public double evaluate(int outputId, Coordinate from, Coordinate to) {
         if (cnt >= weights.length) {
-            throw new IllegalStateException("All weights already evaluated!");
+            throw new IllegalStateException("All " + weights.length + " weights already evaluated!");
         }
         return weights[cnt++];
     }

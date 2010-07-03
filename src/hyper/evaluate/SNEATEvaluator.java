@@ -42,6 +42,6 @@ public class SNEATEvaluator implements Evaluable<INetwork> {
     }
 
     public int getNumberOfOutputs() {
-        return substrateBuilder.getSubstrate().getNumOfConnections();
+        return substrateBuilder.getSubstrate().getNumOfLayerConnections();
     }
 }

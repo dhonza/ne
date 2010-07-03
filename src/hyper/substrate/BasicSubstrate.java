@@ -88,11 +88,29 @@ public class BasicSubstrate implements Substrate {
         return maxDimension;
     }
 
-    public int getNumOfConnections() throws IllegalStateException {
+    public int getNumOfLayerConnections() throws IllegalStateException {
         if (!completed) {
             throw new IllegalStateException("Substrate not completed.");
         }
         return connectionCounter;
+    }
+
+    public int getNumOfLinks() {
+        if (!completed) {
+            throw new IllegalStateException("Substrate not completed.");
+        }
+        int sum = 0;
+        for (SubstrateInterLayerConnection connection : connections) {
+            sum += connection.getNumOfLinks();
+        }
+
+        for (SubstrateLayer layer : layers) {
+            if (layer.hasIntraLayerConnections()) {
+                throw new IllegalStateException("Not yet IMPLEMENTED!");
+            }
+        }
+
+        return sum;
     }
 
     public int getConnectionCPPNOutput(Connectable connectable) {

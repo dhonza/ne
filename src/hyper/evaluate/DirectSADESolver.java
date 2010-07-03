@@ -1,14 +1,16 @@
 package hyper.evaluate;
 
-import common.net.INet;
+import common.evolution.EvolutionaryAlgorithmSolver;
 import common.pmatrix.ParameterCombination;
+import common.pmatrix.Utils;
 import common.stats.Stats;
 import hyper.builder.EvaluableSubstrateBuilder;
 import hyper.builder.SubstrateBuilderFactory;
-import hyper.cppn.CPPN;
-import hyper.cppn.FakeArrayCPPN;
+import hyper.evaluate.printer.SADEProgressPrinter1D;
 import hyper.experiments.reco.ReportStorage;
+import opt.sade.MaxEvaluationsStopCondition;
 import opt.sade.SADE;
+import opt.sade.TargetFitnessStopCondition;
 
 /**
  * Created by IntelliJ IDEA.
@@ -34,17 +36,18 @@ public class DirectSADESolver implements Solver {
                 SubstrateBuilderFactory.createEvaluableSubstrateBuilder(problem.getSubstrate(), parameters);
 
         DirectSADEObjectiveFunction function = new DirectSADEObjectiveFunction(substrateBuilder, problem);
-        SADE opt = new SADE(function);
-        opt.fitnessCallsLimit = 1000000;
+        SADE sade = new SADE(function);
+        Utils.setParameters(parameters, sade, "DIRECT_SADE");
 
-        opt.run();
+        EvolutionaryAlgorithmSolver solver = new EvolutionaryAlgorithmSolver(sade, stats);
+        solver.addProgressPrinter(new SADEProgressPrinter1D(sade, problem, parameters));
+//        solver.addProgressPrinter(new FileProgressPrinter(sade, problem, reportStorage, parameters));
+//        solver.addStopCondition(new MaxGenerationsStopCondition(sade));
+        solver.addStopCondition(new MaxEvaluationsStopCondition(sade));
+        solver.addStopCondition(new TargetFitnessStopCondition(sade));
+        solver.addStopCondition(new SolvedStopCondition(problem));
 
-        double[] weights = opt.getBsf();
-        CPPN aCPPN = new FakeArrayCPPN(weights, substrateBuilder.getSubstrate().getMaxDimension());
-        substrateBuilder.build(aCPPN);
-        INet hyperNet = substrateBuilder.getNet();
-        System.out.println(hyperNet);
-        problem.show(hyperNet);
+        solver.run();
     }
 
     public String getConfigString() {

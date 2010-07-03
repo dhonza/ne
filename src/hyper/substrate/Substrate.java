@@ -29,7 +29,9 @@ public interface Substrate extends Serializable {
 
     public int getMaxDimension();
 
-    public int getNumOfConnections();
+    public int getNumOfLayerConnections();
+
+    public int getNumOfLinks();
 
     public int getConnectionCPPNOutput(Connectable connectable);
 }

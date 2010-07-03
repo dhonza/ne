@@ -40,6 +40,6 @@ public class GPEvaluator implements Evaluable<Forest> {
     }
 
     public int getNumberOfOutputs() {
-        return substrateBuilder.getSubstrate().getNumOfConnections();
+        return substrateBuilder.getSubstrate().getNumOfLayerConnections();
     }
 }

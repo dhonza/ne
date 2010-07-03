@@ -21,4 +21,8 @@ public class SubstrateInterLayerConnection implements Connectable, Serializable 
     public SubstrateLayer getTo() {
         return to;
     }
+
+    public int getNumOfLinks() {
+        return from.getNumber() * to.getNumber();
+    }
 }

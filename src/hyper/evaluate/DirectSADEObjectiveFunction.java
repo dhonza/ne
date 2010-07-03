@@ -17,13 +17,17 @@ public class DirectSADEObjectiveFunction implements ObjectiveFunction {
     final private EvaluableSubstrateBuilder substrateBuilder;
     final private Problem problem;
 
+    private int numOfLinks;
+    private boolean solved = false;
+
     public DirectSADEObjectiveFunction(EvaluableSubstrateBuilder substrateBuilder, Problem problem) {
         this.substrateBuilder = substrateBuilder;
         this.problem = problem;
+        numOfLinks = substrateBuilder.getSubstrate().getNumOfLinks();
     }
 
     public int getDim() {
-        return 9;
+        return numOfLinks;
     }
 
     public double getDomain(int x, int y) {
@@ -36,16 +40,12 @@ public class DirectSADEObjectiveFunction implements ObjectiveFunction {
         return 0;
     }
 
-    public double getOptimum() {
-        return 4;
-    }
-
-    public double getPrecision() {
-        return 0.0001;
-    }
-
     public boolean getReturnToDomain() {
         return false;
+    }
+
+    public boolean isSolved() {
+        return solved;
     }
 
     public double value(double[] weights) {
@@ -53,11 +53,8 @@ public class DirectSADEObjectiveFunction implements ObjectiveFunction {
         substrateBuilder.build(aCPPN);
         INet hyperNet = substrateBuilder.getNet();
         double fitness = problem.evaluate(hyperNet).getFitness();
+        solved = solved || problem.isSolved();
 //        System.out.println(fitness);
         return fitness;
-    }
-
-    public boolean isFeasible(double[] doubles) {
-        return true;
     }
 }

@@ -14,27 +14,14 @@ package opt.sade;
  * This is the function which is going to be optimized.
  */
 public interface ObjectiveFunction {
-    /**
-     * The dimension of optimized function.
-     */
-    public int getDim(); // public?
 
-    /**
-     * Defines the domain of optimized function.
-     *
-     * @param x
-     * @param y
-     */
-    public double getDomain(int x, int y);
+    int getDim();
 
-    public double getOptimum(); // !!!!!!!!!!!!!!!!!
+    double getDomain(int x, int y);
 
-    public double getPrecision();
+    boolean getReturnToDomain();
 
-    public boolean getReturnToDomain();
-
-//  ObjectiveFunction[] F;
-
+    boolean isSolved();
 
     /**
      * This method represents the objective function <i>f: <b>X</b>->Y</i>.

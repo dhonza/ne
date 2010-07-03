@@ -42,6 +42,6 @@ public class NEATEvaluator implements Evaluable<Genome> {
     }
 
     public int getNumberOfOutputs() {
-        return substrateBuilder.getSubstrate().getNumOfConnections();
+        return substrateBuilder.getSubstrate().getNumOfLayerConnections();
     }
 }
