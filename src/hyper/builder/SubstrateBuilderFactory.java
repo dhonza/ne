@@ -18,6 +18,8 @@ public class SubstrateBuilderFactory {
             return new NetSubstrateBuilder(substrate);
         } else if (type.equals("precompiled")) {
             return new PrecompiledFeedForwardSubstrateBuilder(substrate);
+        } else if (type.equals("cascade")) {
+            return new CascadeNetBuilder(substrate);
         } else {
             throw new IllegalStateException("Invalid BUILDER option in configuration: " + type);
         }
