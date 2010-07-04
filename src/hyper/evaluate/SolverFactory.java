@@ -25,6 +25,8 @@ public class SolverFactory {
             return new SNEATSolver(parameters, stats, reportStorage);
         } else if (name.equalsIgnoreCase("DIRECT_SADE")) {
             return new DirectSADESolver(parameters, stats, reportStorage);
+        } else if (name.equalsIgnoreCase("DIRECT_CMAES")) {
+            return new DirectCMAESSolver(parameters, stats, reportStorage);            
         } else {
             throw new IllegalStateException("Unknown solver: \"" + name + "\"");
         }
