@@ -1,6 +1,7 @@
 package opt.cmaes;
 
 import cma.CMAEvolutionStrategy;
+import cma.CMAOptions;
 import common.evolution.EvaluationInfo;
 import common.evolution.EvolutionaryAlgorithm;
 
@@ -33,6 +34,10 @@ public class CMAES implements EvolutionaryAlgorithm {
         cma.options.stopFitness = 1E-1;
         cma.options.verbosity = 2;
         bestSolutionValue = -Double.MAX_VALUE;
+    }
+
+    public CMAOptions getOptions() {
+        return cma.options;
     }
 
     public void initialGeneration() {

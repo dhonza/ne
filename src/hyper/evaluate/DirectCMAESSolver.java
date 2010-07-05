@@ -2,12 +2,14 @@ package hyper.evaluate;
 
 import common.evolution.EvolutionaryAlgorithmSolver;
 import common.pmatrix.ParameterCombination;
+import common.pmatrix.Utils;
 import common.stats.Stats;
 import hyper.builder.EvaluableSubstrateBuilder;
 import hyper.builder.SubstrateBuilderFactory;
 import hyper.evaluate.printer.CMAESProgressPrinter1D;
 import hyper.experiments.reco.ReportStorage;
 import opt.cmaes.CMAES;
+import opt.cmaes.MaxEvaluationsStopCondition;
 
 /**
  * Created by IntelliJ IDEA.
@@ -34,13 +36,12 @@ public class DirectCMAESSolver implements Solver {
 
         DirectCMAESObjectiveFunction function = new DirectCMAESObjectiveFunction(substrateBuilder, problem);
         CMAES cmaes = new CMAES(function);
-//        Utils.setParameters(parameters, cmaes, "DIRECT_CMAES");
+        Utils.setParameters(parameters, cmaes.getOptions(), "DIRECT_CMAES");
 
         EvolutionaryAlgorithmSolver solver = new EvolutionaryAlgorithmSolver(cmaes, stats);
         solver.addProgressPrinter(new CMAESProgressPrinter1D(cmaes, problem, parameters));
 //        solver.addProgressPrinter(new FileProgressPrinter(cmaes, problem, reportStorage, parameters));
-//        solver.addStopCondition(new MaxGenerationsStopCondition(cmaes));
-//        solver.addStopCondition(new MaxEvaluationsStopCondition(cmaes));
+        solver.addStopCondition(new MaxEvaluationsStopCondition(cmaes));
 //        solver.addStopCondition(new TargetFitnessStopCondition(cmaes));
         solver.addStopCondition(new SolvedStopCondition(problem));
 

@@ -31,7 +31,7 @@ public class BiasLayer1D implements SubstrateLayer, IBias {
     }
 
     public NodeType getNodeType() {
-        return NodeType.INPUT;
+        return NodeType.BIAS;
     }
 
     public int getDimension() {

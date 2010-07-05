@@ -35,6 +35,7 @@ public class CascadeNetBuilder implements EvaluableSubstrateBuilder {
     }
 
     final private Substrate substrate;
+    final private WeightEvaluator weightEvaluator;
 
     private SubstrateLayer inputLayer = null;
     private SubstrateLayer biasLayer = null;
@@ -48,8 +49,9 @@ public class CascadeNetBuilder implements EvaluableSubstrateBuilder {
 
     private NeuralNetwork net;
 
-    public CascadeNetBuilder(Substrate substrate) {
+    public CascadeNetBuilder(Substrate substrate, WeightEvaluator weightEvaluator) {
         this.substrate = substrate;
+        this.weightEvaluator = weightEvaluator;
         prepare();
     }
 
@@ -71,7 +73,7 @@ public class CascadeNetBuilder implements EvaluableSubstrateBuilder {
             if (layer.hasIntraLayerConnections()) {
                 throw new IllegalStateException("No intralayer connections allowed for this substrate builder!");
             }
-            if (layer instanceof IBias) {
+            if (layer.getNodeType() == NodeType.BIAS) {
                 if (foundBias) {
                     throw new IllegalStateException("Found more than one bias substrate layer!");
                 }
@@ -147,16 +149,18 @@ public class CascadeNetBuilder implements EvaluableSubstrateBuilder {
         int cnt = 0;
         for (PreviousLayerConnectionContainer successiveConnection : successiveConnections) {
             for (Node nodeTo : successiveConnection.connection.getTo().getNodes()) {
+                //number of incoming links
+                int incomingLinks = successiveConnection.connection.getFrom().getNodes().length;
                 //bias
                 if (successiveConnection.bias != null) {
                     int aCPPNOutput = substrate.getConnectionCPPNOutput(successiveConnection.bias);
-                    weights[cnt++] = 3.0 * aCPPN.evaluate(aCPPNOutput, successiveConnection.bias.getFrom().getNodes()[0].getCoordinate(),
-                            nodeTo.getCoordinate());
+                    weights[cnt++] = weightEvaluator.evaluate(aCPPN, aCPPNOutput, successiveConnection.bias.getFrom().getNodes()[0],
+                            nodeTo, incomingLinks);
                 }
                 //all connections to neuron
                 int aCPPNOutput = substrate.getConnectionCPPNOutput(successiveConnection.connection);
                 for (Node nodeFrom : successiveConnection.connection.getFrom().getNodes()) {
-                    weights[cnt++] = 3.0 * aCPPN.evaluate(aCPPNOutput, nodeFrom.getCoordinate(), nodeTo.getCoordinate());
+                    weights[cnt++] = weightEvaluator.evaluate(aCPPN, aCPPNOutput, nodeFrom, nodeTo, incomingLinks);
                 }
             }
         }

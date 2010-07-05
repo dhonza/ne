@@ -4,6 +4,7 @@ import common.net.INet;
 import common.net.precompiled.IPrecompiledFeedForwardStub;
 import common.net.precompiled.PrecompiledFeedForwardNet;
 import hyper.builder.EvaluableSubstrateBuilder;
+import hyper.builder.WeightEvaluator;
 import hyper.cppn.CPPN;
 import hyper.substrate.Substrate;
 import hyper.substrate.layer.IBias;
@@ -42,6 +43,7 @@ public class PrecompiledFeedForwardSubstrateBuilder implements EvaluableSubstrat
     }
 
     final private Substrate substrate;
+    final private WeightEvaluator weightEvaluator;
 
     private SubstrateLayer inputLayer = null;
     private SubstrateLayer biasLayer = null;
@@ -53,8 +55,9 @@ public class PrecompiledFeedForwardSubstrateBuilder implements EvaluableSubstrat
 
     private boolean built = false;
 
-    public PrecompiledFeedForwardSubstrateBuilder(Substrate substrate) {
+    public PrecompiledFeedForwardSubstrateBuilder(Substrate substrate, WeightEvaluator weightEvaluator) {
         this.substrate = substrate;
+        this.weightEvaluator = weightEvaluator;
         prepare();
     }
 
@@ -78,7 +81,7 @@ public class PrecompiledFeedForwardSubstrateBuilder implements EvaluableSubstrat
             if (layer.hasIntraLayerConnections()) {
                 throw new IllegalStateException("No intralayer connections allowed for this substrate builder!");
             }
-            if (layer instanceof IBias) {
+            if (layer.getNodeType() == NodeType.BIAS) {
                 if (foundBias) {
                     throw new IllegalStateException("Found more than one bias substrate layer!");
                 }
@@ -202,16 +205,18 @@ public class PrecompiledFeedForwardSubstrateBuilder implements EvaluableSubstrat
         int cnt = 0;
         for (PreviousLayerConnectionContainer successiveConnection : successiveConnections) {
             for (Node nodeTo : successiveConnection.connection.getTo().getNodes()) {
+                //number of incoming links
+                int incomingLinks = successiveConnection.connection.getFrom().getNodes().length;
                 //bias
                 if (successiveConnection.bias != null) {
                     int aCPPNOutput = substrate.getConnectionCPPNOutput(successiveConnection.bias);
-                    weights[cnt++] = 3.0 * aCPPN.evaluate(aCPPNOutput, successiveConnection.bias.getFrom().getNodes()[0].getCoordinate(),
-                            nodeTo.getCoordinate());
+                    weights[cnt++] = weightEvaluator.evaluate(aCPPN, aCPPNOutput, successiveConnection.bias.getFrom().getNodes()[0],
+                            nodeTo, incomingLinks);
                 }
                 //all connections to neuron
                 int aCPPNOutput = substrate.getConnectionCPPNOutput(successiveConnection.connection);
                 for (Node nodeFrom : successiveConnection.connection.getFrom().getNodes()) {
-                    weights[cnt++] = 3.0 * aCPPN.evaluate(aCPPNOutput, nodeFrom.getCoordinate(), nodeTo.getCoordinate());
+                    weights[cnt++] = weightEvaluator.evaluate(aCPPN, aCPPNOutput, nodeFrom, nodeTo, incomingLinks);
                 }
             }
         }

@@ -13,13 +13,14 @@ import hyper.substrate.Substrate;
  */
 public class SubstrateBuilderFactory {
     public static EvaluableSubstrateBuilder createEvaluableSubstrateBuilder(Substrate substrate, ParameterCombination parameters) {
+        WeightEvaluator weightEvaluator = WeightEvaluatorFactory.createWeightEvaluator(parameters);
         String type = parameters.getString("BUILDER").toLowerCase();
         if (type.equals("basic")) {
-            return new NetSubstrateBuilder(substrate);
+            return new NetSubstrateBuilder(substrate, weightEvaluator);
         } else if (type.equals("precompiled")) {
-            return new PrecompiledFeedForwardSubstrateBuilder(substrate);
+            return new PrecompiledFeedForwardSubstrateBuilder(substrate, weightEvaluator);
         } else if (type.equals("cascade")) {
-            return new CascadeNetBuilder(substrate);
+            return new CascadeNetBuilder(substrate, weightEvaluator);
         } else {
             throw new IllegalStateException("Invalid BUILDER option in configuration: " + type);
         }

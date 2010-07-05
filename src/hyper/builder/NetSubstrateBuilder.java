@@ -1,5 +1,6 @@
 package hyper.builder;
 
+import common.net.INet;
 import common.net.linked.Link;
 import common.net.linked.Net;
 import common.net.linked.Neuron;
@@ -10,7 +11,6 @@ import hyper.substrate.layer.SubstrateIntraLayerConnection;
 import hyper.substrate.layer.SubstrateLayer;
 import hyper.substrate.node.Node;
 import hyper.substrate.node.NodeType;
-import common.net.INet;
 
 import java.io.Serializable;
 import java.util.HashMap;
@@ -44,14 +44,16 @@ public class NetSubstrateBuilder implements EvaluableSubstrateBuilder {
     }
 
     final private Substrate substrate;
+    final private WeightEvaluator weightEvaluator;
 
     private Map<SubstrateLayer, NeuronIndices> indices;
 
     private boolean built = false;
     private Net net;
 
-    public NetSubstrateBuilder(Substrate substrate) {
+    public NetSubstrateBuilder(Substrate substrate, WeightEvaluator weightEvaluator) {
         this.substrate = substrate;
+        this.weightEvaluator = weightEvaluator;
     }
 
     public Substrate getSubstrate() {
@@ -73,7 +75,7 @@ public class NetSubstrateBuilder implements EvaluableSubstrateBuilder {
             Node[] nodes = layer.getNodes();
             for (Node node : nodes) {
                 Neuron newNeuron;
-                if (node.getType() == NodeType.INPUT) {
+                if (node.getType() == NodeType.INPUT || node.getType() == NodeType.BIAS) {
                     newNeuron = new Neuron(neuronIdCounter++, Neuron.Type.INPUT, Neuron.Activation.LINEAR);
                     numInput++;
                 } else if (node.getType() == NodeType.HIDDEN) {
@@ -110,7 +112,15 @@ public class NetSubstrateBuilder implements EvaluableSubstrateBuilder {
                 for (Node nodeTo : connection.getTo().getNodes()) {
                     Neuron from = nodeMap.get(nodeFrom);
                     Neuron to = nodeMap.get(nodeTo);
-                    double weight = 3.0 * aCPPN.evaluate(aCPPNOutput, nodeFrom.getCoordinate(), nodeTo.getCoordinate());
+                    //number of incoming links
+                    int incomingLinks = connection.getFrom().getNodes().length;
+                    if (incomingLinks == 1) {
+                        throw new IllegalStateException("Incorrect!!! incomingLinks");
+                    }
+                    double weight = weightEvaluator.evaluate(aCPPN, aCPPNOutput, nodeFrom, nodeTo, incomingLinks);
+                    if (weight == 0.0) {
+                        continue;
+                    }
 //                    System.out.println(this.toString() + ": "  + nodeFrom.getCoordinate() + "--->" + nodeTo.getCoordinate() + " = " + weight);
                     Link newLink = new Link(linkIdCounter++, weight, from, to);
                     net.addLink(newLink);
@@ -126,7 +136,12 @@ public class NetSubstrateBuilder implements EvaluableSubstrateBuilder {
                 for (SubstrateIntraLayerConnection intraLayerConnection : layer.getIntraLayerConnections()) {
                     Neuron from = nodeMap.get(intraLayerConnection.getFrom());
                     Neuron to = nodeMap.get(intraLayerConnection.getTo());
-                    double weight = 3.0 * aCPPN.evaluate(aCPPNOutput, intraLayerConnection.getFrom().getCoordinate(), intraLayerConnection.getTo().getCoordinate());
+                    //number of incoming links
+                    int incomingLinks = layer.getNumber();
+                    double weight = weightEvaluator.evaluate(aCPPN, aCPPNOutput, intraLayerConnection.getFrom(), intraLayerConnection.getTo(), incomingLinks);
+                    if (weight == 0.0) {
+                        continue;
+                    }
                     Link newLink = new Link(linkIdCounter++, weight, from, to);
                     net.addLink(newLink);
                 }

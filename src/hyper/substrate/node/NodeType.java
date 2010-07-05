@@ -10,6 +10,7 @@ import java.io.Serializable;
  * To change this template use File | Settings | File Templates.
  */
 public enum NodeType implements Serializable {
+    BIAS,
     INPUT,
     HIDDEN,
     OUTPUT
