@@ -159,8 +159,12 @@ public class FindCluster implements Problem {
 
             }
         }
-        double distanceSquared = (largestX - x1Big) * (largestX - x1Big) + (largestY - y1Big) * (largestY - y1Big);
-        distances.add(Math.sqrt(distanceSquared));
+        double xDistance = (largestX - x1Big);
+        double yDistance = (largestY - y1Big);
+        double xDistanceReal = xDistance * (2.0 / (numNodesX - 1));
+        double yDistanceReal = yDistance * (2.0 / (numNodesY - 1));
+        double distanceSquared = xDistance * xDistance + yDistance * yDistance;
+        distances.add(Math.sqrt(xDistanceReal * xDistanceReal + yDistanceReal * yDistanceReal));
         return Math.max(0, 30 - distanceSquared);
     }
 
