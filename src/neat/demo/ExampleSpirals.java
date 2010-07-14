@@ -87,7 +87,7 @@ public class ExampleSpirals {
 //        population = new DeterministicCrowdingPopulation(evaluateSpirals, proto);
         problem.setPopulation(population);
 
-        EvolutionaryAlgorithmSolver solver = new EvolutionaryAlgorithmSolver(problem, new Stats());
+        EvolutionaryAlgorithmSolver solver = new EvolutionaryAlgorithmSolver(problem, new Stats(), false);
         solver.addProgressPrinter(new NEATBasicProgressPrinter(problem));
         solver.addStopCondition(new MaxGenerationsStopCondition(problem));
         solver.addStopCondition(new TargetFitnessStopCondition(problem));

@@ -15,7 +15,7 @@ public class EvaluableFactory {
     private EvaluableFactory() {
     }
 
-    public static Evaluable getEvaluable(ParameterCombination parameters, EvaluableSubstrateBuilder substrateBuilder, Problem problem) {
+    public static Evaluable getEvaluable(ParameterCombination parameters, EvaluableSubstrateBuilder substrateBuilder, IProblem problem) {
         String name = parameters.getString("SOLVER");
         if (name.equalsIgnoreCase("GP")) {
             return new GPEvaluator(substrateBuilder, problem);

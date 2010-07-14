@@ -40,7 +40,7 @@ public class NEATSolver extends AbstractSolver {
 
         neat.setPopulation(population);
 
-        solver = new EvolutionaryAlgorithmSolver(neat, stats);
+        solver = new EvolutionaryAlgorithmSolver(neat, stats, problem instanceof IProblemGeneralization);
         solver.addProgressPrinter(new NEATProgressPrinter1D(neat, problem, parameters));
         solver.addProgressPrinter(new FileProgressPrinter(neat, problem, reportStorage, parameters));
         solver.addStopCondition(new MaxGenerationsStopCondition(neat));

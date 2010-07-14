@@ -24,6 +24,9 @@ public class CMAES implements EvolutionaryAlgorithm {
     private int lastInnovation;
     private double bestSolutionValue;
 
+    private int generalizationGeneration;
+    private EvaluationInfo generalizationEvaluationInfo;
+
     public CMAES(CMAESObjectiveFunction function) {
         this.function = function;
         cma = new CMAEvolutionStrategy();
@@ -56,7 +59,7 @@ public class CMAES implements EvolutionaryAlgorithm {
         cma.updateDistribution(fitness);         // pass fitness array to update search distribution
         // --- end core iteration step ---
 
-        if(cma.getBestFunctionValue() > bestSolutionValue) {
+        if (cma.getBestFunctionValue() > bestSolutionValue) {
             bestSolutionValue = cma.getBestFunctionValue();
             lastInnovation = 0;
         } else {
@@ -64,6 +67,10 @@ public class CMAES implements EvolutionaryAlgorithm {
         }
 
         generation++;
+    }
+
+    public void performGeneralizationTest() {
+        throw new IllegalStateException("Not yet implemented!: CMAES.performGeneralizationTest()");
     }
 
     public void finished() {
@@ -100,6 +107,13 @@ public class CMAES implements EvolutionaryAlgorithm {
     public EvaluationInfo[] getEvaluationInfo() {
         System.out.println("EvaluationInfo!!!!!!");
         return new EvaluationInfo[0];  //To change body of implemented methods use File | Settings | File Templates.
+    }
+
+    public EvaluationInfo getGeneralizationEvaluationInfo() {
+        if (generation != generalizationGeneration) {
+            throw new IllegalStateException("Generalization was not called this generation!");
+        }
+        return generalizationEvaluationInfo;
     }
 
     public boolean isSolved() {

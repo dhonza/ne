@@ -4,7 +4,7 @@ import common.evolution.ProgressPrinter;
 import common.pmatrix.ParameterCombination;
 import hyper.cppn.CPPN;
 import hyper.cppn.FakeArrayCPPN;
-import hyper.evaluate.Problem;
+import hyper.evaluate.IProblem;
 import opt.cmaes.CMAES;
 import opt.cmaes.CMAESBasicProgressPrinter;
 
@@ -18,12 +18,12 @@ import opt.cmaes.CMAESBasicProgressPrinter;
 public class CMAESProgressPrinter1D extends CommonProgressPrinter1D {
     final private CMAES cmaes;
 
-    public CMAESProgressPrinter1D(CMAES cmaes, ProgressPrinter progressPrinter, Problem problem, ParameterCombination parameters) {
+    public CMAESProgressPrinter1D(CMAES cmaes, ProgressPrinter progressPrinter, IProblem problem, ParameterCombination parameters) {
         super(progressPrinter, problem, parameters);
         this.cmaes = cmaes;
     }
 
-    public CMAESProgressPrinter1D(CMAES cmaes, Problem problem, ParameterCombination parameters) {
+    public CMAESProgressPrinter1D(CMAES cmaes, IProblem problem, ParameterCombination parameters) {
         this(cmaes, new CMAESBasicProgressPrinter(cmaes), problem, parameters);
     }
 

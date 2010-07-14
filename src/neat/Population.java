@@ -219,6 +219,10 @@ public abstract class Population {
 //        }
     }
 
+    EvaluationInfo evaluateGeneralization() {
+        return populationEvaluator.evaluateGeneralization(perThreadEvaluators, getBestSoFar());
+    }
+
     /**
      * Reproduces the Population. New Genomes are recombined by using genetic
      * operators.

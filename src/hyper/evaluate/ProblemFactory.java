@@ -17,7 +17,7 @@ public class ProblemFactory {
     private ProblemFactory() {
     }
 
-    public static Problem getProblem(ParameterCombination parameters, ReportStorage reportStorage) {
+    public static IProblem getProblem(ParameterCombination parameters, ReportStorage reportStorage) {
         String name = parameters.getString("PROBLEM");
         if (name.equalsIgnoreCase("RECO")) {
             return new Recognition1D(parameters);

@@ -1,5 +1,6 @@
 package sneat.evolution;
 
+import common.evolution.EvaluationInfo;
 import sneat.neatgenome.ConnectionGene;
 import sneat.neatgenome.NeatGenome;
 import sneat.utilityclasses.Debug;
@@ -246,6 +247,10 @@ public class EvolutionAlgorithm {
                     beginPruningPhase();
             }
         }
+    }
+
+    public EvaluationInfo performGeneralizationTest() {
+        return populationEvaluator.evaluateGeneralization(getBestGenome());
     }
 
     /// <summary>

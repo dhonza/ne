@@ -17,9 +17,9 @@ import neat.Genome;
  */
 public class NEATEvaluator implements Evaluable<Genome> {
     final private EvaluableSubstrateBuilder substrateBuilder;
-    final private Problem problem;
+    final private IProblem problem;
 
-    public NEATEvaluator(EvaluableSubstrateBuilder substrateBuilder, Problem problem) {
+    public NEATEvaluator(EvaluableSubstrateBuilder substrateBuilder, IProblem problem) {
         this.substrateBuilder = substrateBuilder;
         this.problem = problem;
     }
@@ -31,6 +31,15 @@ public class NEATEvaluator implements Evaluable<Genome> {
         INet hyperNet = substrateBuilder.getNet();
 
         return problem.evaluate(hyperNet);
+    }
+
+    public EvaluationInfo evaluateGeneralization(Genome og) {
+        CPPN aCPPN = new BasicNetCPPN(og.getNet(), substrateBuilder.getSubstrate().getMaxDimension());
+        substrateBuilder.build(aCPPN);
+
+        INet hyperNet = substrateBuilder.getNet();
+
+        return ((IProblemGeneralization)problem).evaluateGeneralization(hyperNet);
     }
 
     public boolean isSolved() {

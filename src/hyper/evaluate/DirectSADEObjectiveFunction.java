@@ -15,12 +15,12 @@ import opt.sade.ObjectiveFunction;
  */
 public class DirectSADEObjectiveFunction implements ObjectiveFunction {
     final private EvaluableSubstrateBuilder substrateBuilder;
-    final private Problem problem;
+    final private IProblem problem;
 
     private int numOfLinks;
     private boolean solved = false;
 
-    public DirectSADEObjectiveFunction(EvaluableSubstrateBuilder substrateBuilder, Problem problem) {
+    public DirectSADEObjectiveFunction(EvaluableSubstrateBuilder substrateBuilder, IProblem problem) {
         this.substrateBuilder = substrateBuilder;
         this.problem = problem;
         numOfLinks = substrateBuilder.getSubstrate().getNumOfLinks();

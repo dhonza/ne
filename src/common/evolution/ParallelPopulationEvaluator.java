@@ -93,6 +93,10 @@ public class ParallelPopulationEvaluator<T> {
         return evaluationInfos;
     }
 
+    public EvaluationInfo evaluateGeneralization(Evaluable<T>[] perThreadEvaluators, T individual) {
+        return perThreadEvaluators[0].evaluateGeneralization(individual);
+    }
+
     private EvaluationInfo[] sequentialEvaluate(Evaluable<T> perThreadEvaluator, List<T> population) {
         EvaluationInfo[] evaluationInfos = new EvaluationInfo[population.size()];
         for (int i = 0; i < population.size(); i++) {

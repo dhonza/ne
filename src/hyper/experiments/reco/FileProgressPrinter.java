@@ -4,7 +4,8 @@ import common.evolution.EvaluationInfo;
 import common.evolution.EvolutionaryAlgorithm;
 import common.evolution.ProgressPrinter;
 import common.pmatrix.ParameterCombination;
-import hyper.evaluate.Problem;
+import hyper.evaluate.IProblem;
+import hyper.evaluate.IProblemGeneralization;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -17,20 +18,21 @@ import java.util.List;
  * To change this template use File | Settings | File Templates.
  */
 public class FileProgressPrinter implements ProgressPrinter {
-    private class InfoContainer {
+    private static class InfoContainer {
         double bsf;
         EvaluationInfo[] evaluationInfos;
+        EvaluationInfo generalizationInfo;
     }
 
     final private EvolutionaryAlgorithm ea;
-    final private Problem problem;
+    final private IProblem problem;
     final private ReportStorage reportStorage;
     final private ParameterCombination parameters;
     private boolean storeRun;
 
     final private List<InfoContainer> generations = new ArrayList<InfoContainer>();
 
-    public FileProgressPrinter(EvolutionaryAlgorithm ea, Problem problem, ReportStorage reportStorage, ParameterCombination parameters) {
+    public FileProgressPrinter(EvolutionaryAlgorithm ea, IProblem problem, ReportStorage reportStorage, ParameterCombination parameters) {
         this.ea = ea;
         this.problem = problem;
         this.reportStorage = reportStorage;
@@ -45,6 +47,9 @@ public class FileProgressPrinter implements ProgressPrinter {
         InfoContainer container = new InfoContainer();
         container.bsf = ea.getMaxFitnessReached();
         container.evaluationInfos = ea.getEvaluationInfo();
+        if (problem instanceof IProblemGeneralization) {
+            container.generalizationInfo = ea.getGeneralizationEvaluationInfo();
+        }
         generations.add(container);
     }
 
@@ -61,6 +66,13 @@ public class FileProgressPrinter implements ProgressPrinter {
         for (String name : problem.getEvaluationInfoItemNames()) {
             itemList.add(new ReportStorage.SingleRunFile(name, extractEvaluationInfo(name).toString()));
         }
+        if (problem instanceof IProblemGeneralization) {
+            itemList.add(new ReportStorage.SingleRunFile("GENERALIZATION_FITNESS", extractGeneralizationFitnessInfo().toString()));
+            for (String name : problem.getEvaluationInfoItemNames()) {
+                itemList.add(new ReportStorage.SingleRunFile("GENERALIZATION_" + name, extractGeneralizationEvaluationInfo(name).toString()));
+            }
+        }
+
         reportStorage.prepareSingleRunResults(itemList);
     }
 
@@ -102,6 +114,24 @@ public class FileProgressPrinter implements ProgressPrinter {
                 builder.append(generation.evaluationInfos[i].getInfo(name)).append("\t");
             }
             builder.append(generation.evaluationInfos[generation.evaluationInfos.length - 1].getInfo(name)).append("\n");
+        }
+        return builder;
+    }
+
+    private StringBuilder extractGeneralizationFitnessInfo() {
+        StringBuilder builder = new StringBuilder();
+        int last = generations.get(0).evaluationInfos.length - 1;
+
+        for (InfoContainer generation : generations) {
+            builder.append(generation.generalizationInfo.getFitness()).append("\n");
+        }
+        return builder;
+    }
+
+    private StringBuilder extractGeneralizationEvaluationInfo(String name) {
+        StringBuilder builder = new StringBuilder();
+        for (InfoContainer generation : generations) {
+            builder.append(generation.generalizationInfo.getInfo(name)).append("\n");
         }
         return builder;
     }

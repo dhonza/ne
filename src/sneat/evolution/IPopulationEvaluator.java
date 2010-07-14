@@ -1,5 +1,7 @@
 package sneat.evolution;
 
+import common.evolution.EvaluationInfo;
+
 public interface IPopulationEvaluator {
     /// <summary>
     /// Evaluate the genomes within the Population argument. Implementors can choose how to evaluate
@@ -9,6 +11,8 @@ public interface IPopulationEvaluator {
     /// <param name="ea">Some evaluators may wish to interogate the current EvolutionAlgorithm to
     /// obtain statistical information. Most experiments though do not require this parameter.</param>
     void evaluatePopulation(Population pop, EvolutionAlgorithm ea);
+
+    EvaluationInfo evaluateGeneralization(IGenome individual);
 
     //added by dhonza
     boolean isSolved();

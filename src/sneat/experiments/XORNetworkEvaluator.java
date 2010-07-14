@@ -31,6 +31,10 @@ public class XORNetworkEvaluator implements Evaluable<INetwork> {
         return new EvaluationInfo(Math.pow((4.0 - error), 2));
     }
 
+    public EvaluationInfo evaluateGeneralization(INetwork network) {
+        return evaluate(network);
+    }
+
     public boolean isSolved() {
         return false;  //TODO implement
     }

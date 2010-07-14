@@ -4,8 +4,7 @@ import common.evolution.ProgressPrinter;
 import common.pmatrix.ParameterCombination;
 import hyper.cppn.BasicNetCPPN;
 import hyper.cppn.CPPN;
-import hyper.evaluate.Problem;
-import hyper.substrate.Substrate;
+import hyper.evaluate.IProblem;
 import neat.NEAT;
 import neat.NEATBasicProgressPrinter;
 import common.net.linked.NetStorage;
@@ -22,13 +21,13 @@ public class NEATProgressPrinter1D extends CommonProgressPrinter1D {
     final private NEAT neat;
     final private Population pop;
 
-    public NEATProgressPrinter1D(NEAT neat, ProgressPrinter progressPrinter, Problem problem, ParameterCombination parameters) {
+    public NEATProgressPrinter1D(NEAT neat, ProgressPrinter progressPrinter, IProblem problem, ParameterCombination parameters) {
         super(progressPrinter, problem, parameters);
         this.neat = neat;
         this.pop = neat.getPopulation();
     }
 
-    public NEATProgressPrinter1D(NEAT neat, Problem problem, ParameterCombination parameters) {
+    public NEATProgressPrinter1D(NEAT neat, IProblem problem, ParameterCombination parameters) {
         this(neat, new NEATBasicProgressPrinter(neat), problem, parameters);
     }
 

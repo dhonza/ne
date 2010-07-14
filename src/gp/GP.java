@@ -44,6 +44,9 @@ public class GP implements EvolutionaryAlgorithm, Serializable {
     private Forest bestSoFar;
     private int lastInnovation;
 
+    private int generalizationGeneration;
+    private EvaluationInfo generalizationEvaluationInfo;
+
     public GP(Evaluable<Forest>[] perThreadEvaluators, Node[] functions, Node[] terminals) {
         this.perThreadEvaluators = perThreadEvaluators;
         populationEvaluator = new ParallelPopulationEvaluator<Forest>();
@@ -63,6 +66,7 @@ public class GP implements EvolutionaryAlgorithm, Serializable {
 
     public void initialGeneration() {
         generation = 1;
+        generalizationGeneration = -1;
         lastInnovation = 0;
 
         createInitialGeneration();
@@ -77,6 +81,11 @@ public class GP implements EvolutionaryAlgorithm, Serializable {
         evaluate(newPopulation);
         reduce();
         recomputeBest();
+    }
+
+    public void performGeneralizationTest() {
+        generalizationEvaluationInfo = populationEvaluator.evaluateGeneralization(perThreadEvaluators, bestSoFar);
+        generalizationGeneration = generation;
     }
 
     public void finished() {
@@ -207,5 +216,12 @@ public class GP implements EvolutionaryAlgorithm, Serializable {
             fv[i] = population[i].getEvaluationInfo();
         }
         return fv;
+    }
+
+    public EvaluationInfo getGeneralizationEvaluationInfo() {
+        if (generation != generalizationGeneration) {
+            throw new IllegalStateException("Generalization was not called this generation!");
+        }
+        return generalizationEvaluationInfo;
     }
 }

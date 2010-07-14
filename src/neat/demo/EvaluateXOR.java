@@ -30,6 +30,10 @@ public class EvaluateXOR implements Evaluable<Genome> {
         return new EvaluationInfo(Math.pow((4.0 - og.getError()), 2));
     }
 
+    public EvaluationInfo evaluateGeneralization(Genome individual) {
+        return evaluate(individual);
+    }
+
     public boolean isSolved() {
         return false; //TODO implement check for solved problem
     }

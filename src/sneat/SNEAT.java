@@ -23,12 +23,16 @@ public class SNEAT implements EvolutionaryAlgorithm {
     private int lastInnovation;
     private double bsf;
 
+    private int generalizationGeneration;
+    private EvaluationInfo generalizationEvaluationInfo;
+
     public SNEAT(SNEATExperiment exp) {
         this.exp = exp;
     }
 
     public void initialGeneration() {
         generation = 1;
+        generalizationGeneration = -1;
         lastInnovation = 0;
         bsf = -Double.MAX_VALUE;
         IdGenerator idgen = new IdGenerator();
@@ -50,6 +54,11 @@ public class SNEAT implements EvolutionaryAlgorithm {
         generation++;
         ea.performOneGeneration();
         checkIfInnovation();
+    }
+
+    public void performGeneralizationTest() {
+        generalizationEvaluationInfo = ea.performGeneralizationTest();
+        generalizationGeneration = generation;
     }
 
     public void finished() {
@@ -93,6 +102,13 @@ public class SNEAT implements EvolutionaryAlgorithm {
 
     public EvaluationInfo[] getEvaluationInfo() {
         return ea.getPopulation().getEvaluationInfo();
+    }
+
+    public EvaluationInfo getGeneralizationEvaluationInfo() {
+        if (generation != generalizationGeneration) {
+            throw new IllegalStateException("Generalization was not called this generation!");
+        }
+        return generalizationEvaluationInfo;
     }
 
     private void checkIfInnovation() {

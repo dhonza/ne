@@ -15,12 +15,12 @@ import opt.cmaes.CMAESObjectiveFunction;
  */
 public class DirectCMAESObjectiveFunction implements CMAESObjectiveFunction {
     final private EvaluableSubstrateBuilder substrateBuilder;
-    final private Problem problem;
+    final private IProblem problem;
 
     private int numOfLinks;
     private boolean solved = false;
 
-    public DirectCMAESObjectiveFunction(EvaluableSubstrateBuilder substrateBuilder, Problem problem) {
+    public DirectCMAESObjectiveFunction(EvaluableSubstrateBuilder substrateBuilder, IProblem problem) {
         this.substrateBuilder = substrateBuilder;
         this.problem = problem;
         numOfLinks = substrateBuilder.getSubstrate().getNumOfLinks();

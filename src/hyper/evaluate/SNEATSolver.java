@@ -44,7 +44,7 @@ public class SNEATSolver extends AbstractSolver {
 
         sneat = new SNEAT(exp);
 
-        solver = new EvolutionaryAlgorithmSolver(sneat, stats);
+        solver = new EvolutionaryAlgorithmSolver(sneat, stats, problem instanceof IProblemGeneralization);
         solver.addProgressPrinter(new SNEATProgressPrinter1D(sneat, problem, parameters));
         solver.addProgressPrinter(new FileProgressPrinter(sneat, problem, reportStorage, parameters));
         solver.addStopCondition(new MaxGenerationsStopCondition(sneat));

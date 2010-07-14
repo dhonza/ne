@@ -82,6 +82,11 @@ public class SingleFilePopulationEvaluator implements IPopulationEvaluator {
         }
     }
 
+    public EvaluationInfo evaluateGeneralization(IGenome individual) {
+        INetwork network = individual.decode(activationFn);
+        return populationEvaluator.evaluateGeneralization(perThreadEvaluators, network);
+    }
+
     public boolean isSolved() {
         for (Evaluable<INetwork> evaluator : perThreadEvaluators) {
             if (evaluator.isSolved()) {

@@ -17,13 +17,15 @@ import java.util.List;
 public class EvolutionaryAlgorithmSolver implements Serializable {
     final private EvolutionaryAlgorithm evolutionaryAlgorithm;
     final private Stats stats;
+    final private boolean generalization;
     final private List<ProgressPrinter> progressPrinterList = new ArrayList<ProgressPrinter>();
     final private List<StopCondition> stopConditionList = new ArrayList<StopCondition>();
     private Bench bench;
 
-    public EvolutionaryAlgorithmSolver(EvolutionaryAlgorithm evolutionaryAlgorithm, Stats stats) {
+    public EvolutionaryAlgorithmSolver(EvolutionaryAlgorithm evolutionaryAlgorithm, Stats stats, boolean generalization) {
         this.evolutionaryAlgorithm = evolutionaryAlgorithm;
         this.stats = stats;
+        this.generalization = generalization;
         stats.createDoubleStatIfNotExists("GENERATIONS", "EXPERIMENT", "Number of Generations");
         stats.createDoubleStatIfNotExists("EVALUATIONS", "EXPERIMENT", "Number of Evaluations");
         stats.createDoubleStatIfNotExists("MAX_FITNESS", "EXPERIMENT", "Maximum fitness reached");
@@ -35,10 +37,18 @@ public class EvolutionaryAlgorithmSolver implements Serializable {
         bench = new Bench();
         evolutionaryAlgorithm.initialGeneration();
 
+        if (generalization) {
+            evolutionaryAlgorithm.performGeneralizationTest();
+        }
+
         printGeneration();
 
         while (!toStop()) {
             evolutionaryAlgorithm.nextGeneration();
+            if (generalization) {
+                evolutionaryAlgorithm.performGeneralizationTest();
+            }
+
             printGeneration();
             printProgress();
         }
@@ -51,8 +61,8 @@ public class EvolutionaryAlgorithmSolver implements Serializable {
     }
 
     private void storeFinalStats() {
-        stats.addSample("GENERATIONS", (double)evolutionaryAlgorithm.getGeneration());
-        stats.addSample("EVALUATIONS", (double)evolutionaryAlgorithm.getEvaluations());
+        stats.addSample("GENERATIONS", (double) evolutionaryAlgorithm.getGeneration());
+        stats.addSample("EVALUATIONS", (double) evolutionaryAlgorithm.getEvaluations());
         stats.addSample("MAX_FITNESS", evolutionaryAlgorithm.getMaxFitnessReached());
         stats.addSample("SUCCESS", evolutionaryAlgorithm.isSolved());
         stats.addSample("TIME", bench.getLastTimeInterval());

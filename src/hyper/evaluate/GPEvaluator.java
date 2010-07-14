@@ -17,9 +17,9 @@ import hyper.cppn.CPPN;
  */
 public class GPEvaluator implements Evaluable<Forest> {
     final private EvaluableSubstrateBuilder substrateBuilder;
-    final private Problem problem;
+    final private IProblem problem;
 
-    public GPEvaluator(EvaluableSubstrateBuilder substrateBuilder, Problem problem) {
+    public GPEvaluator(EvaluableSubstrateBuilder substrateBuilder, IProblem problem) {
         this.substrateBuilder = substrateBuilder;
         this.problem = problem;
     }
@@ -29,6 +29,13 @@ public class GPEvaluator implements Evaluable<Forest> {
         substrateBuilder.build(aCPPN);
         INet hyperNet = substrateBuilder.getNet();
         return problem.evaluate(hyperNet);
+    }
+
+    public EvaluationInfo evaluateGeneralization(Forest individual) {
+        CPPN aCPPN = new BasicGPCPPN(individual, substrateBuilder.getSubstrate().getMaxDimension());
+        substrateBuilder.build(aCPPN);
+        INet hyperNet = substrateBuilder.getNet();
+        return ((IProblemGeneralization)problem).evaluateGeneralization(hyperNet);
     }
 
     public boolean isSolved() {

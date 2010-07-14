@@ -10,9 +10,9 @@ import common.evolution.StopCondition;
  * To change this template use File | Settings | File Templates.
  */
 public class SolvedStopCondition implements StopCondition {
-    final private Problem problem;
+    final private IProblem problem;
 
-    public SolvedStopCondition(Problem problem) {
+    public SolvedStopCondition(IProblem problem) {
         this.problem = problem;
     }
 

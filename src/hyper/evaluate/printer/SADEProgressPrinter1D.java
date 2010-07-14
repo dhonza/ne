@@ -4,7 +4,7 @@ import common.evolution.ProgressPrinter;
 import common.pmatrix.ParameterCombination;
 import hyper.cppn.CPPN;
 import hyper.cppn.FakeArrayCPPN;
-import hyper.evaluate.Problem;
+import hyper.evaluate.IProblem;
 import opt.sade.SADE;
 import opt.sade.SADEBasicProgressPrinter;
 
@@ -18,12 +18,12 @@ import opt.sade.SADEBasicProgressPrinter;
 public class SADEProgressPrinter1D extends CommonProgressPrinter1D {
     final private SADE sade;
 
-    public SADEProgressPrinter1D(SADE sade, ProgressPrinter progressPrinter, Problem problem, ParameterCombination parameters) {
+    public SADEProgressPrinter1D(SADE sade, ProgressPrinter progressPrinter, IProblem problem, ParameterCombination parameters) {
         super(progressPrinter, problem, parameters);
         this.sade = sade;
     }
 
-    public SADEProgressPrinter1D(SADE sade, Problem problem, ParameterCombination parameters) {
+    public SADEProgressPrinter1D(SADE sade, IProblem problem, ParameterCombination parameters) {
         this(sade, new SADEBasicProgressPrinter(sade), problem, parameters);
     }
 

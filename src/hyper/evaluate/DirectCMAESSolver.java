@@ -30,7 +30,7 @@ public class DirectCMAESSolver implements Solver {
     }
 
     public void solve() {
-        Problem problem = ProblemFactory.getProblem(parameters, reportStorage);
+        IProblem problem = ProblemFactory.getProblem(parameters, reportStorage);
         EvaluableSubstrateBuilder substrateBuilder =
                 SubstrateBuilderFactory.createEvaluableSubstrateBuilder(problem.getSubstrate(), parameters);
 
@@ -38,7 +38,7 @@ public class DirectCMAESSolver implements Solver {
         CMAES cmaes = new CMAES(function);
         Utils.setParameters(parameters, cmaes.getOptions(), "DIRECT_CMAES");
 
-        EvolutionaryAlgorithmSolver solver = new EvolutionaryAlgorithmSolver(cmaes, stats);
+        EvolutionaryAlgorithmSolver solver = new EvolutionaryAlgorithmSolver(cmaes, stats, problem instanceof IProblemGeneralization);
         solver.addProgressPrinter(new CMAESProgressPrinter1D(cmaes, problem, parameters));
 //        solver.addProgressPrinter(new FileProgressPrinter(cmaes, problem, reportStorage, parameters));
         solver.addStopCondition(new MaxEvaluationsStopCondition(cmaes));

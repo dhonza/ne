@@ -4,7 +4,7 @@ import common.evolution.EvaluationInfo;
 import common.mathematica.MathematicaUtils;
 import common.net.INet;
 import common.pmatrix.ParameterCombination;
-import hyper.evaluate.Problem;
+import hyper.evaluate.IProblem;
 import hyper.experiments.reco.ReportStorage;
 import hyper.substrate.Substrate;
 
@@ -22,7 +22,7 @@ import java.util.Map;
  * Adapted from  Colin Green's SharpNEAT 2 HyperNEAT (Box Discrimination Task)
  * TODO Differs in substrate type uses 2D coordinates instead of 3D
  */
-public class FindCluster2 implements Problem {
+public class FindCluster2 implements IProblem {
     private static class TrialInfo {
         double distance;
         double activationRange;

@@ -12,6 +12,8 @@ import java.io.Serializable;
 public interface Evaluable<T> extends Serializable {
     public EvaluationInfo evaluate(T individual);
 
+    public EvaluationInfo evaluateGeneralization(T individual);
+
     public boolean isSolved();
 
     public int getNumberOfInputs();

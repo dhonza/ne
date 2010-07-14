@@ -6,8 +6,7 @@ import common.pmatrix.ParameterCombination;
 import hyper.builder.EvaluableSubstrateBuilder;
 import hyper.builder.SubstrateBuilderFactory;
 import hyper.cppn.CPPN;
-import hyper.evaluate.Problem;
-import hyper.substrate.Substrate;
+import hyper.evaluate.IProblem;
 
 /**
  * Created by IntelliJ IDEA.
@@ -18,7 +17,7 @@ import hyper.substrate.Substrate;
  */
 abstract public class CommonProgressPrinter1D implements ProgressPrinter {
     final private ProgressPrinter progressPrinter;
-    final protected Problem problem;
+    final protected IProblem problem;
     final protected ParameterCombination parameters;
 
     protected boolean generation = true;
@@ -31,7 +30,7 @@ abstract public class CommonProgressPrinter1D implements ProgressPrinter {
     protected boolean finishedShowHyperNet = true;
     protected boolean finishedShowProblem = true;
 
-    public CommonProgressPrinter1D(ProgressPrinter progressPrinter, Problem problem, ParameterCombination parameters) {
+    public CommonProgressPrinter1D(ProgressPrinter progressPrinter, IProblem problem, ParameterCombination parameters) {
         this.progressPrinter = progressPrinter;
         this.problem = problem;
         this.parameters = parameters;

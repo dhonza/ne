@@ -3,7 +3,7 @@ package hyper.experiments.reco.problem;
 import common.evolution.EvaluationInfo;
 import common.net.INet;
 import common.pmatrix.ParameterCombination;
-import hyper.evaluate.Problem;
+import hyper.evaluate.IProblem;
 import hyper.experiments.reco.fitness.HyperNetEvaluator1D;
 import hyper.experiments.reco.fitness.RecognitionFitness1D;
 import hyper.experiments.reco.util.PatternGenerator;
@@ -22,7 +22,7 @@ import java.util.List;
  * Time: 12:15:47 PM
  * To change this template use File | Settings | File Templates.
  */
-public class Recognition1D implements Problem {
+public class Recognition1D implements IProblem {
     final private PatternGenerator generator;
     final private int activations;
     final private int lineSize;

@@ -24,7 +24,7 @@ abstract public class AbstractSolver implements Solver {
     protected EvolutionaryAlgorithmSolver solver;
 
     protected Evaluable[] perThreadEvaluators;
-    protected Problem problem;
+    protected IProblem problem;
 
     protected AbstractSolver(ParameterCombination parameters, Stats stats, ReportStorage reportStorage) {
         this.parameters = parameters;

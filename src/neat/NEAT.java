@@ -28,6 +28,9 @@ public class NEAT implements EvolutionaryAlgorithm {
      */
     private Population population;
 
+    private int generalizationGeneration;
+    private EvaluationInfo generalizationEvaluationInfo;
+
     /**
      * Constructs new NE object. It initializes what is needed and assigns
      * the population. Typically it would be !!!!!!!!!!!!!!!!!!!!!!!
@@ -48,6 +51,7 @@ public class NEAT implements EvolutionaryAlgorithm {
     }
 
     public void initialGeneration() {
+        generalizationGeneration = -1;
         population.incrementGeneration();
         population.evaluate(); //obtain the fitness of all Genomes
         population.speciate(); //assign Genomes to Species, if needed create new Species
@@ -67,6 +71,11 @@ public class NEAT implements EvolutionaryAlgorithm {
 
         population.evaluate();
         population.speciate();
+    }
+
+    public void performGeneralizationTest() {
+        generalizationEvaluationInfo = population.evaluateGeneralization();
+        generalizationGeneration = population.getGeneration();
     }
 
     public void finished() {
@@ -99,6 +108,13 @@ public class NEAT implements EvolutionaryAlgorithm {
 
     public EvaluationInfo[] getEvaluationInfo() {
         return population.getEvaluationInfo();
+    }
+
+    public EvaluationInfo getGeneralizationEvaluationInfo() {
+        if (population.getGeneration() != generalizationGeneration) {
+            throw new IllegalStateException("Generalization was not called this generation!");
+        }
+        return generalizationEvaluationInfo;
     }
 
     public boolean isSolved() {

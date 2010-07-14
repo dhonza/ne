@@ -14,7 +14,7 @@ import java.util.List;
  * Time: 12:17:00 PM
  * To change this template use File | Settings | File Templates.
  */
-public interface Problem extends Serializable {
+public interface IProblem extends Serializable {
     EvaluationInfo evaluate(INet hyperNet);
 
     boolean isSolved();

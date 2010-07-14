@@ -14,6 +14,8 @@ public interface EvolutionaryAlgorithm extends Serializable {
 
     public void nextGeneration();
 
+    public void performGeneralizationTest();
+
     public void finished();
 
     public boolean hasImproved();
@@ -27,6 +29,8 @@ public interface EvolutionaryAlgorithm extends Serializable {
     public double getMaxFitnessReached();
 
     public EvaluationInfo[] getEvaluationInfo();
+
+    public EvaluationInfo getGeneralizationEvaluationInfo();
 
     public boolean isSolved();
 

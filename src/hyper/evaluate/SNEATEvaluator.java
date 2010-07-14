@@ -17,9 +17,9 @@ import sneat.neuralnetwork.INetwork;
  */
 public class SNEATEvaluator implements Evaluable<INetwork> {
     final private EvaluableSubstrateBuilder substrateBuilder;
-    final private Problem problem;
+    final private IProblem problem;
 
-    public SNEATEvaluator(EvaluableSubstrateBuilder substrateBuilder, Problem problem) {
+    public SNEATEvaluator(EvaluableSubstrateBuilder substrateBuilder, IProblem problem) {
         this.substrateBuilder = substrateBuilder;
         this.problem = problem;
     }
@@ -31,6 +31,15 @@ public class SNEATEvaluator implements Evaluable<INetwork> {
         INet hyperNet = substrateBuilder.getNet();
 
         return problem.evaluate(hyperNet);
+    }
+
+    public EvaluationInfo evaluateGeneralization(INetwork network) {
+        CPPN aCPPN = new BasicSNEATCPPN(network, substrateBuilder.getSubstrate().getMaxDimension());
+        substrateBuilder.build(aCPPN);
+
+        INet hyperNet = substrateBuilder.getNet();
+
+        return ((IProblemGeneralization)problem).evaluateGeneralization(hyperNet);
     }
 
     public boolean isSolved() {

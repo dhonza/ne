@@ -11,6 +11,7 @@ import gp.*;
 import gp.terminals.Constant;
 import gp.terminals.Random;
 import hyper.evaluate.GPEvaluator;
+import hyper.evaluate.IProblemGeneralization;
 
 import java.io.File;
 
@@ -46,7 +47,7 @@ public class GPMain {
                 Evaluable evaluable = EvaluableFactory.createByName(combination.getString("PROBLEM"));
                 GP gp = GPFactory.createByName(combination.getString("GP.TYPE"), new Evaluable[]{evaluable}, functions, terminals);
 
-                EvolutionaryAlgorithmSolver solver = new EvolutionaryAlgorithmSolver(gp, stats);
+                EvolutionaryAlgorithmSolver solver = new EvolutionaryAlgorithmSolver(gp, stats, false);
                 solver.addProgressPrinter(new GPBasicProgressPrinter(gp));
                 solver.addStopCondition(new MaxGenerationsStopCondition(gp));
                 solver.addStopCondition(new MaxEvaluationsStopCondition(gp));

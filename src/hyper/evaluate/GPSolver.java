@@ -39,7 +39,7 @@ public class GPSolver extends AbstractSolver {
 
         gp = GPFactory.createByName(parameters.getString("GP.TYPE"), perThreadEvaluators, functions, terminals);
 
-        solver = new EvolutionaryAlgorithmSolver(gp, stats);
+        solver = new EvolutionaryAlgorithmSolver(gp, stats, problem instanceof IProblemGeneralization);
         solver.addProgressPrinter(new GPProgressPrinter1D(gp, problem, parameters));
         solver.addProgressPrinter(new FileProgressPrinter(gp, problem, reportStorage, parameters));
         solver.addStopCondition(new MaxGenerationsStopCondition(gp));

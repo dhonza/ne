@@ -56,6 +56,10 @@ public class SkirmishNetworkEvaluator implements Evaluable<INetwork> {
         return new EvaluationInfo(fitness);
     }
 
+    public EvaluationInfo evaluateGeneralization(INetwork network) {
+        return evaluate(network);
+    }
+
     public static void addPredators(World w) {
         //I cheat and store a copy of the ANN in everything so I don't have to make special cases for
         //heterogeneous and homogeneous Worlds

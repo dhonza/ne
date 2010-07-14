@@ -4,7 +4,8 @@ import common.evolution.EvaluationInfo;
 import common.mathematica.MathematicaUtils;
 import common.net.INet;
 import common.pmatrix.ParameterCombination;
-import hyper.evaluate.Problem;
+import hyper.evaluate.IProblem;
+import hyper.evaluate.IProblemGeneralization;
 import hyper.experiments.reco.ReportStorage;
 import hyper.substrate.Substrate;
 
@@ -20,7 +21,7 @@ import java.util.Map;
  * Time: 6:36:32 PM
  * Adapted from  Jason Gauci's HyperNEAT C++ 3.0
  */
-public class FindCluster implements Problem {
+public class FindCluster implements IProblem, IProblemGeneralization {
     /*
     NOTES for original sources:
      generateSubstrate: creates substrate structure
@@ -221,104 +222,105 @@ public class FindCluster implements Problem {
             solved = true;
         }
 
-        double avg = 0;
-        for (Double distance : distances) {
-            avg += distance;
-        }
-        avg /= distances.size();
 
         Map<String, Object> infoMap = new LinkedHashMap<String, Object>();
-        infoMap.put("AVG_DISTANCE", avg);
+        infoMap.put("AVG_DISTANCE", computeAverageDistance());
 
         return new EvaluationInfo(fitness, infoMap);
     }
 
-    /*
-   public void processIndividualPostHoc(INet hyperNet) {
-//        individual->setFitness(10);
-//        individual->setUserData(FindClusterStats().toString());
-//        populateSubstrate(individual);
+    public EvaluationInfo evaluateGeneralization(INet hyperNet) {
+        distances.clear();
+        double fitness = 0;
+        double maxFitness = 0;
+        int testCases = 0;
 
-       double fitness = 0;
+        for (int y1 = 0; y1 < numNodesY; y1 += sizeMultiplier) {
+            for (int x1 = 0; x1 < numNodesX; x1 += sizeMultiplier) {
+                for (int y1Big = 0; y1Big < numNodesY; y1Big += sizeMultiplier) {
+                    for (int x1Big = 0; x1Big < numNodesX; x1Big += sizeMultiplier) {
+                        int smallRadius;
+                        int bigRadius;
 
-       double maxFitness = 0;
+                        if (sizeMultiplier == 1) {
+                            smallRadius = 0;
+                            bigRadius = 1;
+                        } else if (sizeMultiplier == 3) {
+                            smallRadius = 1;
+                            bigRadius = 4;
+                        } else if (sizeMultiplier == 5) {
+                            smallRadius = 2;
+                            bigRadius = 7;
+                        } else if (sizeMultiplier == 9) {
+                            smallRadius = 4;
+                            bigRadius = 13;
+                        } else {
+                            throw new IllegalStateException("Unsupported size multiplier!");
+                        }
 
-       boolean solved = true;
+                        int dist = smallRadius + 1 + bigRadius + 1;
 
-       int testCases = 0;
+                        if (((x1 - x1Big) * (x1 - x1Big) + (y1 - y1Big) * (y1 - y1Big)) < (dist * dist)) {
+                            continue;
+                        }
 
-       for (int y1 = 0; y1 < numNodesY; y1 += sizeMultiplier) {
-           for (int x1 = 0; x1 < numNodesX; x1 += sizeMultiplier) {
-               for (int y1Big = 0; y1Big < numNodesY; y1Big += sizeMultiplier) {
-                   for (int x1Big = 0; x1Big < numNodesX; x1Big += sizeMultiplier) {
-                       int smallRadius;
-                       int bigRadius;
+                        if (y1Big - bigRadius < 0) {
+                            continue;
+                        } else if (y1Big + bigRadius >= numNodesY) {
+                            continue;
+                        }
 
-                       if (sizeMultiplier == 1) {
-                           smallRadius = 0;
-                           bigRadius = 1;
-                       } else if (sizeMultiplier == 3) {
-                           smallRadius = 1;
-                           bigRadius = 4;
-                       } else if (sizeMultiplier == 5) {
-                           smallRadius = 2;
-                           bigRadius = 7;
-                       } else if (sizeMultiplier == 9) {
-                           smallRadius = 4;
-                           bigRadius = 13;
-                       } else {
-                           throw new IllegalStateException("Unsupported size multiplier!");
-                       }
+                        if (x1Big - bigRadius < 0) {
+                            continue;
+                        } else if (x1Big + bigRadius >= numNodesX) {
+                            continue;
+                        }
+                        if (y1 - smallRadius < 0) {
+                            continue;
+                        } else if (y1 + smallRadius >= numNodesY) {
+                            continue;
+                        }
+                        if (x1 - smallRadius < 0) {
+                            continue;
+                        } else if (x1 + smallRadius >= numNodesX) {
+                            continue;
+                        }
 
-                       int dist = smallRadius + 1 + bigRadius + 1;
+                        testCases++;
 
-                       if (((x1 - x1Big) * (x1 - x1Big) + (y1 - y1Big) * (y1 - y1Big)) < (dist * dist)) {
-                           continue;
-                       }
+                        fitness += evaluateSingleConfiguration(hyperNet, x1, y1, x1Big, y1Big);
 
-                       if (y1Big - bigRadius < 0) {
-                           continue;
-                       } else if (y1Big + bigRadius >= numNodesY) {
-                           continue;
-                       }
+                        maxFitness += 30;
 
-                       if (x1Big - bigRadius < 0) {
-                           continue;
-                       } else if (x1Big + bigRadius >= numNodesX) {
-                           continue;
-                       }
-                       if (y1 - smallRadius < 0) {
-                           continue;
-                       } else if (y1 + smallRadius >= numNodesY) {
-                           continue;
-                       }
-                       if (x1 - smallRadius < 0) {
-                           continue;
-                       } else if (x1 + smallRadius >= numNodesX) {
-                           continue;
-                       }
+                    }
+                }
+            }
+        }
 
-                       testCases++;
-
-                       fitness += evaluateSingleConfiguration(hyperNet, x1, y1, x1Big, y1Big);
-
-                       maxFitness += 30;
-
-                   }
-               }
-           }
-       }
-
-       System.out.println("TOTAL TEST CASES: " + testCases);
+        System.out.println("GENERALIZATION TOTAL TEST CASES: " + testCases);
 
 
 //        individual - > reward(fitness);
 
-       if (fitness >= maxFitness * fitnessThreshold) {
-           System.out.println("PROBLEM DOMAIN SOLVED!!!");
-       }
-   }
+        if (fitness >= maxFitness * fitnessThreshold) {
+            System.out.println("GENERALIZATION: PROBLEM DOMAIN SOLVED!!!");
+        }
 
+        Map<String, Object> infoMap = new LinkedHashMap<String, Object>();
+        infoMap.put("AVG_DISTANCE", computeAverageDistance());
+
+        return new EvaluationInfo(fitness, infoMap);
+    }
+
+    private double computeAverageDistance() {
+        double avg = 0;
+        for (Double distance : distances) {
+            avg += distance;
+        }
+        return avg / distances.size();
+    }
+
+    /*
    void increaseResolution() {
        if (sizeMultiplier == 1) {
            numNodesX *= 3; //((numNodesX-1)*2)+1;
@@ -400,6 +402,10 @@ public class FindCluster implements Problem {
         }
         builder.append("}\n");
         reportStorage.storeSingleRunAuxiliaryFile("find_cluster_", builder.toString());
+    }
+
+    public void showGeneralization(INet hyperNet) {
+        System.out.println("GENERALIZATION: showGeneralization() not implemented!");
     }
 
     public Substrate getSubstrate() {

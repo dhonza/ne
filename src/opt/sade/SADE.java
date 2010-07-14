@@ -81,6 +81,9 @@ public class SADE implements EvolutionaryAlgorithm {
     private double[] bsf, btg;
     private double bsfValue, btgValue;
 
+    private int generalizationGeneration;
+    private EvaluationInfo generalizationEvaluationInfo;
+
     /**
      * Constructor for <b>SADE</b> object. The parameter represents the optimized function.
      *
@@ -263,6 +266,10 @@ public class SADE implements EvolutionaryAlgorithm {
         SELECT();
     }
 
+    public void performGeneralizationTest() {
+        throw new IllegalStateException("Not yet implemented!: CMAES.performGeneralizationTest()");
+    }
+
     public void finished() {
     }
 
@@ -289,6 +296,13 @@ public class SADE implements EvolutionaryAlgorithm {
     public EvaluationInfo[] getEvaluationInfo() {
         System.out.println("EvaluationInfo!!!!!!");
         return new EvaluationInfo[0];  //To change body of implemented methods use File | Settings | File Templates.
+    }
+
+    public EvaluationInfo getGeneralizationEvaluationInfo() {
+        if (generation != generalizationGeneration) {
+            throw new IllegalStateException("Generalization was not called this generation!");
+        }
+        return generalizationEvaluationInfo;
     }
 
     public boolean isSolved() {

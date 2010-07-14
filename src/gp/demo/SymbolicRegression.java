@@ -29,6 +29,10 @@ public class SymbolicRegression implements Evaluable<Forest> {
         return new EvaluationInfo(error / steps);
     }
 
+    public EvaluationInfo evaluateGeneralization(Forest forest) {
+        return evaluate(forest);
+    }
+
     public boolean isSolved() {
         return false;
     }

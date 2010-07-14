@@ -31,7 +31,7 @@ public class DirectSADESolver implements Solver {
     }
 
     public void solve() {
-        Problem problem = ProblemFactory.getProblem(parameters, reportStorage);
+        IProblem problem = ProblemFactory.getProblem(parameters, reportStorage);
         EvaluableSubstrateBuilder substrateBuilder =
                 SubstrateBuilderFactory.createEvaluableSubstrateBuilder(problem.getSubstrate(), parameters);
 
@@ -39,7 +39,7 @@ public class DirectSADESolver implements Solver {
         SADE sade = new SADE(function);
         Utils.setParameters(parameters, sade, "DIRECT_SADE");
 
-        EvolutionaryAlgorithmSolver solver = new EvolutionaryAlgorithmSolver(sade, stats);
+        EvolutionaryAlgorithmSolver solver = new EvolutionaryAlgorithmSolver(sade, stats, problem instanceof IProblemGeneralization);
         solver.addProgressPrinter(new SADEProgressPrinter1D(sade, problem, parameters));
 //        solver.addProgressPrinter(new FileProgressPrinter(sade, problem, reportStorage, parameters));
 //        solver.addStopCondition(new MaxGenerationsStopCondition(sade));

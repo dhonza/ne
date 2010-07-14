@@ -17,6 +17,10 @@ public class EvolveConstant implements Evaluable<Forest> {
         return new EvaluationInfo(0.0 - Math.abs(2.1 - output));
     }
 
+    public EvaluationInfo evaluateGeneralization(Forest forest) {
+        return evaluate(forest);
+    }
+
     public boolean isSolved() {
         return false;
     }

@@ -119,6 +119,10 @@ public class EvaluateSpirals implements Evaluable<Genome> {
         return new EvaluationInfo(c1 + c2);
     }
 
+    public EvaluationInfo evaluateGeneralization(Genome og) {
+        return evaluate(og);
+    }
+
     public double evaluate2(Genome og) {
         Net n = og.getNet();
         double[] o;

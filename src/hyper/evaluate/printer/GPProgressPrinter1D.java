@@ -8,8 +8,7 @@ import gp.GP;
 import gp.GPBasicProgressPrinter;
 import hyper.cppn.BasicGPCPPN;
 import hyper.cppn.CPPN;
-import hyper.evaluate.Problem;
-import hyper.substrate.Substrate;
+import hyper.evaluate.IProblem;
 
 /**
  * Created by IntelliJ IDEA.
@@ -21,12 +20,12 @@ import hyper.substrate.Substrate;
 public class GPProgressPrinter1D extends CommonProgressPrinter1D {
     final private GP gp;
 
-    public GPProgressPrinter1D(GP gp, ProgressPrinter progressPrinter, Problem problem, ParameterCombination parameters) {
+    public GPProgressPrinter1D(GP gp, ProgressPrinter progressPrinter, IProblem problem, ParameterCombination parameters) {
         super(progressPrinter, problem, parameters);
         this.gp = gp;
     }
 
-    public GPProgressPrinter1D(GP gp, Problem problem, ParameterCombination parameters) {
+    public GPProgressPrinter1D(GP gp, IProblem problem, ParameterCombination parameters) {
         this(gp, new GPBasicProgressPrinter(gp), problem, parameters);
     }
 
