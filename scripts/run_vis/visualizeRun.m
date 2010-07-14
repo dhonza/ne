@@ -36,4 +36,10 @@ data = Rest[allData];
 ]
 
 
+enlarge[list_, fill_, stat_]:=list~Join~Array[fill&,Max[Length/@stat]-Length[list]]
+
+
+enlarge[list_, fill_, stat_, len_]:=list~Join~Array[fill&,len-Length[list]]
+
+
 
