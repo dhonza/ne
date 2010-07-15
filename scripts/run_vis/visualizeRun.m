@@ -19,6 +19,9 @@
 
 
 
+Needs["PlotLegends`"]
+
+
 readRunFitness[name_]:=
 Module[{allData,noHeaderData,data},
 allData = ImportString[Import[name],"TSV"];
