@@ -4,11 +4,11 @@ import common.evolution.EvolutionaryAlgorithmSolver;
 import common.pmatrix.ParameterCombination;
 import common.pmatrix.Utils;
 import common.stats.Stats;
-import hyper.builder.EvaluableSubstrateBuilder;
-import hyper.builder.SubstrateBuilderFactory;
 import hyper.evaluate.printer.SADEProgressPrinter1D;
+import hyper.experiments.reco.FileProgressPrinter;
 import hyper.experiments.reco.ReportStorage;
 import opt.sade.MaxEvaluationsStopCondition;
+import opt.sade.MaxGenerationsStopCondition;
 import opt.sade.SADE;
 import opt.sade.TargetFitnessStopCondition;
 
@@ -19,34 +19,30 @@ import opt.sade.TargetFitnessStopCondition;
  * Time: 4:26:40 PM
  * To change this template use File | Settings | File Templates.
  */
-public class DirectSADESolver implements Solver {
-    final protected ParameterCombination parameters;
-    final protected Stats stats;
-    final protected ReportStorage reportStorage;
-
-    public DirectSADESolver(ParameterCombination parameters, Stats stats, ReportStorage reportStorage) {
-        this.parameters = parameters;
-        this.stats = stats;
-        this.reportStorage = reportStorage;
+public class DirectSADESolver extends AbstractSolver {
+    protected DirectSADESolver(ParameterCombination parameters, Stats stats, ReportStorage reportStorage) {
+        super(parameters, stats, reportStorage);
+        init();
     }
 
-    public void solve() {
-        IProblem problem = ProblemFactory.getProblem(parameters, reportStorage);
-        EvaluableSubstrateBuilder substrateBuilder =
-                SubstrateBuilderFactory.createEvaluableSubstrateBuilder(problem.getSubstrate(), parameters);
+    private void init() {
+        SADE sade = new SADE(perThreadEvaluators);
 
-        DirectSADEObjectiveFunction function = new DirectSADEObjectiveFunction(substrateBuilder, problem);
-        SADE sade = new SADE(function);
         Utils.setParameters(parameters, sade, "DIRECT_SADE");
+        sade.targetFitness = problem.getTargetFitness();
+        sade.dimensions = ((DirectSADEEvaluator) perThreadEvaluators[0]).getNumOfLinks();
 
-        EvolutionaryAlgorithmSolver solver = new EvolutionaryAlgorithmSolver(sade, stats, problem instanceof IProblemGeneralization);
+        solver = new EvolutionaryAlgorithmSolver(sade, stats, problem instanceof IProblemGeneralization);
         solver.addProgressPrinter(new SADEProgressPrinter1D(sade, problem, parameters));
-//        solver.addProgressPrinter(new FileProgressPrinter(sade, problem, reportStorage, parameters));
-//        solver.addStopCondition(new MaxGenerationsStopCondition(sade));
+        solver.addProgressPrinter(new FileProgressPrinter(sade, problem, reportStorage, parameters));
+        solver.addStopCondition(new MaxGenerationsStopCondition(sade));
         solver.addStopCondition(new MaxEvaluationsStopCondition(sade));
         solver.addStopCondition(new TargetFitnessStopCondition(sade));
         solver.addStopCondition(new SolvedStopCondition(problem));
 
+    }
+
+    public void solve() {
         solver.run();
     }
 

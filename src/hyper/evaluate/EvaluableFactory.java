@@ -23,6 +23,8 @@ public class EvaluableFactory {
             return new NEATEvaluator(substrateBuilder, problem);
         } else if (name.equalsIgnoreCase("SNEAT")) {
             return new SNEATEvaluator(substrateBuilder, problem);
+        } else if (name.equalsIgnoreCase("DIRECT_SADE")) {
+            return new DirectSADEEvaluator(substrateBuilder, problem);
         } else {
             throw new IllegalStateException("Unknown solver: \"" + name + "\"");
         }

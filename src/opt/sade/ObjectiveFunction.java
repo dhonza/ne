@@ -30,4 +30,6 @@ public interface ObjectiveFunction {
      * @return the value of <i>Y</i>
      */
     public double value(double[] oCH);
+
+    public double generalizationValue(double[] oCH);
 }

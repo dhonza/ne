@@ -1,8 +1,13 @@
 package opt.sade;
 
 import common.RND;
+import common.evolution.Evaluable;
 import common.evolution.EvaluationInfo;
 import common.evolution.EvolutionaryAlgorithm;
+import common.evolution.ParallelPopulationEvaluator;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * <p>Title: SADE Library</p>
@@ -39,6 +44,15 @@ public class SADE implements EvolutionaryAlgorithm {
      * Determines the size of the pool.
      */
     public int poolRate = 2;
+
+    public boolean fixedPopulationSize = false;
+
+    /**
+     * Population size. In fact this number is only a half. It rather determines the number of objective function evaluations in
+     * each generation.
+     */
+    public int populationSize = 100;
+
     /**
      * The probability of the MUTATION.
      */
@@ -63,9 +77,14 @@ public class SADE implements EvolutionaryAlgorithm {
      * Optimization process will stop when the number of fitness function calls exceeds this value.
      */
     public int fitnessCallsLimit = Integer.MAX_VALUE;
+    public int maxGenerations = Integer.MAX_VALUE;
     public double targetFitness = Double.MAX_VALUE;
 
-    private ObjectiveFunction F;
+    public int dimensions;
+    public double lowerBound = -10;
+    public double upperBound = 10;
+    public boolean returnToDomain = false;
+
 
     private int actualSize;
     private int fitnessCall;
@@ -81,16 +100,20 @@ public class SADE implements EvolutionaryAlgorithm {
     private double[] bsf, btg;
     private double bsfValue, btgValue;
 
+    final private Evaluable<SADEGenome>[] perThreadEvaluators;
+    final private ParallelPopulationEvaluator<SADEGenome> populationEvaluator;
+
+
+    private EvaluationInfo[] evaluationInfos;
     private int generalizationGeneration;
     private EvaluationInfo generalizationEvaluationInfo;
 
     /**
      * Constructor for <b>SADE</b> object. The parameter represents the optimized function.
-     *
-     * @param oF function to optimize
      */
-    public SADE(ObjectiveFunction oF) {
-        F = oF;
+    public SADE(Evaluable<SADEGenome>[] perThreadEvaluators) {
+        this.perThreadEvaluators = perThreadEvaluators;
+        populationEvaluator = new ParallelPopulationEvaluator<SADEGenome>();
         bsfValue = Double.NEGATIVE_INFINITY;
         btgValue = Double.NEGATIVE_INFINITY;
     }
@@ -99,35 +122,49 @@ public class SADE implements EvolutionaryAlgorithm {
 
     private double[] newPoint() // creates new random point
     {
-        double[] x = new double[F.getDim()];
-        for (int i = 0; i < F.getDim(); i++) {
-            x[i] = RND.getDouble(F.getDomain(i, 0), F.getDomain(i, 1));
+        double[] x = new double[dimensions];
+        for (int i = 0; i < dimensions; i++) {
+            x[i] = RND.getDouble(lowerBound, upperBound);
         }
         return x;
     }
 
     private void configuration() //
     {
-        poolSize = 2 * poolRate * F.getDim();
-        selectedSize = poolRate * F.getDim();
-        mutagen = new double[F.getDim()];
-        for (int i = 0; i < F.getDim(); i++) {
-            mutagen[i] = (F.getDomain(i, 1) - F.getDomain(i, 0)) / mutagenRate;
-            if (F.getDomain(i, 2) > mutagen[i]) {
-                mutagen[i] = F.getDomain(i, 2);
+        if (!fixedPopulationSize) {
+            populationSize = poolRate * dimensions;
+        }
+        poolSize = 2 * populationSize;
+        selectedSize = populationSize;
+        mutagen = new double[dimensions];
+        for (int i = 0; i < dimensions; i++) {
+            mutagen[i] = (upperBound - lowerBound) / mutagenRate;
+            if (0 > mutagen[i]) {//TODO the "zero" was originally a variable for each dimension
+                mutagen[i] = 0;
             }
         }
     }
 
-    private void EVALUATE_GENERATION(int ostart) {
-        for (int i = ostart * selectedSize; i < actualSize; i++) {
-            if (F.getReturnToDomain()) {
-                for (int k = 0; k < F.getDim(); k++) {
-                    if (CH[i][k] < F.getDomain(k, 0)) CH[i][k] = F.getDomain(k, 0);
-                    if (CH[i][k] > F.getDomain(k, 1)) CH[i][k] = F.getDomain(k, 1);
+    private void EVALUATE_GENERATION(int start) {
+        List<SADEGenome> evalPopulation = new ArrayList<SADEGenome>();
+        for (int i = start * selectedSize; i < actualSize; i++) {
+            if (returnToDomain) {
+                for (int k = 0; k < dimensions; k++) {
+                    if (CH[i][k] < lowerBound) {
+                        CH[i][k] = lowerBound;
+                    }
+                    if (CH[i][k] > upperBound) {
+                        CH[i][k] = upperBound;
+                    }
                 }
             }
-            Force[i] = F.value(CH[i]);
+            evalPopulation.add(new SADEGenome(CH[i]));
+        }
+
+        evaluationInfos = populationEvaluator.evaluate(perThreadEvaluators, evalPopulation);
+
+        for (int i = start * selectedSize; i < actualSize; i++) {
+            Force[i] = evaluationInfos[i - start * selectedSize].getFitness();
             fitnessCall++;
             if (Force[i] > btgValue) {
                 btgValue = Force[i];
@@ -180,7 +217,7 @@ public class SADE implements EvolutionaryAlgorithm {
                 index = RND.getInt(0, selectedSize - 1);
                 mutationRate = RND.getDouble(0, 1);
                 x = newPoint();
-                for (int j = 0; j < F.getDim(); j++) {
+                for (int j = 0; j < dimensions; j++) {
                     CH[actualSize][j] = CH[index][j] + mutationRate * (x[j] - CH[index][j]);
                 }
                 actualSize++;
@@ -198,7 +235,7 @@ public class SADE implements EvolutionaryAlgorithm {
             p = RND.getDouble(0, 1);
             if (p <= localRadioactivity) {
                 index = RND.getInt(0, selectedSize - 1);
-                for (int j = 0; j < F.getDim(); j++) {
+                for (int j = 0; j < dimensions; j++) {
                     dCH = RND.getDouble(-mutagen[j], mutagen[j]);
                     CH[actualSize][j] = CH[index][j] + dCH;
                 }
@@ -216,12 +253,17 @@ public class SADE implements EvolutionaryAlgorithm {
                 i2--;
             }
             i3 = RND.getInt(0, selectedSize - 1);
-            for (int j = 0; j < F.getDim(); j++) {
+            for (int j = 0; j < dimensions; j++) {
                 CH[actualSize][j] = CH[i3][j] + crossRate * (CH[i2][j] - CH[i1][j]);
             }
             actualSize++;
         }
     }
+
+    /*
+    * Original algorithm created whole poolSize of new individuals. I have changed this to create only a half (selectedSize)
+    * to have the same number of evaluations each in generation including the first.
+    */
 
     private void FIRST_GENERATION() {
         Force = new double[poolSize];
@@ -229,10 +271,11 @@ public class SADE implements EvolutionaryAlgorithm {
         for (int i = 0; i < poolSize; i++) {
             CH[i] = newPoint();
         }
-        bsf = new double[F.getDim()];
-        actualSize = poolSize;
+        bsf = new double[dimensions];
+//        actualSize = poolSize;
+        actualSize = selectedSize;  //this was changed from poolSize
         EVALUATE_GENERATION(0);
-        SELECT();
+//        SELECT();
     }
 
 //---------- END SADE Technology -----------------------------------------------
@@ -267,7 +310,8 @@ public class SADE implements EvolutionaryAlgorithm {
     }
 
     public void performGeneralizationTest() {
-        throw new IllegalStateException("Not yet implemented!: CMAES.performGeneralizationTest()");
+        generalizationEvaluationInfo = populationEvaluator.evaluateGeneralization(perThreadEvaluators, new SADEGenome(bsf));
+        generalizationGeneration = generation;
     }
 
     public void finished() {
@@ -294,8 +338,7 @@ public class SADE implements EvolutionaryAlgorithm {
     }
 
     public EvaluationInfo[] getEvaluationInfo() {
-        System.out.println("EvaluationInfo!!!!!!");
-        return new EvaluationInfo[0];  //To change body of implemented methods use File | Settings | File Templates.
+        return evaluationInfos;
     }
 
     public EvaluationInfo getGeneralizationEvaluationInfo() {
@@ -306,7 +349,12 @@ public class SADE implements EvolutionaryAlgorithm {
     }
 
     public boolean isSolved() {
-        return F.isSolved();
+        for (Evaluable<SADEGenome> evaluator : perThreadEvaluators) {
+            if (evaluator.isSolved()) {
+                return true;
+            }
+        }
+        return false;
     }
 
     public String getConfigString() {
