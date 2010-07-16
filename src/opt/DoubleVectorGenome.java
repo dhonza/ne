@@ -1,4 +1,4 @@
-package opt.sade;
+package opt;
 
 /**
  * Created by IntelliJ IDEA.
@@ -7,10 +7,10 @@ package opt.sade;
  * Time: 10:10:03 AM
  * To change this template use File | Settings | File Templates.
  */
-public class SADEGenome {
+public class DoubleVectorGenome {
     public double[] genome;
 
-    public SADEGenome(double[] genome) {
+    public DoubleVectorGenome(double[] genome) {
         this.genome = genome;
     }
 }

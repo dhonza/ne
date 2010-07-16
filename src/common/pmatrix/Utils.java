@@ -42,6 +42,10 @@ public class Utils {
                 int v = parameters.getInteger(parameterName);
                 field.setInt(targetInstance, v);
                 value = v;
+            } else if (field.getType() == long.class) {
+                int v = parameters.getInteger(parameterName);
+                field.setInt(targetInstance, v);
+                value = v;
             } else if (field.getType() == double.class) {
                 double v = parameters.getDouble(parameterName);
                 field.setDouble(targetInstance, v);

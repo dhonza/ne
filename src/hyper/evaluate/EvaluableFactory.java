@@ -24,7 +24,9 @@ public class EvaluableFactory {
         } else if (name.equalsIgnoreCase("SNEAT")) {
             return new SNEATEvaluator(substrateBuilder, problem);
         } else if (name.equalsIgnoreCase("DIRECT_SADE")) {
-            return new DirectSADEEvaluator(substrateBuilder, problem);
+            return new DirectEvaluator(substrateBuilder, problem);
+        } else if (name.equalsIgnoreCase("DIRECT_CMAES")) {
+            return new DirectEvaluator(substrateBuilder, problem);
         } else {
             throw new IllegalStateException("Unknown solver: \"" + name + "\"");
         }

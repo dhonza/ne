@@ -6,7 +6,7 @@ import common.net.INet;
 import hyper.builder.EvaluableSubstrateBuilder;
 import hyper.cppn.CPPN;
 import hyper.cppn.FakeArrayCPPN;
-import opt.sade.SADEGenome;
+import opt.DoubleVectorGenome;
 
 /**
  * Created by IntelliJ IDEA.
@@ -15,23 +15,23 @@ import opt.sade.SADEGenome;
  * Time: 3:45:28 PM
  * To change this template use File | Settings | File Templates.
  */
-public class DirectSADEEvaluator implements Evaluable<SADEGenome> {
+public class DirectEvaluator implements Evaluable<DoubleVectorGenome> {
     final private EvaluableSubstrateBuilder substrateBuilder;
     final private IProblem problem;
 
-    public DirectSADEEvaluator(EvaluableSubstrateBuilder substrateBuilder, IProblem problem) {
+    public DirectEvaluator(EvaluableSubstrateBuilder substrateBuilder, IProblem problem) {
         this.substrateBuilder = substrateBuilder;
         this.problem = problem;
     }
 
-    public EvaluationInfo evaluate(SADEGenome genome) {
+    public EvaluationInfo evaluate(DoubleVectorGenome genome) {
         CPPN aCPPN = new FakeArrayCPPN(genome.genome, substrateBuilder.getSubstrate().getMaxDimension());
         substrateBuilder.build(aCPPN);
         INet hyperNet = substrateBuilder.getNet();
         return problem.evaluate(hyperNet);
     }
 
-    public EvaluationInfo evaluateGeneralization(SADEGenome genome) {
+    public EvaluationInfo evaluateGeneralization(DoubleVectorGenome genome) {
         CPPN aCPPN = new FakeArrayCPPN(genome.genome, substrateBuilder.getSubstrate().getMaxDimension());
         substrateBuilder.build(aCPPN);
         INet hyperNet = substrateBuilder.getNet();
@@ -47,10 +47,10 @@ public class DirectSADEEvaluator implements Evaluable<SADEGenome> {
     }
 
     public int getNumberOfInputs() {
-        throw new IllegalStateException("DirectSADEEvaluator.getNumberOfInputs() not supported for direct methods");
+        throw new IllegalStateException("DirectEvaluator.getNumberOfInputs() not supported for direct methods");
     }
 
     public int getNumberOfOutputs() {
-        throw new IllegalStateException("DirectSADEEvaluator.getNumberOfInputs() not supported for direct methods");
+        throw new IllegalStateException("DirectEvaluator.getNumberOfInputs() not supported for direct methods");
     }
 }

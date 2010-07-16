@@ -2,8 +2,14 @@ package opt.cmaes;
 
 import cma.CMAEvolutionStrategy;
 import cma.CMAOptions;
+import common.evolution.Evaluable;
 import common.evolution.EvaluationInfo;
 import common.evolution.EvolutionaryAlgorithm;
+import common.evolution.ParallelPopulationEvaluator;
+import opt.DoubleVectorGenome;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Created by IntelliJ IDEA.
@@ -13,8 +19,6 @@ import common.evolution.EvolutionaryAlgorithm;
  * To change this template use File | Settings | File Templates.
  */
 public class CMAES implements EvolutionaryAlgorithm {
-    final private CMAESObjectiveFunction function;
-
     private CMAEvolutionStrategy cma;
 
     private double[] fitness;
@@ -24,53 +28,74 @@ public class CMAES implements EvolutionaryAlgorithm {
     private int lastInnovation;
     private double bestSolutionValue;
 
+
+    final private Evaluable<DoubleVectorGenome>[] perThreadEvaluators;
+    final private ParallelPopulationEvaluator<DoubleVectorGenome> populationEvaluator;
+
+    private EvaluationInfo[] evaluationInfos;
     private int generalizationGeneration;
     private EvaluationInfo generalizationEvaluationInfo;
 
-    public CMAES(CMAESObjectiveFunction function) {
-        this.function = function;
+    public CMAES(Evaluable<DoubleVectorGenome>[] perThreadEvaluators, int dimension) {
+        this.perThreadEvaluators = perThreadEvaluators;
+        populationEvaluator = new ParallelPopulationEvaluator<DoubleVectorGenome>();
         cma = new CMAEvolutionStrategy();
-        cma.setDimension(function.getDim());
+        cma.setDimension(dimension);
         cma.setInitialX(-0.3, 0.3);
         cma.setInitialStandardDeviation(0.2);
-        cma.options.stopMaxFunEvals = 1000000;
-        cma.options.stopFitness = 1E-1;
+        cma.options.stopMaxFunEvals = Long.MAX_VALUE;
+        cma.options.stopFitness = Double.MAX_VALUE;
         cma.options.verbosity = 2;
-        bestSolutionValue = -Double.MAX_VALUE;
+        bestSolutionValue = Double.MAX_VALUE;
     }
 
     public CMAOptions getOptions() {
         return cma.options;
     }
 
-    public void initialGeneration() {
-        generation = 0;
-        // initialize cma and get fitness array to fill in later
-        fitness = cma.init();
-    }
-
-    public void nextGeneration() {
-        // --- core iteration step ---
+    private void evaluatePopulation() {
         double[][] pop = cma.samplePopulation(); // get a new population of solutions
-        for (int i = 0; i < pop.length; ++i) {    // for each candidate solution i
-            fitness[i] = function.valueOf(pop[i]); // fitfun.valueOf() is to be minimized
+        List<DoubleVectorGenome> evalPopulation = new ArrayList<DoubleVectorGenome>();
+        for (double[] aPop : pop) {    // for each candidate solution i
+            evalPopulation.add(new DoubleVectorGenome(aPop));
             evaluations++;
         }
-        cma.updateDistribution(fitness);         // pass fitness array to update search distribution
-        // --- end core iteration step ---
 
-        if (cma.getBestFunctionValue() > bestSolutionValue) {
+        evaluationInfos = populationEvaluator.evaluate(perThreadEvaluators, evalPopulation);
+
+        for (int i = 0; i < pop.length; ++i) {
+            fitness[i] = -evaluationInfos[i].getFitness();
+        }
+    }
+
+    private void checkForBetterSolutions() {
+        if (cma.getBestFunctionValue() < bestSolutionValue) {
             bestSolutionValue = cma.getBestFunctionValue();
             lastInnovation = 0;
         } else {
             lastInnovation++;
         }
+    }
 
+    public void initialGeneration() {
+        generation = 1;
+        // initialize cma and get fitness array to fill in later
+        fitness = cma.init();
+        evaluatePopulation();
+        cma.updateDistribution(fitness);
+        checkForBetterSolutions();
+    }
+
+    public void nextGeneration() {
         generation++;
+        evaluatePopulation();
+        cma.updateDistribution(fitness);
+        checkForBetterSolutions();
     }
 
     public void performGeneralizationTest() {
-        throw new IllegalStateException("Not yet implemented!: CMAES.performGeneralizationTest()");
+        generalizationEvaluationInfo = populationEvaluator.evaluateGeneralization(perThreadEvaluators, new DoubleVectorGenome(getMaxReached()));
+        generalizationGeneration = generation;
     }
 
     public void finished() {
@@ -93,7 +118,7 @@ public class CMAES implements EvolutionaryAlgorithm {
     }
 
     public double getMaxFitnessReached() {
-        return cma.getBestFunctionValue();
+        return -cma.getBestFunctionValue();
     }
 
     public double[] getMaxReached() {
@@ -101,12 +126,11 @@ public class CMAES implements EvolutionaryAlgorithm {
     }
 
     public double getBestOfGenerationFitness() {
-        return cma.getBestRecentFunctionValue();
+        return -cma.getBestRecentFunctionValue();
     }
 
     public EvaluationInfo[] getEvaluationInfo() {
-        System.out.println("EvaluationInfo!!!!!!");
-        return new EvaluationInfo[0];  //To change body of implemented methods use File | Settings | File Templates.
+        return evaluationInfos;
     }
 
     public EvaluationInfo getGeneralizationEvaluationInfo() {
@@ -117,7 +141,12 @@ public class CMAES implements EvolutionaryAlgorithm {
     }
 
     public boolean isSolved() {
-        return function.isSolved();
+        for (Evaluable<DoubleVectorGenome> evaluator : perThreadEvaluators) {
+            if (evaluator.isSolved()) {
+                return true;
+            }
+        }
+        return false;
     }
 
     public String getConfigString() {
