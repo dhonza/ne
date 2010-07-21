@@ -5,6 +5,8 @@ import org.apache.commons.lang.ArrayUtils;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.CountDownLatch;
+import java.util.concurrent.Executor;
+import java.util.concurrent.Executors;
 
 /**
  * Created by IntelliJ IDEA.
@@ -14,7 +16,7 @@ import java.util.concurrent.CountDownLatch;
  * To change this template use File | Settings | File Templates.
  */
 public class ParallelPopulationEvaluator<T> {
-    private class ThreadEvaluator extends Thread {
+    private class ThreadEvaluator implements Runnable {
         final private CountDownLatch stopLatch;
         final private Evaluable<T> evaluator;
         final private List<T> part;
@@ -38,6 +40,8 @@ public class ParallelPopulationEvaluator<T> {
             return evaluationInfo;
         }
     }
+
+    final private Executor threadExecutor = Executors.newCachedThreadPool();
 
     public EvaluationInfo[] evaluate(Evaluable<T>[] perThreadEvaluators, List<T> population) {
         //sequential run
@@ -68,8 +72,10 @@ public class ParallelPopulationEvaluator<T> {
 
 
         for (ThreadEvaluator threadEvaluator : threadEvaluators) {
-            threadEvaluator.start();
+//            threadEvaluator.start();
 //            threadEvaluator.run();
+            threadExecutor.execute(threadEvaluator);
+
         }
 //        System.out.println("started threads");
         try {
