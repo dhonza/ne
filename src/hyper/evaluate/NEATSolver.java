@@ -36,7 +36,7 @@ public class NEATSolver extends AbstractSolver {
         config.targetFitness = problem.getTargetFitness();
         Utils.setParameters(parameters, config, "NEAT");
 
-        population = new FitnessSharingPopulation(perThreadEvaluators, getPrototype(perThreadEvaluators[0]));
+        population = new FitnessSharingPopulation(perThreadConverters, perThreadEvaluators, getPrototype(perThreadEvaluators[0]));
 
         neat.setPopulation(population);
 

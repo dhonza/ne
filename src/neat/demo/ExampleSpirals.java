@@ -3,6 +3,7 @@ package neat.demo;
 import common.RND;
 import common.evolution.Evaluable;
 import common.evolution.EvolutionaryAlgorithmSolver;
+import common.evolution.GenotypeToPhenotype;
 import common.net.linked.Net;
 import common.net.linked.Neuron;
 import common.stats.Stats;
@@ -83,7 +84,7 @@ public class ExampleSpirals {
         Genome proto = new Genome(net);
         evaluateSpirals = new EvaluateSpirals();
 
-        population = new FitnessSharingPopulation(new Evaluable[]{evaluateSpirals}, proto);
+        population = new FitnessSharingPopulation(new GenotypeToPhenotype[]{new GenomeToNet()}, new Evaluable[]{evaluateSpirals}, proto);
 //        population = new DeterministicCrowdingPopulation(evaluateSpirals, proto);
         problem.setPopulation(population);
 

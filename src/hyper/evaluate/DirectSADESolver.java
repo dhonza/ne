@@ -4,6 +4,7 @@ import common.evolution.EvolutionaryAlgorithmSolver;
 import common.pmatrix.ParameterCombination;
 import common.pmatrix.Utils;
 import common.stats.Stats;
+import hyper.evaluate.converter.DirectGenomeToINet;
 import hyper.evaluate.printer.SADEProgressPrinter1D;
 import hyper.experiments.reco.FileProgressPrinter;
 import hyper.experiments.reco.ReportStorage;
@@ -26,11 +27,11 @@ public class DirectSADESolver extends AbstractSolver {
     }
 
     private void init() {
-        SADE sade = new SADE(perThreadEvaluators);
+        SADE sade = new SADE(perThreadConverters, perThreadEvaluators);
 
         Utils.setParameters(parameters, sade, "DIRECT_SADE");
         sade.targetFitness = problem.getTargetFitness();
-        sade.dimensions = ((DirectEvaluator) perThreadEvaluators[0]).getNumOfLinks();
+        sade.dimensions = ((DirectGenomeToINet) perThreadConverters[0]).getNumOfLinks();
 
         solver = new EvolutionaryAlgorithmSolver(sade, stats, problem instanceof IProblemGeneralization);
         solver.addProgressPrinter(new SADEProgressPrinter1D(sade, problem, parameters));

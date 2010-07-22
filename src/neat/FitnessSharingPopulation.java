@@ -2,6 +2,7 @@ package neat;
 
 import common.RND;
 import common.evolution.Evaluable;
+import common.evolution.GenotypeToPhenotype;
 
 import java.util.Collections;
 import java.util.Iterator;
@@ -22,8 +23,7 @@ import java.util.LinkedList;
  * single genome evaulation method. Explicit fitness sharing is implemented.
  */
 
-public class FitnessSharingPopulation extends Population {
-
+public class FitnessSharingPopulation<P> extends Population<P> {
     /** The actual size of the population */
     // int actualSize;
 
@@ -32,16 +32,16 @@ public class FitnessSharingPopulation extends Population {
      */
     private int unassignedForReproduction = 0;
 
-    public FitnessSharingPopulation(Evaluable<Genome>[] perThreadEvaluators) {
-        super(perThreadEvaluators);
+    public FitnessSharingPopulation(GenotypeToPhenotype<Genome, P>[] perThreadConverters, Evaluable<P>[] perThreadEvaluators) {
+        super(perThreadConverters, perThreadEvaluators);
     }
 
-    public FitnessSharingPopulation(Evaluable<Genome>[] perThreadEvaluators, Genome oproto) {
-        super(perThreadEvaluators, oproto);
+    public FitnessSharingPopulation(GenotypeToPhenotype<Genome, P>[] perThreadConverters, Evaluable<P>[] perThreadEvaluators, Genome oproto) {
+        super(perThreadConverters, perThreadEvaluators, oproto);
     }
 
-    public FitnessSharingPopulation(Evaluable<Genome>[] perThreadEvaluators, String ofileName) {
-        super(perThreadEvaluators, ofileName);
+    public FitnessSharingPopulation(GenotypeToPhenotype<Genome, P>[] perThreadConverters, Evaluable<P>[] perThreadEvaluators, String ofileName) {
+        super(perThreadConverters, perThreadEvaluators, ofileName);
     }
 
     /**
@@ -75,7 +75,7 @@ public class FitnessSharingPopulation extends Population {
             int j = 0;
             for (int i = 0; i < specie.elitistSize; i++) { // copy elite Genomes to the next generation
 
-                if(j >= specie.genomes.size()) {
+                if (j >= specie.genomes.size()) {
                     j = 0;
                 }
                 tpop[tpopi++] = specie.genomes.get(j++).eliteCopy();
@@ -183,7 +183,6 @@ public class FitnessSharingPopulation extends Population {
 
     /**
      * Sets the <b>Genome.sharedFitness </b> of all Genomes.
-     *
      */
     void adjustFitness() {
         // System.out.println( " Population.adjustFitness()" );

@@ -10,27 +10,25 @@ import neat.Genome;
  * Date: May 19, 2006
  * Time: 8:52:38 AM
  */
-public class EvaluateXOR implements Evaluable<Genome> {
+public class EvaluateXOR implements Evaluable<Net> {
     private final double[][] in = {{1.0, 0.0, 0.0}, // the first number for bias
             {1.0, 0.0, 1.0}, {1.0, 1.0, 0.0}, {1.0, 1.0, 1.0}};
 
     private final double[] out = {0.0, 1.0, 1.0, 0.0};
 
 
-    public EvaluationInfo evaluate(Genome og) {
-        Net n = og.getNet();
-
-        og.setError(0.0);
+    public EvaluationInfo evaluate(Net n) {
+        double error = 0.0;
         for (int i = 0; i < 4; i++) {
             n.loadInputs(in[i]);
             n.reset();
             activate(n);
-            og.setError(og.getError() + Math.abs(out[i] - n.getOutputValues()[0]));
+            error += Math.abs(out[i] - n.getOutputValues()[0]);
         }
-        return new EvaluationInfo(Math.pow((4.0 - og.getError()), 2));
+        return new EvaluationInfo(Math.pow((4.0 - error), 2));
     }
 
-    public EvaluationInfo evaluateGeneralization(Genome individual) {
+    public EvaluationInfo evaluateGeneralization(Net individual) {
         return evaluate(individual);
     }
 

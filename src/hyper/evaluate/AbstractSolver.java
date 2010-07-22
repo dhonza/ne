@@ -2,6 +2,7 @@ package hyper.evaluate;
 
 import common.evolution.Evaluable;
 import common.evolution.EvolutionaryAlgorithmSolver;
+import common.evolution.GenotypeToPhenotype;
 import common.evolution.ParallelPopulationEvaluator;
 import common.pmatrix.ParameterCombination;
 import common.stats.Stats;
@@ -23,6 +24,7 @@ abstract public class AbstractSolver implements Solver {
 
     protected EvolutionaryAlgorithmSolver solver;
 
+    protected GenotypeToPhenotype[] perThreadConverters;
     protected Evaluable[] perThreadEvaluators;
     protected IProblem problem;
 
@@ -43,6 +45,7 @@ abstract public class AbstractSolver implements Solver {
                 threads = ParallelPopulationEvaluator.getNumberOfThreads();
             }
         }
+        perThreadConverters = new GenotypeToPhenotype[threads];
         perThreadEvaluators = new Evaluable[threads];
         for (int i = (threads - 1); i >= 0; i--) {
 
@@ -50,8 +53,11 @@ abstract public class AbstractSolver implements Solver {
             EvaluableSubstrateBuilder substrateBuilder =
                     SubstrateBuilderFactory.createEvaluableSubstrateBuilder(problem.getSubstrate(), parameters);
 
-            Evaluable evaluator = EvaluableFactory.getEvaluable(parameters, substrateBuilder, problem);
+            Evaluable evaluator = new HyperEvaluator(substrateBuilder, problem);
             perThreadEvaluators[i] = evaluator;
+
+            GenotypeToPhenotype converter = ConverterFactory.getConverter(parameters, substrateBuilder, problem);
+            perThreadConverters[i] = converter;
         }
     }
 

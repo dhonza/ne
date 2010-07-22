@@ -1,11 +1,14 @@
 package sneat.experiments;
 
 import common.evolution.Evaluable;
+import common.evolution.GenotypeToPhenotype;
+import common.evolution.IdentityConversion;
 import common.pmatrix.ParameterCombination;
 import common.pmatrix.Utils;
 import sneat.evolution.IPopulationEvaluator;
 import sneat.evolution.NeatParameters;
 import sneat.neuralnetwork.IActivationFunction;
+import sneat.neuralnetwork.INetwork;
 import sneat.neuralnetwork.activationfunctions.SteepenedSigmoid;
 
 /**
@@ -34,7 +37,8 @@ public class XORExperiment implements IExperiment {
     }
 
     public void resetEvaluator(IActivationFunction activationFn) {
-        populationEvaluator = new SingleFilePopulationEvaluator(new Evaluable[]{new XORNetworkEvaluator()}, null);
+        populationEvaluator = new SingleFilePopulationEvaluator(new GenotypeToPhenotype[]{new IdentityConversion<INetwork>()},
+                new Evaluable[]{new XORNetworkEvaluator()}, null);
     }
 
     public int getInputNeuronCount() {

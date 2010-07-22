@@ -2,6 +2,7 @@ package neat;
 
 import common.evolution.Evaluable;
 import common.evolution.EvaluationInfo;
+import common.evolution.GenotypeToPhenotype;
 import common.evolution.ParallelPopulationEvaluator;
 import common.net.linked.Net;
 import common.net.linked.NetStorage;
@@ -14,7 +15,7 @@ import java.util.LinkedList;
 /**
  * This class is a predecesor of all Population classes.
  */
-public abstract class Population {
+public abstract class Population<P> {
 
     /**
      * All the Genomes of the Population.
@@ -72,24 +73,26 @@ public abstract class Population {
     /**
      * You have to implement Evaluable interface in order to compute fitness.
      */
-    protected Evaluable<Genome>[] perThreadEvaluators;
-    protected ParallelPopulationEvaluator<Genome> populationEvaluator;
+    protected GenotypeToPhenotype<Genome, P>[] perThreadConverters;
+    protected Evaluable<P>[] perThreadEvaluators;
+    protected ParallelPopulationEvaluator<Genome, P> populationEvaluator;
 
     protected double[][][] bsfInputs;
 
     protected double[][][] bsfOutputs;
 
 
-    public Population(Evaluable<Genome>[] perThreadEvaluators) {
+    public Population(GenotypeToPhenotype<Genome, P>[] perThreadConverters, Evaluable<P>[] perThreadEvaluators) {
+        this.perThreadConverters = perThreadConverters;
         this.perThreadEvaluators = perThreadEvaluators;
-        populationEvaluator = new ParallelPopulationEvaluator<Genome>();
+        populationEvaluator = new ParallelPopulationEvaluator<Genome, P>();
         genomes = new Genome[NEAT.getConfig().populationSize];
         species = new LinkedList<Species>();
 //        speciesHistory = new SpeciesHistory(); //(NE.POPULATION_SIZE);
     }
 
-    public Population(Evaluable<Genome>[] perThreadEvaluators, Genome oproto) {
-        this(perThreadEvaluators);
+    public Population(GenotypeToPhenotype<Genome, P>[] perThreadConverters, Evaluable<P>[] perThreadEvaluators, Genome oproto) {
+        this(perThreadConverters, perThreadEvaluators);
         spawn(oproto);
     }
 
@@ -98,8 +101,9 @@ public abstract class Population {
      *
      * @param ofileName file name
      */
-    public Population(Evaluable<Genome>[] perThreadEvaluators, String ofileName) {
+    public Population(GenotypeToPhenotype<Genome, P>[] perThreadConverters, Evaluable<P>[] perThreadEvaluators, String ofileName) {
         Net[] nets = NetStorage.loadMultiple(ofileName);
+        this.perThreadConverters = perThreadConverters;
         this.perThreadEvaluators = perThreadEvaluators;
         NEAT.getConfig().populationSize = nets.length;
         genomes = new Genome[nets.length];
@@ -192,7 +196,7 @@ public abstract class Population {
         Genome tg;
         int n = NEAT.getConfig().populationSize;
 
-        EvaluationInfo[] evaluationInfos = populationEvaluator.evaluate(perThreadEvaluators, Arrays.asList(genomes));
+        EvaluationInfo[] evaluationInfos = populationEvaluator.evaluate(perThreadConverters, perThreadEvaluators, Arrays.asList(genomes));
         for (int i = 0; i < n; i++) {
             tg = genomes[i];
             tg.fitness = evaluationInfos[i].getFitness();
@@ -220,7 +224,7 @@ public abstract class Population {
     }
 
     EvaluationInfo evaluateGeneralization() {
-        return populationEvaluator.evaluateGeneralization(perThreadEvaluators, getBestSoFar());
+        return populationEvaluator.evaluateGeneralization(perThreadConverters, perThreadEvaluators, getBestSoFar());
     }
 
     /**

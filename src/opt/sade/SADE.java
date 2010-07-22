@@ -1,10 +1,7 @@
 package opt.sade;
 
 import common.RND;
-import common.evolution.Evaluable;
-import common.evolution.EvaluationInfo;
-import common.evolution.EvolutionaryAlgorithm;
-import common.evolution.ParallelPopulationEvaluator;
+import common.evolution.*;
 import opt.DoubleVectorGenome;
 
 import java.util.ArrayList;
@@ -40,7 +37,7 @@ import java.util.List;
  */
 
 
-public class SADE implements EvolutionaryAlgorithm {
+public class SADE<P> implements EvolutionaryAlgorithm {
     /**
      * Determines the size of the pool.
      */
@@ -101,8 +98,9 @@ public class SADE implements EvolutionaryAlgorithm {
     private double[] bsf, btg;
     private double bsfValue, btgValue;
 
-    final private Evaluable<DoubleVectorGenome>[] perThreadEvaluators;
-    final private ParallelPopulationEvaluator<DoubleVectorGenome> populationEvaluator;
+    final private GenotypeToPhenotype<DoubleVectorGenome, P>[] perThreadConverters;
+    final private Evaluable<P>[] perThreadEvaluators;
+    final private ParallelPopulationEvaluator<DoubleVectorGenome, P> populationEvaluator;
 
 
     private EvaluationInfo[] evaluationInfos;
@@ -112,9 +110,10 @@ public class SADE implements EvolutionaryAlgorithm {
     /**
      * Constructor for <b>SADE</b> object. The parameter represents the optimized function.
      */
-    public SADE(Evaluable<DoubleVectorGenome>[] perThreadEvaluators) {
+    public SADE(GenotypeToPhenotype<DoubleVectorGenome, P>[] perThreadConverters, Evaluable<P>[] perThreadEvaluators) {
+        this.perThreadConverters = perThreadConverters;
         this.perThreadEvaluators = perThreadEvaluators;
-        populationEvaluator = new ParallelPopulationEvaluator<DoubleVectorGenome>();
+        populationEvaluator = new ParallelPopulationEvaluator<DoubleVectorGenome, P>();
         bsfValue = Double.NEGATIVE_INFINITY;
         btgValue = Double.NEGATIVE_INFINITY;
     }
@@ -162,7 +161,7 @@ public class SADE implements EvolutionaryAlgorithm {
             evalPopulation.add(new DoubleVectorGenome(CH[i]));
         }
 
-        evaluationInfos = populationEvaluator.evaluate(perThreadEvaluators, evalPopulation);
+        evaluationInfos = populationEvaluator.evaluate(perThreadConverters, perThreadEvaluators, evalPopulation);
 
         for (int i = start * selectedSize; i < actualSize; i++) {
             Force[i] = evaluationInfos[i - start * selectedSize].getFitness();
@@ -311,7 +310,7 @@ public class SADE implements EvolutionaryAlgorithm {
     }
 
     public void performGeneralizationTest() {
-        generalizationEvaluationInfo = populationEvaluator.evaluateGeneralization(perThreadEvaluators, new DoubleVectorGenome(bsf));
+        generalizationEvaluationInfo = populationEvaluator.evaluateGeneralization(perThreadConverters, perThreadEvaluators, new DoubleVectorGenome(bsf));
         generalizationGeneration = generation;
     }
 
@@ -350,7 +349,7 @@ public class SADE implements EvolutionaryAlgorithm {
     }
 
     public boolean isSolved() {
-        for (Evaluable<DoubleVectorGenome> evaluator : perThreadEvaluators) {
+        for (Evaluable<P> evaluator : perThreadEvaluators) {
             if (evaluator.isSolved()) {
                 return true;
             }

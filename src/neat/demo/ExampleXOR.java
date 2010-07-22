@@ -3,6 +3,7 @@ package neat.demo;
 import common.RND;
 import common.evolution.Evaluable;
 import common.evolution.EvolutionaryAlgorithmSolver;
+import common.evolution.GenotypeToPhenotype;
 import common.net.linked.Net;
 import common.stats.Stats;
 import neat.*;
@@ -67,7 +68,7 @@ public class ExampleXOR {
         Genome proto = new Genome(net);
         evaluateXOR = new EvaluateXOR();
 
-        population = new FitnessSharingPopulation(new Evaluable[]{evaluateXOR}, proto);
+        population = new FitnessSharingPopulation(new GenotypeToPhenotype[]{new GenomeToNet()}, new Evaluable[]{evaluateXOR}, proto);
 //        population = new DeterministicCrowdingPopulation(evaluateXOR, proto);
         problem.setPopulation(population);
 

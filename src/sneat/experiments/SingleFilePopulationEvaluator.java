@@ -2,6 +2,7 @@ package sneat.experiments;
 
 import common.evolution.Evaluable;
 import common.evolution.EvaluationInfo;
+import common.evolution.GenotypeToPhenotype;
 import common.evolution.ParallelPopulationEvaluator;
 import sneat.evolution.EvolutionAlgorithm;
 import sneat.evolution.IGenome;
@@ -23,15 +24,17 @@ import java.util.List;
 /// where the genomes are evaluated independently of each other (e.g. not simultaneoulsy in
 /// a simulated world) using a fixed evaluation function that can be described by an INetworkEvaluator.
 /// </summary>
-public class SingleFilePopulationEvaluator implements IPopulationEvaluator {
-    final private Evaluable<INetwork>[] perThreadEvaluators;
-    final private ParallelPopulationEvaluator<INetwork> populationEvaluator;
+public class SingleFilePopulationEvaluator<P> implements IPopulationEvaluator {
+    final private GenotypeToPhenotype<INetwork, P>[] perThreadConverters;
+    final private Evaluable<P>[] perThreadEvaluators;
+    final private ParallelPopulationEvaluator<INetwork, P> populationEvaluator;
     public IActivationFunction activationFn;
     public long evaluationCount = 0;
 
-    public SingleFilePopulationEvaluator(Evaluable<INetwork>[] perThreadEvaluators, IActivationFunction activationFn) {
+    public SingleFilePopulationEvaluator(GenotypeToPhenotype<INetwork, P>[] perThreadConverters, Evaluable<P>[] perThreadEvaluators, IActivationFunction activationFn) {
+        this.perThreadConverters = perThreadConverters;
         this.perThreadEvaluators = perThreadEvaluators;
-        populationEvaluator = new ParallelPopulationEvaluator<INetwork>();
+        populationEvaluator = new ParallelPopulationEvaluator<INetwork, P>();
         this.activationFn = activationFn;
     }
 
@@ -56,7 +59,7 @@ public class SingleFilePopulationEvaluator implements IPopulationEvaluator {
             }
         }
 
-        EvaluationInfo[] evaluationInfos = populationEvaluator.evaluate(perThreadEvaluators, populationToEvaluate);
+        EvaluationInfo[] evaluationInfos = populationEvaluator.evaluate(perThreadConverters, perThreadEvaluators, populationToEvaluate);
 
         int cnt = 0;
         for (int i = 0; i < count; i++) {
@@ -84,11 +87,11 @@ public class SingleFilePopulationEvaluator implements IPopulationEvaluator {
 
     public EvaluationInfo evaluateGeneralization(IGenome individual) {
         INetwork network = individual.decode(activationFn);
-        return populationEvaluator.evaluateGeneralization(perThreadEvaluators, network);
+        return populationEvaluator.evaluateGeneralization(perThreadConverters, perThreadEvaluators, network);
     }
 
     public boolean isSolved() {
-        for (Evaluable<INetwork> evaluator : perThreadEvaluators) {
+        for (Evaluable<P> evaluator : perThreadEvaluators) {
             if (evaluator.isSolved()) {
                 return true;
             }

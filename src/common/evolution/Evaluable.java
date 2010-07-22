@@ -9,10 +9,10 @@ import java.io.Serializable;
  * Time: 3:40:04 PM
  * To change this template use File | Settings | File Templates.
  */
-public interface Evaluable<T> extends Serializable {
-    public EvaluationInfo evaluate(T individual);
+public interface Evaluable<P> extends Serializable {
+    public EvaluationInfo evaluate(P individual);
 
-    public EvaluationInfo evaluateGeneralization(T individual);
+    public EvaluationInfo evaluateGeneralization(P individual);
 
     public boolean isSolved();
 

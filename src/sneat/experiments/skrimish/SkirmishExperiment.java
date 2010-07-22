@@ -1,12 +1,16 @@
 package sneat.experiments.skrimish;
 
 import common.evolution.Evaluable;
+import common.evolution.GenotypeToPhenotype;
+import common.evolution.IdentityConversion;
+import neat.GenomeToNet;
 import sneat.evolution.IPopulationEvaluator;
 import sneat.evolution.NeatParameters;
 import sneat.experiments.AbstractExperimentView;
 import sneat.experiments.HyperNEATParameters;
 import sneat.experiments.IExperiment;
 import sneat.neuralnetwork.IActivationFunction;
+import sneat.neuralnetwork.INetwork;
 
 import java.util.Map;
 
@@ -40,10 +44,13 @@ public class SkirmishExperiment implements IExperiment {
     }
 
     public void resetEvaluator(IActivationFunction activationFn) {
-        if (multiple)
-            populationEvaluator = new SkirmishPopulationEvaluator(new Evaluable[]{new SkirmishNetworkEvaluator(5, shape)});
-        else
-            populationEvaluator = new SkirmishPopulationEvaluator(new Evaluable[]{new SkirmishNetworkEvaluator(1, shape)});
+        if (multiple) {
+            populationEvaluator = new SkirmishPopulationEvaluator(new GenotypeToPhenotype[]{new IdentityConversion<INetwork>()},
+                    new Evaluable[]{new SkirmishNetworkEvaluator(5, shape)});
+        } else {
+            populationEvaluator = new SkirmishPopulationEvaluator(new GenotypeToPhenotype[]{new IdentityConversion<INetwork>()},
+                    new Evaluable[]{new SkirmishNetworkEvaluator(1, shape)});
+        }
     }
 
     public IPopulationEvaluator getPopulationEvaluator() {

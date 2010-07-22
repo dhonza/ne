@@ -2,6 +2,7 @@ package gp;
 
 import common.RND;
 import common.evolution.Evaluable;
+import common.evolution.GenotypeToPhenotype;
 
 /**
  * Created by IntelliJ IDEA.
@@ -15,9 +16,9 @@ import common.evolution.Evaluable;
  * Deterministic/Probabilistic crowding: Mengshoel, Goldberg: The Crowding Approach to Niching in Genetic Algorithms
  * TODO create a single common abstract predecessor class (do not use newPopulation from GP)
  */
-public class GPCrowding extends GP {
-    public GPCrowding(Evaluable<Forest>[] evaluator, Node[] functions, Node[] terminals) {
-        super(evaluator, functions, terminals);
+public class GPCrowding<P> extends GP<P> {
+    public GPCrowding(GenotypeToPhenotype<Forest, P>[] perThreadConverters, Evaluable<P>[] perThreadEvaluators, Node[] functions, Node[] terminals) {
+        super(perThreadConverters, perThreadEvaluators, functions, terminals);
         if (GP.POPULATION_SIZE % 2 != 0) {
             throw new IllegalStateException("Population size must be even.");
         }

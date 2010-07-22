@@ -1,6 +1,7 @@
 package hyper.evaluate;
 
 import common.evolution.Evaluable;
+import common.evolution.GenotypeToPhenotype;
 import common.pmatrix.ParameterCombination;
 import common.pmatrix.Utils;
 import sneat.evolution.IPopulationEvaluator;
@@ -9,6 +10,7 @@ import sneat.experiments.AbstractExperimentView;
 import sneat.experiments.IExperiment;
 import sneat.experiments.SingleFilePopulationEvaluator;
 import sneat.neuralnetwork.IActivationFunction;
+import sneat.neuralnetwork.INetwork;
 import sneat.neuralnetwork.activationfunctions.SteepenedSigmoid;
 
 /**
@@ -18,17 +20,19 @@ import sneat.neuralnetwork.activationfunctions.SteepenedSigmoid;
  * Time: 7:45:10 PM
  * To change this template use File | Settings | File Templates.
  */
-public class SNEATExperiment implements IExperiment {
+public class SNEATExperiment<P> implements IExperiment {
     final private ParameterCombination parameters;
-    final private Evaluable[] perThreadEvaluators;
+    final private GenotypeToPhenotype<INetwork, P>[] perThreadConverters;
+    final private Evaluable<P>[] perThreadEvaluators;
     final private double targetFitness;
     NeatParameters neatParams = null;
 
     IPopulationEvaluator populationEvaluator = null;
     IActivationFunction activationFunction = new SteepenedSigmoid();
 
-    public SNEATExperiment(ParameterCombination parameters, Evaluable[] perThreadEvaluators, double targetFitness) {
+    public SNEATExperiment(ParameterCombination parameters, GenotypeToPhenotype<INetwork, P>[] perThreadConverters, Evaluable<P>[] perThreadEvaluators, double targetFitness) {
         this.parameters = parameters;
+        this.perThreadConverters = perThreadConverters;
         this.perThreadEvaluators = perThreadEvaluators;
         this.targetFitness = targetFitness;
     }
@@ -41,7 +45,7 @@ public class SNEATExperiment implements IExperiment {
     }
 
     public void resetEvaluator(IActivationFunction activationFn) {
-        populationEvaluator = new SingleFilePopulationEvaluator(perThreadEvaluators, null);
+        populationEvaluator = new SingleFilePopulationEvaluator(perThreadConverters, perThreadEvaluators, null);
     }
 
     public int getInputNeuronCount() {

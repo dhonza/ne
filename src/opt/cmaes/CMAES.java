@@ -2,10 +2,8 @@ package opt.cmaes;
 
 import cma.CMAEvolutionStrategy;
 import cma.CMAOptions;
-import common.evolution.Evaluable;
-import common.evolution.EvaluationInfo;
-import common.evolution.EvolutionaryAlgorithm;
-import common.evolution.ParallelPopulationEvaluator;
+import common.evolution.*;
+import gp.Forest;
 import opt.DoubleVectorGenome;
 
 import java.util.ArrayList;
@@ -18,7 +16,7 @@ import java.util.List;
  * Time: 1:45:27 PM
  * To change this template use File | Settings | File Templates.
  */
-public class CMAES implements EvolutionaryAlgorithm {
+public class CMAES<P> implements EvolutionaryAlgorithm {
     private CMAEvolutionStrategy cma;
 
     private double[] fitness;
@@ -28,17 +26,18 @@ public class CMAES implements EvolutionaryAlgorithm {
     private int lastInnovation;
     private double bestSolutionValue;
 
-
-    final private Evaluable<DoubleVectorGenome>[] perThreadEvaluators;
-    final private ParallelPopulationEvaluator<DoubleVectorGenome> populationEvaluator;
+    final private GenotypeToPhenotype<DoubleVectorGenome, P>[] perThreadConverters;
+    final private Evaluable<P>[] perThreadEvaluators;
+    final private ParallelPopulationEvaluator<DoubleVectorGenome, P> populationEvaluator;
 
     private EvaluationInfo[] evaluationInfos;
     private int generalizationGeneration;
     private EvaluationInfo generalizationEvaluationInfo;
 
-    public CMAES(Evaluable<DoubleVectorGenome>[] perThreadEvaluators, int dimension) {
+    public CMAES(GenotypeToPhenotype<DoubleVectorGenome, P>[] perThreadConverters, Evaluable<P>[] perThreadEvaluators, int dimension) {
+        this.perThreadConverters = perThreadConverters;
         this.perThreadEvaluators = perThreadEvaluators;
-        populationEvaluator = new ParallelPopulationEvaluator<DoubleVectorGenome>();
+        populationEvaluator = new ParallelPopulationEvaluator<DoubleVectorGenome, P>();
         cma = new CMAEvolutionStrategy();
         cma.setDimension(dimension);
         cma.setInitialX(-0.3, 0.3);
@@ -61,7 +60,7 @@ public class CMAES implements EvolutionaryAlgorithm {
             evaluations++;
         }
 
-        evaluationInfos = populationEvaluator.evaluate(perThreadEvaluators, evalPopulation);
+        evaluationInfos = populationEvaluator.evaluate(perThreadConverters, perThreadEvaluators, evalPopulation);
 
         for (int i = 0; i < pop.length; ++i) {
             fitness[i] = -evaluationInfos[i].getFitness();
@@ -94,7 +93,7 @@ public class CMAES implements EvolutionaryAlgorithm {
     }
 
     public void performGeneralizationTest() {
-        generalizationEvaluationInfo = populationEvaluator.evaluateGeneralization(perThreadEvaluators, new DoubleVectorGenome(getMaxReached()));
+        generalizationEvaluationInfo = populationEvaluator.evaluateGeneralization(perThreadConverters, perThreadEvaluators, new DoubleVectorGenome(getMaxReached()));
         generalizationGeneration = generation;
     }
 
@@ -141,7 +140,7 @@ public class CMAES implements EvolutionaryAlgorithm {
     }
 
     public boolean isSolved() {
-        for (Evaluable<DoubleVectorGenome> evaluator : perThreadEvaluators) {
+        for (Evaluable<P> evaluator : perThreadEvaluators) {
             if (evaluator.isSolved()) {
                 return true;
             }
