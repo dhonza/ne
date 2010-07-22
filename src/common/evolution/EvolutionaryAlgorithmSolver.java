@@ -58,6 +58,7 @@ public class EvolutionaryAlgorithmSolver implements Serializable {
             progressPrinter.printFinished();
         }
         storeFinalStats();
+        evolutionaryAlgorithm.finished();
     }
 
     private void storeFinalStats() {

@@ -32,4 +32,6 @@ public interface IPopulationEvaluator {
     /// Indicates that the best solution meets the evaluator's end criteria.
     /// </summary>
     boolean getSearchCompleted();
+
+    void shutdown();
 }

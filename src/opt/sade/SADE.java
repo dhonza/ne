@@ -315,6 +315,7 @@ public class SADE<P> implements EvolutionaryAlgorithm {
     }
 
     public void finished() {
+        populationEvaluator.shutdown();
     }
 
     public boolean hasImproved() {

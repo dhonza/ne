@@ -88,6 +88,7 @@ public class GP<P> implements EvolutionaryAlgorithm, Serializable {
     }
 
     public void finished() {
+        populationEvaluator.shutdown();
     }
 
     public String getConfigString() {

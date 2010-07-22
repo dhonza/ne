@@ -62,6 +62,7 @@ public class SNEAT implements EvolutionaryAlgorithm {
     }
 
     public void finished() {
+    exp.getPopulationEvaluator().shutdown();    
     }
 
     public String getConfigString() {

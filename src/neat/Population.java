@@ -375,4 +375,8 @@ public abstract class Population<P> {
         }
         return fv;
     }
+
+    public void shutdown() {
+        populationEvaluator.shutdown();
+    }
 }

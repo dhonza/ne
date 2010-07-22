@@ -80,6 +80,7 @@ public class NEAT implements EvolutionaryAlgorithm {
 
     public void finished() {
 //        population.storeDistanceMatrix();
+        population.shutdown();
     }
 
     public String getConfigString() {

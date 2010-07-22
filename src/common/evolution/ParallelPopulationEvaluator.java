@@ -4,9 +4,7 @@ import org.apache.commons.lang.ArrayUtils;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.concurrent.CountDownLatch;
-import java.util.concurrent.Executor;
-import java.util.concurrent.Executors;
+import java.util.concurrent.*;
 
 /**
  * Created by IntelliJ IDEA.
@@ -44,7 +42,7 @@ public class ParallelPopulationEvaluator<G, P> {
         }
     }
 
-    final private Executor threadExecutor = Executors.newCachedThreadPool();
+    final private ExecutorService threadExecutor = Executors.newCachedThreadPool();
 
     public EvaluationInfo[] evaluate(GenotypeToPhenotype<G, P>[] perThreadConverters, Evaluable<P>[] perThreadEvaluators, List<G> population) {
         //sequential run
@@ -134,5 +132,9 @@ public class ParallelPopulationEvaluator<G, P> {
     public static int getNumberOfThreads() {
         return Runtime.getRuntime().availableProcessors();
 //        return 2;
+    }
+
+    public void shutdown() {
+        threadExecutor.shutdownNow();
     }
 }

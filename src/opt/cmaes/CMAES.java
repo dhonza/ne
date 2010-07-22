@@ -98,6 +98,7 @@ public class CMAES<P> implements EvolutionaryAlgorithm {
     }
 
     public void finished() {
+        populationEvaluator.shutdown();
     }
 
     public boolean hasImproved() {

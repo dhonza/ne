@@ -113,5 +113,9 @@ public class SingleFilePopulationEvaluator<P> implements IPopulationEvaluator {
     public boolean getSearchCompleted() {
         return false;
     }
+
+    public void shutdown() {
+        populationEvaluator.shutdown();
+    }
 }
 
