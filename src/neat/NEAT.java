@@ -1,6 +1,5 @@
 package neat;
 
-import common.evolution.Evaluable;
 import common.evolution.EvaluationInfo;
 import common.evolution.EvolutionaryAlgorithm;
 
@@ -119,11 +118,6 @@ public class NEAT implements EvolutionaryAlgorithm {
     }
 
     public boolean isSolved() {
-        for (Evaluable<Genome> evaluator : population.perThreadEvaluators) {
-            if (evaluator.isSolved()) {
-                return true;
-            }
-        }
-        return false;
+        return population.isSolved();
     }
 }

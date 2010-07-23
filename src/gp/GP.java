@@ -29,8 +29,6 @@ public class GP<P> implements EvolutionaryAlgorithm, Serializable {
     final private int inputs;
     final private int outputs;
     final protected NodeCollection nodeCollection;
-    final protected GenotypeToPhenotype<Forest, P>[] perThreadConverters;
-    final private Evaluable<P>[] perThreadEvaluators;
     final private ParallelPopulationEvaluator<Forest, P> populationEvaluator;
 
     final private TreeInputs treeInputs;
@@ -45,12 +43,10 @@ public class GP<P> implements EvolutionaryAlgorithm, Serializable {
     private int generalizationGeneration;
     private EvaluationInfo generalizationEvaluationInfo;
 
-    public GP(GenotypeToPhenotype<Forest, P>[] perThreadConverters, Evaluable<P>[] perThreadEvaluators, Node[] functions, Node[] terminals) {
-        this.perThreadConverters = perThreadConverters;
-        this.perThreadEvaluators = perThreadEvaluators;
-        populationEvaluator = new ParallelPopulationEvaluator<Forest, P>();
-        this.inputs = perThreadEvaluators[0].getNumberOfInputs();
-        this.outputs = perThreadEvaluators[0].getNumberOfOutputs();
+    public GP(ParallelPopulationEvaluator<Forest, P> populationEvaluator, Node[] functions, Node[] terminals) {
+        this.populationEvaluator = populationEvaluator;
+        this.inputs = populationEvaluator.getNumberOfInputs();
+        this.outputs = populationEvaluator.getNumberOfOutputs();
 
         Node[] allTerminals = new Node[terminals.length + inputs];
         System.arraycopy(terminals, 0, allTerminals, 0, terminals.length);
@@ -83,7 +79,7 @@ public class GP<P> implements EvolutionaryAlgorithm, Serializable {
     }
 
     public void performGeneralizationTest() {
-        generalizationEvaluationInfo = populationEvaluator.evaluateGeneralization(perThreadConverters, perThreadEvaluators, bestSoFar);
+        generalizationEvaluationInfo = populationEvaluator.evaluateGeneralization(bestSoFar);
         generalizationGeneration = generation;
     }
 
@@ -119,7 +115,7 @@ public class GP<P> implements EvolutionaryAlgorithm, Serializable {
     }
 
     private void evaluate(Forest[] evalPopulation) {
-        EvaluationInfo[] evaluationInfos = populationEvaluator.evaluate(perThreadConverters, perThreadEvaluators, Arrays.asList(evalPopulation));
+        EvaluationInfo[] evaluationInfos = populationEvaluator.evaluate(Arrays.asList(evalPopulation));
         int cnt = 0;
         for (Forest forest : evalPopulation) {
             forest.setFitness(evaluationInfos[cnt].getFitness());
@@ -190,12 +186,7 @@ public class GP<P> implements EvolutionaryAlgorithm, Serializable {
     }
 
     public boolean isSolved() {
-        for (Evaluable<P> evaluator : perThreadEvaluators) {
-            if (evaluator.isSolved()) {
-                return true;
-            }
-        }
-        return false;
+        return populationEvaluator.isSolved();
     }
 
     public Forest getBestOfGeneration() {

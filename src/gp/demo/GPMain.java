@@ -1,10 +1,7 @@
 package gp.demo;
 
 import common.RND;
-import common.evolution.Evaluable;
-import common.evolution.EvolutionaryAlgorithmSolver;
-import common.evolution.GenotypeToPhenotype;
-import common.evolution.IdentityConversion;
+import common.evolution.*;
 import common.pmatrix.ParameterCombination;
 import common.pmatrix.ParameterMatrixManager;
 import common.pmatrix.ParameterMatrixStorage;
@@ -45,7 +42,11 @@ public class GPMain {
                 Node[] terminals = new Node[]{new Constant(-1.0), new Random()};
 
                 Evaluable evaluable = EvaluableFactory.createByName(combination.getString("PROBLEM"));
-                GP gp = GPFactory.createByName(combination.getString("GP.TYPE"), new GenotypeToPhenotype[]{new IdentityConversion<Forest>()}, new Evaluable[]{evaluable}, functions, terminals);
+                ParallelPopulationEvaluator<Forest, Forest> populationEvaluator = new ParallelPopulationEvaluator<Forest, Forest>(
+                        new GenotypeToPhenotype[]{new IdentityConversion<Forest>()},
+                        new Evaluable[]{evaluable}
+                );
+                GP gp = GPFactory.createByName(combination.getString("GP.TYPE"), populationEvaluator, functions, terminals);
 
                 EvolutionaryAlgorithmSolver solver = new EvolutionaryAlgorithmSolver(gp, stats, false);
                 solver.addProgressPrinter(new GPBasicProgressPrinter(gp));

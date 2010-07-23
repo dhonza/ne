@@ -3,6 +3,7 @@ package neat;
 import common.RND;
 import common.evolution.Evaluable;
 import common.evolution.GenotypeToPhenotype;
+import common.evolution.ParallelPopulationEvaluator;
 
 import java.util.Collections;
 import java.util.Iterator;
@@ -32,16 +33,16 @@ public class FitnessSharingPopulation<P> extends Population<P> {
      */
     private int unassignedForReproduction = 0;
 
-    public FitnessSharingPopulation(GenotypeToPhenotype<Genome, P>[] perThreadConverters, Evaluable<P>[] perThreadEvaluators) {
-        super(perThreadConverters, perThreadEvaluators);
+    public FitnessSharingPopulation(ParallelPopulationEvaluator<Genome, P> populationEvaluator) {
+        super(populationEvaluator);
     }
 
-    public FitnessSharingPopulation(GenotypeToPhenotype<Genome, P>[] perThreadConverters, Evaluable<P>[] perThreadEvaluators, Genome oproto) {
-        super(perThreadConverters, perThreadEvaluators, oproto);
+    public FitnessSharingPopulation(ParallelPopulationEvaluator<Genome, P> populationEvaluator, Genome oproto) {
+        super(populationEvaluator, oproto);
     }
 
-    public FitnessSharingPopulation(GenotypeToPhenotype<Genome, P>[] perThreadConverters, Evaluable<P>[] perThreadEvaluators, String ofileName) {
-        super(perThreadConverters, perThreadEvaluators, ofileName);
+    public FitnessSharingPopulation(ParallelPopulationEvaluator<Genome, P> populationEvaluator, String ofileName) {
+        super(populationEvaluator, ofileName);
     }
 
     /**

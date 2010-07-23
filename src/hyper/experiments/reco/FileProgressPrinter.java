@@ -3,6 +3,7 @@ package hyper.experiments.reco;
 import common.evolution.EvaluationInfo;
 import common.evolution.EvolutionaryAlgorithm;
 import common.evolution.ProgressPrinter;
+import common.net.INet;
 import common.pmatrix.ParameterCombination;
 import hyper.evaluate.IProblem;
 import hyper.evaluate.IProblemGeneralization;
@@ -25,7 +26,7 @@ public class FileProgressPrinter implements ProgressPrinter {
     }
 
     final private EvolutionaryAlgorithm ea;
-    final private IProblem problem;
+    final private IProblem<INet> problem;
     final private ReportStorage reportStorage;
     final private ParameterCombination parameters;
     private boolean storeRun;

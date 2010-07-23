@@ -45,7 +45,7 @@ public class SNEAT implements EvolutionaryAlgorithm {
                                 exp.getDefaultNeatParameters().pInitialPopulationInterconnections,
                                 exp.getDefaultNeatParameters().populationSize)
                 ),
-                exp.getPopulationEvaluator(),
+                exp.getSinglePopulationEvaluator(),
                 exp.getDefaultNeatParameters());
         checkIfInnovation();
     }
@@ -62,7 +62,7 @@ public class SNEAT implements EvolutionaryAlgorithm {
     }
 
     public void finished() {
-    exp.getPopulationEvaluator().shutdown();    
+    exp.getSinglePopulationEvaluator().shutdown();
     }
 
     public String getConfigString() {
@@ -90,7 +90,7 @@ public class SNEAT implements EvolutionaryAlgorithm {
     }
 
     public boolean isSolved() {
-        return exp.getPopulationEvaluator().isSolved();
+        return exp.getSinglePopulationEvaluator().isSolved();
     }
 
     public NeatParameters getNeatParameters() {

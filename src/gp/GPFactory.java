@@ -2,6 +2,7 @@ package gp;
 
 import common.evolution.Evaluable;
 import common.evolution.GenotypeToPhenotype;
+import common.evolution.ParallelPopulationEvaluator;
 
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
@@ -14,11 +15,11 @@ import java.lang.reflect.InvocationTargetException;
  * To change this template use File | Settings | File Templates.
  */
 public class GPFactory {
-    public static GP createByName(String className, GenotypeToPhenotype[] perThreadConverters, Evaluable[] perThreadEvaluators, Node[] functions, Node[] terminals) {
+    public static GP createByName(String className, ParallelPopulationEvaluator populationEvaluator, Node[] functions, Node[] terminals) {
         GP gp = null;
         try {
-            Constructor constructor = Class.forName(className).getConstructor(GenotypeToPhenotype[].class, Evaluable[].class, Node[].class, Node[].class);
-            gp = (GP) constructor.newInstance(perThreadConverters, perThreadEvaluators, functions, terminals);
+            Constructor constructor = Class.forName(className).getConstructor(ParallelPopulationEvaluator.class, Node[].class, Node[].class);
+            gp = (GP) constructor.newInstance(populationEvaluator, functions, terminals);
         } catch (NoSuchMethodException e) {
             System.err.println(e.getCause());
             e.printStackTrace();

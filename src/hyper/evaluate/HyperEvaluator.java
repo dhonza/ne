@@ -15,11 +15,11 @@ import hyper.cppn.CPPN;
  * Time: 12:34:28 PM
  * To change this template use File | Settings | File Templates.
  */
-public class HyperEvaluator implements Evaluable<INet> {
+public class HyperEvaluator<INet> implements Evaluable<INet> {
     final private EvaluableSubstrateBuilder substrateBuilder;
-    final private IProblem problem;
+    final private IProblem<INet> problem;
 
-    public HyperEvaluator(EvaluableSubstrateBuilder substrateBuilder, IProblem problem) {
+    public HyperEvaluator(EvaluableSubstrateBuilder substrateBuilder, IProblem<INet> problem) {
         this.substrateBuilder = substrateBuilder;
         this.problem = problem;
     }
@@ -29,7 +29,7 @@ public class HyperEvaluator implements Evaluable<INet> {
     }
 
     public EvaluationInfo evaluateGeneralization(INet hyperNet) {
-        return ((IProblemGeneralization)problem).evaluateGeneralization(hyperNet);
+        return ((IProblemGeneralization<INet>)problem).evaluateGeneralization(hyperNet);
     }
 
     public boolean isSolved() {

@@ -98,8 +98,6 @@ public class SADE<P> implements EvolutionaryAlgorithm {
     private double[] bsf, btg;
     private double bsfValue, btgValue;
 
-    final private GenotypeToPhenotype<DoubleVectorGenome, P>[] perThreadConverters;
-    final private Evaluable<P>[] perThreadEvaluators;
     final private ParallelPopulationEvaluator<DoubleVectorGenome, P> populationEvaluator;
 
 
@@ -110,10 +108,8 @@ public class SADE<P> implements EvolutionaryAlgorithm {
     /**
      * Constructor for <b>SADE</b> object. The parameter represents the optimized function.
      */
-    public SADE(GenotypeToPhenotype<DoubleVectorGenome, P>[] perThreadConverters, Evaluable<P>[] perThreadEvaluators) {
-        this.perThreadConverters = perThreadConverters;
-        this.perThreadEvaluators = perThreadEvaluators;
-        populationEvaluator = new ParallelPopulationEvaluator<DoubleVectorGenome, P>();
+    public SADE(ParallelPopulationEvaluator<DoubleVectorGenome, P> populationEvaluator) {
+        this.populationEvaluator = populationEvaluator;
         bsfValue = Double.NEGATIVE_INFINITY;
         btgValue = Double.NEGATIVE_INFINITY;
     }
@@ -161,7 +157,7 @@ public class SADE<P> implements EvolutionaryAlgorithm {
             evalPopulation.add(new DoubleVectorGenome(CH[i]));
         }
 
-        evaluationInfos = populationEvaluator.evaluate(perThreadConverters, perThreadEvaluators, evalPopulation);
+        evaluationInfos = populationEvaluator.evaluate(evalPopulation);
 
         for (int i = start * selectedSize; i < actualSize; i++) {
             Force[i] = evaluationInfos[i - start * selectedSize].getFitness();
@@ -310,7 +306,7 @@ public class SADE<P> implements EvolutionaryAlgorithm {
     }
 
     public void performGeneralizationTest() {
-        generalizationEvaluationInfo = populationEvaluator.evaluateGeneralization(perThreadConverters, perThreadEvaluators, new DoubleVectorGenome(bsf));
+        generalizationEvaluationInfo = populationEvaluator.evaluateGeneralization(new DoubleVectorGenome(bsf));
         generalizationGeneration = generation;
     }
 
@@ -350,12 +346,7 @@ public class SADE<P> implements EvolutionaryAlgorithm {
     }
 
     public boolean isSolved() {
-        for (Evaluable<P> evaluator : perThreadEvaluators) {
-            if (evaluator.isSolved()) {
-                return true;
-            }
-        }
-        return false;
+        return populationEvaluator.isSolved();
     }
 
     public String getConfigString() {

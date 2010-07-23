@@ -40,7 +40,7 @@ public class SNEATSolver extends AbstractSolver {
 //        HyperNEATParameters.loadParameterFile();
         setActivationFunctions();
         double targetFitness = problem.getTargetFitness();
-        SNEATExperiment exp = new SNEATExperiment(parameters, perThreadConverters, perThreadEvaluators, targetFitness);
+        SNEATExperiment exp = new SNEATExperiment(parameters, populationEvaluator, targetFitness);
 
         sneat = new SNEAT(exp);
 

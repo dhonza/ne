@@ -72,12 +72,12 @@ class Program {
                                         exp.getDefaultNeatParameters().pInitialPopulationInterconnections,
                                         populationSize)
                         ),
-                        exp.getPopulationEvaluator(),
+                        exp.getSinglePopulationEvaluator(),
                         exp.getDefaultNeatParameters());
 
             } else {
                 idgen = new IdGeneratorFactory().CreateIdGenerator(seedGenome);
-                ea = new EvolutionAlgorithm(new Population(idgen, GenomeFactory.createGenomeList(seedGenome, populationSize, exp.getDefaultNeatParameters(), idgen)), exp.getPopulationEvaluator(), exp.getDefaultNeatParameters());
+                ea = new EvolutionAlgorithm(new Population(idgen, GenomeFactory.createGenomeList(seedGenome, populationSize, exp.getDefaultNeatParameters(), idgen)), exp.getSinglePopulationEvaluator(), exp.getDefaultNeatParameters());
             }
 
             System.out.println(exp.getDefaultNeatParameters().toString());

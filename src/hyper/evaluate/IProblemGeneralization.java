@@ -10,7 +10,7 @@ import common.net.INet;
  * Time: 10:53:55 AM
  * To change this template use File | Settings | File Templates.
  */
-public interface IProblemGeneralization {
+public interface IProblemGeneralization<INet> {
     EvaluationInfo evaluateGeneralization(INet hyperNet);
 
     void showGeneralization(INet hyperNet);

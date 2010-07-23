@@ -22,7 +22,7 @@ import java.util.List;
  * Time: 12:15:47 PM
  * To change this template use File | Settings | File Templates.
  */
-public class Recognition1D implements IProblem {
+public class Recognition1D implements IProblem<INet> {
     final private PatternGenerator generator;
     final private int activations;
     final private int lineSize;

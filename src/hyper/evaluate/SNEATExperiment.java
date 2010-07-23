@@ -2,6 +2,7 @@ package hyper.evaluate;
 
 import common.evolution.Evaluable;
 import common.evolution.GenotypeToPhenotype;
+import common.evolution.ParallelPopulationEvaluator;
 import common.pmatrix.ParameterCombination;
 import common.pmatrix.Utils;
 import sneat.evolution.IPopulationEvaluator;
@@ -22,38 +23,36 @@ import sneat.neuralnetwork.activationfunctions.SteepenedSigmoid;
  */
 public class SNEATExperiment<P> implements IExperiment {
     final private ParameterCombination parameters;
-    final private GenotypeToPhenotype<INetwork, P>[] perThreadConverters;
-    final private Evaluable<P>[] perThreadEvaluators;
+    final private ParallelPopulationEvaluator<INetwork, P> populationEvaluator;
     final private double targetFitness;
     NeatParameters neatParams = null;
 
-    IPopulationEvaluator populationEvaluator = null;
+    IPopulationEvaluator aSNEATPopulationEvaluator = null;
     IActivationFunction activationFunction = new SteepenedSigmoid();
 
-    public SNEATExperiment(ParameterCombination parameters, GenotypeToPhenotype<INetwork, P>[] perThreadConverters, Evaluable<P>[] perThreadEvaluators, double targetFitness) {
+    public SNEATExperiment(ParameterCombination parameters, ParallelPopulationEvaluator<INetwork, P> populationEvaluator, double targetFitness) {
+        this.populationEvaluator = populationEvaluator;
         this.parameters = parameters;
-        this.perThreadConverters = perThreadConverters;
-        this.perThreadEvaluators = perThreadEvaluators;
         this.targetFitness = targetFitness;
     }
 
-    public IPopulationEvaluator getPopulationEvaluator() {
-        if (populationEvaluator == null) {
+    public IPopulationEvaluator getSinglePopulationEvaluator() {
+        if (aSNEATPopulationEvaluator == null) {
             resetEvaluator(null);
         }
-        return populationEvaluator;
+        return aSNEATPopulationEvaluator;
     }
 
     public void resetEvaluator(IActivationFunction activationFn) {
-        populationEvaluator = new SingleFilePopulationEvaluator(perThreadConverters, perThreadEvaluators, null);
+        aSNEATPopulationEvaluator = new SingleFilePopulationEvaluator<P>(populationEvaluator, null);
     }
 
     public int getInputNeuronCount() {
-        return perThreadEvaluators[0].getNumberOfInputs();
+        return populationEvaluator.getNumberOfInputs();
     }
 
     public int getOutputNeuronCount() {
-        return perThreadEvaluators[0].getNumberOfOutputs();
+        return populationEvaluator.getNumberOfOutputs();
     }
 
     public NeatParameters getDefaultNeatParameters() {

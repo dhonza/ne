@@ -11,7 +11,7 @@ public interface IExperiment {
     /// The IPopulationEvaluator to use for the experiment. This is passed to the
     /// constructor of EvolutionAlgorithm.
     /// </summary>
-    IPopulationEvaluator getPopulationEvaluator();
+    IPopulationEvaluator getSinglePopulationEvaluator();
 
     /// <summary>
     /// This is called prior to constructing a new EvolutionAlgorithm to ensure we have a

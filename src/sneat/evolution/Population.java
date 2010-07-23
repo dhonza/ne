@@ -501,7 +501,7 @@ public class Population {
         EvaluationInfo[] fv = new EvaluationInfo[genomeList.size()];
         int i = 0;
         for (IGenome genome : genomeList) {
-            fv[i] = genome.getEvaluationInfo();
+            fv[i++] = genome.getEvaluationInfo();
         }
         return fv;
     }

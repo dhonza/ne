@@ -27,11 +27,11 @@ public class DirectSADESolver extends AbstractSolver {
     }
 
     private void init() {
-        SADE sade = new SADE(perThreadConverters, perThreadEvaluators);
+        SADE sade = new SADE(populationEvaluator);
 
         Utils.setParameters(parameters, sade, "DIRECT_SADE");
         sade.targetFitness = problem.getTargetFitness();
-        sade.dimensions = ((DirectGenomeToINet) perThreadConverters[0]).getNumOfLinks();
+        sade.dimensions = populationEvaluator.getPhenotypeDimension();
 
         solver = new EvolutionaryAlgorithmSolver(sade, stats, problem instanceof IProblemGeneralization);
         solver.addProgressPrinter(new SADEProgressPrinter1D(sade, problem, parameters));

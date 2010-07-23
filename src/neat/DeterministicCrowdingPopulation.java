@@ -10,6 +10,7 @@ import common.RND;
 import common.evolution.Evaluable;
 import common.evolution.EvaluationInfo;
 import common.evolution.GenotypeToPhenotype;
+import common.evolution.ParallelPopulationEvaluator;
 
 import java.util.Arrays;
 import java.util.Iterator;
@@ -24,15 +25,15 @@ public class DeterministicCrowdingPopulation<P> extends Population<P> {
 
     private boolean eval = true;
 
-    public DeterministicCrowdingPopulation(GenotypeToPhenotype<Genome, P>[] perThreadConverters, Evaluable<P>[] perThreadEvaluators) {
-        super(perThreadConverters, perThreadEvaluators);
+    public DeterministicCrowdingPopulation(ParallelPopulationEvaluator<Genome, P> populationEvaluator) {
+        super(populationEvaluator);
     }
 
     /**
      * @param oproto
      */
-    public DeterministicCrowdingPopulation(GenotypeToPhenotype<Genome, P>[] perThreadConverters, Evaluable<P>[] perThreadEvaluators, Genome oproto) {
-        super(perThreadConverters, perThreadEvaluators, oproto);
+    public DeterministicCrowdingPopulation(ParallelPopulationEvaluator<Genome, P> populationEvaluator, Genome oproto) {
+        super(populationEvaluator, oproto);
     }
 
     /**
@@ -164,7 +165,7 @@ public class DeterministicCrowdingPopulation<P> extends Population<P> {
 //            }
         }
 
-        EvaluationInfo[] evaluationInfos = populationEvaluator.evaluate(perThreadConverters, perThreadEvaluators, Arrays.asList(children));
+        EvaluationInfo[] evaluationInfos = populationEvaluator.evaluate(Arrays.asList(children));
         this.incrementEvaluation(n);
         for (int i = 0; i < n; i++) {
             children[i].fitness = evaluationInfos[i].getFitness();
@@ -219,9 +220,9 @@ public class DeterministicCrowdingPopulation<P> extends Population<P> {
         int n = NEAT.getConfig().populationSize;
         EvaluationInfo[] evaluationInfos = null;
         if (eval) {
-            evaluationInfos = populationEvaluator.evaluate(perThreadConverters, perThreadEvaluators, Arrays.asList(genomes));
+            evaluationInfos = populationEvaluator.evaluate(Arrays.asList(genomes));
         }
-        populationEvaluator.evaluate(perThreadConverters, perThreadEvaluators, Arrays.asList(genomes));
+        populationEvaluator.evaluate(Arrays.asList(genomes));
         for (int i = 0; i < n; i++) {
             tg = genomes[i];
             if (eval) {

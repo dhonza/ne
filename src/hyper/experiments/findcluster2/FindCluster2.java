@@ -22,7 +22,7 @@ import java.util.Map;
  * Adapted from  Colin Green's SharpNEAT 2 HyperNEAT (Box Discrimination Task)
  * TODO Differs in substrate type uses 2D coordinates instead of 3D
  */
-public class FindCluster2 implements IProblem {
+public class FindCluster2 implements IProblem<INet> {
     private static class TrialInfo {
         double distance;
         double activationRange;

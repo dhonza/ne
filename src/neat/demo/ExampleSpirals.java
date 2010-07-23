@@ -4,6 +4,7 @@ import common.RND;
 import common.evolution.Evaluable;
 import common.evolution.EvolutionaryAlgorithmSolver;
 import common.evolution.GenotypeToPhenotype;
+import common.evolution.ParallelPopulationEvaluator;
 import common.net.linked.Net;
 import common.net.linked.Neuron;
 import common.stats.Stats;
@@ -28,7 +29,7 @@ import neat.*;
  */
 
 public class ExampleSpirals {
-    FitnessSharingPopulation population;
+    FitnessSharingPopulation<Net> population;
 //    DeterministicCrowdingPopulation population;
 
     Net neval;
@@ -84,7 +85,8 @@ public class ExampleSpirals {
         Genome proto = new Genome(net);
         evaluateSpirals = new EvaluateSpirals();
 
-        population = new FitnessSharingPopulation(new GenotypeToPhenotype[]{new GenomeToNet()}, new Evaluable[]{evaluateSpirals}, proto);
+        ParallelPopulationEvaluator<Genome, Net> populationEvaluator = new ParallelPopulationEvaluator<Genome, Net>(new GenotypeToPhenotype[]{new GenomeToNet()}, new Evaluable[]{evaluateSpirals});
+        population = new FitnessSharingPopulation<Net>(populationEvaluator, proto);
 //        population = new DeterministicCrowdingPopulation(evaluateSpirals, proto);
         problem.setPopulation(population);
 

@@ -59,7 +59,7 @@ class XORRunner {
                                 exp.getDefaultNeatParameters().pInitialPopulationInterconnections,
                                 exp.getDefaultNeatParameters().populationSize)
                 ),
-                exp.getPopulationEvaluator(),
+                exp.getSinglePopulationEvaluator(),
                 exp.getDefaultNeatParameters());
 
         XmlGenomeWriterStatic.Write(new File("seedGenome.xml"), (NeatGenome) ea.getPopulation().getGenomeList().get(0));

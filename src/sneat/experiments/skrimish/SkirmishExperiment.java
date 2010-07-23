@@ -3,7 +3,7 @@ package sneat.experiments.skrimish;
 import common.evolution.Evaluable;
 import common.evolution.GenotypeToPhenotype;
 import common.evolution.IdentityConversion;
-import neat.GenomeToNet;
+import common.evolution.ParallelPopulationEvaluator;
 import sneat.evolution.IPopulationEvaluator;
 import sneat.evolution.NeatParameters;
 import sneat.experiments.AbstractExperimentView;
@@ -18,7 +18,7 @@ public class SkirmishExperiment implements IExperiment {
     int inputs;
     int outputs;
     public static boolean multiple;
-    IPopulationEvaluator populationEvaluator = null;
+    IPopulationEvaluator aSNEATPopulationEvaluator = null;
     NeatParameters neatParams = null;
     String shape;
 
@@ -36,25 +36,29 @@ public class SkirmishExperiment implements IExperiment {
         throw new IllegalStateException("The method or operation is not implemented.");
     }
 
-    public IPopulationEvaluator PopulationEvaluator() {
-        if (populationEvaluator == null)
+    public IPopulationEvaluator getSinglePopulationEvaluator() {
+        if (aSNEATPopulationEvaluator == null)
             resetEvaluator(HyperNEATParameters.substrateActivationFunction);
 
-        return populationEvaluator;
+        return aSNEATPopulationEvaluator;
     }
 
     public void resetEvaluator(IActivationFunction activationFn) {
         if (multiple) {
-            populationEvaluator = new SkirmishPopulationEvaluator(new GenotypeToPhenotype[]{new IdentityConversion<INetwork>()},
-                    new Evaluable[]{new SkirmishNetworkEvaluator(5, shape)});
+            ParallelPopulationEvaluator<INetwork, INetwork> populationEvaluator =
+                    new ParallelPopulationEvaluator<INetwork, INetwork>(new GenotypeToPhenotype[]{new IdentityConversion<INetwork>()},
+                            new Evaluable[]{new SkirmishNetworkEvaluator(5, shape)});
+            aSNEATPopulationEvaluator = new SkirmishPopulationEvaluator<INetwork>(populationEvaluator);
         } else {
-            populationEvaluator = new SkirmishPopulationEvaluator(new GenotypeToPhenotype[]{new IdentityConversion<INetwork>()},
-                    new Evaluable[]{new SkirmishNetworkEvaluator(1, shape)});
+            ParallelPopulationEvaluator<INetwork, INetwork> populationEvaluator =
+                    new ParallelPopulationEvaluator<INetwork, INetwork>(new GenotypeToPhenotype[]{new IdentityConversion<INetwork>()},
+                            new Evaluable[]{new SkirmishNetworkEvaluator(1, shape)});
+            aSNEATPopulationEvaluator = new SkirmishPopulationEvaluator<INetwork>(populationEvaluator);
         }
     }
 
-    public IPopulationEvaluator getPopulationEvaluator() {
-        return populationEvaluator;
+    public IPopulationEvaluator getaSNEATPopulationEvaluator() {
+        return aSNEATPopulationEvaluator;
     }
 
     public int getInputNeuronCount() {
@@ -105,6 +109,6 @@ public class SkirmishExperiment implements IExperiment {
     }
 
     public String getExplanatoryText() {
-        return "A HyperNEAT experiemnt for multiagent predator-prey";
+        return "A HyperNEAT experiment for multiagent predator-prey";
     }
 }

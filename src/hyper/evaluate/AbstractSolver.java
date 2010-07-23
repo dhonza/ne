@@ -4,6 +4,7 @@ import common.evolution.Evaluable;
 import common.evolution.EvolutionaryAlgorithmSolver;
 import common.evolution.GenotypeToPhenotype;
 import common.evolution.ParallelPopulationEvaluator;
+import common.net.INet;
 import common.pmatrix.ParameterCombination;
 import common.stats.Stats;
 import hyper.builder.EvaluableSubstrateBuilder;
@@ -17,16 +18,15 @@ import hyper.experiments.reco.ReportStorage;
  * Time: 11:18:52 AM
  * To change this template use File | Settings | File Templates.
  */
-abstract public class AbstractSolver implements Solver {
+abstract public class AbstractSolver<G, INet> implements Solver {
     final protected ParameterCombination parameters;
     final protected Stats stats;
     final protected ReportStorage reportStorage;
 
     protected EvolutionaryAlgorithmSolver solver;
 
-    protected GenotypeToPhenotype[] perThreadConverters;
-    protected Evaluable[] perThreadEvaluators;
-    protected IProblem problem;
+    protected ParallelPopulationEvaluator<G, INet> populationEvaluator;
+    protected IProblem<INet> problem;
 
     protected AbstractSolver(ParameterCombination parameters, Stats stats, ReportStorage reportStorage) {
         this.parameters = parameters;
@@ -45,20 +45,21 @@ abstract public class AbstractSolver implements Solver {
                 threads = ParallelPopulationEvaluator.getNumberOfThreads();
             }
         }
-        perThreadConverters = new GenotypeToPhenotype[threads];
-        perThreadEvaluators = new Evaluable[threads];
+        GenotypeToPhenotype<G, INet>[] perThreadConverters = new GenotypeToPhenotype[threads];
+        Evaluable<INet>[] perThreadEvaluators = new Evaluable[threads];
         for (int i = (threads - 1); i >= 0; i--) {
 
             problem = ProblemFactory.getProblem(parameters, reportStorage);
             EvaluableSubstrateBuilder substrateBuilder =
                     SubstrateBuilderFactory.createEvaluableSubstrateBuilder(problem.getSubstrate(), parameters);
 
-            Evaluable evaluator = new HyperEvaluator(substrateBuilder, problem);
+            Evaluable<INet> evaluator = new HyperEvaluator<INet>(substrateBuilder, problem);
             perThreadEvaluators[i] = evaluator;
 
-            GenotypeToPhenotype converter = ConverterFactory.getConverter(parameters, substrateBuilder, problem);
+            GenotypeToPhenotype<G, INet> converter = ConverterFactory.getConverter(parameters, substrateBuilder, problem);
             perThreadConverters[i] = converter;
         }
+        populationEvaluator = new ParallelPopulationEvaluator<G, INet>(perThreadConverters, perThreadEvaluators);
     }
 
     abstract public void solve();

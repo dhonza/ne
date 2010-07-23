@@ -2,8 +2,9 @@ package opt.cmaes;
 
 import cma.CMAEvolutionStrategy;
 import cma.CMAOptions;
-import common.evolution.*;
-import gp.Forest;
+import common.evolution.EvaluationInfo;
+import common.evolution.EvolutionaryAlgorithm;
+import common.evolution.ParallelPopulationEvaluator;
 import opt.DoubleVectorGenome;
 
 import java.util.ArrayList;
@@ -26,18 +27,14 @@ public class CMAES<P> implements EvolutionaryAlgorithm {
     private int lastInnovation;
     private double bestSolutionValue;
 
-    final private GenotypeToPhenotype<DoubleVectorGenome, P>[] perThreadConverters;
-    final private Evaluable<P>[] perThreadEvaluators;
     final private ParallelPopulationEvaluator<DoubleVectorGenome, P> populationEvaluator;
 
     private EvaluationInfo[] evaluationInfos;
     private int generalizationGeneration;
     private EvaluationInfo generalizationEvaluationInfo;
 
-    public CMAES(GenotypeToPhenotype<DoubleVectorGenome, P>[] perThreadConverters, Evaluable<P>[] perThreadEvaluators, int dimension) {
-        this.perThreadConverters = perThreadConverters;
-        this.perThreadEvaluators = perThreadEvaluators;
-        populationEvaluator = new ParallelPopulationEvaluator<DoubleVectorGenome, P>();
+    public CMAES(ParallelPopulationEvaluator<DoubleVectorGenome, P> populationEvaluator, int dimension) {
+        this.populationEvaluator = populationEvaluator;
         cma = new CMAEvolutionStrategy();
         cma.setDimension(dimension);
         cma.setInitialX(-0.3, 0.3);
@@ -60,7 +57,7 @@ public class CMAES<P> implements EvolutionaryAlgorithm {
             evaluations++;
         }
 
-        evaluationInfos = populationEvaluator.evaluate(perThreadConverters, perThreadEvaluators, evalPopulation);
+        evaluationInfos = populationEvaluator.evaluate(evalPopulation);
 
         for (int i = 0; i < pop.length; ++i) {
             fitness[i] = -evaluationInfos[i].getFitness();
@@ -93,7 +90,7 @@ public class CMAES<P> implements EvolutionaryAlgorithm {
     }
 
     public void performGeneralizationTest() {
-        generalizationEvaluationInfo = populationEvaluator.evaluateGeneralization(perThreadConverters, perThreadEvaluators, new DoubleVectorGenome(getMaxReached()));
+        generalizationEvaluationInfo = populationEvaluator.evaluateGeneralization(new DoubleVectorGenome(getMaxReached()));
         generalizationGeneration = generation;
     }
 
@@ -141,12 +138,7 @@ public class CMAES<P> implements EvolutionaryAlgorithm {
     }
 
     public boolean isSolved() {
-        for (Evaluable<P> evaluator : perThreadEvaluators) {
-            if (evaluator.isSolved()) {
-                return true;
-            }
-        }
-        return false;
+        return populationEvaluator.isSolved();
     }
 
     public String getConfigString() {

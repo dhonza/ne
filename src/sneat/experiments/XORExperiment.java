@@ -3,6 +3,7 @@ package sneat.experiments;
 import common.evolution.Evaluable;
 import common.evolution.GenotypeToPhenotype;
 import common.evolution.IdentityConversion;
+import common.evolution.ParallelPopulationEvaluator;
 import common.pmatrix.ParameterCombination;
 import common.pmatrix.Utils;
 import sneat.evolution.IPopulationEvaluator;
@@ -22,23 +23,25 @@ public class XORExperiment implements IExperiment {
     private final ParameterCombination parameters;
     NeatParameters neatParams = null;
 
-    IPopulationEvaluator populationEvaluator = null;
+    IPopulationEvaluator singlePopulationEvaluator = null;
     IActivationFunction activationFunction = new SteepenedSigmoid();
 
     public XORExperiment(ParameterCombination parameters) {
         this.parameters = parameters;
     }
 
-    public IPopulationEvaluator getPopulationEvaluator() {
-        if (populationEvaluator == null) {
+    public IPopulationEvaluator getSinglePopulationEvaluator() {
+        if (singlePopulationEvaluator == null) {
             resetEvaluator(null);
         }
-        return populationEvaluator;
+        return singlePopulationEvaluator;
     }
 
     public void resetEvaluator(IActivationFunction activationFn) {
-        populationEvaluator = new SingleFilePopulationEvaluator(new GenotypeToPhenotype[]{new IdentityConversion<INetwork>()},
-                new Evaluable[]{new XORNetworkEvaluator()}, null);
+        ParallelPopulationEvaluator<INetwork, INetwork> populationEvaluator =
+                new ParallelPopulationEvaluator<INetwork, INetwork>(new GenotypeToPhenotype[]{new IdentityConversion<INetwork>()},
+                        new Evaluable[]{new XORNetworkEvaluator()});
+        singlePopulationEvaluator = new SingleFilePopulationEvaluator<INetwork>(populationEvaluator, null);
     }
 
     public int getInputNeuronCount() {

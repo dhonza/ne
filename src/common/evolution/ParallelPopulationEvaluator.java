@@ -1,10 +1,13 @@
 package common.evolution;
 
+import hyper.evaluate.converter.DirectGenomeToINet;
 import org.apache.commons.lang.ArrayUtils;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.concurrent.*;
+import java.util.concurrent.CountDownLatch;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 /**
  * Created by IntelliJ IDEA.
@@ -42,12 +45,19 @@ public class ParallelPopulationEvaluator<G, P> {
         }
     }
 
+    final private GenotypeToPhenotype<G, P>[] perThreadConverters;
+    final private Evaluable<P>[] perThreadEvaluators;
     final private ExecutorService threadExecutor = Executors.newCachedThreadPool();
 
-    public EvaluationInfo[] evaluate(GenotypeToPhenotype<G, P>[] perThreadConverters, Evaluable<P>[] perThreadEvaluators, List<G> population) {
+    public ParallelPopulationEvaluator(GenotypeToPhenotype<G, P>[] perThreadConverters, Evaluable<P>[] perThreadEvaluators) {
+        this.perThreadConverters = perThreadConverters;
+        this.perThreadEvaluators = perThreadEvaluators;
+    }
+
+    public EvaluationInfo[] evaluate(List<G> population) {
         //sequential run
         if (perThreadEvaluators.length == 1) {
-            return sequentialEvaluate(perThreadConverters[0], perThreadEvaluators[0], population);
+            return sequentialEvaluate(population);
         }
 
         int threads = ParallelPopulationEvaluator.getNumberOfThreads();
@@ -100,23 +110,23 @@ public class ParallelPopulationEvaluator<G, P> {
         return evaluationInfos;
     }
 
-    public EvaluationInfo evaluateGeneralization(GenotypeToPhenotype<G, P>[] perThreadConverters, Evaluable<P>[] perThreadEvaluators, G individual) {
+    public EvaluationInfo evaluateGeneralization(G individual) {
         return perThreadEvaluators[0].evaluateGeneralization(perThreadConverters[0].convert(individual));
     }
 
-    private EvaluationInfo[] sequentialEvaluate(GenotypeToPhenotype<G, P> perThreadConvertor, Evaluable<P> perThreadEvaluator, List<G> population) {
+    private EvaluationInfo[] sequentialEvaluate(List<G> population) {
         EvaluationInfo[] evaluationInfos = new EvaluationInfo[population.size()];
         for (int i = 0; i < population.size(); i++) {
-            evaluationInfos[i] = perThreadEvaluator.evaluate(perThreadConvertor.convert(population.get(i)));
+            evaluationInfos[i] = perThreadEvaluators[0].evaluate(perThreadConverters[0].convert(population.get(i)));
         }
         return evaluationInfos;
     }
 
-    private void checkAgainstSequential(GenotypeToPhenotype<G, P> perThreadConvertor, Evaluable<P> perThreadEvaluator, List<G> population, EvaluationInfo[] evaluationInfos) {
+    private void checkAgainstSequential(List<G> population, EvaluationInfo[] evaluationInfos) {
         //checking parallel vs. sequential
         EvaluationInfo[] evaluationInfos2 = new EvaluationInfo[population.size()];
         for (int i = 0; i < population.size(); i++) {
-            evaluationInfos2[i] = perThreadEvaluator.evaluate(perThreadConvertor.convert(population.get(i)));
+            evaluationInfos2[i] = perThreadEvaluators[0].evaluate(perThreadConverters[0].convert(population.get(i)));
         }
 
         for (int i = 0; i < evaluationInfos.length; i++) {
@@ -132,6 +142,35 @@ public class ParallelPopulationEvaluator<G, P> {
     public static int getNumberOfThreads() {
         return Runtime.getRuntime().availableProcessors();
 //        return 2;
+    }
+
+    public boolean isSolved() {
+        for (Evaluable<P> evaluator : perThreadEvaluators) {
+            if (evaluator.isSolved()) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    public int getNumberOfInputs() {
+        return perThreadEvaluators[0].getNumberOfInputs();
+    }
+
+    public int getNumberOfOutputs() {
+        return perThreadEvaluators[0].getNumberOfOutputs();
+    }
+
+    /**
+     * For direct methods only.
+     * @return
+     */
+    public int getPhenotypeDimension() {
+        if(perThreadConverters[0] instanceof DirectGenomeToINet) {
+            return ((DirectGenomeToINet) perThreadConverters[0]).getNumOfLinks();
+        } else {
+            throw new IllegalStateException("getPhenotypeDimension() meant only for direct methods");
+        }
     }
 
     public void shutdown() {

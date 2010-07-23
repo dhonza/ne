@@ -3,6 +3,7 @@ package gp;
 import common.RND;
 import common.evolution.Evaluable;
 import common.evolution.GenotypeToPhenotype;
+import common.evolution.ParallelPopulationEvaluator;
 
 /**
  * Created by IntelliJ IDEA.
@@ -17,8 +18,8 @@ import common.evolution.GenotypeToPhenotype;
  * TODO create a single common abstract predecessor class (do not use newPopulation from GP)
  */
 public class GPCrowding<P> extends GP<P> {
-    public GPCrowding(GenotypeToPhenotype<Forest, P>[] perThreadConverters, Evaluable<P>[] perThreadEvaluators, Node[] functions, Node[] terminals) {
-        super(perThreadConverters, perThreadEvaluators, functions, terminals);
+    public GPCrowding(ParallelPopulationEvaluator<Forest, P> populationEvaluator, Node[] functions, Node[] terminals) {
+        super(populationEvaluator, functions, terminals);
         if (GP.POPULATION_SIZE % 2 != 0) {
             throw new IllegalStateException("Population size must be even.");
         }

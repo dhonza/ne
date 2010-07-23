@@ -27,7 +27,7 @@ public class DirectCMAESSolver extends AbstractSolver {
     }
 
     private void init() {
-        CMAES cmaes = new CMAES(perThreadConverters, perThreadEvaluators, ((DirectGenomeToINet) perThreadConverters[0]).getNumOfLinks());
+        CMAES cmaes = new CMAES(populationEvaluator, populationEvaluator.getPhenotypeDimension());
 
         Utils.setParameters(parameters, cmaes.getOptions(), "DIRECT_CMAES");
 

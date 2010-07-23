@@ -21,7 +21,7 @@ import java.util.Map;
  * Time: 6:36:32 PM
  * Adapted from  Jason Gauci's HyperNEAT C++ 3.0
  */
-public class FindCluster implements IProblem, IProblemGeneralization {
+public class FindCluster implements IProblem<INet>, IProblemGeneralization<INet> {
     /*
     NOTES for original sources:
      generateSubstrate: creates substrate structure

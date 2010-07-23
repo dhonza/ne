@@ -4,6 +4,7 @@ import common.RND;
 import common.evolution.Evaluable;
 import common.evolution.EvolutionaryAlgorithmSolver;
 import common.evolution.GenotypeToPhenotype;
+import common.evolution.ParallelPopulationEvaluator;
 import common.net.linked.Net;
 import common.stats.Stats;
 import neat.*;
@@ -27,7 +28,7 @@ import neat.*;
  */
 
 public class ExampleXOR {
-    FitnessSharingPopulation population;
+    FitnessSharingPopulation<Net> population;
 //    DeterministicCrowdingPopulation population;
 
     Net neval;
@@ -68,8 +69,9 @@ public class ExampleXOR {
         Genome proto = new Genome(net);
         evaluateXOR = new EvaluateXOR();
 
-        population = new FitnessSharingPopulation(new GenotypeToPhenotype[]{new GenomeToNet()}, new Evaluable[]{evaluateXOR}, proto);
-//        population = new DeterministicCrowdingPopulation(evaluateXOR, proto);
+        ParallelPopulationEvaluator<Genome, Net> populationEvaluator = new ParallelPopulationEvaluator<Genome, Net>(new GenotypeToPhenotype[]{new GenomeToNet()}, new Evaluable[]{evaluateXOR});
+        population = new FitnessSharingPopulation<Net>(populationEvaluator, proto);
+//        population = new DeterministicCrowdingPopulation(populationEvaluator , proto);
         problem.setPopulation(population);
 
         EvolutionaryAlgorithmSolver solver = new EvolutionaryAlgorithmSolver(problem, new Stats(), false);

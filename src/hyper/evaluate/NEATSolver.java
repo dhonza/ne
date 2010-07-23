@@ -2,6 +2,8 @@ package hyper.evaluate;
 
 import common.evolution.Evaluable;
 import common.evolution.EvolutionaryAlgorithmSolver;
+import common.evolution.ParallelPopulationEvaluator;
+import common.net.INet;
 import common.net.linked.Net;
 import common.net.linked.Neuron;
 import common.pmatrix.ParameterCombination;
@@ -36,7 +38,7 @@ public class NEATSolver extends AbstractSolver {
         config.targetFitness = problem.getTargetFitness();
         Utils.setParameters(parameters, config, "NEAT");
 
-        population = new FitnessSharingPopulation(perThreadConverters, perThreadEvaluators, getPrototype(perThreadEvaluators[0]));
+        population = new FitnessSharingPopulation<INet>(populationEvaluator, getPrototype(populationEvaluator));
 
         neat.setPopulation(population);
 
@@ -49,10 +51,10 @@ public class NEATSolver extends AbstractSolver {
         solver.addStopCondition(new SolvedStopCondition(problem));
     }
 
-    private static Genome getPrototype(Evaluable<Genome> evaluator) {
+    private static Genome getPrototype(ParallelPopulationEvaluator<Genome, INet> populationEvaluator) {
         Net net = new Net(1);
-        net.createFeedForward(evaluator.getNumberOfInputs(), new int[]{}, evaluator.getNumberOfOutputs());
-        for (int i = 0; i < evaluator.getNumberOfOutputs(); i++) {
+        net.createFeedForward(populationEvaluator.getNumberOfInputs(), new int[]{}, populationEvaluator.getNumberOfOutputs());
+        for (int i = 0; i < populationEvaluator.getNumberOfOutputs(); i++) {
             net.getOutputs().get(i).setActivation(Neuron.Activation.BIPOLAR_SIGMOID);
 //            net.getOutputs().get(i).setActivation(Neuron.Activation.LINEAR);
         }
