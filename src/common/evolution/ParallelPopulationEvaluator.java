@@ -19,12 +19,12 @@ import java.util.concurrent.Executors;
 public class ParallelPopulationEvaluator<G, P> {
     private class ThreadEvaluator implements Runnable {
         final private CountDownLatch stopLatch;
-        final private GenotypeToPhenotype<G, P> converter;
-        final private Evaluable<P> evaluator;
+        final private IGenotypeToPhenotype<G, P> converter;
+        final private IEvaluable<P> evaluator;
         final private List<G> part;
         final private EvaluationInfo[] evaluationInfo;
 
-        private ThreadEvaluator(CountDownLatch stopLatch, GenotypeToPhenotype<G, P> converter, Evaluable<P> evaluator, List<G> part) {
+        private ThreadEvaluator(CountDownLatch stopLatch, IGenotypeToPhenotype<G, P> converter, IEvaluable<P> evaluator, List<G> part) {
             this.converter = converter;
             this.evaluator = evaluator;
             this.part = part;
@@ -45,11 +45,11 @@ public class ParallelPopulationEvaluator<G, P> {
         }
     }
 
-    final private GenotypeToPhenotype<G, P>[] perThreadConverters;
-    final private Evaluable<P>[] perThreadEvaluators;
+    final private IGenotypeToPhenotype<G, P>[] perThreadConverters;
+    final private IEvaluable<P>[] perThreadEvaluators;
     final private ExecutorService threadExecutor = Executors.newCachedThreadPool();
 
-    public ParallelPopulationEvaluator(GenotypeToPhenotype<G, P>[] perThreadConverters, Evaluable<P>[] perThreadEvaluators) {
+    public ParallelPopulationEvaluator(IGenotypeToPhenotype<G, P>[] perThreadConverters, IEvaluable<P>[] perThreadEvaluators) {
         this.perThreadConverters = perThreadConverters;
         this.perThreadEvaluators = perThreadEvaluators;
     }
@@ -145,7 +145,7 @@ public class ParallelPopulationEvaluator<G, P> {
     }
 
     public boolean isSolved() {
-        for (Evaluable<P> evaluator : perThreadEvaluators) {
+        for (IEvaluable<P> evaluator : perThreadEvaluators) {
             if (evaluator.isSolved()) {
                 return true;
             }

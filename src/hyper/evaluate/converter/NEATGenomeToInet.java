@@ -1,10 +1,10 @@
 package hyper.evaluate.converter;
 
-import common.evolution.GenotypeToPhenotype;
+import common.evolution.IGenotypeToPhenotype;
 import common.net.INet;
-import hyper.builder.EvaluableSubstrateBuilder;
+import hyper.builder.IEvaluableSubstrateBuilder;
 import hyper.cppn.BasicNetCPPN;
-import hyper.cppn.CPPN;
+import hyper.cppn.ICPPN;
 import neat.Genome;
 
 /**
@@ -14,15 +14,15 @@ import neat.Genome;
  * Time: 12:38:11 PM
  * To change this template use File | Settings | File Templates.
  */
-public class NEATGenomeToInet implements GenotypeToPhenotype<Genome, INet> {
-    final private EvaluableSubstrateBuilder substrateBuilder;
+public class NEATGenomeToInet implements IGenotypeToPhenotype<Genome, INet> {
+    final private IEvaluableSubstrateBuilder substrateBuilder;
 
-    public NEATGenomeToInet(EvaluableSubstrateBuilder substrateBuilder) {
+    public NEATGenomeToInet(IEvaluableSubstrateBuilder substrateBuilder) {
         this.substrateBuilder = substrateBuilder;
     }
 
     public INet convert(Genome genome) {
-        CPPN aCPPN = new BasicNetCPPN(genome.getNet(), substrateBuilder.getSubstrate().getMaxDimension());
+        ICPPN aCPPN = new BasicNetCPPN(genome.getNet(), substrateBuilder.getSubstrate().getMaxDimension());
         substrateBuilder.build(aCPPN);
         return substrateBuilder.getNet();
     }

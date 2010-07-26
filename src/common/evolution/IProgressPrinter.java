@@ -9,7 +9,7 @@ import java.io.Serializable;
  * Time: 4:53:00 PM
  * To change this template use File | Settings | File Templates.
  */
-public interface ProgressPrinter extends Serializable {
+public interface IProgressPrinter extends Serializable {
     public void printGeneration();
 
     public void printProgress();

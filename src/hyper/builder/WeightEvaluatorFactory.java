@@ -10,7 +10,7 @@ import common.pmatrix.ParameterCombination;
  * To change this template use File | Settings | File Templates.
  */
 public class WeightEvaluatorFactory {
-    public static WeightEvaluator createWeightEvaluator(ParameterCombination parameters) {
+    public static IWeightEvaluator createWeightEvaluator(ParameterCombination parameters) {
         String type = parameters.getString("WEIGHT_EVALUATOR").toLowerCase();
         if (type.equals("basic")) {
             return new BasicWeightEvaluator();

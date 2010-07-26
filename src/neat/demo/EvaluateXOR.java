@@ -1,16 +1,15 @@
 package neat.demo;
 
-import common.evolution.Evaluable;
+import common.evolution.IEvaluable;
 import common.evolution.EvaluationInfo;
 import common.net.linked.Net;
-import neat.Genome;
 
 /**
  * User: honza
  * Date: May 19, 2006
  * Time: 8:52:38 AM
  */
-public class EvaluateXOR implements Evaluable<Net> {
+public class EvaluateXOR implements IEvaluable<Net> {
     private final double[][] in = {{1.0, 0.0, 0.0}, // the first number for bias
             {1.0, 0.0, 1.0}, {1.0, 1.0, 0.0}, {1.0, 1.0, 1.0}};
 

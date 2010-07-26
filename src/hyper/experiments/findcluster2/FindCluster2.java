@@ -6,7 +6,7 @@ import common.net.INet;
 import common.pmatrix.ParameterCombination;
 import hyper.evaluate.IProblem;
 import hyper.experiments.reco.ReportStorage;
-import hyper.substrate.Substrate;
+import hyper.substrate.ISubstrate;
 
 import java.awt.*;
 import java.util.ArrayList;
@@ -145,7 +145,7 @@ public class FindCluster2 implements IProblem<INet> {
         return maxFitness;
     }
 
-    public Substrate getSubstrate() {
+    public ISubstrate getSubstrate() {
         return FindCluster2SubstrateFactory.createInputToOutput(visualFieldResolution);
     }
 

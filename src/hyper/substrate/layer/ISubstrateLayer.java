@@ -18,7 +18,7 @@ import java.io.Serializable;
  * To combine more layers use the same CPPN output.
  * Implementing class must be immutable.
  */
-public interface SubstrateLayer extends Connectable, Serializable {
+public interface ISubstrateLayer extends IConnectable, Serializable {
     public int getNumber();
 
     public Node[] getNodes();

@@ -1,13 +1,13 @@
 package hyper.evaluate.printer;
 
-import common.evolution.ProgressPrinter;
+import common.evolution.IProgressPrinter;
 import common.pmatrix.ParameterCombination;
 import gp.Forest;
 import gp.ForestStorage;
 import gp.GP;
 import gp.GPBasicProgressPrinter;
 import hyper.cppn.BasicGPCPPN;
-import hyper.cppn.CPPN;
+import hyper.cppn.ICPPN;
 import hyper.evaluate.IProblem;
 
 /**
@@ -20,7 +20,7 @@ import hyper.evaluate.IProblem;
 public class GPProgressPrinter1D extends CommonProgressPrinter1D {
     final private GP gp;
 
-    public GPProgressPrinter1D(GP gp, ProgressPrinter progressPrinter, IProblem problem, ParameterCombination parameters) {
+    public GPProgressPrinter1D(GP gp, IProgressPrinter progressPrinter, IProblem problem, ParameterCombination parameters) {
         super(progressPrinter, problem, parameters);
         this.gp = gp;
     }
@@ -30,7 +30,7 @@ public class GPProgressPrinter1D extends CommonProgressPrinter1D {
     }
 
     @Override
-    protected CPPN createBSFCPPN() {
+    protected ICPPN createBSFCPPN() {
         return new BasicGPCPPN(gp.getBestSoFar(), problem.getSubstrate().getMaxDimension());
     }
 

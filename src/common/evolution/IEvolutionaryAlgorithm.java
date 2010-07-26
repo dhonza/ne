@@ -9,7 +9,7 @@ import java.io.Serializable;
  * Time: 2:44:39 PM
  * To change this template use File | Settings | File Templates.
  */
-public interface EvolutionaryAlgorithm extends Serializable {
+public interface IEvolutionaryAlgorithm extends Serializable {
     public void initialGeneration();
 
     public void nextGeneration();

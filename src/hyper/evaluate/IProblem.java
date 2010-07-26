@@ -1,8 +1,7 @@
 package hyper.evaluate;
 
 import common.evolution.EvaluationInfo;
-import common.net.INet;
-import hyper.substrate.Substrate;
+import hyper.substrate.ISubstrate;
 
 import java.io.Serializable;
 import java.util.List;
@@ -23,7 +22,7 @@ public interface IProblem<INet> extends Serializable {
 
     double getTargetFitness();
 
-    Substrate getSubstrate();
+    ISubstrate getSubstrate();
 
     List<String> getEvaluationInfoItemNames();
 }

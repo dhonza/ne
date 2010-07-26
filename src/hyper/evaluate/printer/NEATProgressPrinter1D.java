@@ -1,9 +1,9 @@
 package hyper.evaluate.printer;
 
-import common.evolution.ProgressPrinter;
+import common.evolution.IProgressPrinter;
 import common.pmatrix.ParameterCombination;
 import hyper.cppn.BasicNetCPPN;
-import hyper.cppn.CPPN;
+import hyper.cppn.ICPPN;
 import hyper.evaluate.IProblem;
 import neat.NEAT;
 import neat.NEATBasicProgressPrinter;
@@ -21,7 +21,7 @@ public class NEATProgressPrinter1D extends CommonProgressPrinter1D {
     final private NEAT neat;
     final private Population pop;
 
-    public NEATProgressPrinter1D(NEAT neat, ProgressPrinter progressPrinter, IProblem problem, ParameterCombination parameters) {
+    public NEATProgressPrinter1D(NEAT neat, IProgressPrinter progressPrinter, IProblem problem, ParameterCombination parameters) {
         super(progressPrinter, problem, parameters);
         this.neat = neat;
         this.pop = neat.getPopulation();
@@ -32,7 +32,7 @@ public class NEATProgressPrinter1D extends CommonProgressPrinter1D {
     }
 
     @Override
-    protected CPPN createBSFCPPN() {
+    protected ICPPN createBSFCPPN() {
         return new BasicNetCPPN(pop.getBestSoFarNet(), problem.getSubstrate().getMaxDimension());
     }
 

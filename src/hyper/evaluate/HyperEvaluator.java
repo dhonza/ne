@@ -1,12 +1,8 @@
 package hyper.evaluate;
 
-import common.evolution.Evaluable;
+import common.evolution.IEvaluable;
 import common.evolution.EvaluationInfo;
-import common.net.INet;
-import gp.Forest;
-import hyper.builder.EvaluableSubstrateBuilder;
-import hyper.cppn.BasicGPCPPN;
-import hyper.cppn.CPPN;
+import hyper.builder.IEvaluableSubstrateBuilder;
 
 /**
  * Created by IntelliJ IDEA.
@@ -15,11 +11,11 @@ import hyper.cppn.CPPN;
  * Time: 12:34:28 PM
  * To change this template use File | Settings | File Templates.
  */
-public class HyperEvaluator<INet> implements Evaluable<INet> {
-    final private EvaluableSubstrateBuilder substrateBuilder;
+public class HyperEvaluator<INet> implements IEvaluable<INet> {
+    final private IEvaluableSubstrateBuilder substrateBuilder;
     final private IProblem<INet> problem;
 
-    public HyperEvaluator(EvaluableSubstrateBuilder substrateBuilder, IProblem<INet> problem) {
+    public HyperEvaluator(IEvaluableSubstrateBuilder substrateBuilder, IProblem<INet> problem) {
         this.substrateBuilder = substrateBuilder;
         this.problem = problem;
     }

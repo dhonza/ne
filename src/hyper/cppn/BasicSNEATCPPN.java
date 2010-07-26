@@ -1,6 +1,6 @@
 package hyper.cppn;
 
-import hyper.substrate.Coordinate;
+import hyper.substrate.ICoordinate;
 import sneat.neuralnetwork.INetwork;
 
 /**
@@ -10,7 +10,7 @@ import sneat.neuralnetwork.INetwork;
  * Time: 8:51:18 PM
  * To change this template use File | Settings | File Templates.
  */
-public class BasicSNEATCPPN implements CPPN {
+public class BasicSNEATCPPN implements ICPPN {
     final private INetwork net;
     final private int maxCoordinateDimension;
     final private float[] in; //TODO SNEAT works with floats!
@@ -21,7 +21,7 @@ public class BasicSNEATCPPN implements CPPN {
         this.in = new float[net.getInputNeuronCount()];
     }
 
-    public double evaluate(int outputId, Coordinate from, Coordinate to) {
+    public double evaluate(int outputId, ICoordinate from, ICoordinate to) {
         if (from.getDimension() > maxCoordinateDimension || to.getDimension() > maxCoordinateDimension) {
             throw new IllegalArgumentException("One of from: " + from + ", to: " + to + " greater than the maxCoordinateDimension: " + maxCoordinateDimension
             );

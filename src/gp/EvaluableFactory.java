@@ -1,6 +1,6 @@
 package gp;
 
-import common.evolution.Evaluable;
+import common.evolution.IEvaluable;
 
 /**
  * Created by IntelliJ IDEA.
@@ -10,10 +10,10 @@ import common.evolution.Evaluable;
  * To change this template use File | Settings | File Templates.
  */
 public class EvaluableFactory {
-    public static Evaluable createByName(String className) {
-        Evaluable evaluable = null;
+    public static IEvaluable createByName(String className) {
+        IEvaluable evaluable = null;
         try {
-            evaluable = (Evaluable) Class.forName(className).newInstance();
+            evaluable = (IEvaluable) Class.forName(className).newInstance();
         } catch (InstantiationException e) {
             e.printStackTrace();
             System.exit(1);

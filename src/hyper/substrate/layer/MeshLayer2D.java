@@ -15,7 +15,7 @@ import hyper.substrate.node.NodeType;
 /**
  * This class is immutable.
  */
-public class MeshLayer2D implements SubstrateLayer {
+public class MeshLayer2D implements ISubstrateLayer {
     final private NodeType nodeType;
     final private int xNodes;
     final private int yNodes;

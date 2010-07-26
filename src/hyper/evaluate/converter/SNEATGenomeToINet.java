@@ -1,10 +1,10 @@
 package hyper.evaluate.converter;
 
-import common.evolution.GenotypeToPhenotype;
+import common.evolution.IGenotypeToPhenotype;
 import common.net.INet;
-import hyper.builder.EvaluableSubstrateBuilder;
+import hyper.builder.IEvaluableSubstrateBuilder;
 import hyper.cppn.BasicSNEATCPPN;
-import hyper.cppn.CPPN;
+import hyper.cppn.ICPPN;
 import sneat.neuralnetwork.INetwork;
 
 /**
@@ -14,15 +14,15 @@ import sneat.neuralnetwork.INetwork;
  * Time: 12:43:28 PM
  * To change this template use File | Settings | File Templates.
  */
-public class SNEATGenomeToINet implements GenotypeToPhenotype<INetwork, INet> {
-    final private EvaluableSubstrateBuilder substrateBuilder;
+public class SNEATGenomeToINet implements IGenotypeToPhenotype<INetwork, INet> {
+    final private IEvaluableSubstrateBuilder substrateBuilder;
 
-    public SNEATGenomeToINet(EvaluableSubstrateBuilder substrateBuilder) {
+    public SNEATGenomeToINet(IEvaluableSubstrateBuilder substrateBuilder) {
         this.substrateBuilder = substrateBuilder;
     }
 
     public INet convert(INetwork genome) {
-        CPPN aCPPN = new BasicSNEATCPPN(genome, substrateBuilder.getSubstrate().getMaxDimension());
+        ICPPN aCPPN = new BasicSNEATCPPN(genome, substrateBuilder.getSubstrate().getMaxDimension());
         substrateBuilder.build(aCPPN);
         return substrateBuilder.getNet();
     }

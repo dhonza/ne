@@ -11,7 +11,7 @@ package hyper.substrate;
 /**
  * This class is immutable.
  */
-public class Coordinate1D implements Coordinate {
+public class Coordinate1D implements ICoordinate {
     final private double x;
 
     public Coordinate1D(double x) {

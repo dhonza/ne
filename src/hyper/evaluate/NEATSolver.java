@@ -1,6 +1,5 @@
 package hyper.evaluate;
 
-import common.evolution.Evaluable;
 import common.evolution.EvolutionaryAlgorithmSolver;
 import common.evolution.ParallelPopulationEvaluator;
 import common.net.INet;

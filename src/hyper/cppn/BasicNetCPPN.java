@@ -1,6 +1,6 @@
 package hyper.cppn;
 
-import hyper.substrate.Coordinate;
+import hyper.substrate.ICoordinate;
 import common.net.linked.Net;
 
 /**
@@ -10,7 +10,7 @@ import common.net.linked.Net;
  * Time: 8:51:18 PM
  * To change this template use File | Settings | File Templates.
  */
-public class BasicNetCPPN implements CPPN {
+public class BasicNetCPPN implements ICPPN {
     final private Net net;
     final private int maxCoordinateDimension;
     final private double[] in;
@@ -22,7 +22,7 @@ public class BasicNetCPPN implements CPPN {
         in[0] = 1.0; //bias
     }
 
-    public double evaluate(int outputId, Coordinate from, Coordinate to) {
+    public double evaluate(int outputId, ICoordinate from, ICoordinate to) {
         if (from.getDimension() > maxCoordinateDimension || to.getDimension() > maxCoordinateDimension) {
             throw new IllegalArgumentException("One of from: " + from + ", to: " + to + " greater than the maxCoordinateDimension: " + maxCoordinateDimension
             );

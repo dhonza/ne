@@ -1,13 +1,12 @@
 package hyper.evaluate;
 
-import common.evolution.Evaluable;
+import common.evolution.IEvaluable;
 import common.evolution.EvolutionaryAlgorithmSolver;
-import common.evolution.GenotypeToPhenotype;
+import common.evolution.IGenotypeToPhenotype;
 import common.evolution.ParallelPopulationEvaluator;
-import common.net.INet;
 import common.pmatrix.ParameterCombination;
 import common.stats.Stats;
-import hyper.builder.EvaluableSubstrateBuilder;
+import hyper.builder.IEvaluableSubstrateBuilder;
 import hyper.builder.SubstrateBuilderFactory;
 import hyper.experiments.reco.ReportStorage;
 
@@ -45,18 +44,18 @@ abstract public class AbstractSolver<G, INet> implements Solver {
                 threads = ParallelPopulationEvaluator.getNumberOfThreads();
             }
         }
-        GenotypeToPhenotype<G, INet>[] perThreadConverters = new GenotypeToPhenotype[threads];
-        Evaluable<INet>[] perThreadEvaluators = new Evaluable[threads];
+        IGenotypeToPhenotype<G, INet>[] perThreadConverters = new IGenotypeToPhenotype[threads];
+        IEvaluable<INet>[] perThreadEvaluators = new IEvaluable[threads];
         for (int i = (threads - 1); i >= 0; i--) {
 
             problem = ProblemFactory.getProblem(parameters, reportStorage);
-            EvaluableSubstrateBuilder substrateBuilder =
+            IEvaluableSubstrateBuilder substrateBuilder =
                     SubstrateBuilderFactory.createEvaluableSubstrateBuilder(problem.getSubstrate(), parameters);
 
-            Evaluable<INet> evaluator = new HyperEvaluator<INet>(substrateBuilder, problem);
+            IEvaluable<INet> evaluator = new HyperEvaluator<INet>(substrateBuilder, problem);
             perThreadEvaluators[i] = evaluator;
 
-            GenotypeToPhenotype<G, INet> converter = ConverterFactory.getConverter(parameters, substrateBuilder, problem);
+            IGenotypeToPhenotype<G, INet> converter = ConverterFactory.getConverter(parameters, substrateBuilder, problem);
             perThreadConverters[i] = converter;
         }
         populationEvaluator = new ParallelPopulationEvaluator<G, INet>(perThreadConverters, perThreadEvaluators);

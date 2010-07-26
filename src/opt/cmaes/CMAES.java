@@ -3,7 +3,7 @@ package opt.cmaes;
 import cma.CMAEvolutionStrategy;
 import cma.CMAOptions;
 import common.evolution.EvaluationInfo;
-import common.evolution.EvolutionaryAlgorithm;
+import common.evolution.IEvolutionaryAlgorithm;
 import common.evolution.ParallelPopulationEvaluator;
 import opt.DoubleVectorGenome;
 
@@ -17,7 +17,7 @@ import java.util.List;
  * Time: 1:45:27 PM
  * To change this template use File | Settings | File Templates.
  */
-public class CMAES<P> implements EvolutionaryAlgorithm {
+public class CMAES<P> implements IEvolutionaryAlgorithm {
     private CMAEvolutionStrategy cma;
 
     private double[] fitness;

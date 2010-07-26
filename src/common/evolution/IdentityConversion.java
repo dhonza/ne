@@ -9,7 +9,7 @@ package common.evolution;
  *
  * For algorithms which evolve phenotypes directly.
  */
-public class IdentityConversion<P> implements GenotypeToPhenotype<P, P>{
+public class IdentityConversion<P> implements IGenotypeToPhenotype<P, P> {
     public P convert(P genome) {
         return genome;
     }

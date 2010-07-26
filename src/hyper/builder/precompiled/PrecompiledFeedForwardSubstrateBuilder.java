@@ -3,13 +3,12 @@ package hyper.builder.precompiled;
 import common.net.INet;
 import common.net.precompiled.IPrecompiledFeedForwardStub;
 import common.net.precompiled.PrecompiledFeedForwardNet;
-import hyper.builder.EvaluableSubstrateBuilder;
-import hyper.builder.WeightEvaluator;
-import hyper.cppn.CPPN;
-import hyper.substrate.Substrate;
-import hyper.substrate.layer.IBias;
+import hyper.builder.IEvaluableSubstrateBuilder;
+import hyper.builder.IWeightEvaluator;
+import hyper.cppn.ICPPN;
+import hyper.substrate.ISubstrate;
+import hyper.substrate.layer.ISubstrateLayer;
 import hyper.substrate.layer.SubstrateInterLayerConnection;
-import hyper.substrate.layer.SubstrateLayer;
 import hyper.substrate.node.Node;
 import hyper.substrate.node.NodeType;
 import org.apache.commons.lang.ArrayUtils;
@@ -29,7 +28,7 @@ import java.util.*;
  * Time: 8:16:07 PM
  * To change this template use File | Settings | File Templates.
  */
-public class PrecompiledFeedForwardSubstrateBuilder implements EvaluableSubstrateBuilder {
+public class PrecompiledFeedForwardSubstrateBuilder implements IEvaluableSubstrateBuilder {
     class PreviousLayerConnectionContainer {
         // bias connection to given layer
         public SubstrateInterLayerConnection bias;
@@ -42,11 +41,11 @@ public class PrecompiledFeedForwardSubstrateBuilder implements EvaluableSubstrat
         }
     }
 
-    final private Substrate substrate;
-    final private WeightEvaluator weightEvaluator;
+    final private ISubstrate substrate;
+    final private IWeightEvaluator weightEvaluator;
 
-    private SubstrateLayer inputLayer = null;
-    private SubstrateLayer biasLayer = null;
+    private ISubstrateLayer inputLayer = null;
+    private ISubstrateLayer biasLayer = null;
     private List<PreviousLayerConnectionContainer> successiveConnections = null;
 
     private IPrecompiledFeedForwardStub stub;
@@ -55,7 +54,7 @@ public class PrecompiledFeedForwardSubstrateBuilder implements EvaluableSubstrat
 
     private boolean built = false;
 
-    public PrecompiledFeedForwardSubstrateBuilder(Substrate substrate, WeightEvaluator weightEvaluator) {
+    public PrecompiledFeedForwardSubstrateBuilder(ISubstrate substrate, IWeightEvaluator weightEvaluator) {
         this.substrate = substrate;
         this.weightEvaluator = weightEvaluator;
         prepare();
@@ -72,12 +71,12 @@ public class PrecompiledFeedForwardSubstrateBuilder implements EvaluableSubstrat
     }
 
     private void findBiasAndInputLayers() {
-        Set<SubstrateLayer> layers = substrate.getLayers();
+        Set<ISubstrateLayer> layers = substrate.getLayers();
         inputLayer = null;
         biasLayer = null;
         boolean foundInput = false;
         boolean foundBias = false;
-        for (SubstrateLayer layer : layers) {
+        for (ISubstrateLayer layer : layers) {
             if (layer.hasIntraLayerConnections()) {
                 throw new IllegalStateException("No intralayer connections allowed for this substrate builder!");
             }
@@ -106,8 +105,8 @@ public class PrecompiledFeedForwardSubstrateBuilder implements EvaluableSubstrat
 
     private void createListOfSuccessiveLayers() {
         Set<SubstrateInterLayerConnection> layerConnections = substrate.getConnections();
-        Map<SubstrateLayer, SubstrateInterLayerConnection> layerConnectionMap = new HashMap<SubstrateLayer, SubstrateInterLayerConnection>();
-        Map<SubstrateLayer, SubstrateInterLayerConnection> biasConnectionMap = new HashMap<SubstrateLayer, SubstrateInterLayerConnection>();
+        Map<ISubstrateLayer, SubstrateInterLayerConnection> layerConnectionMap = new HashMap<ISubstrateLayer, SubstrateInterLayerConnection>();
+        Map<ISubstrateLayer, SubstrateInterLayerConnection> biasConnectionMap = new HashMap<ISubstrateLayer, SubstrateInterLayerConnection>();
         for (SubstrateInterLayerConnection layerConnection : layerConnections) {
             //ignore all bias connections, build only fully connected neural networks with all
             //non-input layers biased
@@ -117,10 +116,10 @@ public class PrecompiledFeedForwardSubstrateBuilder implements EvaluableSubstrat
                 biasConnectionMap.put(layerConnection.getTo(), layerConnection);
             }
         }
-        SubstrateLayer currentLayer = inputLayer;
+        ISubstrateLayer currentLayer = inputLayer;
         successiveConnections = new ArrayList<PreviousLayerConnectionContainer>();
         for (int i = 0; i < layerConnectionMap.size(); i++) {
-            SubstrateLayer nextLayer = layerConnectionMap.get(currentLayer).getTo();
+            ISubstrateLayer nextLayer = layerConnectionMap.get(currentLayer).getTo();
             successiveConnections.add(new PreviousLayerConnectionContainer(biasConnectionMap.get(nextLayer), layerConnectionMap.get(currentLayer)));
             currentLayer = nextLayer;
         }
@@ -197,11 +196,11 @@ public class PrecompiledFeedForwardSubstrateBuilder implements EvaluableSubstrat
         }
     }
 
-    public Substrate getSubstrate() {
+    public ISubstrate getSubstrate() {
         return substrate;
     }
 
-    public void build(CPPN aCPPN) {
+    public void build(ICPPN aCPPN) {
         int cnt = 0;
         for (PreviousLayerConnectionContainer successiveConnection : successiveConnections) {
             for (Node nodeTo : successiveConnection.connection.getTo().getNodes()) {

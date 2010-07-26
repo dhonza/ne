@@ -1,6 +1,6 @@
 package gp;
 
-import common.evolution.ProgressPrinter;
+import common.evolution.IProgressPrinter;
 
 /**
  * Created by IntelliJ IDEA.
@@ -9,7 +9,7 @@ import common.evolution.ProgressPrinter;
  * Time: 4:50:27 PM
  * To change this template use File | Settings | File Templates.
  */
-public class GPBasicProgressPrinter implements ProgressPrinter {
+public class GPBasicProgressPrinter implements IProgressPrinter {
     final protected GP gp;
 
     public GPBasicProgressPrinter(GP gp) {

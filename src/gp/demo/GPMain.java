@@ -41,10 +41,10 @@ public class GPMain {
                 Node[] functions = NodeFactory.createByNameList("gp.functions.", combination.getString("GP.FUNCTIONS"));
                 Node[] terminals = new Node[]{new Constant(-1.0), new Random()};
 
-                Evaluable evaluable = EvaluableFactory.createByName(combination.getString("PROBLEM"));
+                IEvaluable evaluable = EvaluableFactory.createByName(combination.getString("PROBLEM"));
                 ParallelPopulationEvaluator<Forest, Forest> populationEvaluator = new ParallelPopulationEvaluator<Forest, Forest>(
-                        new GenotypeToPhenotype[]{new IdentityConversion<Forest>()},
-                        new Evaluable[]{evaluable}
+                        new IGenotypeToPhenotype[]{new IdentityConversion<Forest>()},
+                        new IEvaluable[]{evaluable}
                 );
                 GP gp = GPFactory.createByName(combination.getString("GP.TYPE"), populationEvaluator, functions, terminals);
 

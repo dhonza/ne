@@ -1,6 +1,6 @@
 package hyper.cppn;
 
-import hyper.substrate.Coordinate;
+import hyper.substrate.ICoordinate;
 
 /**
  * Created by IntelliJ IDEA.
@@ -9,7 +9,7 @@ import hyper.substrate.Coordinate;
  * Time: 1:39:06 PM
  * To change this template use File | Settings | File Templates.
  */
-public class FakeArrayCPPN implements CPPN {
+public class FakeArrayCPPN implements ICPPN {
     final private double[] weights;
     final private int maxCoordinateDimension;
 
@@ -20,7 +20,7 @@ public class FakeArrayCPPN implements CPPN {
         this.maxCoordinateDimension = maxCoordinateDimension;
     }
 
-    public double evaluate(int outputId, Coordinate from, Coordinate to) {
+    public double evaluate(int outputId, ICoordinate from, ICoordinate to) {
         if (cnt >= weights.length) {
             throw new IllegalStateException("All " + weights.length + " weights already evaluated!");
         }

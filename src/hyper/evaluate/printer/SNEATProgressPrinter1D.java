@@ -1,9 +1,9 @@
 package hyper.evaluate.printer;
 
-import common.evolution.ProgressPrinter;
+import common.evolution.IProgressPrinter;
 import common.pmatrix.ParameterCombination;
 import hyper.cppn.BasicSNEATCPPN;
-import hyper.cppn.CPPN;
+import hyper.cppn.ICPPN;
 import hyper.evaluate.IProblem;
 import sneat.SNEAT;
 import sneat.SNEATBasicProgressPrinter;
@@ -24,7 +24,7 @@ import java.io.File;
 public class SNEATProgressPrinter1D extends CommonProgressPrinter1D {
     final private SNEAT sneat;
 
-    public SNEATProgressPrinter1D(SNEAT sneat, ProgressPrinter progressPrinter, IProblem problem, ParameterCombination parameters) {
+    public SNEATProgressPrinter1D(SNEAT sneat, IProgressPrinter progressPrinter, IProblem problem, ParameterCombination parameters) {
         super(progressPrinter, problem, parameters);
         this.sneat = sneat;
     }
@@ -34,7 +34,7 @@ public class SNEATProgressPrinter1D extends CommonProgressPrinter1D {
     }
 
     @Override
-    protected CPPN createBSFCPPN() {
+    protected ICPPN createBSFCPPN() {
         INetwork network = sneat.getEA().getBestGenome().decode(null);
         return new BasicSNEATCPPN(network, problem.getSubstrate().getMaxDimension());
     }

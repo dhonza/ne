@@ -15,7 +15,7 @@ import hyper.substrate.node.NodeType;
 /**
  * This class is immutable.
  */
-public class LineLayer1D implements SubstrateLayer {
+public class LineLayer1D implements ISubstrateLayer {
     final private NodeType nodeType;
     final protected int xNodes;
     final private double xStart;

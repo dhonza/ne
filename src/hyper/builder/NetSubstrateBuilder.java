@@ -4,11 +4,11 @@ import common.net.INet;
 import common.net.linked.Link;
 import common.net.linked.Net;
 import common.net.linked.Neuron;
-import hyper.cppn.CPPN;
-import hyper.substrate.Substrate;
+import hyper.cppn.ICPPN;
+import hyper.substrate.ISubstrate;
+import hyper.substrate.layer.ISubstrateLayer;
 import hyper.substrate.layer.SubstrateInterLayerConnection;
 import hyper.substrate.layer.SubstrateIntraLayerConnection;
-import hyper.substrate.layer.SubstrateLayer;
 import hyper.substrate.node.Node;
 import hyper.substrate.node.NodeType;
 
@@ -24,7 +24,7 @@ import java.util.Map;
  * Time: 11:32:18 AM
  * To change this template use File | Settings | File Templates.
  */
-public class NetSubstrateBuilder implements EvaluableSubstrateBuilder {
+public class NetSubstrateBuilder implements IEvaluableSubstrateBuilder {
     private class NeuronIndices implements Serializable {
         private int lower;
         private int upper;
@@ -43,26 +43,26 @@ public class NetSubstrateBuilder implements EvaluableSubstrateBuilder {
         }
     }
 
-    final private Substrate substrate;
-    final private WeightEvaluator weightEvaluator;
+    final private ISubstrate substrate;
+    final private IWeightEvaluator weightEvaluator;
 
-    private Map<SubstrateLayer, NeuronIndices> indices;
+    private Map<ISubstrateLayer, NeuronIndices> indices;
 
     private boolean built = false;
     private Net net;
 
-    public NetSubstrateBuilder(Substrate substrate, WeightEvaluator weightEvaluator) {
+    public NetSubstrateBuilder(ISubstrate substrate, IWeightEvaluator weightEvaluator) {
         this.substrate = substrate;
         this.weightEvaluator = weightEvaluator;
     }
 
-    public Substrate getSubstrate() {
+    public ISubstrate getSubstrate() {
         return substrate;
     }
 
-    public void build(CPPN aCPPN) {
+    public void build(ICPPN aCPPN) {
         //TODO checks
-        indices = new HashMap<SubstrateLayer, NeuronIndices>();
+        indices = new HashMap<ISubstrateLayer, NeuronIndices>();
         Map<Node, Neuron> nodeMap = new LinkedHashMap<Node, Neuron>();
         int neuronIdCounter = 0;
         int numInput = 0;
@@ -70,7 +70,7 @@ public class NetSubstrateBuilder implements EvaluableSubstrateBuilder {
         int numOutput = 0;
         int lowerIndex;
         int higherIndex;
-        for (SubstrateLayer layer : substrate.getLayers()) {
+        for (ISubstrateLayer layer : substrate.getLayers()) {
             lowerIndex = neuronIdCounter;
             Node[] nodes = layer.getNodes();
             for (Node node : nodes) {
@@ -130,7 +130,7 @@ public class NetSubstrateBuilder implements EvaluableSubstrateBuilder {
 //        System.out.println(this.toString() + "--------------END CPPN");
 
         // intra-layer connections
-        for (SubstrateLayer layer : substrate.getLayers()) {
+        for (ISubstrateLayer layer : substrate.getLayers()) {
             if (layer.hasIntraLayerConnections()) {
                 int aCPPNOutput = substrate.getConnectionCPPNOutput(layer);
                 for (SubstrateIntraLayerConnection intraLayerConnection : layer.getIntraLayerConnections()) {
@@ -168,14 +168,14 @@ public class NetSubstrateBuilder implements EvaluableSubstrateBuilder {
         return net;
     }
 
-    public int getLowerNeuronIndex(SubstrateLayer layer) {
+    public int getLowerNeuronIndex(ISubstrateLayer layer) {
         if (!built) {
             throw new IllegalStateException("Network not built yet.");
         }
         return indices.get(layer).getLower();
     }
 
-    public int getUpperNeuronIndex(SubstrateLayer layer) {
+    public int getUpperNeuronIndex(ISubstrateLayer layer) {
         if (!built) {
             throw new IllegalStateException("Network not built yet.");
         }

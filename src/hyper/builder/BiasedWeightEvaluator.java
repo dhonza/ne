@@ -1,6 +1,6 @@
 package hyper.builder;
 
-import hyper.cppn.CPPN;
+import hyper.cppn.ICPPN;
 import hyper.substrate.node.Node;
 import hyper.substrate.node.NodeType;
 
@@ -11,8 +11,8 @@ import hyper.substrate.node.NodeType;
  * Time: 6:05:17 PM
  * To change this template use File | Settings | File Templates.
  */
-public class BiasedWeightEvaluator implements WeightEvaluator {
-    public double evaluate(CPPN aCPPN, int aCPPNOutput, Node nodeFrom, Node nodeTo, int incomingLinks) {
+public class BiasedWeightEvaluator implements IWeightEvaluator {
+    public double evaluate(ICPPN aCPPN, int aCPPNOutput, Node nodeFrom, Node nodeTo, int incomingLinks) {
         double greyVal = aCPPN.evaluate(aCPPNOutput, nodeFrom.getCoordinate(), nodeTo.getCoordinate());
         double biasMultiplier = 1.0;
         if (nodeFrom.getType() == NodeType.BIAS) {

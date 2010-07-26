@@ -1,6 +1,6 @@
 package neat;
 
-import common.evolution.StopCondition;
+import common.evolution.IStopCondition;
 
 /**
  * Created by IntelliJ IDEA.
@@ -9,7 +9,7 @@ import common.evolution.StopCondition;
  * Time: 3:51:16 PM
  * To change this template use File | Settings | File Templates.
  */
-public class TargetFitnessStopCondition implements StopCondition {
+public class TargetFitnessStopCondition implements IStopCondition {
     final private NEAT neat;
 
     public TargetFitnessStopCondition(NEAT neat) {

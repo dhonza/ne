@@ -1,9 +1,9 @@
 package neat.demo;
 
 import common.RND;
-import common.evolution.Evaluable;
+import common.evolution.IEvaluable;
 import common.evolution.EvolutionaryAlgorithmSolver;
-import common.evolution.GenotypeToPhenotype;
+import common.evolution.IGenotypeToPhenotype;
 import common.evolution.ParallelPopulationEvaluator;
 import common.net.linked.Net;
 import common.net.linked.Neuron;
@@ -85,7 +85,7 @@ public class ExampleSpirals {
         Genome proto = new Genome(net);
         evaluateSpirals = new EvaluateSpirals();
 
-        ParallelPopulationEvaluator<Genome, Net> populationEvaluator = new ParallelPopulationEvaluator<Genome, Net>(new GenotypeToPhenotype[]{new GenomeToNet()}, new Evaluable[]{evaluateSpirals});
+        ParallelPopulationEvaluator<Genome, Net> populationEvaluator = new ParallelPopulationEvaluator<Genome, Net>(new IGenotypeToPhenotype[]{new GenomeToNet()}, new IEvaluable[]{evaluateSpirals});
         population = new FitnessSharingPopulation<Net>(populationEvaluator, proto);
 //        population = new DeterministicCrowdingPopulation(evaluateSpirals, proto);
         problem.setPopulation(population);

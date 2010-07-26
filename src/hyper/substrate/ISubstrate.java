@@ -1,8 +1,8 @@
 package hyper.substrate;
 
-import hyper.substrate.layer.Connectable;
+import hyper.substrate.layer.IConnectable;
+import hyper.substrate.layer.ISubstrateLayer;
 import hyper.substrate.layer.SubstrateInterLayerConnection;
-import hyper.substrate.layer.SubstrateLayer;
 
 import java.io.Serializable;
 import java.util.Set;
@@ -14,8 +14,8 @@ import java.util.Set;
  * Time: 12:26:59 PM
  * To change this template use File | Settings | File Templates.
  */
-public interface Substrate extends Serializable {
-    public void addLayer(final SubstrateLayer layer);
+public interface ISubstrate extends Serializable {
+    public void addLayer(final ISubstrateLayer layer);
 
     /**
      * @param substrateLayerConnection
@@ -23,7 +23,7 @@ public interface Substrate extends Serializable {
      */
     public void connect(final SubstrateInterLayerConnection substrateLayerConnection) throws IllegalArgumentException;
 
-    public Set<SubstrateLayer> getLayers();
+    public Set<ISubstrateLayer> getLayers();
 
     public Set<SubstrateInterLayerConnection> getConnections();
 
@@ -33,5 +33,5 @@ public interface Substrate extends Serializable {
 
     public int getNumOfLinks();
 
-    public int getConnectionCPPNOutput(Connectable connectable);
+    public int getConnectionCPPNOutput(IConnectable connectable);
 }

@@ -2,7 +2,7 @@ package hyper.builder;
 
 import common.pmatrix.ParameterCombination;
 import hyper.builder.precompiled.PrecompiledFeedForwardSubstrateBuilder;
-import hyper.substrate.Substrate;
+import hyper.substrate.ISubstrate;
 
 /**
  * Created by IntelliJ IDEA.
@@ -12,8 +12,8 @@ import hyper.substrate.Substrate;
  * To change this template use File | Settings | File Templates.
  */
 public class SubstrateBuilderFactory {
-    public static EvaluableSubstrateBuilder createEvaluableSubstrateBuilder(Substrate substrate, ParameterCombination parameters) {
-        WeightEvaluator weightEvaluator = WeightEvaluatorFactory.createWeightEvaluator(parameters);
+    public static IEvaluableSubstrateBuilder createEvaluableSubstrateBuilder(ISubstrate substrate, ParameterCombination parameters) {
+        IWeightEvaluator weightEvaluator = WeightEvaluatorFactory.createWeightEvaluator(parameters);
         String type = parameters.getString("BUILDER").toLowerCase();
         if (type.equals("basic")) {
             return new NetSubstrateBuilder(substrate, weightEvaluator);

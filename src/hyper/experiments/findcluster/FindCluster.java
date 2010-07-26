@@ -7,7 +7,7 @@ import common.pmatrix.ParameterCombination;
 import hyper.evaluate.IProblem;
 import hyper.evaluate.IProblemGeneralization;
 import hyper.experiments.reco.ReportStorage;
-import hyper.substrate.Substrate;
+import hyper.substrate.ISubstrate;
 
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
@@ -408,7 +408,7 @@ public class FindCluster implements IProblem<INet>, IProblemGeneralization<INet>
         System.out.println("GENERALIZATION: showGeneralization() not implemented!");
     }
 
-    public Substrate getSubstrate() {
+    public ISubstrate getSubstrate() {
         return FindClusterSubstrateFactory.createInputToOutputNoBias(numNodesX, numNodesY);
     }
 

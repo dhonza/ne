@@ -1,6 +1,6 @@
 package hyper.cppn;
 
-import hyper.substrate.Coordinate;
+import hyper.substrate.ICoordinate;
 
 import java.io.Serializable;
 
@@ -11,8 +11,8 @@ import java.io.Serializable;
  * Time: 12:42:55 PM
  * To change this template use File | Settings | File Templates.
  */
-public interface CPPN extends Serializable {
-    public double evaluate(final int outputId, final Coordinate from, final Coordinate to);
+public interface ICPPN extends Serializable {
+    public double evaluate(final int outputId, final ICoordinate from, final ICoordinate to);
 
     public int getNumInputs();
 }

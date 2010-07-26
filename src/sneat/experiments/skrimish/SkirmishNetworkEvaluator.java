@@ -1,12 +1,12 @@
 package sneat.experiments.skrimish;
 
-import common.evolution.Evaluable;
+import common.evolution.IEvaluable;
 import common.evolution.EvaluationInfo;
 import sneat.experiments.HyperNEATParameters;
 import sneat.neatgenome.NeatGenome;
 import sneat.neuralnetwork.INetwork;
 
-public class SkirmishNetworkEvaluator implements Evaluable<INetwork> {
+public class SkirmishNetworkEvaluator implements IEvaluable<INetwork> {
     public static SkirmishSubstrate substrate;
     int numAgents;
     public static boolean trainingSeed = false;

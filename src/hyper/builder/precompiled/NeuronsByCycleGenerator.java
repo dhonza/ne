@@ -1,7 +1,7 @@
 package hyper.builder.precompiled;
 
+import hyper.substrate.layer.ISubstrateLayer;
 import hyper.substrate.layer.SubstrateInterLayerConnection;
-import hyper.substrate.layer.SubstrateLayer;
 import hyper.substrate.node.Node;
 
 import java.util.List;
@@ -14,7 +14,7 @@ import java.util.List;
  * To change this template use File | Settings | File Templates.
  */
 public class NeuronsByCycleGenerator extends NoCyclesGenerator {
-    public NeuronsByCycleGenerator(List<PrecompiledFeedForwardSubstrateBuilder.PreviousLayerConnectionContainer> successiveConnections, int numberOfInputs, SubstrateLayer biasLayer) {
+    public NeuronsByCycleGenerator(List<PrecompiledFeedForwardSubstrateBuilder.PreviousLayerConnectionContainer> successiveConnections, int numberOfInputs, ISubstrateLayer biasLayer) {
         super(successiveConnections, numberOfInputs, biasLayer);
     }
 

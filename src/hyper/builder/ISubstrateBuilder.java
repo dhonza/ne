@@ -1,7 +1,7 @@
 package hyper.builder;
 
-import hyper.cppn.CPPN;
-import hyper.substrate.Substrate;
+import hyper.cppn.ICPPN;
+import hyper.substrate.ISubstrate;
 
 import java.io.Serializable;
 
@@ -12,13 +12,13 @@ import java.io.Serializable;
  * Time: 11:30:47 AM
  * To change this template use File | Settings | File Templates.
  */
-public interface SubstrateBuilder extends Serializable {
+public interface ISubstrateBuilder extends Serializable {
 
-    public Substrate getSubstrate();
+    public ISubstrate getSubstrate();
 
     /**
      * @param aCPPN
      * @throws IllegalStateException when missing output layer, unconnected layers, etc.
      */
-    public void build(final CPPN aCPPN);
+    public void build(final ICPPN aCPPN);
 }

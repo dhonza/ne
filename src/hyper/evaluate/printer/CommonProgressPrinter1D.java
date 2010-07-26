@@ -1,11 +1,11 @@
 package hyper.evaluate.printer;
 
-import common.evolution.ProgressPrinter;
+import common.evolution.IProgressPrinter;
 import common.net.INet;
 import common.pmatrix.ParameterCombination;
-import hyper.builder.EvaluableSubstrateBuilder;
+import hyper.builder.IEvaluableSubstrateBuilder;
 import hyper.builder.SubstrateBuilderFactory;
-import hyper.cppn.CPPN;
+import hyper.cppn.ICPPN;
 import hyper.evaluate.IProblem;
 
 /**
@@ -15,8 +15,8 @@ import hyper.evaluate.IProblem;
  * Time: 2:57:42 PM
  * To change this template use File | Settings | File Templates.
  */
-abstract public class CommonProgressPrinter1D implements ProgressPrinter {
-    final private ProgressPrinter progressPrinter;
+abstract public class CommonProgressPrinter1D implements IProgressPrinter {
+    final private IProgressPrinter progressPrinter;
     final protected IProblem problem;
     final protected ParameterCombination parameters;
 
@@ -30,7 +30,7 @@ abstract public class CommonProgressPrinter1D implements ProgressPrinter {
     protected boolean finishedShowHyperNet = true;
     protected boolean finishedShowProblem = true;
 
-    public CommonProgressPrinter1D(ProgressPrinter progressPrinter, IProblem problem, ParameterCombination parameters) {
+    public CommonProgressPrinter1D(IProgressPrinter progressPrinter, IProblem problem, ParameterCombination parameters) {
         this.progressPrinter = progressPrinter;
         this.problem = problem;
         this.parameters = parameters;
@@ -95,8 +95,8 @@ abstract public class CommonProgressPrinter1D implements ProgressPrinter {
 
     private void showProblem(boolean show) {
         if (show) {
-            CPPN aCPPN = createBSFCPPN();
-            EvaluableSubstrateBuilder substrateBuilder = createSubstrateBuilder();
+            ICPPN aCPPN = createBSFCPPN();
+            IEvaluableSubstrateBuilder substrateBuilder = createSubstrateBuilder();
             substrateBuilder.build(aCPPN);
             INet hyperNet = createHyperNet(substrateBuilder);
             problem.show(hyperNet);
@@ -105,22 +105,22 @@ abstract public class CommonProgressPrinter1D implements ProgressPrinter {
 
     private void showHyperNet(boolean show) {
         if (show) {
-            CPPN aCPPN = createBSFCPPN();
-            EvaluableSubstrateBuilder substrateBuilder = createSubstrateBuilder();
-//            EvaluableSubstrateBuilder substrateBuilder = new NetSubstrateBuilder(substrate);
+            ICPPN aCPPN = createBSFCPPN();
+            IEvaluableSubstrateBuilder substrateBuilder = createSubstrateBuilder();
+//            IEvaluableSubstrateBuilder substrateBuilder = new NetSubstrateBuilder(substrate);
             substrateBuilder.build(aCPPN);
             INet hyperNet = createHyperNet(substrateBuilder);
             System.out.println(hyperNet);
         }
     }
 
-    protected abstract CPPN createBSFCPPN();
+    protected abstract ICPPN createBSFCPPN();
 
-    protected EvaluableSubstrateBuilder createSubstrateBuilder() {
+    protected IEvaluableSubstrateBuilder createSubstrateBuilder() {
         return SubstrateBuilderFactory.createEvaluableSubstrateBuilder(problem.getSubstrate(), parameters);
     }
 
-    protected INet createHyperNet(EvaluableSubstrateBuilder substrateBuilder) {
+    protected INet createHyperNet(IEvaluableSubstrateBuilder substrateBuilder) {
         return substrateBuilder.getNet();
     }
 

@@ -9,6 +9,6 @@ import java.io.Serializable;
  * Time: 2:54:46 PM
  * To change this template use File | Settings | File Templates.
  */
-public interface StopCondition extends Serializable {
+public interface IStopCondition extends Serializable {
     public boolean isMet();
 }

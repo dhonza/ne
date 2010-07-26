@@ -1,7 +1,7 @@
 package neat.demo;
 
 import common.RND;
-import common.evolution.Evaluable;
+import common.evolution.IEvaluable;
 import common.evolution.EvaluationInfo;
 import common.net.linked.Net;
 import neat.Genome;
@@ -11,7 +11,7 @@ import neat.Genome;
  * Date: May 19, 2006
  * Time: 8:52:38 AM
  */
-public class EvaluateSpirals implements Evaluable<Genome> {
+public class EvaluateSpirals implements IEvaluable<Genome> {
     public static double DENSITY = 1.0,
             MAX_RADIUS = 0.8,
             CENTER = 0.0;

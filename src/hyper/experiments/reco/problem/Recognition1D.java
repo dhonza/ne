@@ -10,7 +10,7 @@ import hyper.experiments.reco.util.PatternGenerator;
 import hyper.experiments.reco.util.PatternGeneratorFactory;
 import hyper.experiments.reco.util.PatternUtils;
 import hyper.substrate.BasicSubstrate;
-import hyper.substrate.Substrate;
+import hyper.substrate.ISubstrate;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -76,7 +76,7 @@ public class Recognition1D implements IProblem<INet> {
         return targetFitness;
     }
 
-    public Substrate getSubstrate() {
+    public ISubstrate getSubstrate() {
 //            BasicSubstrate substrate = RecoSubstrateFactory.createInputToOutput(lineSize);
 //            BasicSubstrate substrate = RecoSubstrateFactory.createInputHiddenOutput(lineSize, 2, lineSize);
 //            BasicSubstrate substrate = RecoSubstrateFactory.createInputHiddenOutput(lineSize, 3, 1);

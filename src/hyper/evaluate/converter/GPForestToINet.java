@@ -1,11 +1,11 @@
 package hyper.evaluate.converter;
 
-import common.evolution.GenotypeToPhenotype;
+import common.evolution.IGenotypeToPhenotype;
 import common.net.INet;
 import gp.Forest;
-import hyper.builder.EvaluableSubstrateBuilder;
+import hyper.builder.IEvaluableSubstrateBuilder;
 import hyper.cppn.BasicGPCPPN;
-import hyper.cppn.CPPN;
+import hyper.cppn.ICPPN;
 
 /**
  * Created by IntelliJ IDEA.
@@ -14,15 +14,15 @@ import hyper.cppn.CPPN;
  * Time: 12:29:20 PM
  * To change this template use File | Settings | File Templates.
  */
-public class GPForestToINet implements GenotypeToPhenotype<Forest, INet> {
-    final private EvaluableSubstrateBuilder substrateBuilder;
+public class GPForestToINet implements IGenotypeToPhenotype<Forest, INet> {
+    final private IEvaluableSubstrateBuilder substrateBuilder;
 
-    public GPForestToINet(EvaluableSubstrateBuilder substrateBuilder) {
+    public GPForestToINet(IEvaluableSubstrateBuilder substrateBuilder) {
         this.substrateBuilder = substrateBuilder;
     }
 
     public INet convert(Forest genome) {
-        CPPN aCPPN = new BasicGPCPPN(genome, substrateBuilder.getSubstrate().getMaxDimension());
+        ICPPN aCPPN = new BasicGPCPPN(genome, substrateBuilder.getSubstrate().getMaxDimension());
         substrateBuilder.build(aCPPN);
         return substrateBuilder.getNet();
     }

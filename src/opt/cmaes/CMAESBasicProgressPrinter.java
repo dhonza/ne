@@ -1,6 +1,6 @@
 package opt.cmaes;
 
-import common.evolution.ProgressPrinter;
+import common.evolution.IProgressPrinter;
 
 /**
  * Created by IntelliJ IDEA.
@@ -9,7 +9,7 @@ import common.evolution.ProgressPrinter;
  * Time: 4:50:27 PM
  * To change this template use File | Settings | File Templates.
  */
-public class CMAESBasicProgressPrinter implements ProgressPrinter {
+public class CMAESBasicProgressPrinter implements IProgressPrinter {
     final protected CMAES cmaes;
 
     public CMAESBasicProgressPrinter(CMAES cmaes) {

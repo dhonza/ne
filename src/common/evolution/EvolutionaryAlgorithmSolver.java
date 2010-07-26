@@ -15,14 +15,14 @@ import java.util.List;
  * To change this template use File | Settings | File Templates.
  */
 public class EvolutionaryAlgorithmSolver implements Serializable {
-    final private EvolutionaryAlgorithm evolutionaryAlgorithm;
+    final private IEvolutionaryAlgorithm evolutionaryAlgorithm;
     final private Stats stats;
     final private boolean generalization;
-    final private List<ProgressPrinter> progressPrinterList = new ArrayList<ProgressPrinter>();
-    final private List<StopCondition> stopConditionList = new ArrayList<StopCondition>();
+    final private List<IProgressPrinter> progressPrinterList = new ArrayList<IProgressPrinter>();
+    final private List<IStopCondition> stopConditionList = new ArrayList<IStopCondition>();
     private Bench bench;
 
-    public EvolutionaryAlgorithmSolver(EvolutionaryAlgorithm evolutionaryAlgorithm, Stats stats, boolean generalization) {
+    public EvolutionaryAlgorithmSolver(IEvolutionaryAlgorithm evolutionaryAlgorithm, Stats stats, boolean generalization) {
         this.evolutionaryAlgorithm = evolutionaryAlgorithm;
         this.stats = stats;
         this.generalization = generalization;
@@ -54,7 +54,7 @@ public class EvolutionaryAlgorithmSolver implements Serializable {
         }
         bench.stop();
 
-        for (ProgressPrinter progressPrinter : progressPrinterList) {
+        for (IProgressPrinter progressPrinter : progressPrinterList) {
             progressPrinter.printFinished();
         }
         storeFinalStats();
@@ -71,20 +71,20 @@ public class EvolutionaryAlgorithmSolver implements Serializable {
 
     private void printProgress() {
         if (evolutionaryAlgorithm.hasImproved()) {
-            for (ProgressPrinter progressPrinter : progressPrinterList) {
+            for (IProgressPrinter progressPrinter : progressPrinterList) {
                 progressPrinter.printProgress();
             }
         }
     }
 
     private void printGeneration() {
-        for (ProgressPrinter progressPrinter : progressPrinterList) {
+        for (IProgressPrinter progressPrinter : progressPrinterList) {
             progressPrinter.printGeneration();
         }
     }
 
     private boolean toStop() {
-        for (StopCondition stopCondition : stopConditionList) {
+        for (IStopCondition stopCondition : stopConditionList) {
             if (stopCondition.isMet()) {
                 return true;
             }
@@ -92,19 +92,19 @@ public class EvolutionaryAlgorithmSolver implements Serializable {
         return false;
     }
 
-    public void addProgressPrinter(ProgressPrinter progressPrinter) {
+    public void addProgressPrinter(IProgressPrinter progressPrinter) {
         progressPrinterList.add(progressPrinter);
     }
 
-    public void removeProgressPrinter(ProgressPrinter progressPrinter) {
+    public void removeProgressPrinter(IProgressPrinter progressPrinter) {
         progressPrinterList.remove(progressPrinter);
     }
 
-    public void addStopCondition(StopCondition stopCondition) {
+    public void addStopCondition(IStopCondition stopCondition) {
         stopConditionList.add(stopCondition);
     }
 
-    public void removeStopCondition(StopCondition stopCondition) {
+    public void removeStopCondition(IStopCondition stopCondition) {
         stopConditionList.remove(stopCondition);
     }
 }

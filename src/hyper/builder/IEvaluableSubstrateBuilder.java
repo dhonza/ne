@@ -9,6 +9,6 @@ import common.net.INet;
  * Time: 10:34:39 PM
  * To change this template use File | Settings | File Templates.
  */
-public interface EvaluableSubstrateBuilder extends SubstrateBuilder {
+public interface IEvaluableSubstrateBuilder extends ISubstrateBuilder {
     INet getNet();
 }

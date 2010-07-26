@@ -1,7 +1,7 @@
 package neat;
 
 import common.evolution.EvaluationInfo;
-import common.evolution.EvolutionaryAlgorithm;
+import common.evolution.IEvolutionaryAlgorithm;
 
 /**
  * <p>Title: ne</p>
@@ -19,7 +19,7 @@ import common.evolution.EvolutionaryAlgorithm;
  * - method for computation of the termination-condition,</br>
  * - all parameters affecting neuro-evolution.
  */
-public class NEAT implements EvolutionaryAlgorithm {
+public class NEAT implements IEvolutionaryAlgorithm {
     private static NEATConfig config = new NEATConfig();
 
     /**

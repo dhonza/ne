@@ -7,9 +7,7 @@
 package neat;
 
 import common.RND;
-import common.evolution.Evaluable;
 import common.evolution.EvaluationInfo;
-import common.evolution.GenotypeToPhenotype;
 import common.evolution.ParallelPopulationEvaluator;
 
 import java.util.Arrays;

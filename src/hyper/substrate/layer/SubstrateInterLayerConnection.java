@@ -5,20 +5,20 @@ import java.io.Serializable;
 /**
  * This class is immutable.
  */
-public class SubstrateInterLayerConnection implements Connectable, Serializable {
-    final private SubstrateLayer from;
-    final private SubstrateLayer to;
+public class SubstrateInterLayerConnection implements IConnectable, Serializable {
+    final private ISubstrateLayer from;
+    final private ISubstrateLayer to;
 
-    public SubstrateInterLayerConnection(SubstrateLayer from, SubstrateLayer to) {
+    public SubstrateInterLayerConnection(ISubstrateLayer from, ISubstrateLayer to) {
         this.from = from;
         this.to = to;
     }
 
-    public SubstrateLayer getFrom() {
+    public ISubstrateLayer getFrom() {
         return from;
     }
 
-    public SubstrateLayer getTo() {
+    public ISubstrateLayer getTo() {
         return to;
     }
 

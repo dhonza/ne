@@ -1,8 +1,8 @@
 package hyper.evaluate.printer;
 
-import common.evolution.ProgressPrinter;
+import common.evolution.IProgressPrinter;
 import common.pmatrix.ParameterCombination;
-import hyper.cppn.CPPN;
+import hyper.cppn.ICPPN;
 import hyper.cppn.FakeArrayCPPN;
 import hyper.evaluate.IProblem;
 import opt.cmaes.CMAES;
@@ -18,7 +18,7 @@ import opt.cmaes.CMAESBasicProgressPrinter;
 public class CMAESProgressPrinter1D extends CommonProgressPrinter1D {
     final private CMAES cmaes;
 
-    public CMAESProgressPrinter1D(CMAES cmaes, ProgressPrinter progressPrinter, IProblem problem, ParameterCombination parameters) {
+    public CMAESProgressPrinter1D(CMAES cmaes, IProgressPrinter progressPrinter, IProblem problem, ParameterCombination parameters) {
         super(progressPrinter, problem, parameters);
         this.cmaes = cmaes;
     }
@@ -28,7 +28,7 @@ public class CMAESProgressPrinter1D extends CommonProgressPrinter1D {
     }
 
     @Override
-    protected CPPN createBSFCPPN() {
+    protected ICPPN createBSFCPPN() {
         return new FakeArrayCPPN(cmaes.getMaxReached(), problem.getSubstrate().getMaxDimension());
     }
 

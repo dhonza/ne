@@ -1,6 +1,6 @@
 package hyper.substrate.node;
 
-import hyper.substrate.Coordinate;
+import hyper.substrate.ICoordinate;
 
 import java.io.Serializable;
 
@@ -16,7 +16,7 @@ import java.io.Serializable;
  * Implementing class must be immutable.
  */
 public interface Node extends Serializable {
-    public Coordinate getCoordinate();
+    public ICoordinate getCoordinate();
 
     public NodeType getType();
 }

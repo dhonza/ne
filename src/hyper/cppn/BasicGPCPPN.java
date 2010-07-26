@@ -1,7 +1,7 @@
 package hyper.cppn;
 
 import gp.Forest;
-import hyper.substrate.Coordinate;
+import hyper.substrate.ICoordinate;
 
 /**
  * Created by IntelliJ IDEA.
@@ -10,7 +10,7 @@ import hyper.substrate.Coordinate;
  * Time: 8:51:18 PM
  * To change this template use File | Settings | File Templates.
  */
-public class BasicGPCPPN implements CPPN {
+public class BasicGPCPPN implements ICPPN {
     final private Forest forest;
     final private int maxCoordinateDimension;
     final private double[] in;
@@ -21,7 +21,7 @@ public class BasicGPCPPN implements CPPN {
         this.in = new double[forest.getNumOfInputs()];
     }
 
-    public double evaluate(int outputId, Coordinate from, Coordinate to) {
+    public double evaluate(int outputId, ICoordinate from, ICoordinate to) {
         //TODO same in BasicNetCPPN
         if (from.getDimension() > maxCoordinateDimension || to.getDimension() > maxCoordinateDimension) {
             throw new IllegalArgumentException("One of from: " + from + ", to: " + to + " greater than the maxCoordinateDimension: " + maxCoordinateDimension

@@ -13,5 +13,5 @@ import java.io.Serializable;
 /**
  * Marker interface.
  */
-public interface Connectable extends Serializable {
+public interface IConnectable extends Serializable {
 }

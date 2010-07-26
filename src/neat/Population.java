@@ -1,8 +1,6 @@
 package neat;
 
-import common.evolution.Evaluable;
 import common.evolution.EvaluationInfo;
-import common.evolution.GenotypeToPhenotype;
 import common.evolution.ParallelPopulationEvaluator;
 import common.net.linked.Net;
 import common.net.linked.NetStorage;
@@ -71,7 +69,7 @@ public abstract class Population<P> {
     protected OutputStream logging;
 
     /**
-     * You have to implement Evaluable interface in order to compute fitness.
+     * You have to implement IEvaluable interface in order to compute fitness.
      */
     protected ParallelPopulationEvaluator<Genome, P> populationEvaluator;
 

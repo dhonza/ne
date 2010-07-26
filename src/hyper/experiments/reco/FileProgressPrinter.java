@@ -1,8 +1,8 @@
 package hyper.experiments.reco;
 
 import common.evolution.EvaluationInfo;
-import common.evolution.EvolutionaryAlgorithm;
-import common.evolution.ProgressPrinter;
+import common.evolution.IEvolutionaryAlgorithm;
+import common.evolution.IProgressPrinter;
 import common.net.INet;
 import common.pmatrix.ParameterCombination;
 import hyper.evaluate.IProblem;
@@ -18,14 +18,14 @@ import java.util.List;
  * Time: 4:40:50 PM
  * To change this template use File | Settings | File Templates.
  */
-public class FileProgressPrinter implements ProgressPrinter {
+public class FileProgressPrinter implements IProgressPrinter {
     private static class InfoContainer {
         double bsf;
         EvaluationInfo[] evaluationInfos;
         EvaluationInfo generalizationInfo;
     }
 
-    final private EvolutionaryAlgorithm ea;
+    final private IEvolutionaryAlgorithm ea;
     final private IProblem<INet> problem;
     final private ReportStorage reportStorage;
     final private ParameterCombination parameters;
@@ -33,7 +33,7 @@ public class FileProgressPrinter implements ProgressPrinter {
 
     final private List<InfoContainer> generations = new ArrayList<InfoContainer>();
 
-    public FileProgressPrinter(EvolutionaryAlgorithm ea, IProblem problem, ReportStorage reportStorage, ParameterCombination parameters) {
+    public FileProgressPrinter(IEvolutionaryAlgorithm ea, IProblem problem, ReportStorage reportStorage, ParameterCombination parameters) {
         this.ea = ea;
         this.problem = problem;
         this.reportStorage = reportStorage;

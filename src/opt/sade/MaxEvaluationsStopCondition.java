@@ -1,6 +1,6 @@
 package opt.sade;
 
-import common.evolution.StopCondition;
+import common.evolution.IStopCondition;
 
 /**
  * Created by IntelliJ IDEA.
@@ -9,7 +9,7 @@ import common.evolution.StopCondition;
  * Time: 3:51:16 PM
  * To change this template use File | Settings | File Templates.
  */
-public class MaxEvaluationsStopCondition implements StopCondition {
+public class MaxEvaluationsStopCondition implements IStopCondition {
     final private SADE sade;
 
     public MaxEvaluationsStopCondition(SADE sade) {

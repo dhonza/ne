@@ -1,6 +1,6 @@
 package hyper.builder;
 
-import hyper.cppn.CPPN;
+import hyper.cppn.ICPPN;
 import hyper.substrate.node.Node;
 
 /**
@@ -10,6 +10,6 @@ import hyper.substrate.node.Node;
  * Time: 5:54:55 PM
  * To change this template use File | Settings | File Templates.
  */
-public interface WeightEvaluator {
-    double evaluate(CPPN aCPPN, int aCPPNOutput, Node nodeFrom, Node nodeTo, int incomingLinks);
+public interface IWeightEvaluator {
+    double evaluate(ICPPN aCPPN, int aCPPNOutput, Node nodeFrom, Node nodeTo, int incomingLinks);
 }

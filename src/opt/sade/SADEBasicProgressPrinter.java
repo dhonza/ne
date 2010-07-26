@@ -1,6 +1,6 @@
 package opt.sade;
 
-import common.evolution.ProgressPrinter;
+import common.evolution.IProgressPrinter;
 
 /**
  * Created by IntelliJ IDEA.
@@ -9,7 +9,7 @@ import common.evolution.ProgressPrinter;
  * Time: 4:50:27 PM
  * To change this template use File | Settings | File Templates.
  */
-public class SADEBasicProgressPrinter implements ProgressPrinter {
+public class SADEBasicProgressPrinter implements IProgressPrinter {
     final protected SADE sade;
 
     public SADEBasicProgressPrinter(SADE sade) {

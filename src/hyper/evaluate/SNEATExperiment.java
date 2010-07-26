@@ -1,7 +1,5 @@
 package hyper.evaluate;
 
-import common.evolution.Evaluable;
-import common.evolution.GenotypeToPhenotype;
 import common.evolution.ParallelPopulationEvaluator;
 import common.pmatrix.ParameterCombination;
 import common.pmatrix.Utils;

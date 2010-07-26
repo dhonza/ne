@@ -1,8 +1,8 @@
 package hyper.substrate;
 
-import hyper.substrate.layer.Connectable;
+import hyper.substrate.layer.IConnectable;
 import hyper.substrate.layer.SubstrateInterLayerConnection;
-import hyper.substrate.layer.SubstrateLayer;
+import hyper.substrate.layer.ISubstrateLayer;
 
 import java.util.*;
 
@@ -17,19 +17,19 @@ import java.util.*;
 /**
  * Class has to states: not completed and completed.
  */
-public class BasicSubstrate implements Substrate {
+public class BasicSubstrate implements ISubstrate {
 
     private boolean completed = false;
 
-    private Set<SubstrateLayer> layers = new LinkedHashSet<SubstrateLayer>();
+    private Set<ISubstrateLayer> layers = new LinkedHashSet<ISubstrateLayer>();
     private Set<SubstrateInterLayerConnection> connections = new LinkedHashSet<SubstrateInterLayerConnection>();
 
     private int connectionCounter = 0;
-    private Map<Connectable, Integer> connectionCPPNOutput = new HashMap<Connectable, Integer>();
+    private Map<IConnectable, Integer> connectionCPPNOutput = new HashMap<IConnectable, Integer>();
 
     private int maxDimension = 0;
 
-    public void addLayer(SubstrateLayer layer) throws IllegalStateException {
+    public void addLayer(ISubstrateLayer layer) throws IllegalStateException {
         if (completed) {
             throw new IllegalStateException("Substrate already completed. Cannot add a layer.");
         }
@@ -67,7 +67,7 @@ public class BasicSubstrate implements Substrate {
         connections = Collections.unmodifiableSet(connections);
     }
 
-    public Set<SubstrateLayer> getLayers() throws IllegalStateException {
+    public Set<ISubstrateLayer> getLayers() throws IllegalStateException {
         if (!completed) {
             throw new IllegalStateException("Substrate not completed.");
         }
@@ -104,7 +104,7 @@ public class BasicSubstrate implements Substrate {
             sum += connection.getNumOfLinks();
         }
 
-        for (SubstrateLayer layer : layers) {
+        for (ISubstrateLayer layer : layers) {
             if (layer.hasIntraLayerConnections()) {
                 throw new IllegalStateException("Not yet IMPLEMENTED!");
             }
@@ -113,7 +113,7 @@ public class BasicSubstrate implements Substrate {
         return sum;
     }
 
-    public int getConnectionCPPNOutput(Connectable connectable) {
+    public int getConnectionCPPNOutput(IConnectable connectable) {
         if (!completed) {
             throw new IllegalStateException("Substrate not completed.");
         }

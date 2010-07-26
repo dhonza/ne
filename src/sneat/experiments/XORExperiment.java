@@ -1,7 +1,7 @@
 package sneat.experiments;
 
-import common.evolution.Evaluable;
-import common.evolution.GenotypeToPhenotype;
+import common.evolution.IEvaluable;
+import common.evolution.IGenotypeToPhenotype;
 import common.evolution.IdentityConversion;
 import common.evolution.ParallelPopulationEvaluator;
 import common.pmatrix.ParameterCombination;
@@ -39,8 +39,8 @@ public class XORExperiment implements IExperiment {
 
     public void resetEvaluator(IActivationFunction activationFn) {
         ParallelPopulationEvaluator<INetwork, INetwork> populationEvaluator =
-                new ParallelPopulationEvaluator<INetwork, INetwork>(new GenotypeToPhenotype[]{new IdentityConversion<INetwork>()},
-                        new Evaluable[]{new XORNetworkEvaluator()});
+                new ParallelPopulationEvaluator<INetwork, INetwork>(new IGenotypeToPhenotype[]{new IdentityConversion<INetwork>()},
+                        new IEvaluable[]{new XORNetworkEvaluator()});
         singlePopulationEvaluator = new SingleFilePopulationEvaluator<INetwork>(populationEvaluator, null);
     }
 

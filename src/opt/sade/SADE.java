@@ -37,7 +37,7 @@ import java.util.List;
  */
 
 
-public class SADE<P> implements EvolutionaryAlgorithm {
+public class SADE<P> implements IEvolutionaryAlgorithm {
     /**
      * Determines the size of the pool.
      */

@@ -7,6 +7,6 @@ package common.evolution;
  * Time: 11:00:16 AM
  * To change this template use File | Settings | File Templates.
  */
-public interface GenotypeToPhenotype<G, P> {
+public interface IGenotypeToPhenotype<G, P> {
     P convert(G genome);
 }

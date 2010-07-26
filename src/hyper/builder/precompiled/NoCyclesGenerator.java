@@ -1,7 +1,7 @@
 package hyper.builder.precompiled;
 
 import hyper.substrate.layer.SubstrateInterLayerConnection;
-import hyper.substrate.layer.SubstrateLayer;
+import hyper.substrate.layer.ISubstrateLayer;
 import hyper.substrate.node.Node;
 
 import java.util.List;
@@ -16,9 +16,9 @@ import java.util.List;
 public class NoCyclesGenerator {
     protected List<PrecompiledFeedForwardSubstrateBuilder.PreviousLayerConnectionContainer> successiveConnections = null;
     protected int numberOfInputs;
-    protected SubstrateLayer biasLayer = null;
+    protected ISubstrateLayer biasLayer = null;
 
-    public NoCyclesGenerator(List<PrecompiledFeedForwardSubstrateBuilder.PreviousLayerConnectionContainer> successiveConnections, int numberOfInputs, SubstrateLayer biasLayer) {
+    public NoCyclesGenerator(List<PrecompiledFeedForwardSubstrateBuilder.PreviousLayerConnectionContainer> successiveConnections, int numberOfInputs, ISubstrateLayer biasLayer) {
         this.successiveConnections = successiveConnections;
         this.numberOfInputs = numberOfInputs;
         this.biasLayer = biasLayer;

@@ -1,6 +1,6 @@
 package sneat.experiments;
 
-import common.evolution.Evaluable;
+import common.evolution.IEvaluable;
 import common.evolution.EvaluationInfo;
 import sneat.neuralnetwork.INetwork;
 
@@ -11,7 +11,7 @@ import sneat.neuralnetwork.INetwork;
  * Time: 10:39:55 PM
  * To change this template use File | Settings | File Templates.
  */
-public class XORNetworkEvaluator implements Evaluable<INetwork> {
+public class XORNetworkEvaluator implements IEvaluable<INetwork> {
 //    private final float[][] in = {{1.0f, 0.0f, 0.0f}, // the first number for bias
 //            {1.0f, 0.0f, 1.0f}, {1.0f, 1.0f, 0.0f}, {1.0f, 1.0f, 1.0f}};
 

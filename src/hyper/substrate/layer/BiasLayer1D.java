@@ -15,7 +15,7 @@ import hyper.substrate.node.NodeType;
 /**
  * This class is immutable.
  */
-public class BiasLayer1D implements SubstrateLayer, IBias {
+public class BiasLayer1D implements ISubstrateLayer, IBias {
     final private Node node;
 
     public BiasLayer1D(double x) {

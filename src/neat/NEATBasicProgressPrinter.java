@@ -1,6 +1,6 @@
 package neat;
 
-import common.evolution.ProgressPrinter;
+import common.evolution.IProgressPrinter;
 
 /**
  * User: honza
@@ -8,7 +8,7 @@ import common.evolution.ProgressPrinter;
  * Time: 8:45:57 PM
  */
 
-public class NEATBasicProgressPrinter implements ProgressPrinter {
+public class NEATBasicProgressPrinter implements IProgressPrinter {
     protected final Population pop;
 
     public NEATBasicProgressPrinter(NEAT neat) {

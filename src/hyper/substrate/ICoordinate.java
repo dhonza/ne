@@ -14,7 +14,7 @@ import java.io.Serializable;
  * Implementing class must be immutable.
  */
 
-public interface Coordinate extends Serializable {
+public interface ICoordinate extends Serializable {
     public double[] asArray();
 
     public int getDimension();

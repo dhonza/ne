@@ -1,6 +1,6 @@
 package sneat;
 
-import common.evolution.ProgressPrinter;
+import common.evolution.IProgressPrinter;
 import sneat.evolution.EvolutionAlgorithm;
 import sneat.evolution.IGenome;
 
@@ -10,7 +10,7 @@ import sneat.evolution.IGenome;
  * Time: 8:45:57 PM
  */
 
-public class SNEATBasicProgressPrinter implements ProgressPrinter {
+public class SNEATBasicProgressPrinter implements IProgressPrinter {
     protected final SNEAT sneat;
 
     public SNEATBasicProgressPrinter(SNEAT sneat) {

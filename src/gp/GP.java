@@ -15,7 +15,7 @@ import java.util.Arrays;
  * Time: 11:34:02 AM
  * To change this template use File | Settings | File Templates.
  */
-public class GP<P> implements EvolutionaryAlgorithm, Serializable {
+public class GP<P> implements IEvolutionaryAlgorithm, Serializable {
     public static double CONSTANT_AMPLITUDE = 5.0;
     public static int MAX_GENERATIONS = 1000;
     public static int MAX_EVALUATIONS = Integer.MAX_VALUE;

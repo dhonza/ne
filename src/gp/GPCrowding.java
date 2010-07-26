@@ -1,8 +1,6 @@
 package gp;
 
 import common.RND;
-import common.evolution.Evaluable;
-import common.evolution.GenotypeToPhenotype;
 import common.evolution.ParallelPopulationEvaluator;
 
 /**

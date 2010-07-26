@@ -1,11 +1,11 @@
 package hyper.builder;
 
 import common.mathematica.MathematicaUtils;
-import hyper.cppn.CPPN;
-import hyper.substrate.Substrate;
+import hyper.cppn.ICPPN;
+import hyper.substrate.ISubstrate;
+import hyper.substrate.layer.ISubstrateLayer;
 import hyper.substrate.layer.SubstrateInterLayerConnection;
 import hyper.substrate.layer.SubstrateIntraLayerConnection;
-import hyper.substrate.layer.SubstrateLayer;
 import hyper.substrate.node.Node;
 
 import java.util.HashMap;
@@ -19,24 +19,24 @@ import java.util.Map;
  * Time: 12:34:15 PM
  * To change this template use File | Settings | File Templates.
  */
-public class MathematicaHyperGraphSubstrateBuilder2D implements SubstrateBuilder {
-    final private Substrate substrate;
+public class MathematicaHyperGraphSubstrateBuilder2D implements ISubstrateBuilder {
+    final private ISubstrate substrate;
 
     private boolean built = false;
     private String mathematicaExpression;
 
-    public MathematicaHyperGraphSubstrateBuilder2D(Substrate substrate) {
+    public MathematicaHyperGraphSubstrateBuilder2D(ISubstrate substrate) {
         if (substrate.getMaxDimension() > 1) {
             throw new IllegalArgumentException("The substrate is > 1D.");
         }
         this.substrate = substrate;
     }
 
-    public Substrate getSubstrate() {
+    public ISubstrate getSubstrate() {
         return substrate;
     }
 
-    public void build(CPPN aCPPN) {
+    public void build(ICPPN aCPPN) {
         StringBuilder vertices = new StringBuilder();
         StringBuilder coords = new StringBuilder();
 
@@ -46,8 +46,8 @@ public class MathematicaHyperGraphSubstrateBuilder2D implements SubstrateBuilder
 
         double layerLevel = 0.0;
         coords.append("coords := {");
-        for (Iterator<SubstrateLayer> itLayer = substrate.getLayers().iterator(); itLayer.hasNext();) {
-            SubstrateLayer layer = itLayer.next();
+        for (Iterator<ISubstrateLayer> itLayer = substrate.getLayers().iterator(); itLayer.hasNext();) {
+            ISubstrateLayer layer = itLayer.next();
             Node[] nodes = layer.getNodes();
             for (int i = 0; i < nodes.length; i++) {
                 Node node = nodes[i];
@@ -85,7 +85,7 @@ public class MathematicaHyperGraphSubstrateBuilder2D implements SubstrateBuilder
 
         // intra-layer connections
         int layerCounter = 0;
-        for (SubstrateLayer layer : substrate.getLayers()) {
+        for (ISubstrateLayer layer : substrate.getLayers()) {
             if (layer.hasIntraLayerConnections()) {
                 int aCPPNOutput = substrate.getConnectionCPPNOutput(layer);
                 int connectionCounter = 0;

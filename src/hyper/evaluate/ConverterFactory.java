@@ -1,8 +1,8 @@
 package hyper.evaluate;
 
-import common.evolution.GenotypeToPhenotype;
+import common.evolution.IGenotypeToPhenotype;
 import common.pmatrix.ParameterCombination;
-import hyper.builder.EvaluableSubstrateBuilder;
+import hyper.builder.IEvaluableSubstrateBuilder;
 import hyper.evaluate.converter.DirectGenomeToINet;
 import hyper.evaluate.converter.GPForestToINet;
 import hyper.evaluate.converter.NEATGenomeToInet;
@@ -19,7 +19,7 @@ public class ConverterFactory {
     private ConverterFactory() {
     }
 
-    public static GenotypeToPhenotype getConverter(ParameterCombination parameters, EvaluableSubstrateBuilder substrateBuilder, IProblem problem) {
+    public static IGenotypeToPhenotype getConverter(ParameterCombination parameters, IEvaluableSubstrateBuilder substrateBuilder, IProblem problem) {
         String name = parameters.getString("SOLVER");
         if (name.equalsIgnoreCase("GP")) {
             return new GPForestToINet(substrateBuilder);

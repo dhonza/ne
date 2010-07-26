@@ -1,6 +1,6 @@
 package neat;
 
-import common.evolution.GenotypeToPhenotype;
+import common.evolution.IGenotypeToPhenotype;
 import common.net.linked.Net;
 
 /**
@@ -10,7 +10,7 @@ import common.net.linked.Net;
  * Time: 11:02:05 AM
  * To change this template use File | Settings | File Templates.
  */
-public class GenomeToNet implements GenotypeToPhenotype<Genome, Net> {
+public class GenomeToNet implements IGenotypeToPhenotype<Genome, Net> {
     public Net convert(Genome genome) {
         return genome.getNet();
     }

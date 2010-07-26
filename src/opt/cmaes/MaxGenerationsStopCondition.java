@@ -1,6 +1,6 @@
 package opt.cmaes;
 
-import common.evolution.StopCondition;
+import common.evolution.IStopCondition;
 
 /**
  * Created by IntelliJ IDEA.
@@ -9,7 +9,7 @@ import common.evolution.StopCondition;
  * Time: 3:51:16 PM
  * To change this template use File | Settings | File Templates.
  */
-public class MaxGenerationsStopCondition implements StopCondition {
+public class MaxGenerationsStopCondition implements IStopCondition {
     final private CMAES cmaes;
 
     public MaxGenerationsStopCondition(CMAES cmaes) {

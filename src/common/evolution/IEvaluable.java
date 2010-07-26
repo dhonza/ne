@@ -9,7 +9,7 @@ import java.io.Serializable;
  * Time: 3:40:04 PM
  * To change this template use File | Settings | File Templates.
  */
-public interface Evaluable<P> extends Serializable {
+public interface IEvaluable<P> extends Serializable {
     public EvaluationInfo evaluate(P individual);
 
     public EvaluationInfo evaluateGeneralization(P individual);

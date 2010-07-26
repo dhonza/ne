@@ -1,7 +1,7 @@
 package sneat;
 
 import common.evolution.EvaluationInfo;
-import common.evolution.EvolutionaryAlgorithm;
+import common.evolution.IEvolutionaryAlgorithm;
 import hyper.evaluate.SNEATExperiment;
 import sneat.evolution.EvolutionAlgorithm;
 import sneat.evolution.IdGenerator;
@@ -15,7 +15,7 @@ import sneat.neatgenome.GenomeFactory;
  * Time: 8:26:46 PM
  * To change this template use File | Settings | File Templates.
  */
-public class SNEAT implements EvolutionaryAlgorithm {
+public class SNEAT implements IEvolutionaryAlgorithm {
     final private SNEATExperiment exp;
     private EvolutionAlgorithm ea;
 

@@ -1,7 +1,5 @@
 package gp;
 
-import common.evolution.Evaluable;
-import common.evolution.GenotypeToPhenotype;
 import common.evolution.ParallelPopulationEvaluator;
 
 import java.lang.reflect.Constructor;

@@ -1,6 +1,6 @@
 package hyper.evaluate;
 
-import common.evolution.StopCondition;
+import common.evolution.IStopCondition;
 
 /**
  * Created by IntelliJ IDEA.
@@ -9,7 +9,7 @@ import common.evolution.StopCondition;
  * Time: 4:15:39 PM
  * To change this template use File | Settings | File Templates.
  */
-public class SolvedStopCondition implements StopCondition {
+public class SolvedStopCondition implements IStopCondition {
     final private IProblem problem;
 
     public SolvedStopCondition(IProblem problem) {

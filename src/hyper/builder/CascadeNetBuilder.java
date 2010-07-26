@@ -3,11 +3,10 @@ package hyper.builder;
 import common.net.INet;
 import common.net.cascade.ActivationFunctionSigmoid;
 import common.net.cascade.NeuralNetwork;
-import hyper.cppn.CPPN;
-import hyper.substrate.Substrate;
-import hyper.substrate.layer.IBias;
+import hyper.cppn.ICPPN;
+import hyper.substrate.ISubstrate;
 import hyper.substrate.layer.SubstrateInterLayerConnection;
-import hyper.substrate.layer.SubstrateLayer;
+import hyper.substrate.layer.ISubstrateLayer;
 import hyper.substrate.node.Node;
 import hyper.substrate.node.NodeType;
 
@@ -20,7 +19,7 @@ import java.util.*;
  * Time: 11:41:11 AM
  * To change this template use File | Settings | File Templates.
  */
-public class CascadeNetBuilder implements EvaluableSubstrateBuilder {
+public class CascadeNetBuilder implements IEvaluableSubstrateBuilder {
     class PreviousLayerConnectionContainer {
         //TODO same code as in  PrecompiledFeedForward
         // bias connection to given layer
@@ -34,11 +33,11 @@ public class CascadeNetBuilder implements EvaluableSubstrateBuilder {
         }
     }
 
-    final private Substrate substrate;
-    final private WeightEvaluator weightEvaluator;
+    final private ISubstrate substrate;
+    final private IWeightEvaluator weightEvaluator;
 
-    private SubstrateLayer inputLayer = null;
-    private SubstrateLayer biasLayer = null;
+    private ISubstrateLayer inputLayer = null;
+    private ISubstrateLayer biasLayer = null;
     private List<PreviousLayerConnectionContainer> successiveConnections = null;
     private int[] layers;
     private double[] weights;
@@ -49,7 +48,7 @@ public class CascadeNetBuilder implements EvaluableSubstrateBuilder {
 
     private NeuralNetwork net;
 
-    public CascadeNetBuilder(Substrate substrate, WeightEvaluator weightEvaluator) {
+    public CascadeNetBuilder(ISubstrate substrate, IWeightEvaluator weightEvaluator) {
         this.substrate = substrate;
         this.weightEvaluator = weightEvaluator;
         prepare();
@@ -64,12 +63,12 @@ public class CascadeNetBuilder implements EvaluableSubstrateBuilder {
 
     private void findBiasAndInputLayers() {
         //TODO same code as in  PrecompiledFeedForward
-        Set<SubstrateLayer> layers = substrate.getLayers();
+        Set<ISubstrateLayer> layers = substrate.getLayers();
         inputLayer = null;
         biasLayer = null;
         boolean foundInput = false;
         boolean foundBias = false;
-        for (SubstrateLayer layer : layers) {
+        for (ISubstrateLayer layer : layers) {
             if (layer.hasIntraLayerConnections()) {
                 throw new IllegalStateException("No intralayer connections allowed for this substrate builder!");
             }
@@ -99,8 +98,8 @@ public class CascadeNetBuilder implements EvaluableSubstrateBuilder {
     private void createListOfSuccessiveLayers() {
         //TODO same code as in  PrecompiledFeedForward
         Set<SubstrateInterLayerConnection> layerConnections = substrate.getConnections();
-        Map<SubstrateLayer, SubstrateInterLayerConnection> layerConnectionMap = new HashMap<SubstrateLayer, SubstrateInterLayerConnection>();
-        Map<SubstrateLayer, SubstrateInterLayerConnection> biasConnectionMap = new HashMap<SubstrateLayer, SubstrateInterLayerConnection>();
+        Map<ISubstrateLayer, SubstrateInterLayerConnection> layerConnectionMap = new HashMap<ISubstrateLayer, SubstrateInterLayerConnection>();
+        Map<ISubstrateLayer, SubstrateInterLayerConnection> biasConnectionMap = new HashMap<ISubstrateLayer, SubstrateInterLayerConnection>();
         for (SubstrateInterLayerConnection layerConnection : layerConnections) {
             //ignore all bias connections, build only fully connected neural networks with all
             //non-input layers biased
@@ -110,10 +109,10 @@ public class CascadeNetBuilder implements EvaluableSubstrateBuilder {
                 biasConnectionMap.put(layerConnection.getTo(), layerConnection);
             }
         }
-        SubstrateLayer currentLayer = inputLayer;
+        ISubstrateLayer currentLayer = inputLayer;
         successiveConnections = new ArrayList<PreviousLayerConnectionContainer>();
         for (int i = 0; i < layerConnectionMap.size(); i++) {
-            SubstrateLayer nextLayer = layerConnectionMap.get(currentLayer).getTo();
+            ISubstrateLayer nextLayer = layerConnectionMap.get(currentLayer).getTo();
             successiveConnections.add(new PreviousLayerConnectionContainer(biasConnectionMap.get(nextLayer), layerConnectionMap.get(currentLayer)));
             currentLayer = nextLayer;
         }
@@ -140,11 +139,11 @@ public class CascadeNetBuilder implements EvaluableSubstrateBuilder {
         }
     }
 
-    public Substrate getSubstrate() {
+    public ISubstrate getSubstrate() {
         return substrate;
     }
 
-    public void build(CPPN aCPPN) {
+    public void build(ICPPN aCPPN) {
         //TODO same code as in  PrecompiledFeedForward
         int cnt = 0;
         for (PreviousLayerConnectionContainer successiveConnection : successiveConnections) {

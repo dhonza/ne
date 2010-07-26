@@ -18,8 +18,8 @@ public class FindClusterSubstrateFactory {
     public static BasicSubstrate createInputToOutputNoBias(int numNodesX, int numNodesY) {
         BasicSubstrate substrate = new BasicSubstrate();
 
-        SubstrateLayer inputLayer = new MeshLayer2D(NodeType.INPUT, numNodesX, numNodesY, 2.0, 2.0);
-        SubstrateLayer outputLayer = new MeshLayer2D(NodeType.OUTPUT, numNodesX, numNodesY, 2.0, 2.0);
+        ISubstrateLayer inputLayer = new MeshLayer2D(NodeType.INPUT, numNodesX, numNodesY, 2.0, 2.0);
+        ISubstrateLayer outputLayer = new MeshLayer2D(NodeType.OUTPUT, numNodesX, numNodesY, 2.0, 2.0);
 
         SubstrateInterLayerConnection inputToOutput = new SubstrateInterLayerConnection(inputLayer, outputLayer);
 
