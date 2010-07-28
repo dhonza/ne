@@ -1,14 +1,16 @@
 package neat;
 
 import common.evolution.EvaluationInfo;
-import common.evolution.ParallelPopulationEvaluator;
+import common.evolution.PopulationManager;
 import common.net.linked.Net;
 import common.net.linked.NetStorage;
 import common.xml.XMLSerialization;
 
 import java.io.OutputStream;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.LinkedList;
+import java.util.List;
 
 /**
  * This class is a predecesor of all Population classes.
@@ -71,22 +73,22 @@ public abstract class Population<P> {
     /**
      * You have to implement IEvaluable interface in order to compute fitness.
      */
-    protected ParallelPopulationEvaluator<Genome, P> populationEvaluator;
+    protected PopulationManager<Genome, P> populationManager;
 
     protected double[][][] bsfInputs;
 
     protected double[][][] bsfOutputs;
 
 
-    public Population(ParallelPopulationEvaluator<Genome, P> populationEvaluator) {
-        this.populationEvaluator = populationEvaluator;
+    public Population(PopulationManager<Genome, P> populationManager) {
+        this.populationManager = populationManager;
         genomes = new Genome[NEAT.getConfig().populationSize];
         species = new LinkedList<Species>();
 //        speciesHistory = new SpeciesHistory(); //(NE.POPULATION_SIZE);
     }
 
-    public Population(ParallelPopulationEvaluator<Genome, P> populationEvaluator, Genome oproto) {
-        this(populationEvaluator);
+    public Population(PopulationManager<Genome, P> populationManager, Genome oproto) {
+        this(populationManager);
         spawn(oproto);
     }
 
@@ -95,9 +97,9 @@ public abstract class Population<P> {
      *
      * @param ofileName file name
      */
-    public Population(ParallelPopulationEvaluator<Genome, P> populationEvaluator, String ofileName) {
+    public Population(PopulationManager<Genome, P> populationManager, String ofileName) {
         Net[] nets = NetStorage.loadMultiple(ofileName);
-        this.populationEvaluator = populationEvaluator;
+        this.populationManager = populationManager;
         NEAT.getConfig().populationSize = nets.length;
         genomes = new Genome[nets.length];
         for (int i = 0; i < nets.length; i++) {
@@ -189,11 +191,12 @@ public abstract class Population<P> {
         Genome tg;
         int n = NEAT.getConfig().populationSize;
 
-        EvaluationInfo[] evaluationInfos = populationEvaluator.evaluate(Arrays.asList(genomes));
+        populationManager.loadGenotypes(Arrays.asList(genomes));
+        List<EvaluationInfo> evaluationInfos = populationManager.evaluate();
         for (int i = 0; i < n; i++) {
             tg = genomes[i];
-            tg.fitness = evaluationInfos[i].getFitness();
-            tg.setEvaluationInfo(evaluationInfos[i]);
+            tg.fitness = evaluationInfos.get(i).getFitness();
+            tg.setEvaluationInfo(evaluationInfos.get(i));
             tg.evaluated = true; //mark evaluated
             if (tg.fitness > bestOfGeneration.fitness) {
                 bestOfGeneration = tg;
@@ -217,7 +220,7 @@ public abstract class Population<P> {
     }
 
     EvaluationInfo evaluateGeneralization() {
-        return populationEvaluator.evaluateGeneralization(getBestSoFar());
+        return populationManager.evaluateGeneralization(getBestSoFar());
     }
 
     /**
@@ -360,20 +363,20 @@ public abstract class Population<P> {
         return fv;
     }
 
-    public EvaluationInfo[] getEvaluationInfo() {
-        EvaluationInfo[] fv = new EvaluationInfo[genomes.length];
-        for (int i = 0; i < genomes.length; i++) {
-            fv[i] = genomes[i].getEvaluationInfo();
+    public List<EvaluationInfo> getEvaluationInfo() {
+        List<EvaluationInfo> infoList = new ArrayList<EvaluationInfo>(genomes.length);
+        for (Genome genome : genomes) {
+            infoList.add(genome.getEvaluationInfo());
 
         }
-        return fv;
+        return infoList;
     }
 
     public boolean isSolved() {
-        return populationEvaluator.isSolved();
+        return populationManager.isSolved();
     }
 
     public void shutdown() {
-        populationEvaluator.shutdown();
+        populationManager.shutdown();
     }
 }

@@ -11,7 +11,7 @@ import neat.Genome;
  * Date: May 19, 2006
  * Time: 8:52:38 AM
  */
-public class EvaluateSpirals implements IEvaluable<Genome> {
+public class EvaluateSpirals implements IEvaluable<Net> {
     public static double DENSITY = 1.0,
             MAX_RADIUS = 0.8,
             CENTER = 0.0;
@@ -91,27 +91,26 @@ public class EvaluateSpirals implements IEvaluable<Genome> {
         return tin;
     }
 
-    public EvaluationInfo evaluate(Genome og) {
-        Net n = og.getNet();
+    public EvaluationInfo evaluate(Net net) {
         double[] o;
 
-        og.setError(0.0);
+        double error = 0.0;
         double[][] tin = jitter(in);
         double c1 = 0.0, c2 = 0.0;
         for (int i = from; i < size; i++) {
-            n.loadInputs(tin[i]);
-            n.reset();
-            activate(n);
-            o = n.getOutputValues();
+            net.loadInputs(tin[i]);
+            net.reset();
+            activate(net);
+            o = net.getOutputValues();
             if (o[0] < 0.0) {
                 c1 += 1.0;
             }
         }
         for (int i = from; i < size; i++) {
-            n.loadInputs(tin[i + size]);
-            n.reset();
-            activate(n);
-            o = n.getOutputValues();
+            net.loadInputs(tin[i + size]);
+            net.reset();
+            activate(net);
+            o = net.getOutputValues();
             if (o[0] > 0.0) {
                 c2 += 1.0;
             }
@@ -119,8 +118,8 @@ public class EvaluateSpirals implements IEvaluable<Genome> {
         return new EvaluationInfo(c1 + c2);
     }
 
-    public EvaluationInfo evaluateGeneralization(Genome og) {
-        return evaluate(og);
+    public EvaluationInfo evaluateGeneralization(Net net) {
+        return evaluate(net);
     }
 
     public double evaluate2(Genome og) {

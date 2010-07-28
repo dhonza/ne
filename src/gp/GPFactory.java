@@ -1,6 +1,6 @@
 package gp;
 
-import common.evolution.ParallelPopulationEvaluator;
+import common.evolution.PopulationManager;
 
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
@@ -13,11 +13,11 @@ import java.lang.reflect.InvocationTargetException;
  * To change this template use File | Settings | File Templates.
  */
 public class GPFactory {
-    public static GP createByName(String className, ParallelPopulationEvaluator populationEvaluator, Node[] functions, Node[] terminals) {
+    public static GP createByName(String className, PopulationManager populationManager, Node[] functions, Node[] terminals) {
         GP gp = null;
         try {
-            Constructor constructor = Class.forName(className).getConstructor(ParallelPopulationEvaluator.class, Node[].class, Node[].class);
-            gp = (GP) constructor.newInstance(populationEvaluator, functions, terminals);
+            Constructor constructor = Class.forName(className).getConstructor(PopulationManager.class, Node[].class, Node[].class);
+            gp = (GP) constructor.newInstance(populationManager, functions, terminals);
         } catch (NoSuchMethodException e) {
             System.err.println(e.getCause());
             e.printStackTrace();

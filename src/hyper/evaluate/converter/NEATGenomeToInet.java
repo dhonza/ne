@@ -21,7 +21,7 @@ public class NEATGenomeToInet implements IGenotypeToPhenotype<Genome, INet> {
         this.substrateBuilder = substrateBuilder;
     }
 
-    public INet convert(Genome genome) {
+    public INet transform(Genome genome) {
         ICPPN aCPPN = new BasicNetCPPN(genome.getNet(), substrateBuilder.getSubstrate().getMaxDimension());
         substrateBuilder.build(aCPPN);
         return substrateBuilder.getNet();

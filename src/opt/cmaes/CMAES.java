@@ -4,7 +4,7 @@ import cma.CMAEvolutionStrategy;
 import cma.CMAOptions;
 import common.evolution.EvaluationInfo;
 import common.evolution.IEvolutionaryAlgorithm;
-import common.evolution.ParallelPopulationEvaluator;
+import common.evolution.PopulationManager;
 import opt.DoubleVectorGenome;
 
 import java.util.ArrayList;
@@ -27,14 +27,14 @@ public class CMAES<P> implements IEvolutionaryAlgorithm {
     private int lastInnovation;
     private double bestSolutionValue;
 
-    final private ParallelPopulationEvaluator<DoubleVectorGenome, P> populationEvaluator;
+    final private PopulationManager<DoubleVectorGenome, P> populationManager;
 
-    private EvaluationInfo[] evaluationInfos;
+    private List<EvaluationInfo> evaluationInfos;
     private int generalizationGeneration;
     private EvaluationInfo generalizationEvaluationInfo;
 
-    public CMAES(ParallelPopulationEvaluator<DoubleVectorGenome, P> populationEvaluator, int dimension) {
-        this.populationEvaluator = populationEvaluator;
+    public CMAES(PopulationManager<DoubleVectorGenome, P> populationManager, int dimension) {
+        this.populationManager = populationManager;
         cma = new CMAEvolutionStrategy();
         cma.setDimension(dimension);
         cma.setInitialX(-0.3, 0.3);
@@ -57,10 +57,11 @@ public class CMAES<P> implements IEvolutionaryAlgorithm {
             evaluations++;
         }
 
-        evaluationInfos = populationEvaluator.evaluate(evalPopulation);
+        populationManager.loadGenotypes(evalPopulation);
+        evaluationInfos = populationManager.evaluate();
 
         for (int i = 0; i < pop.length; ++i) {
-            fitness[i] = -evaluationInfos[i].getFitness();
+            fitness[i] = -evaluationInfos.get(i).getFitness();
         }
     }
 
@@ -90,12 +91,12 @@ public class CMAES<P> implements IEvolutionaryAlgorithm {
     }
 
     public void performGeneralizationTest() {
-        generalizationEvaluationInfo = populationEvaluator.evaluateGeneralization(new DoubleVectorGenome(getMaxReached()));
+        generalizationEvaluationInfo = populationManager.evaluateGeneralization(new DoubleVectorGenome(getMaxReached()));
         generalizationGeneration = generation;
     }
 
     public void finished() {
-        populationEvaluator.shutdown();
+        populationManager.shutdown();
     }
 
     public boolean hasImproved() {
@@ -126,7 +127,7 @@ public class CMAES<P> implements IEvolutionaryAlgorithm {
         return -cma.getBestRecentFunctionValue();
     }
 
-    public EvaluationInfo[] getEvaluationInfo() {
+    public List<EvaluationInfo> getEvaluationInfo() {
         return evaluationInfos;
     }
 
@@ -138,7 +139,7 @@ public class CMAES<P> implements IEvolutionaryAlgorithm {
     }
 
     public boolean isSolved() {
-        return populationEvaluator.isSolved();
+        return populationManager.isSolved();
     }
 
     public String getConfigString() {

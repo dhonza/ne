@@ -3,6 +3,8 @@ package neat;
 import common.evolution.EvaluationInfo;
 import common.evolution.IEvolutionaryAlgorithm;
 
+import java.util.List;
+
 /**
  * <p>Title: ne</p>
  * <p>Description:</p>
@@ -106,7 +108,7 @@ public class NEAT implements IEvolutionaryAlgorithm {
         return population.getBestSoFar().getFitness();
     }
 
-    public EvaluationInfo[] getEvaluationInfo() {
+    public List<EvaluationInfo> getEvaluationInfo() {
         return population.getEvaluationInfo();
     }
 

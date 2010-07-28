@@ -21,7 +21,7 @@ public class DirectGenomeToINet implements IGenotypeToPhenotype<DoubleVectorGeno
         this.substrateBuilder = substrateBuilder;
     }
 
-    public INet convert(DoubleVectorGenome genome) {
+    public INet transform(DoubleVectorGenome genome) {
         ICPPN aCPPN = new FakeArrayCPPN(genome.genome, substrateBuilder.getSubstrate().getMaxDimension());
         substrateBuilder.build(aCPPN);
         return substrateBuilder.getNet();

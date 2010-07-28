@@ -2,6 +2,7 @@ package gp;
 
 import common.RND;
 import common.evolution.EvaluationInfo;
+import common.evolution.IDistance;
 
 import java.io.Serializable;
 import java.util.Arrays;
@@ -13,7 +14,7 @@ import java.util.Arrays;
  * Time: 6:21:40 PM
  * To change this template use File | Settings | File Templates.
  */
-public class Forest implements Comparable, Serializable {
+public class Forest implements Comparable, Serializable, IDistance<Forest> {
     private Tree[] trees;
     private double fitness = -Double.MAX_VALUE;
     private EvaluationInfo evaluationInfo;

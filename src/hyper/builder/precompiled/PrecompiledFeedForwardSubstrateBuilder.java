@@ -50,6 +50,7 @@ public class PrecompiledFeedForwardSubstrateBuilder implements IEvaluableSubstra
 
     private IPrecompiledFeedForwardStub stub;
     private double[] weights;
+    private int weightCount;
     private int numberOfInputs;
 
     private boolean built = false;
@@ -126,7 +127,7 @@ public class PrecompiledFeedForwardSubstrateBuilder implements IEvaluableSubstra
     }
 
     private void prepareWeightVector() {
-        int weightCount = 0;
+        weightCount = 0;
         for (PreviousLayerConnectionContainer successiveConnection : successiveConnections) {
             //bias
             if (successiveConnection.bias != null) {
@@ -136,7 +137,7 @@ public class PrecompiledFeedForwardSubstrateBuilder implements IEvaluableSubstra
             weightCount += successiveConnection.connection.getFrom().getNodes().length *
                     successiveConnection.connection.getTo().getNodes().length;
         }
-        weights = new double[weightCount];
+//        weights = new double[weightCount];
     }
 
     private String generateSourceCode() {
@@ -202,6 +203,7 @@ public class PrecompiledFeedForwardSubstrateBuilder implements IEvaluableSubstra
 
     public void build(ICPPN aCPPN) {
         int cnt = 0;
+        weights = new double[weightCount];
         for (PreviousLayerConnectionContainer successiveConnection : successiveConnections) {
             for (Node nodeTo : successiveConnection.connection.getTo().getNodes()) {
                 //number of incoming links

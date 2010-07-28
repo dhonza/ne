@@ -1,6 +1,7 @@
 package common.evolution;
 
 import java.io.Serializable;
+import java.util.List;
 
 /**
  * Created by IntelliJ IDEA.
@@ -28,7 +29,7 @@ public interface IEvolutionaryAlgorithm extends Serializable {
 
     public double getMaxFitnessReached();
 
-    public EvaluationInfo[] getEvaluationInfo();
+    public List<EvaluationInfo> getEvaluationInfo();
 
     public EvaluationInfo getGeneralizationEvaluationInfo();
 

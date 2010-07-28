@@ -5,7 +5,9 @@ import common.evolution.*;
 import gp.terminals.Input;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 
 
 /**
@@ -29,7 +31,7 @@ public class GP<P> implements IEvolutionaryAlgorithm, Serializable {
     final private int inputs;
     final private int outputs;
     final protected NodeCollection nodeCollection;
-    final private ParallelPopulationEvaluator<Forest, P> populationEvaluator;
+    final private PopulationManager<Forest, P> populationManager;
 
     final private TreeInputs treeInputs;
 
@@ -43,10 +45,10 @@ public class GP<P> implements IEvolutionaryAlgorithm, Serializable {
     private int generalizationGeneration;
     private EvaluationInfo generalizationEvaluationInfo;
 
-    public GP(ParallelPopulationEvaluator<Forest, P> populationEvaluator, Node[] functions, Node[] terminals) {
-        this.populationEvaluator = populationEvaluator;
-        this.inputs = populationEvaluator.getNumberOfInputs();
-        this.outputs = populationEvaluator.getNumberOfOutputs();
+    public GP(PopulationManager<Forest, P> populationManager, Node[] functions, Node[] terminals) {
+        this.populationManager = populationManager;
+        this.inputs = populationManager.getNumberOfInputs();
+        this.outputs = populationManager.getNumberOfOutputs();
 
         Node[] allTerminals = new Node[terminals.length + inputs];
         System.arraycopy(terminals, 0, allTerminals, 0, terminals.length);
@@ -79,12 +81,12 @@ public class GP<P> implements IEvolutionaryAlgorithm, Serializable {
     }
 
     public void performGeneralizationTest() {
-        generalizationEvaluationInfo = populationEvaluator.evaluateGeneralization(bestSoFar);
+        generalizationEvaluationInfo = populationManager.evaluateGeneralization(bestSoFar);
         generalizationGeneration = generation;
     }
 
     public void finished() {
-        populationEvaluator.shutdown();
+        populationManager.shutdown();
     }
 
     public String getConfigString() {
@@ -115,11 +117,12 @@ public class GP<P> implements IEvolutionaryAlgorithm, Serializable {
     }
 
     private void evaluate(Forest[] evalPopulation) {
-        EvaluationInfo[] evaluationInfos = populationEvaluator.evaluate(Arrays.asList(evalPopulation));
+        populationManager.loadGenotypes(Arrays.asList(evalPopulation));
+        List<EvaluationInfo> evaluationInfos = populationManager.evaluate();
         int cnt = 0;
         for (Forest forest : evalPopulation) {
-            forest.setFitness(evaluationInfos[cnt].getFitness());
-            forest.setEvaluationInfo(evaluationInfos[cnt++]);
+            forest.setFitness(evaluationInfos.get(cnt).getFitness());
+            forest.setEvaluationInfo(evaluationInfos.get(cnt++));
         }
     }
 
@@ -186,7 +189,7 @@ public class GP<P> implements IEvolutionaryAlgorithm, Serializable {
     }
 
     public boolean isSolved() {
-        return populationEvaluator.isSolved();
+        return populationManager.isSolved();
     }
 
     public Forest getBestOfGeneration() {
@@ -201,12 +204,12 @@ public class GP<P> implements IEvolutionaryAlgorithm, Serializable {
         return lastInnovation;
     }
 
-    public EvaluationInfo[] getEvaluationInfo() {
-        EvaluationInfo[] fv = new EvaluationInfo[population.length];
-        for (int i = 0; i < population.length; i++) {
-            fv[i] = population[i].getEvaluationInfo();
+    public List<EvaluationInfo> getEvaluationInfo() {
+        List<EvaluationInfo> infoList = new ArrayList<EvaluationInfo>(population.length);
+        for (Forest forest : population) {
+            infoList.add(forest.getEvaluationInfo());
         }
-        return fv;
+        return infoList;
     }
 
     public EvaluationInfo getGeneralizationEvaluationInfo() {

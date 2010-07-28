@@ -1,7 +1,7 @@
 package gp;
 
 import common.RND;
-import common.evolution.ParallelPopulationEvaluator;
+import common.evolution.PopulationManager;
 
 /**
  * Created by IntelliJ IDEA.
@@ -16,8 +16,8 @@ import common.evolution.ParallelPopulationEvaluator;
  * TODO create a single common abstract predecessor class (do not use newPopulation from GP)
  */
 public class GPCrowding<P> extends GP<P> {
-    public GPCrowding(ParallelPopulationEvaluator<Forest, P> populationEvaluator, Node[] functions, Node[] terminals) {
-        super(populationEvaluator, functions, terminals);
+    public GPCrowding(PopulationManager<Forest, P> populationManager, Node[] functions, Node[] terminals) {
+        super(populationManager, functions, terminals);
         if (GP.POPULATION_SIZE % 2 != 0) {
             throw new IllegalStateException("Population size must be even.");
         }

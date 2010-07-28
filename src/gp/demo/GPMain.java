@@ -11,6 +11,8 @@ import gp.terminals.Constant;
 import gp.terminals.Random;
 
 import java.io.File;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Created by IntelliJ IDEA.
@@ -41,12 +43,17 @@ public class GPMain {
                 Node[] functions = NodeFactory.createByNameList("gp.functions.", combination.getString("GP.FUNCTIONS"));
                 Node[] terminals = new Node[]{new Constant(-1.0), new Random()};
 
-                IEvaluable evaluable = EvaluableFactory.createByName(combination.getString("PROBLEM"));
-                ParallelPopulationEvaluator<Forest, Forest> populationEvaluator = new ParallelPopulationEvaluator<Forest, Forest>(
-                        new IGenotypeToPhenotype[]{new IdentityConversion<Forest>()},
-                        new IEvaluable[]{evaluable}
-                );
-                GP gp = GPFactory.createByName(combination.getString("GP.TYPE"), populationEvaluator, functions, terminals);
+                List<IGenotypeToPhenotype<Forest, Forest>> converter = new ArrayList<IGenotypeToPhenotype<Forest, Forest>>();
+                converter.add(new IdentityConversion<Forest>());
+
+                IEvaluable<Forest> evaluable = EvaluableFactory.createByName(combination.getString("PROBLEM"));
+                List<IEvaluable<Forest>> evaluator = new ArrayList<IEvaluable<Forest>>();
+                evaluator.add(evaluable);
+
+                PopulationManager<Forest, Forest> populationManager = new PopulationManager<Forest, Forest>(
+                        converter, evaluator);
+
+                GP gp = GPFactory.createByName(combination.getString("GP.TYPE"), populationManager, functions, terminals);
 
                 EvolutionaryAlgorithmSolver solver = new EvolutionaryAlgorithmSolver(gp, stats, false);
                 solver.addProgressPrinter(new GPBasicProgressPrinter(gp));

@@ -497,12 +497,11 @@ public class Population {
         return genome.isCompatibleWithGenome(compareWithGenome, ea.getNeatParameters());
     }
 
-    public EvaluationInfo[] getEvaluationInfo() {
-        EvaluationInfo[] fv = new EvaluationInfo[genomeList.size()];
-        int i = 0;
+    public List<EvaluationInfo> getEvaluationInfo() {
+        List<EvaluationInfo> infoList = new ArrayList<EvaluationInfo>(genomeList.size());
         for (IGenome genome : genomeList) {
-            fv[i++] = genome.getEvaluationInfo();
+            infoList.add(genome.getEvaluationInfo());
         }
-        return fv;
+        return infoList;
     }
 }

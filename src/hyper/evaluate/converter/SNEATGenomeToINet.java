@@ -21,7 +21,7 @@ public class SNEATGenomeToINet implements IGenotypeToPhenotype<INetwork, INet> {
         this.substrateBuilder = substrateBuilder;
     }
 
-    public INet convert(INetwork genome) {
+    public INet transform(INetwork genome) {
         ICPPN aCPPN = new BasicSNEATCPPN(genome, substrateBuilder.getSubstrate().getMaxDimension());
         substrateBuilder.build(aCPPN);
         return substrateBuilder.getNet();

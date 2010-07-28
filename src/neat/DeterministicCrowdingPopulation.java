@@ -8,10 +8,11 @@ package neat;
 
 import common.RND;
 import common.evolution.EvaluationInfo;
-import common.evolution.ParallelPopulationEvaluator;
+import common.evolution.PopulationManager;
 
 import java.util.Arrays;
 import java.util.Iterator;
+import java.util.List;
 
 /**
  * @author drchal
@@ -23,15 +24,15 @@ public class DeterministicCrowdingPopulation<P> extends Population<P> {
 
     private boolean eval = true;
 
-    public DeterministicCrowdingPopulation(ParallelPopulationEvaluator<Genome, P> populationEvaluator) {
-        super(populationEvaluator);
+    public DeterministicCrowdingPopulation(PopulationManager<Genome, P> populationManager) {
+        super(populationManager);
     }
 
     /**
      * @param oproto
      */
-    public DeterministicCrowdingPopulation(ParallelPopulationEvaluator<Genome, P> populationEvaluator, Genome oproto) {
-        super(populationEvaluator, oproto);
+    public DeterministicCrowdingPopulation(PopulationManager<Genome, P> populationManager, Genome oproto) {
+        super(populationManager, oproto);
     }
 
     /**
@@ -163,11 +164,12 @@ public class DeterministicCrowdingPopulation<P> extends Population<P> {
 //            }
         }
 
-        EvaluationInfo[] evaluationInfos = populationEvaluator.evaluate(Arrays.asList(children));
+        populationManager.loadGenotypes(Arrays.asList(children));
+        List<EvaluationInfo> evaluationInfos = populationManager.evaluate();
         this.incrementEvaluation(n);
         for (int i = 0; i < n; i++) {
-            children[i].fitness = evaluationInfos[i].getFitness();
-            children[i].setEvaluationInfo(evaluationInfos[i]);
+            children[i].fitness = evaluationInfos.get(i).getFitness();
+            children[i].setEvaluationInfo(evaluationInfos.get(i));
         }
 
         tpopi = 0;
@@ -216,16 +218,16 @@ public class DeterministicCrowdingPopulation<P> extends Population<P> {
         // System.out.println( " Population.evaluate()" );
         Genome tg;
         int n = NEAT.getConfig().populationSize;
-        EvaluationInfo[] evaluationInfos = null;
+        List<EvaluationInfo> evaluationInfos = null;
         if (eval) {
-            evaluationInfos = populationEvaluator.evaluate(Arrays.asList(genomes));
+            populationManager.loadGenotypes(Arrays.asList(genomes));
+            evaluationInfos = populationManager.evaluate();
         }
-        populationEvaluator.evaluate(Arrays.asList(genomes));
         for (int i = 0; i < n; i++) {
             tg = genomes[i];
             if (eval) {
-                tg.fitness = evaluationInfos[i].getFitness();
-                tg.setEvaluationInfo(evaluationInfos[i]);
+                tg.fitness = evaluationInfos.get(i).getFitness();
+                tg.setEvaluationInfo(evaluationInfos.get(i));
                 this.incrementEvaluation();
             }
             if (tg.fitness > bestOfGeneration.fitness) {

@@ -37,7 +37,7 @@ public class GPSolver extends AbstractSolver {
 
         GP.TARGET_FITNESS = problem.getTargetFitness();
 
-        gp = GPFactory.createByName(parameters.getString("GP.TYPE"), populationEvaluator, functions, terminals);
+        gp = GPFactory.createByName(parameters.getString("GP.TYPE"), populationManager, functions, terminals);
 
         solver = new EvolutionaryAlgorithmSolver(gp, stats, problem instanceof IProblemGeneralization);
         solver.addProgressPrinter(new GPProgressPrinter1D(gp, problem, parameters));

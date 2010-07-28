@@ -1,7 +1,9 @@
 package opt.sade;
 
 import common.RND;
-import common.evolution.*;
+import common.evolution.EvaluationInfo;
+import common.evolution.IEvolutionaryAlgorithm;
+import common.evolution.PopulationManager;
 import opt.DoubleVectorGenome;
 
 import java.util.ArrayList;
@@ -98,18 +100,18 @@ public class SADE<P> implements IEvolutionaryAlgorithm {
     private double[] bsf, btg;
     private double bsfValue, btgValue;
 
-    final private ParallelPopulationEvaluator<DoubleVectorGenome, P> populationEvaluator;
+    final private PopulationManager<DoubleVectorGenome, P> populationManager;
 
 
-    private EvaluationInfo[] evaluationInfos;
+    private List<EvaluationInfo> evaluationInfos;
     private int generalizationGeneration;
     private EvaluationInfo generalizationEvaluationInfo;
 
     /**
      * Constructor for <b>SADE</b> object. The parameter represents the optimized function.
      */
-    public SADE(ParallelPopulationEvaluator<DoubleVectorGenome, P> populationEvaluator) {
-        this.populationEvaluator = populationEvaluator;
+    public SADE(PopulationManager<DoubleVectorGenome, P> populationManager) {
+        this.populationManager = populationManager;
         bsfValue = Double.NEGATIVE_INFINITY;
         btgValue = Double.NEGATIVE_INFINITY;
     }
@@ -157,10 +159,11 @@ public class SADE<P> implements IEvolutionaryAlgorithm {
             evalPopulation.add(new DoubleVectorGenome(CH[i]));
         }
 
-        evaluationInfos = populationEvaluator.evaluate(evalPopulation);
+        populationManager.loadGenotypes(evalPopulation);
+        evaluationInfos = populationManager.evaluate();
 
         for (int i = start * selectedSize; i < actualSize; i++) {
-            Force[i] = evaluationInfos[i - start * selectedSize].getFitness();
+            Force[i] = evaluationInfos.get(i - start * selectedSize).getFitness();
             fitnessCall++;
             if (Force[i] > btgValue) {
                 btgValue = Force[i];
@@ -306,12 +309,12 @@ public class SADE<P> implements IEvolutionaryAlgorithm {
     }
 
     public void performGeneralizationTest() {
-        generalizationEvaluationInfo = populationEvaluator.evaluateGeneralization(new DoubleVectorGenome(bsf));
+        generalizationEvaluationInfo = populationManager.evaluateGeneralization(new DoubleVectorGenome(bsf));
         generalizationGeneration = generation;
     }
 
     public void finished() {
-        populationEvaluator.shutdown();
+        populationManager.shutdown();
     }
 
     public boolean hasImproved() {
@@ -334,7 +337,7 @@ public class SADE<P> implements IEvolutionaryAlgorithm {
         return bsfValue;
     }
 
-    public EvaluationInfo[] getEvaluationInfo() {
+    public List<EvaluationInfo> getEvaluationInfo() {
         return evaluationInfos;
     }
 
@@ -346,7 +349,7 @@ public class SADE<P> implements IEvolutionaryAlgorithm {
     }
 
     public boolean isSolved() {
-        return populationEvaluator.isSolved();
+        return populationManager.isSolved();
     }
 
     public String getConfigString() {

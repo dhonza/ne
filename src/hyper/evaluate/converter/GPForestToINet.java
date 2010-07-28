@@ -21,7 +21,7 @@ public class GPForestToINet implements IGenotypeToPhenotype<Forest, INet> {
         this.substrateBuilder = substrateBuilder;
     }
 
-    public INet convert(Forest genome) {
+    public INet transform(Forest genome) {
         ICPPN aCPPN = new BasicGPCPPN(genome, substrateBuilder.getSubstrate().getMaxDimension());
         substrateBuilder.build(aCPPN);
         return substrateBuilder.getNet();

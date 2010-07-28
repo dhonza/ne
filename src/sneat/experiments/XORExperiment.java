@@ -3,7 +3,7 @@ package sneat.experiments;
 import common.evolution.IEvaluable;
 import common.evolution.IGenotypeToPhenotype;
 import common.evolution.IdentityConversion;
-import common.evolution.ParallelPopulationEvaluator;
+import common.evolution.PopulationManager;
 import common.pmatrix.ParameterCombination;
 import common.pmatrix.Utils;
 import sneat.evolution.IPopulationEvaluator;
@@ -11,6 +11,9 @@ import sneat.evolution.NeatParameters;
 import sneat.neuralnetwork.IActivationFunction;
 import sneat.neuralnetwork.INetwork;
 import sneat.neuralnetwork.activationfunctions.SteepenedSigmoid;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Created by IntelliJ IDEA.
@@ -38,10 +41,15 @@ public class XORExperiment implements IExperiment {
     }
 
     public void resetEvaluator(IActivationFunction activationFn) {
-        ParallelPopulationEvaluator<INetwork, INetwork> populationEvaluator =
-                new ParallelPopulationEvaluator<INetwork, INetwork>(new IGenotypeToPhenotype[]{new IdentityConversion<INetwork>()},
-                        new IEvaluable[]{new XORNetworkEvaluator()});
-        singlePopulationEvaluator = new SingleFilePopulationEvaluator<INetwork>(populationEvaluator, null);
+        List<IGenotypeToPhenotype<INetwork, INetwork>> converter = new ArrayList<IGenotypeToPhenotype<INetwork, INetwork>>();
+        converter.add(new IdentityConversion<INetwork>());
+
+        List<IEvaluable<INetwork>> evaluator = new ArrayList<IEvaluable<INetwork>>();
+        evaluator.add(new XORNetworkEvaluator());
+
+        PopulationManager<INetwork, INetwork> populationManager =
+                new PopulationManager<INetwork, INetwork>(converter, evaluator);
+        singlePopulationEvaluator = new SingleFilePopulationEvaluator<INetwork>(populationManager, null);
     }
 
     public int getInputNeuronCount() {

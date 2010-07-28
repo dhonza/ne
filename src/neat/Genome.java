@@ -2,6 +2,7 @@ package neat;
 
 import common.RND;
 import common.evolution.EvaluationInfo;
+import common.evolution.IDistance;
 import common.net.linked.Link;
 import common.net.linked.Net;
 import common.net.linked.Neuron;
@@ -20,7 +21,7 @@ import common.net.linked.Neuron;
  * genes) and phenotype (neural network). It tracks the statistics, too.
  */
 @SuppressWarnings({"JavadocReference"})
-public class Genome implements Comparable {
+public class Genome implements Comparable, IDistance<Genome> {
 
     private static final int FIRST_OF_FUNCTION_BLOCK = 0;
 

@@ -11,7 +11,7 @@ import common.net.linked.Net;
  * To change this template use File | Settings | File Templates.
  */
 public class GenomeToNet implements IGenotypeToPhenotype<Genome, Net> {
-    public Net convert(Genome genome) {
+    public Net transform(Genome genome) {
         return genome.getNet();
     }
 }

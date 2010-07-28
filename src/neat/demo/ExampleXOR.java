@@ -1,13 +1,16 @@
 package neat.demo;
 
 import common.RND;
-import common.evolution.IEvaluable;
 import common.evolution.EvolutionaryAlgorithmSolver;
+import common.evolution.IEvaluable;
 import common.evolution.IGenotypeToPhenotype;
-import common.evolution.ParallelPopulationEvaluator;
+import common.evolution.PopulationManager;
 import common.net.linked.Net;
 import common.stats.Stats;
 import neat.*;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * <p/>
@@ -69,9 +72,15 @@ public class ExampleXOR {
         Genome proto = new Genome(net);
         evaluateXOR = new EvaluateXOR();
 
-        ParallelPopulationEvaluator<Genome, Net> populationEvaluator = new ParallelPopulationEvaluator<Genome, Net>(new IGenotypeToPhenotype[]{new GenomeToNet()}, new IEvaluable[]{evaluateXOR});
-        population = new FitnessSharingPopulation<Net>(populationEvaluator, proto);
-//        population = new DeterministicCrowdingPopulation(populationEvaluator , proto);
+        List<IGenotypeToPhenotype<Genome, Net>> converter = new ArrayList<IGenotypeToPhenotype<Genome, Net>>();
+        converter.add(new GenomeToNet());
+
+        List<IEvaluable<Net>> evaluator = new ArrayList<IEvaluable<Net>>();
+        evaluator.add(evaluateXOR);
+
+        PopulationManager<Genome, Net> populationManager = new PopulationManager<Genome, Net>(converter, evaluator);
+        population = new FitnessSharingPopulation<Net>(populationManager, proto);
+//        population = new DeterministicCrowdingPopulation(populationManager , proto);
         problem.setPopulation(population);
 
         EvolutionaryAlgorithmSolver solver = new EvolutionaryAlgorithmSolver(problem, new Stats(), false);

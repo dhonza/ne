@@ -8,6 +8,8 @@ import sneat.evolution.IdGenerator;
 import sneat.evolution.NeatParameters;
 import sneat.neatgenome.GenomeFactory;
 
+import java.util.List;
+
 /**
  * Created by IntelliJ IDEA.
  * User: drchaj1
@@ -101,7 +103,7 @@ public class SNEAT implements IEvolutionaryAlgorithm {
         return ea;
     }
 
-    public EvaluationInfo[] getEvaluationInfo() {
+    public List<EvaluationInfo> getEvaluationInfo() {
         return ea.getPopulation().getEvaluationInfo();
     }
 

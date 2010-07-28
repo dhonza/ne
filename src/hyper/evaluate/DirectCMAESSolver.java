@@ -4,7 +4,6 @@ import common.evolution.EvolutionaryAlgorithmSolver;
 import common.pmatrix.ParameterCombination;
 import common.pmatrix.Utils;
 import common.stats.Stats;
-import hyper.evaluate.converter.DirectGenomeToINet;
 import hyper.evaluate.printer.CMAESProgressPrinter1D;
 import hyper.experiments.reco.FileProgressPrinter;
 import hyper.experiments.reco.ReportStorage;
@@ -27,7 +26,7 @@ public class DirectCMAESSolver extends AbstractSolver {
     }
 
     private void init() {
-        CMAES cmaes = new CMAES(populationEvaluator, populationEvaluator.getPhenotypeDimension());
+        CMAES cmaes = new CMAES(populationManager, populationManager.getPhenotypeDimension());
 
         Utils.setParameters(parameters, cmaes.getOptions(), "DIRECT_CMAES");
 

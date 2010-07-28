@@ -1,7 +1,7 @@
 package hyper.evaluate;
 
 import common.evolution.EvolutionaryAlgorithmSolver;
-import common.evolution.ParallelPopulationEvaluator;
+import common.evolution.PopulationManager;
 import common.net.INet;
 import common.net.linked.Net;
 import common.net.linked.Neuron;
@@ -37,7 +37,7 @@ public class NEATSolver extends AbstractSolver {
         config.targetFitness = problem.getTargetFitness();
         Utils.setParameters(parameters, config, "NEAT");
 
-        population = new FitnessSharingPopulation<INet>(populationEvaluator, getPrototype(populationEvaluator));
+        population = new FitnessSharingPopulation<INet>(populationManager, getPrototype(populationManager));
 
         neat.setPopulation(population);
 
@@ -50,10 +50,10 @@ public class NEATSolver extends AbstractSolver {
         solver.addStopCondition(new SolvedStopCondition(problem));
     }
 
-    private static Genome getPrototype(ParallelPopulationEvaluator<Genome, INet> populationEvaluator) {
+    private static Genome getPrototype(PopulationManager<Genome, INet> populationManager) {
         Net net = new Net(1);
-        net.createFeedForward(populationEvaluator.getNumberOfInputs(), new int[]{}, populationEvaluator.getNumberOfOutputs());
-        for (int i = 0; i < populationEvaluator.getNumberOfOutputs(); i++) {
+        net.createFeedForward(populationManager.getNumberOfInputs(), new int[]{}, populationManager.getNumberOfOutputs());
+        for (int i = 0; i < populationManager.getNumberOfOutputs(); i++) {
             net.getOutputs().get(i).setActivation(Neuron.Activation.BIPOLAR_SIGMOID);
 //            net.getOutputs().get(i).setActivation(Neuron.Activation.LINEAR);
         }

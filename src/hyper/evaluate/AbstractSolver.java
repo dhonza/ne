@@ -3,12 +3,15 @@ package hyper.evaluate;
 import common.evolution.IEvaluable;
 import common.evolution.EvolutionaryAlgorithmSolver;
 import common.evolution.IGenotypeToPhenotype;
-import common.evolution.ParallelPopulationEvaluator;
+import common.evolution.PopulationManager;
 import common.pmatrix.ParameterCombination;
 import common.stats.Stats;
 import hyper.builder.IEvaluableSubstrateBuilder;
 import hyper.builder.SubstrateBuilderFactory;
 import hyper.experiments.reco.ReportStorage;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Created by IntelliJ IDEA.
@@ -24,7 +27,7 @@ abstract public class AbstractSolver<G, INet> implements Solver {
 
     protected EvolutionaryAlgorithmSolver solver;
 
-    protected ParallelPopulationEvaluator<G, INet> populationEvaluator;
+    protected PopulationManager<G, INet> populationManager;
     protected IProblem<INet> problem;
 
     protected AbstractSolver(ParameterCombination parameters, Stats stats, ReportStorage reportStorage) {
@@ -41,11 +44,11 @@ abstract public class AbstractSolver<G, INet> implements Solver {
             if (parameters.contains("PARALLEL.FORCE_THREADS")) {
                 threads = parameters.getInteger("PARALLEL.FORCE_THREADS");
             } else {
-                threads = ParallelPopulationEvaluator.getNumberOfThreads();
+                threads = PopulationManager.getNumberOfThreads();
             }
         }
-        IGenotypeToPhenotype<G, INet>[] perThreadConverters = new IGenotypeToPhenotype[threads];
-        IEvaluable<INet>[] perThreadEvaluators = new IEvaluable[threads];
+        List<IGenotypeToPhenotype<G, INet>> perThreadConverters = new ArrayList<IGenotypeToPhenotype<G, INet>>(threads);
+        List<IEvaluable<INet>> perThreadEvaluators = new ArrayList<IEvaluable<INet>>(threads);
         for (int i = (threads - 1); i >= 0; i--) {
 
             problem = ProblemFactory.getProblem(parameters, reportStorage);
@@ -53,12 +56,12 @@ abstract public class AbstractSolver<G, INet> implements Solver {
                     SubstrateBuilderFactory.createEvaluableSubstrateBuilder(problem.getSubstrate(), parameters);
 
             IEvaluable<INet> evaluator = new HyperEvaluator<INet>(substrateBuilder, problem);
-            perThreadEvaluators[i] = evaluator;
+            perThreadEvaluators.add(evaluator);
 
             IGenotypeToPhenotype<G, INet> converter = ConverterFactory.getConverter(parameters, substrateBuilder, problem);
-            perThreadConverters[i] = converter;
+            perThreadConverters.add(converter);
         }
-        populationEvaluator = new ParallelPopulationEvaluator<G, INet>(perThreadConverters, perThreadEvaluators);
+        populationManager = new PopulationManager<G, INet>(perThreadConverters, perThreadEvaluators);
     }
 
     abstract public void solve();

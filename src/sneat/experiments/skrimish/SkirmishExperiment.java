@@ -3,7 +3,7 @@ package sneat.experiments.skrimish;
 import common.evolution.IEvaluable;
 import common.evolution.IGenotypeToPhenotype;
 import common.evolution.IdentityConversion;
-import common.evolution.ParallelPopulationEvaluator;
+import common.evolution.PopulationManager;
 import sneat.evolution.IPopulationEvaluator;
 import sneat.evolution.NeatParameters;
 import sneat.experiments.AbstractExperimentView;
@@ -12,6 +12,8 @@ import sneat.experiments.IExperiment;
 import sneat.neuralnetwork.IActivationFunction;
 import sneat.neuralnetwork.INetwork;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 
 public class SkirmishExperiment implements IExperiment {
@@ -44,17 +46,18 @@ public class SkirmishExperiment implements IExperiment {
     }
 
     public void resetEvaluator(IActivationFunction activationFn) {
+        List<IGenotypeToPhenotype<INetwork, INetwork>> converter = new ArrayList<IGenotypeToPhenotype<INetwork, INetwork>>();
+        converter.add(new IdentityConversion<INetwork>());
+
+        List<IEvaluable<INetwork>> evaluator = new ArrayList<IEvaluable<INetwork>>();
+
         if (multiple) {
-            ParallelPopulationEvaluator<INetwork, INetwork> populationEvaluator =
-                    new ParallelPopulationEvaluator<INetwork, INetwork>(new IGenotypeToPhenotype[]{new IdentityConversion<INetwork>()},
-                            new IEvaluable[]{new SkirmishNetworkEvaluator(5, shape)});
-            aSNEATPopulationEvaluator = new SkirmishPopulationEvaluator<INetwork>(populationEvaluator);
+            evaluator.add(new SkirmishNetworkEvaluator(5, shape));
         } else {
-            ParallelPopulationEvaluator<INetwork, INetwork> populationEvaluator =
-                    new ParallelPopulationEvaluator<INetwork, INetwork>(new IGenotypeToPhenotype[]{new IdentityConversion<INetwork>()},
-                            new IEvaluable[]{new SkirmishNetworkEvaluator(1, shape)});
-            aSNEATPopulationEvaluator = new SkirmishPopulationEvaluator<INetwork>(populationEvaluator);
+            evaluator.add(new SkirmishNetworkEvaluator(1, shape));
         }
+        PopulationManager<INetwork, INetwork> populationManager = new PopulationManager<INetwork, INetwork>(converter, evaluator);
+        aSNEATPopulationEvaluator = new SkirmishPopulationEvaluator<INetwork>(populationManager);
     }
 
     public IPopulationEvaluator getaSNEATPopulationEvaluator() {

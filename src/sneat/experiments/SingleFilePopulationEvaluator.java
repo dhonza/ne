@@ -1,7 +1,7 @@
 package sneat.experiments;
 
 import common.evolution.EvaluationInfo;
-import common.evolution.ParallelPopulationEvaluator;
+import common.evolution.PopulationManager;
 import sneat.evolution.EvolutionAlgorithm;
 import sneat.evolution.IGenome;
 import sneat.evolution.IPopulationEvaluator;
@@ -23,12 +23,12 @@ import java.util.List;
 /// a simulated world) using a fixed evaluation function that can be described by an INetworkEvaluator.
 /// </summary>
 public class SingleFilePopulationEvaluator<P> implements IPopulationEvaluator {
-    final private ParallelPopulationEvaluator<INetwork, P> populationEvaluator;
+    final private PopulationManager<INetwork, P> populationManager;
     public IActivationFunction activationFn;
     public long evaluationCount = 0;
 
-    public SingleFilePopulationEvaluator(ParallelPopulationEvaluator<INetwork, P> populationEvaluator, IActivationFunction activationFn) {
-        this.populationEvaluator = populationEvaluator;
+    public SingleFilePopulationEvaluator(PopulationManager<INetwork, P> populationManager, IActivationFunction activationFn) {
+        this.populationManager = populationManager;
         this.activationFn = activationFn;
     }
 
@@ -53,19 +53,20 @@ public class SingleFilePopulationEvaluator<P> implements IPopulationEvaluator {
             }
         }
 
-        EvaluationInfo[] evaluationInfos = populationEvaluator.evaluate(populationToEvaluate);
+        populationManager.loadGenotypes(populationToEvaluate);
+        List<EvaluationInfo> evaluationInfos = populationManager.evaluate();
 
         int cnt = 0;
         for (int i = 0; i < count; i++) {
             IGenome g = pop.getGenomeList().get(i);
             //TODO dhonza fitness has to be > 0 ?;
             if (toEvaluate[i]) {
-                if (evaluationInfos[cnt].getFitness() < EvolutionAlgorithm.MIN_GENOME_FITNESS) {
+                if (evaluationInfos.get(cnt).getFitness() < EvolutionAlgorithm.MIN_GENOME_FITNESS) {
                     throw new IllegalStateException("CHECK this limitation of fitness value");
                 }
 //                g.setFitness(Math.max(evaluationInfos[cnt++].getFitness(), EvolutionAlgorithm.MIN_GENOME_FITNESS));
-                g.setFitness(evaluationInfos[cnt].getFitness());
-                g.setEvaluationInfo(evaluationInfos[cnt++]);
+                g.setFitness(evaluationInfos.get(cnt).getFitness());
+                g.setEvaluationInfo(evaluationInfos.get(cnt++));
             }
 
             if (g.getEvaluationCount() == 0) {
@@ -81,11 +82,11 @@ public class SingleFilePopulationEvaluator<P> implements IPopulationEvaluator {
 
     public EvaluationInfo evaluateGeneralization(IGenome individual) {
         INetwork network = individual.decode(activationFn);
-        return populationEvaluator.evaluateGeneralization(network);
+        return populationManager.evaluateGeneralization(network);
     }
 
     public boolean isSolved() {
-        return populationEvaluator.isSolved();
+        return populationManager.isSolved();
     }
 
     public long getEvaluationCount() {
@@ -104,7 +105,7 @@ public class SingleFilePopulationEvaluator<P> implements IPopulationEvaluator {
     }
 
     public void shutdown() {
-        populationEvaluator.shutdown();
+        populationManager.shutdown();
     }
 }
 

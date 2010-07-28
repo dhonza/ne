@@ -21,7 +21,7 @@ import java.util.List;
 public class FileProgressPrinter implements IProgressPrinter {
     private static class InfoContainer {
         double bsf;
-        EvaluationInfo[] evaluationInfos;
+        List<EvaluationInfo> evaluationInfos;
         EvaluationInfo generalizationInfo;
     }
 
@@ -79,7 +79,7 @@ public class FileProgressPrinter implements IProgressPrinter {
 
     private StringBuilder extractFitnessInfo() {
         StringBuilder builder = new StringBuilder();
-        int last = generations.get(0).evaluationInfos.length - 1;
+        int last = generations.get(0).evaluationInfos.size() - 1;
 
         //header
         builder.append("BSF").append("\t");
@@ -91,17 +91,17 @@ public class FileProgressPrinter implements IProgressPrinter {
         //data
         for (InfoContainer generation : generations) {
             builder.append(generation.bsf).append("\t");
-            for (int i = 0; i < generation.evaluationInfos.length - 1; i++) {
-                builder.append(generation.evaluationInfos[i].getFitness()).append("\t");
+            for (int i = 0; i < generation.evaluationInfos.size() - 1; i++) {
+                builder.append(generation.evaluationInfos.get(i).getFitness()).append("\t");
             }
-            builder.append(generation.evaluationInfos[generation.evaluationInfos.length - 1].getFitness()).append("\n");
+            builder.append(generation.evaluationInfos.get(generation.evaluationInfos.size() - 1).getFitness()).append("\n");
         }
         return builder;
     }
 
     private StringBuilder extractEvaluationInfo(String name) {
         StringBuilder builder = new StringBuilder();
-        int last = generations.get(0).evaluationInfos.length - 1;
+        int last = generations.get(0).evaluationInfos.size() - 1;
 
         //header
         for (int i = 0; i < last; i++) {
@@ -111,17 +111,17 @@ public class FileProgressPrinter implements IProgressPrinter {
 
         //data
         for (InfoContainer generation : generations) {
-            for (int i = 0; i < generation.evaluationInfos.length - 1; i++) {
-                builder.append(generation.evaluationInfos[i].getInfo(name)).append("\t");
+            for (int i = 0; i < generation.evaluationInfos.size() - 1; i++) {
+                builder.append(generation.evaluationInfos.get(i).getInfo(name)).append("\t");
             }
-            builder.append(generation.evaluationInfos[generation.evaluationInfos.length - 1].getInfo(name)).append("\n");
+            builder.append(generation.evaluationInfos.get(generation.evaluationInfos.size() - 1).getInfo(name)).append("\n");
         }
         return builder;
     }
 
     private StringBuilder extractGeneralizationFitnessInfo() {
         StringBuilder builder = new StringBuilder();
-        int last = generations.get(0).evaluationInfos.length - 1;
+        int last = generations.get(0).evaluationInfos.size() - 1;
 
         for (InfoContainer generation : generations) {
             builder.append(generation.generalizationInfo.getFitness()).append("\n");

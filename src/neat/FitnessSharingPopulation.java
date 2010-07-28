@@ -1,7 +1,7 @@
 package neat;
 
 import common.RND;
-import common.evolution.ParallelPopulationEvaluator;
+import common.evolution.PopulationManager;
 
 import java.util.Collections;
 import java.util.Iterator;
@@ -31,16 +31,16 @@ public class FitnessSharingPopulation<P> extends Population<P> {
      */
     private int unassignedForReproduction = 0;
 
-    public FitnessSharingPopulation(ParallelPopulationEvaluator<Genome, P> populationEvaluator) {
-        super(populationEvaluator);
+    public FitnessSharingPopulation(PopulationManager<Genome, P> populationManager) {
+        super(populationManager);
     }
 
-    public FitnessSharingPopulation(ParallelPopulationEvaluator<Genome, P> populationEvaluator, Genome oproto) {
-        super(populationEvaluator, oproto);
+    public FitnessSharingPopulation(PopulationManager<Genome, P> populationManager, Genome oproto) {
+        super(populationManager, oproto);
     }
 
-    public FitnessSharingPopulation(ParallelPopulationEvaluator<Genome, P> populationEvaluator, String ofileName) {
-        super(populationEvaluator, ofileName);
+    public FitnessSharingPopulation(PopulationManager<Genome, P> populationManager, String ofileName) {
+        super(populationManager, ofileName);
     }
 
     /**

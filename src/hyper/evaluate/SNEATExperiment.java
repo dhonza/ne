@@ -1,6 +1,6 @@
 package hyper.evaluate;
 
-import common.evolution.ParallelPopulationEvaluator;
+import common.evolution.PopulationManager;
 import common.pmatrix.ParameterCombination;
 import common.pmatrix.Utils;
 import sneat.evolution.IPopulationEvaluator;
@@ -21,15 +21,15 @@ import sneat.neuralnetwork.activationfunctions.SteepenedSigmoid;
  */
 public class SNEATExperiment<P> implements IExperiment {
     final private ParameterCombination parameters;
-    final private ParallelPopulationEvaluator<INetwork, P> populationEvaluator;
+    final private PopulationManager<INetwork, P> populationManager;
     final private double targetFitness;
     NeatParameters neatParams = null;
 
     IPopulationEvaluator aSNEATPopulationEvaluator = null;
     IActivationFunction activationFunction = new SteepenedSigmoid();
 
-    public SNEATExperiment(ParameterCombination parameters, ParallelPopulationEvaluator<INetwork, P> populationEvaluator, double targetFitness) {
-        this.populationEvaluator = populationEvaluator;
+    public SNEATExperiment(ParameterCombination parameters, PopulationManager<INetwork, P> populationManager, double targetFitness) {
+        this.populationManager = populationManager;
         this.parameters = parameters;
         this.targetFitness = targetFitness;
     }
@@ -42,15 +42,15 @@ public class SNEATExperiment<P> implements IExperiment {
     }
 
     public void resetEvaluator(IActivationFunction activationFn) {
-        aSNEATPopulationEvaluator = new SingleFilePopulationEvaluator<P>(populationEvaluator, null);
+        aSNEATPopulationEvaluator = new SingleFilePopulationEvaluator<P>(populationManager, null);
     }
 
     public int getInputNeuronCount() {
-        return populationEvaluator.getNumberOfInputs();
+        return populationManager.getNumberOfInputs();
     }
 
     public int getOutputNeuronCount() {
-        return populationEvaluator.getNumberOfOutputs();
+        return populationManager.getNumberOfOutputs();
     }
 
     public NeatParameters getDefaultNeatParameters() {
