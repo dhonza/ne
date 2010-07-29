@@ -1,5 +1,6 @@
 package hyper.experiments.reco;
 
+import common.evolution.BasicInfo;
 import common.evolution.EvaluationInfo;
 import common.evolution.IEvolutionaryAlgorithm;
 import common.evolution.IProgressPrinter;
@@ -23,6 +24,7 @@ public class FileProgressPrinter implements IProgressPrinter {
         double bsf;
         List<EvaluationInfo> evaluationInfos;
         EvaluationInfo generalizationInfo;
+        BasicInfo populationInfo;
     }
 
     final private IEvolutionaryAlgorithm ea;
@@ -51,6 +53,7 @@ public class FileProgressPrinter implements IProgressPrinter {
         if (problem instanceof IProblemGeneralization) {
             container.generalizationInfo = ea.getGeneralizationEvaluationInfo();
         }
+        container.populationInfo = ea.getPopulationInfo();
         generations.add(container);
     }
 
@@ -72,6 +75,9 @@ public class FileProgressPrinter implements IProgressPrinter {
             for (String name : problem.getEvaluationInfoItemNames()) {
                 itemList.add(new ReportStorage.SingleRunFile("GENERALIZATION_" + name, extractGeneralizationEvaluationInfo(name).toString()));
             }
+        }
+        for (String name : new String[]{"DIVERSITY"}) {
+            itemList.add(new ReportStorage.SingleRunFile(name, extractPopulationInfo(name).toString()));
         }
 
         reportStorage.prepareSingleRunResults(itemList);
@@ -121,8 +127,6 @@ public class FileProgressPrinter implements IProgressPrinter {
 
     private StringBuilder extractGeneralizationFitnessInfo() {
         StringBuilder builder = new StringBuilder();
-        int last = generations.get(0).evaluationInfos.size() - 1;
-
         for (InfoContainer generation : generations) {
             builder.append(generation.generalizationInfo.getFitness()).append("\n");
         }
@@ -133,6 +137,14 @@ public class FileProgressPrinter implements IProgressPrinter {
         StringBuilder builder = new StringBuilder();
         for (InfoContainer generation : generations) {
             builder.append(generation.generalizationInfo.getInfo(name)).append("\n");
+        }
+        return builder;
+    }
+
+    private StringBuilder extractPopulationInfo(String name) {
+        StringBuilder builder = new StringBuilder();
+        for (InfoContainer generation : generations) {
+            builder.append(generation.populationInfo.getInfo(name)).append("\n");
         }
         return builder;
     }

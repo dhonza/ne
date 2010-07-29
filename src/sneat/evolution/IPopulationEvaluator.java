@@ -1,5 +1,6 @@
 package sneat.evolution;
 
+import common.evolution.BasicInfo;
 import common.evolution.EvaluationInfo;
 
 public interface IPopulationEvaluator {
@@ -34,4 +35,6 @@ public interface IPopulationEvaluator {
     boolean getSearchCompleted();
 
     void shutdown();
+
+    public BasicInfo getPopulationInfo();
 }

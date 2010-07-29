@@ -1,5 +1,6 @@
 package neat;
 
+import common.evolution.BasicInfo;
 import common.evolution.EvaluationInfo;
 import common.evolution.PopulationManager;
 import common.net.linked.Net;
@@ -370,6 +371,10 @@ public abstract class Population<P> {
 
         }
         return infoList;
+    }
+
+    public BasicInfo getPopulationInfo() {
+        return populationManager.getPopulationInfo();
     }
 
     public boolean isSolved() {

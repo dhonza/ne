@@ -1,10 +1,12 @@
 package common.evolution;
 
+import common.net.precompiled.PrecompiledFeedForwardNetDistance;
 import hyper.evaluate.converter.DirectGenomeToINet;
 import org.apache.commons.lang.ArrayUtils;
 
+import java.util.LinkedHashMap;
 import java.util.List;
-import java.util.concurrent.CountDownLatch;
+import java.util.Map;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
@@ -18,8 +20,11 @@ import java.util.concurrent.Executors;
 public class PopulationManager<G, P> {
     final private SimplePopulationStorage<G, P> populationStorage;
     final private PopulationEvaluator<P> populationEvaluator;
+
     final private List<IGenotypeToPhenotype<G, P>> perThreadConverters;
     final private List<IEvaluable<P>> perThreadEvaluators;
+    private IDistanceStorage distanceStorage = null;
+
     final private ExecutorService threadExecutor = Executors.newCachedThreadPool();
 
     public PopulationManager(List<IGenotypeToPhenotype<G, P>> perThreadConverters, List<IEvaluable<P>> perThreadEvaluators) {
@@ -29,18 +34,32 @@ public class PopulationManager<G, P> {
         populationEvaluator = new PopulationEvaluator<P>(threadExecutor, perThreadEvaluators, populationStorage);
     }
 
+    private IDistanceStorage getDistanceStorage() {
+        if (distanceStorage == null) {
+            distanceStorage = new SimpleDistanceStorage<P>(populationStorage, (IDistance<P>) new PrecompiledFeedForwardNetDistance());
+        }
+        return distanceStorage;
+    }
+
     public void loadGenotypes(List<G> population) {
         populationStorage.loadGenomes(population);
     }
 
     public List<EvaluationInfo> evaluate() {
         populationStorage.convert();
-//        checkAgainstSequential(evaluationInfo);        
+//        checkAgainstSequential(evaluationInfo);
+        getDistanceStorage().recompute();
         return populationEvaluator.evaluate();
     }
 
     public EvaluationInfo evaluateGeneralization(G individual) {
         return perThreadEvaluators.get(0).evaluateGeneralization(perThreadConverters.get(0).transform(individual));
+    }
+
+    public BasicInfo getPopulationInfo() {
+        Map<String, Object> infoMap = new LinkedHashMap<String, Object>();
+        infoMap.put("DIVERSITY", DistanceUtils.average(distanceStorage));
+        return new BasicInfo(infoMap);
     }
 
     private void checkAgainstSequential(EvaluationInfo[] evaluationInfos) {

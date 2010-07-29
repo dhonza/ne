@@ -1,6 +1,7 @@
 package opt.sade;
 
 import common.RND;
+import common.evolution.BasicInfo;
 import common.evolution.EvaluationInfo;
 import common.evolution.IEvolutionaryAlgorithm;
 import common.evolution.PopulationManager;
@@ -339,6 +340,10 @@ public class SADE<P> implements IEvolutionaryAlgorithm {
 
     public List<EvaluationInfo> getEvaluationInfo() {
         return evaluationInfos;
+    }
+
+    public BasicInfo getPopulationInfo() {
+        return populationManager.getPopulationInfo();
     }
 
     public EvaluationInfo getGeneralizationEvaluationInfo() {

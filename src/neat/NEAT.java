@@ -1,5 +1,6 @@
 package neat;
 
+import common.evolution.BasicInfo;
 import common.evolution.EvaluationInfo;
 import common.evolution.IEvolutionaryAlgorithm;
 
@@ -110,6 +111,10 @@ public class NEAT implements IEvolutionaryAlgorithm {
 
     public List<EvaluationInfo> getEvaluationInfo() {
         return population.getEvaluationInfo();
+    }
+
+    public BasicInfo getPopulationInfo() {
+        return population.getPopulationInfo();
     }
 
     public EvaluationInfo getGeneralizationEvaluationInfo() {

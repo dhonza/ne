@@ -33,6 +33,8 @@ public interface IEvolutionaryAlgorithm extends Serializable {
 
     public EvaluationInfo getGeneralizationEvaluationInfo();
 
+    public BasicInfo getPopulationInfo();
+
     public boolean isSolved();
 
     public String getConfigString();

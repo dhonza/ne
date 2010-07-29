@@ -212,6 +212,10 @@ public class GP<P> implements IEvolutionaryAlgorithm, Serializable {
         return infoList;
     }
 
+    public BasicInfo getPopulationInfo() {
+        return populationManager.getPopulationInfo();
+    }
+
     public EvaluationInfo getGeneralizationEvaluationInfo() {
         if (generation != generalizationGeneration) {
             throw new IllegalStateException("Generalization was not called this generation!");

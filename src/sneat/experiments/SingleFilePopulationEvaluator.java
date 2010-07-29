@@ -1,5 +1,6 @@
 package sneat.experiments;
 
+import common.evolution.BasicInfo;
 import common.evolution.EvaluationInfo;
 import common.evolution.PopulationManager;
 import sneat.evolution.EvolutionAlgorithm;
@@ -106,6 +107,10 @@ public class SingleFilePopulationEvaluator<P> implements IPopulationEvaluator {
 
     public void shutdown() {
         populationManager.shutdown();
+    }
+
+    public BasicInfo getPopulationInfo() {
+        return populationManager.getPopulationInfo();
     }
 }
 

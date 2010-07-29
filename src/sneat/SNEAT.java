@@ -1,5 +1,6 @@
 package sneat;
 
+import common.evolution.BasicInfo;
 import common.evolution.EvaluationInfo;
 import common.evolution.IEvolutionaryAlgorithm;
 import hyper.evaluate.SNEATExperiment;
@@ -105,6 +106,10 @@ public class SNEAT implements IEvolutionaryAlgorithm {
 
     public List<EvaluationInfo> getEvaluationInfo() {
         return ea.getPopulation().getEvaluationInfo();
+    }
+
+    public BasicInfo getPopulationInfo() {
+        return exp.getSinglePopulationEvaluator().getPopulationInfo();
     }
 
     public EvaluationInfo getGeneralizationEvaluationInfo() {

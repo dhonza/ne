@@ -2,6 +2,7 @@ package opt.cmaes;
 
 import cma.CMAEvolutionStrategy;
 import cma.CMAOptions;
+import common.evolution.BasicInfo;
 import common.evolution.EvaluationInfo;
 import common.evolution.IEvolutionaryAlgorithm;
 import common.evolution.PopulationManager;
@@ -129,6 +130,10 @@ public class CMAES<P> implements IEvolutionaryAlgorithm {
 
     public List<EvaluationInfo> getEvaluationInfo() {
         return evaluationInfos;
+    }
+
+    public BasicInfo getPopulationInfo() {
+        return populationManager.getPopulationInfo();
     }
 
     public EvaluationInfo getGeneralizationEvaluationInfo() {
