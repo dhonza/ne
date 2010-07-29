@@ -8,5 +8,5 @@ package common.evolution;
  * To change this template use File | Settings | File Templates.
  */
 public interface IDistance<T> {
-    double distance(T other);
+    double distance(T a, T b);
 }

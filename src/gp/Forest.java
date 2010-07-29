@@ -14,8 +14,8 @@ import java.util.Arrays;
  * Time: 6:21:40 PM
  * To change this template use File | Settings | File Templates.
  */
-public class Forest implements Comparable, Serializable, IDistance<Forest> {
-    private Tree[] trees;
+public class Forest implements Comparable, Serializable {
+    Tree[] trees;
     private double fitness = -Double.MAX_VALUE;
     private EvaluationInfo evaluationInfo;
     private int generationOfOrigin;

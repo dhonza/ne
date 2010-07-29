@@ -19,7 +19,7 @@ public class PrecompiledFeedForwardNet implements INet {
     private double[] inputs;
     private double[] outputs;
 
-    final private double weights[];
+    final double weights[];
 
     private boolean activated = false;
 

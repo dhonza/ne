@@ -16,40 +16,11 @@ import java.util.concurrent.Executors;
  * To change this template use File | Settings | File Templates.
  */
 public class PopulationManager<G, P> {
-    private class ThreadEvaluator implements Runnable {
-        final private CountDownLatch stopLatch;
-        final private IEvaluable<P> evaluator;
-        final private List<G> part;
-        final private EvaluationInfo[] evaluationInfo;
-
-        private ThreadEvaluator(CountDownLatch stopLatch, IEvaluable<P> evaluator, List<G> part) {
-            this.evaluator = evaluator;
-            this.part = part;
-            this.stopLatch = stopLatch;
-            this.evaluationInfo = new EvaluationInfo[part.size()];
-        }
-
-        public void run() {
-            for (int i = 0; i < part.size(); i++) {
-                evaluationInfo[i] = evaluator.evaluate(populationStorage.getPhenome(i));
-            }
-            stopLatch.countDown();
-        }
-
-        public EvaluationInfo[] getEvaluationInfo() {
-            return evaluationInfo;
-        }
-    }
-
     final private SimplePopulationStorage<G, P> populationStorage;
     final private PopulationEvaluator<P> populationEvaluator;
     final private List<IGenotypeToPhenotype<G, P>> perThreadConverters;
     final private List<IEvaluable<P>> perThreadEvaluators;
     final private ExecutorService threadExecutor = Executors.newCachedThreadPool();
-
-    private int threads;
-    private int minEvalsPerThread;
-    private int remainingEvals;
 
     public PopulationManager(List<IGenotypeToPhenotype<G, P>> perThreadConverters, List<IEvaluable<P>> perThreadEvaluators) {
         this.perThreadConverters = perThreadConverters;

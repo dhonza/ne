@@ -51,6 +51,10 @@ public class SimplePopulationStorage<G, P> implements IPopulationStorage<G, P, P
         return getPhenome(idx);
     }
 
+    public List<P> getDistancePhenomes() {
+        return getPhenomes();
+    }
+
     public void loadGenomes(List<G> genomes) {
         loaded = true;
         converted = false;

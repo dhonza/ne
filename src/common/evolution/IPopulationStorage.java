@@ -20,6 +20,7 @@ public interface IPopulationStorage<G, P, D> {
      * @return distance phenome
      */
     D getDistancePhenome(int idx);
+    List<D> getDistancePhenomes();
 
     void loadGenomes(List<G> genomes);
     void convert();

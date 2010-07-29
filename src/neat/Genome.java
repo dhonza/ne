@@ -21,7 +21,7 @@ import common.net.linked.Neuron;
  * genes) and phenotype (neural network). It tracks the statistics, too.
  */
 @SuppressWarnings({"JavadocReference"})
-public class Genome implements Comparable, IDistance<Genome> {
+public class Genome implements Comparable {
 
     private static final int FIRST_OF_FUNCTION_BLOCK = 0;
 
