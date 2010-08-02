@@ -37,6 +37,12 @@ public class SimplePopulationStorage<G, P> implements IPopulationStorage<G, P, P
         return genomes.get(idx);
     }
 
+    public List<G> getGenomes() {
+        checkConverted();
+        return genomes;
+    }
+
+
     public P getPhenome(int idx) {
         checkConverted();
         return phenomes.get(idx);

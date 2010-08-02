@@ -2,6 +2,7 @@ package common.evolution;
 
 import common.net.precompiled.PrecompiledFeedForwardNetDistance;
 import hyper.evaluate.converter.DirectGenomeToINet;
+import neat.GenomeDistance;
 import org.apache.commons.lang.ArrayUtils;
 
 import java.util.LinkedHashMap;
@@ -23,7 +24,8 @@ public class PopulationManager<G, P> {
 
     final private List<IGenotypeToPhenotype<G, P>> perThreadConverters;
     final private List<IEvaluable<P>> perThreadEvaluators;
-    private IDistanceStorage distanceStorage = null;
+    private IDistanceStorage genomeDistanceStorage = null;
+    private IDistanceStorage phenomeDistanceStorage = null;
 
     final private ExecutorService threadExecutor = Executors.newCachedThreadPool();
 
@@ -34,11 +36,19 @@ public class PopulationManager<G, P> {
         populationEvaluator = new PopulationEvaluator<P>(threadExecutor, perThreadEvaluators, populationStorage);
     }
 
-    private IDistanceStorage getDistanceStorage() {
-        if (distanceStorage == null) {
-            distanceStorage = new SimpleDistanceStorage<P>(populationStorage, (IDistance<P>) new PrecompiledFeedForwardNetDistance());
+    private IDistanceStorage getGenomeDistanceStorage() {
+        if (genomeDistanceStorage == null) {
+            genomeDistanceStorage = new SimpleDistanceStorage<G>(populationStorage.getGenomes(), (IDistance<G>) new GenomeDistance());
         }
-        return distanceStorage;
+
+        return genomeDistanceStorage;
+    }
+
+    private IDistanceStorage getPhenomeDistanceStorage() {
+        if (phenomeDistanceStorage == null) {
+            phenomeDistanceStorage = new SimpleDistanceStorage<P>(populationStorage.getDistancePhenomes(), (IDistance<P>) new PrecompiledFeedForwardNetDistance());
+        }
+        return phenomeDistanceStorage;
     }
 
     public void loadGenotypes(List<G> population) {
@@ -48,7 +58,8 @@ public class PopulationManager<G, P> {
     public List<EvaluationInfo> evaluate() {
         populationStorage.convert();
 //        checkAgainstSequential(evaluationInfo);
-        getDistanceStorage().recompute();
+        getGenomeDistanceStorage().recompute();
+        getPhenomeDistanceStorage().recompute();
         return populationEvaluator.evaluate();
     }
 
@@ -58,7 +69,8 @@ public class PopulationManager<G, P> {
 
     public BasicInfo getPopulationInfo() {
         Map<String, Object> infoMap = new LinkedHashMap<String, Object>();
-        infoMap.put("DIVERSITY", DistanceUtils.average(distanceStorage));
+        infoMap.put("G_DIVERSITY", DistanceUtils.average(genomeDistanceStorage));
+        infoMap.put("P_DIVERSITY", DistanceUtils.average(phenomeDistanceStorage));
         return new BasicInfo(infoMap);
     }
 

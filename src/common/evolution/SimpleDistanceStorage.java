@@ -10,16 +10,16 @@ import java.util.List;
  * To change this template use File | Settings | File Templates.
  */
 public class SimpleDistanceStorage<D> implements IDistanceStorage {
-    final private IPopulationStorage<?, ?, D> populationStorage;
+    final private List<D> individuals;
     final private IDistance<D> distance;
 
     private double[][] distanceMatrix;
     final private int N;
 
-    public SimpleDistanceStorage(IPopulationStorage<?, ?, D> populationStorage, IDistance<D> distance) {
-        this.populationStorage = populationStorage;
+    public SimpleDistanceStorage(List<D> individuals, IDistance<D> distance) {
+        this.individuals = individuals;
         this.distance = distance;
-        this.N = this.populationStorage.getDistancePhenomes().size();
+        this.N = this.individuals.size();
         distanceMatrix = new double[N - 1][];
         for (int i = 0; i < distanceMatrix.length; i++) {
             distanceMatrix[i] = new double[N - i - 1];
@@ -27,7 +27,6 @@ public class SimpleDistanceStorage<D> implements IDistanceStorage {
     }
 
     public void recompute() {
-        List<D> individuals = this.populationStorage.getDistancePhenomes();
         for (int i = 0; i < distanceMatrix.length; i++) {
             for (int j = 0; j < distanceMatrix[i].length; j++) {
                 distanceMatrix[i][j] = distance.distance(

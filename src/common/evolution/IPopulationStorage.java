@@ -11,6 +11,8 @@ import java.util.List;
  */
 public interface IPopulationStorage<G, P, D> {
     G getGenome(int idx);
+    List<G> getGenomes();
+    
     P getPhenome(int idx);
     List<P> getPhenomes();
 
