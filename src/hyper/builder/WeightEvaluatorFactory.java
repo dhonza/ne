@@ -12,12 +12,15 @@ import common.pmatrix.ParameterCombination;
 public class WeightEvaluatorFactory {
     public static IWeightEvaluator createWeightEvaluator(ParameterCombination parameters) {
         String type = parameters.getString("WEIGHT_EVALUATOR").toLowerCase();
-        if (type.equals("basic")) {
+        String solver = parameters.getString("SOLVER").toUpperCase();
+        if (solver.startsWith("DIRECT_") || type.equals("identity")) {
+            return new IdentityWeightEvaluator();
+        } else if (type.equals("basic")) {
             return new BasicWeightEvaluator();
         } else if (type.equals("original")) {
             return new OriginalWeightEvaluator();
         } else if (type.equals("biased")) {
-            return new BiasedWeightEvaluator();            
+            return new BiasedWeightEvaluator();
         } else {
             throw new IllegalStateException("Invalid BUILDER option in configuration: " + type);
         }

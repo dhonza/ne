@@ -61,7 +61,7 @@ abstract public class AbstractSolver<G, INet> implements Solver {
             IGenotypeToPhenotype<G, INet> converter = ConverterFactory.getConverter(parameters, substrateBuilder, problem);
             perThreadConverters.add(converter);
         }
-        populationManager = new PopulationManager<G, INet>(perThreadConverters, perThreadEvaluators);
+        populationManager = new PopulationManager<G, INet>(parameters, perThreadConverters, perThreadEvaluators);
     }
 
     abstract public void solve();

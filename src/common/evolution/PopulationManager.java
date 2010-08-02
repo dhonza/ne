@@ -1,6 +1,8 @@
 package common.evolution;
 
 import common.net.precompiled.PrecompiledFeedForwardNetDistance;
+import common.pmatrix.ParameterCombination;
+import hyper.evaluate.DistanceFactory;
 import hyper.evaluate.converter.DirectGenomeToINet;
 import neat.GenomeDistance;
 import org.apache.commons.lang.ArrayUtils;
@@ -29,6 +31,9 @@ public class PopulationManager<G, P> {
 
     final private ExecutorService threadExecutor = Executors.newCachedThreadPool();
 
+    private IDistance<G> genomeDistance = null;
+    private IDistance<P> phenomeDistance = null;
+
     public PopulationManager(List<IGenotypeToPhenotype<G, P>> perThreadConverters, List<IEvaluable<P>> perThreadEvaluators) {
         this.perThreadConverters = perThreadConverters;
         this.perThreadEvaluators = perThreadEvaluators;
@@ -36,9 +41,14 @@ public class PopulationManager<G, P> {
         populationEvaluator = new PopulationEvaluator<P>(threadExecutor, perThreadEvaluators, populationStorage);
     }
 
+    public PopulationManager(ParameterCombination parameters, List<IGenotypeToPhenotype<G, P>> perThreadConverters, List<IEvaluable<P>> perThreadEvaluators) {
+        this(perThreadConverters, perThreadEvaluators);
+        genomeDistance = DistanceFactory.createGenomeDistance(parameters);
+    }
+
     private IDistanceStorage getGenomeDistanceStorage() {
         if (genomeDistanceStorage == null) {
-            genomeDistanceStorage = new SimpleDistanceStorage<G>(populationStorage.getGenomes(), (IDistance<G>) new GenomeDistance());
+            genomeDistanceStorage = new SimpleDistanceStorage<G>(populationStorage.getGenomes(), genomeDistance);
         }
 
         return genomeDistanceStorage;
