@@ -315,7 +315,7 @@ public abstract class Population<P> {
             for (int j = 0; j < n - i - 1; j++) {
                 Genome g1 = genomes[i];
                 Genome g2 = genomes[j + i + 1];
-                d[i][j] = g1.distance(g2);
+                d[i][j] = populationManager.getDistance(i, j);
                 if (j == n - i - 2) {
 //                    System.out.print(d[i][j]);
                 } else {

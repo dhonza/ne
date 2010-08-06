@@ -4,7 +4,6 @@ import common.net.precompiled.PrecompiledFeedForwardNetDistance;
 import common.pmatrix.ParameterCombination;
 import hyper.evaluate.DistanceFactory;
 import hyper.evaluate.converter.DirectGenomeToINet;
-import neat.GenomeDistance;
 import org.apache.commons.lang.ArrayUtils;
 
 import java.util.LinkedHashMap;
@@ -21,6 +20,11 @@ import java.util.concurrent.Executors;
  * To change this template use File | Settings | File Templates.
  */
 public class PopulationManager<G, P> {
+    private enum DefaultDistance {
+        GENOTYPE,
+        PHENOTYPE
+    }
+
     final private SimplePopulationStorage<G, P> populationStorage;
     final private PopulationEvaluator<P> populationEvaluator;
 
@@ -34,6 +38,8 @@ public class PopulationManager<G, P> {
     private IDistance<G> genomeDistance = null;
     private IDistance<P> phenomeDistance = null;
 
+    private DefaultDistance defaultDistance = DefaultDistance.GENOTYPE;
+
     public PopulationManager(List<IGenotypeToPhenotype<G, P>> perThreadConverters, List<IEvaluable<P>> perThreadEvaluators) {
         this.perThreadConverters = perThreadConverters;
         this.perThreadEvaluators = perThreadEvaluators;
@@ -43,7 +49,18 @@ public class PopulationManager<G, P> {
 
     public PopulationManager(ParameterCombination parameters, List<IGenotypeToPhenotype<G, P>> perThreadConverters, List<IEvaluable<P>> perThreadEvaluators) {
         this(perThreadConverters, perThreadEvaluators);
-        genomeDistance = DistanceFactory.createGenomeDistance(parameters);
+        if (parameters.contains("GENOTYPE_DIVERSITY") && parameters.getBoolean("GENOTYPE_DIVERSITY")) {
+            genomeDistance = DistanceFactory.createGenomeDistance(parameters);
+        }
+        if (parameters.contains("PHENOTYPE_DIVERSITY") && parameters.getBoolean("PHENOTYPE_DIVERSITY")) {
+            //TODO move this to the Problem
+            phenomeDistance = (IDistance<P>) new PrecompiledFeedForwardNetDistance();
+        }
+        if (parameters.contains("DISTANCE") && parameters.getString("DISTANCE").toLowerCase().equals("genotype")) {
+            defaultDistance = DefaultDistance.GENOTYPE;
+        } else if (parameters.contains("DISTANCE") && parameters.getString("DISTANCE").toLowerCase().equals("phenotype")) {
+            defaultDistance = DefaultDistance.PHENOTYPE;
+        }
     }
 
     private IDistanceStorage getGenomeDistanceStorage() {
@@ -56,7 +73,7 @@ public class PopulationManager<G, P> {
 
     private IDistanceStorage getPhenomeDistanceStorage() {
         if (phenomeDistanceStorage == null) {
-            phenomeDistanceStorage = new SimpleDistanceStorage<P>(populationStorage.getDistancePhenomes(), (IDistance<P>) new PrecompiledFeedForwardNetDistance());
+            phenomeDistanceStorage = new SimpleDistanceStorage<P>(populationStorage.getDistancePhenomes(), phenomeDistance);
         }
         return phenomeDistanceStorage;
     }
@@ -68,8 +85,12 @@ public class PopulationManager<G, P> {
     public List<EvaluationInfo> evaluate() {
         populationStorage.convert();
 //        checkAgainstSequential(evaluationInfo);
-        getGenomeDistanceStorage().recompute();
-        getPhenomeDistanceStorage().recompute();
+        if (genomeDistance != null) {
+            getGenomeDistanceStorage().recompute();
+        }
+        if (phenomeDistance != null) {
+            getPhenomeDistanceStorage().recompute();
+        }
         return populationEvaluator.evaluate();
     }
 
@@ -77,10 +98,22 @@ public class PopulationManager<G, P> {
         return perThreadEvaluators.get(0).evaluateGeneralization(perThreadConverters.get(0).transform(individual));
     }
 
+    public double getDistance(int idxA, int idxB) {
+        if(defaultDistance == DefaultDistance.GENOTYPE) {
+            return genomeDistanceStorage.distance(idxA, idxB);
+        } else {
+            return phenomeDistanceStorage.distance(idxA, idxB);
+        }
+    }
+
     public BasicInfo getPopulationInfo() {
         Map<String, Object> infoMap = new LinkedHashMap<String, Object>();
-        infoMap.put("G_DIVERSITY", DistanceUtils.average(genomeDistanceStorage));
-        infoMap.put("P_DIVERSITY", DistanceUtils.average(phenomeDistanceStorage));
+        if (genomeDistanceStorage != null) {
+            infoMap.put("G_DIVERSITY", DistanceUtils.average(genomeDistanceStorage));
+        }
+        if (phenomeDistanceStorage != null) {
+            infoMap.put("P_DIVERSITY", DistanceUtils.average(phenomeDistanceStorage));
+        }
         return new BasicInfo(infoMap);
     }
 

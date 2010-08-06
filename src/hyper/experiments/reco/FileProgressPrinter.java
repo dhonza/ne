@@ -77,7 +77,9 @@ public class FileProgressPrinter implements IProgressPrinter {
             }
         }
         for (String name : new String[]{"G_DIVERSITY", "P_DIVERSITY"}) {
-            itemList.add(new ReportStorage.SingleRunFile(name, extractPopulationInfo(name).toString()));
+            if (generations.get(0).populationInfo.getInfo(name) != null) {
+                itemList.add(new ReportStorage.SingleRunFile(name, extractPopulationInfo(name).toString()));
+            }
         }
 
         reportStorage.prepareSingleRunResults(itemList);

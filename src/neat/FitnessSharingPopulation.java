@@ -130,7 +130,7 @@ public class FitnessSharingPopulation<P> extends Population<P> {
     }
 
     /**
-     * Specitates the whole population. The newly created Genomes fall into the
+     * Speciates the whole population. The newly created Genomes fall into the
      * first appropriate Species (its distance from a random representative of
      * that Species is smaller than <i>NE.DISTANCE_DELTA </i>). If there is no
      * such Species a new one is created.
@@ -153,9 +153,7 @@ public class FitnessSharingPopulation<P> extends Population<P> {
             boolean found = false;
             tg = genomes[i];
             for (Species specie : species) {
-                tg2 = specie.representative; // its representative
-                // System.out.println( " dist:" +tg.distance( tg2 ) );
-                if (tg.distance(tg2) < NEAT.getConfig().distanceDelta) { // it fits into this
+                if (populationManager.getDistance(i, specie.representativeIdx) < NEAT.getConfig().distanceDelta) { // it fits into this
                     // Species
                     specie.genomes.add(tg);
                     found = true;
@@ -165,6 +163,7 @@ public class FitnessSharingPopulation<P> extends Population<P> {
             if (!found) {
                 ts = addSpecies(tg); // creating new Species
                 ts.representative = tg; // it's the first and also the only
+                ts.representativeIdx = i;
                 // Genome of the new Species, so let it
                 // be the Species representative...
             }
