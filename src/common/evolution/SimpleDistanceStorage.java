@@ -11,13 +11,15 @@ import java.util.List;
  */
 public class SimpleDistanceStorage<D> implements IDistanceStorage {
     final private List<D> individuals;
+    final private List<D> prevIndividuals;
     final private IDistance<D> distance;
 
     private double[][] distanceMatrix;
     final private int N;
 
-    public SimpleDistanceStorage(List<D> individuals, IDistance<D> distance) {
+    public SimpleDistanceStorage(List<D> individuals, List<D> prevIndividuals, IDistance<D> distance) {
         this.individuals = individuals;
+        this.prevIndividuals = prevIndividuals;
         this.distance = distance;
         this.N = this.individuals.size();
         distanceMatrix = new double[N - 1][];
@@ -42,6 +44,10 @@ public class SimpleDistanceStorage<D> implements IDistanceStorage {
             return 0.0;
         }
         return distanceMatrix[a][b - a - 1];
+    }
+
+    public double distanceToPrev(int idxCur, int idxPrev) {
+        return distance.distance(individuals.get(idxCur), prevIndividuals.get(idxPrev));
     }
 
     public int getPopulationSize() {

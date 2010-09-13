@@ -58,8 +58,8 @@ public class GPCrowding<P> extends GP<P> {
             Forest c1 = newPopulation[i];
             Forest c2 = newPopulation[i + 1];
             //matching parents to children
-            double d1 = p1.distance(c1) + p2.distance(c2);
-            double d2 = p1.distance(c2) + p2.distance(c1);
+            double d1 = populationManager.getDistanceToPrevious(i, i) + populationManager.getDistanceToPrevious(i+1, i+1);
+            double d2 = populationManager.getDistanceToPrevious(i+1, i) + populationManager.getDistanceToPrevious(i, i+1);
             if (d1 > d2) {
                 Forest t = c1;
                 c1 = c2;

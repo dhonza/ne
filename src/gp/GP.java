@@ -31,7 +31,7 @@ public class GP<P> implements IEvolutionaryAlgorithm, Serializable {
     final private int inputs;
     final private int outputs;
     final protected NodeCollection nodeCollection;
-    final private PopulationManager<Forest, P> populationManager;
+    final protected PopulationManager<Forest, P> populationManager;
 
     final private TreeInputs treeInputs;
 
@@ -73,7 +73,6 @@ public class GP<P> implements IEvolutionaryAlgorithm, Serializable {
 
     public void nextGeneration() {
         generation++;
-//            distances();
         selectAndReproduce();
         evaluate(newPopulation);
         reduce();
@@ -124,19 +123,6 @@ public class GP<P> implements IEvolutionaryAlgorithm, Serializable {
             forest.setFitness(evaluationInfos.get(cnt).getFitness());
             forest.setEvaluationInfo(evaluationInfos.get(cnt++));
         }
-    }
-
-    private void distances() {
-        double sumDistances = 0.0;
-        double cnt = 0.0;
-        for (int i = 0; i < population.length; i++) {
-            for (int j = i + 1; j < population.length; j++) {
-                sumDistances += population[i].distance(population[j]);
-                cnt += 1.0;
-//                System.out.println(i + ":" + j + " = " + population[i].distance(population[j]));
-            }
-        }
-        System.out.println("D: " + sumDistances / cnt);
     }
 
     protected void selectAndReproduce() {

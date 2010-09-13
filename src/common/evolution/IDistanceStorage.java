@@ -12,5 +12,7 @@ public interface IDistanceStorage {
 
     double distance(int idxA, int idxB);
 
+    double distanceToPrev(int idxCur, int idxPrev);
+
     int getPopulationSize();
 }

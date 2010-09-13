@@ -172,6 +172,8 @@ public class DeterministicCrowdingPopulation<P> extends Population<P> {
             children[i].setEvaluationInfo(evaluationInfos.get(i));
         }
 
+        System.out.println("WARNING!: generic distance measure (genotypic/phenotypic not implemented!!)");
+
         tpopi = 0;
 
         for (int i = 0; i < n / 2; i++) {
@@ -184,7 +186,9 @@ public class DeterministicCrowdingPopulation<P> extends Population<P> {
             structural2 = structurals[tpopi++];
 
             // choose similar
-            if ((p1.distance(c1) + p2.distance(c2)) <= (p1.distance(c2) + p2.distance(c1))) {
+            //if ((p1.distance(c1) + p2.distance(c2)) <= (p1.distance(c2) + p2.distance(c1))) {
+            if ((populationManager.getDistanceToPrevious(i, i) + populationManager.getDistanceToPrevious(i + 1, i + 1)) <=
+                    (populationManager.getDistanceToPrevious(i + 1, i) + populationManager.getDistanceToPrevious(i, i + 1))) {
                 if ((c1.fitness > p1.fitness) || structural1) { // choose better
                     tpop[tpopj++] = c1;
                 } else {

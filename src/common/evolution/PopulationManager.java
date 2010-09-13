@@ -65,7 +65,7 @@ public class PopulationManager<G, P> {
 
     private IDistanceStorage getGenomeDistanceStorage() {
         if (genomeDistanceStorage == null) {
-            genomeDistanceStorage = new SimpleDistanceStorage<G>(populationStorage.getGenomes(), genomeDistance);
+            genomeDistanceStorage = new SimpleDistanceStorage<G>(populationStorage.getGenomes(), populationStorage.getPreviousGenomes(), genomeDistance);
         }
 
         return genomeDistanceStorage;
@@ -73,7 +73,7 @@ public class PopulationManager<G, P> {
 
     private IDistanceStorage getPhenomeDistanceStorage() {
         if (phenomeDistanceStorage == null) {
-            phenomeDistanceStorage = new SimpleDistanceStorage<P>(populationStorage.getDistancePhenomes(), phenomeDistance);
+            phenomeDistanceStorage = new SimpleDistanceStorage<P>(populationStorage.getDistancePhenomes(), populationStorage.getPreviousDistancePhenomes(), phenomeDistance);
         }
         return phenomeDistanceStorage;
     }
@@ -99,12 +99,21 @@ public class PopulationManager<G, P> {
     }
 
     public double getDistance(int idxA, int idxB) {
-        if(defaultDistance == DefaultDistance.GENOTYPE) {
+        if (defaultDistance == DefaultDistance.GENOTYPE) {
             return genomeDistanceStorage.distance(idxA, idxB);
         } else {
             return phenomeDistanceStorage.distance(idxA, idxB);
         }
     }
+
+    public double getDistanceToPrevious(int idxCur, int idxPrev) {
+        if (defaultDistance == DefaultDistance.GENOTYPE) {
+            return genomeDistanceStorage.distanceToPrev(idxCur, idxPrev);
+        } else {
+            return phenomeDistanceStorage.distanceToPrev(idxCur, idxPrev);
+        }
+    }
+
 
     public BasicInfo getPopulationInfo() {
         Map<String, Object> infoMap = new LinkedHashMap<String, Object>();

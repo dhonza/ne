@@ -24,6 +24,7 @@ import neat.*;
 public class NEATSolver extends AbstractSolver {
     private NEAT neat;
     private FitnessSharingPopulation population;
+//    private DeterministicCrowdingPopulation population;
 
     protected NEATSolver(ParameterCombination parameters, Stats stats, ReportStorage reportStorage) {
         super(parameters, stats, reportStorage);
@@ -38,6 +39,7 @@ public class NEATSolver extends AbstractSolver {
         Utils.setParameters(parameters, config, "NEAT");
 
         population = new FitnessSharingPopulation<INet>(populationManager, getPrototype(populationManager));
+//        population = new DeterministicCrowdingPopulation<INet>(populationManager, getPrototype(populationManager));
 
         neat.setPopulation(population);
 
