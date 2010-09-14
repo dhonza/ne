@@ -2,10 +2,7 @@ package hyper.evaluate.printer;
 
 import common.evolution.IProgressPrinter;
 import common.pmatrix.ParameterCombination;
-import gp.Forest;
-import gp.ForestStorage;
-import gp.GP;
-import gp.GPBasicProgressPrinter;
+import gp.*;
 import hyper.cppn.BasicGPCPPN;
 import hyper.cppn.ICPPN;
 import hyper.evaluate.IProblem;
@@ -18,9 +15,9 @@ import hyper.evaluate.IProblem;
  * To change this template use File | Settings | File Templates.
  */
 public class GPProgressPrinter1D extends CommonProgressPrinter1D {
-    final private GP gp;
+    final private GPBase gp;
 
-    public GPProgressPrinter1D(GP gp, IProgressPrinter progressPrinter, IProblem problem, ParameterCombination parameters) {
+    public GPProgressPrinter1D(GPBase gp, IProgressPrinter progressPrinter, IProblem problem, ParameterCombination parameters) {
         super(progressPrinter, problem, parameters);
         this.gp = gp;
     }
@@ -36,7 +33,10 @@ public class GPProgressPrinter1D extends CommonProgressPrinter1D {
 
     @Override
     protected void storeBSFCPPN(String fileName) {
-        Forest forestBSF = gp.getBestSoFar();
-        ForestStorage.save(forestBSF, fileName);
+        IGPForest forestBSF = gp.getBestSoFar();
+        //TODO storage
+        System.out.println("Now storing only Forest (GP) implement for GEP!!!");
+        ForestStorage.save((Forest) forestBSF, fileName);
+//        ForestStorage.save(forestBSF, fileName);
     }
 }

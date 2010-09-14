@@ -5,7 +5,9 @@ import common.evolution.*;
 import common.pmatrix.ParameterCombination;
 import common.pmatrix.ParameterMatrixManager;
 import common.pmatrix.ParameterMatrixStorage;
+import common.pmatrix.Utils;
 import common.stats.Stats;
+import gep.GEP;
 import gp.*;
 import gp.terminals.Constant;
 import gp.terminals.Random;
@@ -27,7 +29,8 @@ public class GPMain {
 //        RND.initialize(8725627961384450L); //4
 
 
-        ParameterMatrixManager manager = ParameterMatrixStorage.load(new File("cfg/gpdemo.properties"));
+//        ParameterMatrixManager manager = ParameterMatrixStorage.load(new File("cfg/gpdemo.properties"));
+        ParameterMatrixManager manager = ParameterMatrixStorage.load(new File("cfg/gepdemo.properties"));
         for (ParameterCombination combination : manager) {
             int experiments = combination.getInteger("EXPERIMENTS");
             Stats stats = new Stats();
@@ -52,14 +55,17 @@ public class GPMain {
 
                 PopulationManager<Forest, Forest> populationManager = new PopulationManager<Forest, Forest>(
                         converter, evaluator);
+                Utils.setStaticParameters(combination, GP.class, "GP");
+                Utils.setStaticParameters(combination, GEP.class, "GEP");
 
-                GP gp = GPFactory.createByName(combination.getString("GP.TYPE"), populationManager, functions, terminals);
+//                GP gp = GPFactory.createByName(combination.getString("GP.TYPE"), populationManager, functions, terminals);
+                GEP gp = new GEP(populationManager, functions, terminals);
 
                 EvolutionaryAlgorithmSolver solver = new EvolutionaryAlgorithmSolver(gp, stats, false);
                 solver.addProgressPrinter(new GPBasicProgressPrinter(gp));
-                solver.addStopCondition(new MaxGenerationsStopCondition(gp));
-                solver.addStopCondition(new MaxEvaluationsStopCondition(gp));
-                solver.addStopCondition(new TargetFitnessStopCondition(gp));
+                solver.addStopCondition(new MaxGenerationsStopCondition(gp, GP.MAX_GENERATIONS));
+                solver.addStopCondition(new MaxEvaluationsStopCondition(gp, GP.MAX_EVALUATIONS));
+                solver.addStopCondition(new TargetFitnessStopCondition(gp, GP.TARGET_FITNESS));
                 solver.run();
 
                 stats.addSample("BSF", gp.getBestSoFar().getFitness());

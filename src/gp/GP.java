@@ -1,16 +1,9 @@
 package gp;
 
 import common.RND;
-import common.evolution.BasicInfo;
-import common.evolution.EvaluationInfo;
-import common.evolution.IEvolutionaryAlgorithm;
 import common.evolution.PopulationManager;
-import gp.terminals.Input;
 
-import java.io.Serializable;
-import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.List;
 
 
 /**
@@ -20,90 +13,24 @@ import java.util.List;
  * Time: 11:34:02 AM
  * To change this template use File | Settings | File Templates.
  */
-public class GP<P> implements IEvolutionaryAlgorithm, Serializable {
-    public static double CONSTANT_AMPLITUDE = 5.0;
-    public static int MAX_GENERATIONS = 1000;
-    public static int MAX_EVALUATIONS = Integer.MAX_VALUE;
+public class GP<P> extends GPBase<P, Forest> {
     public static int MAX_DEPTH = 3;
-    public static double MUTATION_CAUCHY_PROBABILITY = 0.8;
-    public static double MUTATION_CAUCHY_POWER = 0.01;
     public static double MUTATION_SUBTREE_PROBABLITY = 0.5;
-    public static int POPULATION_SIZE = 10;
-    public static double TARGET_FITNESS = Double.MAX_VALUE;
-
-    final private int inputs;
-    final private int outputs;
-    final protected NodeCollection nodeCollection;
-    final protected PopulationManager<Forest, P> populationManager;
-
-    protected Forest[] population;
-    protected Forest[] newPopulation;
-    protected int generation;
-    private Forest bestOfGeneration;
-    private Forest bestSoFar;
-    private int lastInnovation;
-
-    private int generalizationGeneration;
-    private EvaluationInfo generalizationEvaluationInfo;
 
     public GP(PopulationManager<Forest, P> populationManager, Node[] functions, Node[] terminals) {
-        this.populationManager = populationManager;
-        this.inputs = populationManager.getNumberOfInputs();
-        this.outputs = populationManager.getNumberOfOutputs();
-
-        Node[] allTerminals = new Node[terminals.length + inputs];
-        System.arraycopy(terminals, 0, allTerminals, 0, terminals.length);
-        TreeInputs treeInputs = new TreeInputs(inputs);
-        for (int i = 0; i < inputs; i++) {
-            allTerminals[terminals.length + i] = new Input(i, treeInputs);
-        }
-        this.nodeCollection = new NodeCollection(functions, allTerminals);
-
+        super(populationManager, functions, terminals);
         bestOfGeneration = bestSoFar = Forest.createEmpty();
     }
 
-    public void initialGeneration() {
-        generation = 1;
-        generalizationGeneration = -1;
-        lastInnovation = 0;
-
-        createInitialGeneration();
-        evaluate(population);
-        recomputeBest();
+    @Override
+    protected void init(Node[] functions) {
     }
 
-    public void nextGeneration() {
-        generation++;
-        selectAndReproduce();
-        evaluate(newPopulation);
-        reduce();
-        recomputeBest();
-    }
-
-    public void performGeneralizationTest() {
-        generalizationEvaluationInfo = populationManager.evaluateGeneralization(bestSoFar);
-        generalizationGeneration = generation;
-    }
-
-    public void finished() {
-        populationManager.shutdown();
-    }
-
-    private void createInitialGeneration() {
+    protected void createInitialGeneration() {
         population = new Forest[POPULATION_SIZE];
         newPopulation = new Forest[POPULATION_SIZE];
         for (int i = 0; i < population.length; i++) {
             population[i] = Forest.createRandom(generation, inputs, outputs, nodeCollection);
-        }
-    }
-
-    private void evaluate(Forest[] evalPopulation) {
-        populationManager.loadGenotypes(Arrays.asList(evalPopulation));
-        List<EvaluationInfo> evaluationInfos = populationManager.evaluate();
-        int cnt = 0;
-        for (Forest forest : evalPopulation) {
-            forest.setFitness(evaluationInfos.get(cnt).getFitness());
-            forest.setEvaluationInfo(evaluationInfos.get(cnt++));
         }
     }
 
@@ -125,21 +52,6 @@ public class GP<P> implements IEvolutionaryAlgorithm, Serializable {
         System.arraycopy(oldAndNewPopulation, 0, population, 0, population.length);
     }
 
-    private void recomputeBest() {
-        bestOfGeneration = population[0];
-        for (Forest forest : population) {
-            if (forest.getFitness() > bestOfGeneration.getFitness()) {
-                bestOfGeneration = forest;
-            }
-        }
-        if (bestSoFar.getFitness() < bestOfGeneration.getFitness()) {
-            bestSoFar = bestOfGeneration;
-            lastInnovation = 0;
-        } else {
-            lastInnovation++;
-        }
-    }
-
     public String getConfigString() {
         StringBuilder s = new StringBuilder();
         s.append("CONSTANT_AMPLITUDE = ").append(CONSTANT_AMPLITUDE);
@@ -153,60 +65,5 @@ public class GP<P> implements IEvolutionaryAlgorithm, Serializable {
         s.append("\nTARGET_FITNESS = ").append(TARGET_FITNESS);
         s.append("\n");
         return s.toString();
-    }
-
-    public boolean hasImproved() {
-        return lastInnovation == 0;
-    }
-
-    public Forest[] getPopulation() {
-        return population.clone();
-    }
-
-    public int getGeneration() {
-        return generation;
-    }
-
-    public int getEvaluations() {
-        return getGeneration() * population.length;
-    }
-
-    public double getMaxFitnessReached() {
-        return getBestSoFar().getFitness();
-    }
-
-    public boolean isSolved() {
-        return populationManager.isSolved();
-    }
-
-    public Forest getBestOfGeneration() {
-        return bestOfGeneration;
-    }
-
-    public Forest getBestSoFar() {
-        return bestSoFar;
-    }
-
-    public int getLastInnovation() {
-        return lastInnovation;
-    }
-
-    public List<EvaluationInfo> getEvaluationInfo() {
-        List<EvaluationInfo> infoList = new ArrayList<EvaluationInfo>(population.length);
-        for (Forest forest : population) {
-            infoList.add(forest.getEvaluationInfo());
-        }
-        return infoList;
-    }
-
-    public BasicInfo getPopulationInfo() {
-        return populationManager.getPopulationInfo();
-    }
-
-    public EvaluationInfo getGeneralizationEvaluationInfo() {
-        if (generation != generalizationGeneration) {
-            throw new IllegalStateException("Generalization was not called this generation!");
-        }
-        return generalizationEvaluationInfo;
     }
 }

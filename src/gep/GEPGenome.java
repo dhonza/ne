@@ -6,7 +6,7 @@ import gp.NodeCollection;
 import gp.TreeInputs;
 import gp.functions.Add;
 import gp.functions.Multiply;
-import gp.terminals.Constant;
+import gp.terminals.RNC;
 
 /**
  * Created by IntelliJ IDEA.
@@ -23,6 +23,10 @@ public class GEPGenome {
     private double[] constants;
 
     private int ptr;
+    private int constPtr;
+
+    private GEPGenome() {
+    }
 
     public static GEPGenome createRandom(NodeCollection nodeCollection) {
         GEPGenome tree = new GEPGenome();
@@ -43,7 +47,7 @@ public class GEPGenome {
 
         tree.constants = new double[GEP.C_SIZE];
         for (int i = 0; i < GEP.C_SIZE; i++) {
-            tree.constants[i] = RND.getDouble(-GEP.C_SIZE, GEP.C_SIZE);
+            tree.constants[i] = RND.getDouble(-GEP.CONSTANT_AMPLITUDE, GEP.CONSTANT_AMPLITUDE);
         }
 
         return tree;
@@ -57,12 +61,17 @@ public class GEPGenome {
     private void buildTree() {
         if (root == null) {
             ptr = 0;
+            constPtr = 0;
             root = buildTree(headTail[ptr++], 0);
         }
     }
 
     private Node buildTree(Node node, int depth) {
         Node[] children = new Node[node.getArity()];
+        if (node instanceof RNC) {
+            double value = constants[dc[constPtr++]];
+            return new RNC(depth, value);
+        }
         for (int i = 0; i < node.getArity(); i++) {
             children[i] = headTail[ptr++];
         }
@@ -73,29 +82,38 @@ public class GEPGenome {
     }
 
     public GEPGenome mutate(NodeCollection nodeCollection) {
-//        nodes.clear();
-//        ancestors.clear();
+        GEPGenome mutated = this.clone();
+        for (int i = 0; i < GEP.HEAD_TAIL; i++) {
+            if (RND.getDouble() < GEP.MUTATION_HEADTAIL_RATE) {
+                if (i < GEP.HEAD) {
+                    mutated.headTail[i] = nodeCollection.getRandomOfAll();
+                } else {
+                    mutated.headTail[i] = nodeCollection.getRandomTerminal();
+                }
+            }
+        }
 
-//        populateNodes(root, null);
-//        int mutationPoint = RND.getInt(0, nodes.size() - 1);
-//
-//        Node mutatedNode = nodes.get(mutationPoint);
-//        Node mutatedNodeAncestor = ancestors.get(mutatedNode);
-//        Node prototype = nodeCollection.getRandomWithArity(mutatedNode.getArity());
-//
-//        if (prototype.getClass() == mutatedNode.getClass()) {//no change at all
-//            return this;
-//        }
-//
-//        Node newNode = prototype.create(mutatedNode.getDepth(), mutatedNode.getChildren());
+        for (int i = 0; i < GEP.DC; i++) {
+            if (RND.getDouble() < GEP.MUTATION_DC_RATE) {
+                mutated.dc[i] = RND.getInt(0, GEP.C_SIZE - 1);
+            }
+        }
 
-        GEPGenome mutated = new GEPGenome();
-//        mutated.root = replaceAncestors(mutatedNodeAncestor, mutatedNode, newNode);
+        for (int i = 0; i < GEP.C_SIZE; i++) {
+            if (RND.getDouble() < GEP.MUTATION_CAUCHY_PROBABILITY) {
+                mutated.constants[i] += GEP.MUTATION_CAUCHY_POWER * RND.getCauchy();
+            }
+        }
         return mutated;
     }
 
     @Override
     public String toString() {
+        buildTree();
+        return toStringKarva() + "\n" + root.toString();
+    }
+
+    public String toStringKarva() {
         StringBuilder builder = new StringBuilder();
         for (int i = 0; i < GEP.HEAD_TAIL; i++) {
             builder.append(headTail[i]);
@@ -124,15 +142,27 @@ public class GEPGenome {
         return builder.toString();
     }
 
+    protected GEPGenome clone() {
+        GEPGenome tree = new GEPGenome();
+
+        tree.headTail = this.headTail.clone();
+        tree.dc = this.dc.clone();
+        tree.constants = this.constants.clone();
+
+        return tree;
+    }
+
     public static void main(String[] args) {
         Node[] functions = new Node[]{new Add(), new Multiply()};
-        Node[] terminals = new Node[]{new Constant(1)};
-        GEP.initGenomes(functions);
+        Node[] terminals = new Node[]{new RNC()};
+        GEP gep = new GEP(null, functions, terminals);
         NodeCollection c = new NodeCollection(functions, terminals);
         RND.initializeTime();
         GEPGenome g = createRandom(c);
+        System.out.println(g.toStringKarva());
         System.out.println(g);
-        g.buildTree();
-        System.out.println(g.root);
+        GEPGenome g2 = g.mutate(c);
+        System.out.println(g2.toStringKarva());
+        System.out.println(g2);
     }
 }

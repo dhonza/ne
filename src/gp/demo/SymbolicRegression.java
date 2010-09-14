@@ -1,8 +1,8 @@
 package gp.demo;
 
-import common.evolution.IEvaluable;
 import common.evolution.EvaluationInfo;
-import gp.Forest;
+import common.evolution.IEvaluable;
+import gp.IGPForest;
 
 /**
  * Created by IntelliJ IDEA.
@@ -11,8 +11,8 @@ import gp.Forest;
  * Time: 5:02:46 PM
  * To change this template use File | Settings | File Templates.
  */
-public class SymbolicRegression implements IEvaluable<Forest> {
-    public EvaluationInfo evaluate(Forest forest) {
+public class SymbolicRegression implements IEvaluable<IGPForest> {
+    public EvaluationInfo evaluate(IGPForest forest) {
         int steps = 20;
         double startX = -10.0;
         double endX = 10.0;
@@ -29,7 +29,7 @@ public class SymbolicRegression implements IEvaluable<Forest> {
         return new EvaluationInfo(error / steps);
     }
 
-    public EvaluationInfo evaluateGeneralization(Forest forest) {
+    public EvaluationInfo evaluateGeneralization(IGPForest forest) {
         return evaluate(forest);
     }
 

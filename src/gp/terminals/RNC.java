@@ -11,12 +11,15 @@ import gp.TreeInputs;
  * To change this template use File | Settings | File Templates.
  */
 public class RNC extends Node {
-    protected double value = Double.NaN;
+    protected double value;
+
+    public RNC() {
+        this(0, Double.NaN);
+    }
 
     public RNC(double value) {
         this(0, value);
     }
-
 
     public RNC(int depth, double value) {
         super(depth, new Node[0]);

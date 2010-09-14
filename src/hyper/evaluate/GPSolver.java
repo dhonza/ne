@@ -42,9 +42,9 @@ public class GPSolver extends AbstractSolver {
         solver = new EvolutionaryAlgorithmSolver(gp, stats, problem instanceof IProblemGeneralization);
         solver.addProgressPrinter(new GPProgressPrinter1D(gp, problem, parameters));
         solver.addProgressPrinter(new FileProgressPrinter(gp, problem, reportStorage, parameters));
-        solver.addStopCondition(new MaxGenerationsStopCondition(gp));
-        solver.addStopCondition(new MaxEvaluationsStopCondition(gp));
-        solver.addStopCondition(new TargetFitnessStopCondition(gp));
+        solver.addStopCondition(new MaxGenerationsStopCondition(gp, GP.MAX_GENERATIONS));
+        solver.addStopCondition(new MaxEvaluationsStopCondition(gp, GP.MAX_EVALUATIONS));
+        solver.addStopCondition(new TargetFitnessStopCondition(gp, GP.TARGET_FITNESS));
         solver.addStopCondition(new SolvedStopCondition(problem));
     }
 

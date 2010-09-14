@@ -10,13 +10,15 @@ import common.evolution.IStopCondition;
  * To change this template use File | Settings | File Templates.
  */
 public class MaxGenerationsStopCondition implements IStopCondition {
-    final private GP gp;
+    final private IGP gp;
+    final private int maxGenerations;
 
-    public MaxGenerationsStopCondition(GP gp) {
+    public MaxGenerationsStopCondition(IGP gp, int maxGenerations) {
         this.gp = gp;
+        this.maxGenerations = maxGenerations;
     }
 
     public boolean isMet() {
-        return gp.getGeneration() >= GP.MAX_GENERATIONS;
+        return gp.getGeneration() >= maxGenerations;
     }
 }

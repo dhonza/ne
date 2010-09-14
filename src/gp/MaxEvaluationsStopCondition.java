@@ -10,13 +10,15 @@ import common.evolution.IStopCondition;
  * To change this template use File | Settings | File Templates.
  */
 public class MaxEvaluationsStopCondition implements IStopCondition {
-    final private GP gp;
+    final private IGP gp;
+    final private int maxEvaluations;
 
-    public MaxEvaluationsStopCondition(GP gp) {
+    public MaxEvaluationsStopCondition(IGP gp, int maxEvaluations) {
         this.gp = gp;
+        this.maxEvaluations = maxEvaluations;
     }
 
     public boolean isMet() {
-        return gp.getEvaluations() >= GP.MAX_EVALUATIONS;
+        return gp.getEvaluations() >= maxEvaluations;
     }
 }

@@ -1,8 +1,8 @@
 package gp.demo;
 
-import common.evolution.IEvaluable;
 import common.evolution.EvaluationInfo;
-import gp.Forest;
+import common.evolution.IEvaluable;
+import gp.IGPForest;
 
 /**
  * Created by IntelliJ IDEA.
@@ -11,13 +11,13 @@ import gp.Forest;
  * Time: 5:02:46 PM
  * To change this template use File | Settings | File Templates.
  */
-public class EvolveConstant implements IEvaluable<Forest> {
-    public EvaluationInfo evaluate(Forest forest) {
+public class EvolveConstant implements IEvaluable<IGPForest> {
+    public EvaluationInfo evaluate(IGPForest forest) {
         double output = forest.getOutputs()[0];
         return new EvaluationInfo(0.0 - Math.abs(2.1 - output));
     }
 
-    public EvaluationInfo evaluateGeneralization(Forest forest) {
+    public EvaluationInfo evaluateGeneralization(IGPForest forest) {
         return evaluate(forest);
     }
 

@@ -1,10 +1,12 @@
 package gep;
 
 import common.evolution.EvaluationInfo;
+import gp.IGPForest;
 import gp.NodeCollection;
 import gp.TreeInputs;
 
 import java.io.Serializable;
+import java.util.Arrays;
 
 /**
  * Created by IntelliJ IDEA.
@@ -13,7 +15,7 @@ import java.io.Serializable;
  * Time: 4:27:58 PM
  * To change this template use File | Settings | File Templates.
  */
-public class GEPChromosome implements Comparable, Serializable {
+public class GEPChromosome implements IGPForest, Comparable, Serializable {
     GEPGenome[] trees;
     private double fitness = -Double.MAX_VALUE;
     private EvaluationInfo evaluationInfo;
@@ -57,7 +59,6 @@ public class GEPChromosome implements Comparable, Serializable {
     public GEPChromosome mutate(NodeCollection nodeCollection, int generationOfOrigin) {
         GEPChromosome forest = new GEPChromosome(generationOfOrigin, this.getNumOfInputs());
         forest.trees = new GEPGenome[trees.length];
-        //TODO nebo vybrat jeden?
         for (int i = 0; i < trees.length; i++) {
             forest.trees[i] = this.trees[i].mutate(nodeCollection);
         }
@@ -85,5 +86,10 @@ public class GEPChromosome implements Comparable, Serializable {
 
     public int compareTo(Object o) {
         return -new Double(fitness).compareTo(((GEPChromosome) o).fitness);
+    }
+
+    @Override
+    public String toString() {
+        return Arrays.asList(trees) + " F: " + fitness + " G: " + generationOfOrigin;
     }
 }

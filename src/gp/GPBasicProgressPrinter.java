@@ -10,9 +10,9 @@ import common.evolution.IProgressPrinter;
  * To change this template use File | Settings | File Templates.
  */
 public class GPBasicProgressPrinter implements IProgressPrinter {
-    final protected GP gp;
+    final protected IGP gp;
 
-    public GPBasicProgressPrinter(GP gp) {
+    public GPBasicProgressPrinter(IGP gp) {
         this.gp = gp;
     }
 

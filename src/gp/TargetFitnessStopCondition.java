@@ -10,13 +10,15 @@ import common.evolution.IStopCondition;
  * To change this template use File | Settings | File Templates.
  */
 public class TargetFitnessStopCondition implements IStopCondition {
-    final private GP gp;
+    final private IGP gp;
+    final private double targetFitness;
 
-    public TargetFitnessStopCondition(GP gp) {
+    public TargetFitnessStopCondition(IGP gp, double targetFitness) {
         this.gp = gp;
+        this.targetFitness = targetFitness;
     }
 
     public boolean isMet() {
-        return gp.getBestSoFar().getFitness() >= GP.TARGET_FITNESS;
+        return gp.getBestSoFar().getFitness() >= targetFitness;
     }
 }

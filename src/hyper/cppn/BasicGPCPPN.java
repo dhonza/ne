@@ -1,6 +1,6 @@
 package hyper.cppn;
 
-import gp.Forest;
+import gp.IGPForest;
 import hyper.substrate.ICoordinate;
 
 /**
@@ -11,11 +11,11 @@ import hyper.substrate.ICoordinate;
  * To change this template use File | Settings | File Templates.
  */
 public class BasicGPCPPN implements ICPPN {
-    final private Forest forest;
+    final private IGPForest forest;
     final private int maxCoordinateDimension;
     final private double[] in;
 
-    public BasicGPCPPN(Forest forest, int maxCoordinateDimension) {
+    public BasicGPCPPN(IGPForest forest, int maxCoordinateDimension) {
         this.forest = forest;
         this.maxCoordinateDimension = maxCoordinateDimension;
         this.in = new double[forest.getNumOfInputs()];
