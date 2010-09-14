@@ -24,7 +24,7 @@ public class Add extends Node {
         super(depth, nodes, innovation);
     }
 
-    protected Node create(int depth, Node[] children) {
+    public Node create(int depth, Node[] children) {
         return new Add(depth, children);
     }
 
@@ -42,6 +42,9 @@ public class Add extends Node {
 
     @Override
     public String toString() {
+        if (nodes[0] == null) {
+            return "+";
+        }
         return new StringBuilder("(").append(nodes[0].toString()).append("+").append(nodes[1].toString()).append(")").toString();
     }
 

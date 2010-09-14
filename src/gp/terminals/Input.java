@@ -27,7 +27,7 @@ public class Input extends Node {
         this.index = index;
     }
 
-    protected Node create(int depth, Node[] children) {
+    public Node create(int depth, Node[] children) {
         return new Input(depth, index);
     }
 

@@ -24,7 +24,7 @@ public class GaussDiff extends Node {
         super(depth, nodes, innovation);
     }
 
-    protected Node create(int depth, Node[] children) {
+    public Node create(int depth, Node[] children) {
         return new GaussDiff(depth, children);
     }
 
@@ -45,6 +45,9 @@ public class GaussDiff extends Node {
 
     @Override
     public String toString() {
+        if (nodes[0] == null) {
+            return "gd";
+        }
         return new StringBuilder("exp(-(").append(nodes[0].toString()).append("-").append(nodes[1].toString()).append(")^2)").toString();
     }
 

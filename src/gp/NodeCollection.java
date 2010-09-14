@@ -43,9 +43,12 @@ public class NodeCollection implements Serializable {
         return tempMap;
     }
 
-
     public Node getRandomOfAll() {
         return all[RND.getInt(0, all.length - 1)];
+    }
+
+    public Node getRandomFunction() {
+        return functions[RND.getInt(0, functions.length - 1)];
     }
 
     public Node getRandomTerminal() {

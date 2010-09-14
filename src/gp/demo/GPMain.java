@@ -32,7 +32,7 @@ public class GPMain {
             int experiments = combination.getInteger("EXPERIMENTS");
             Stats stats = new Stats();
             stats.createDoubleStat("BSF", "EXPERIMENT", "Best So Far Fitness");
-            stats.createDoubleStat("BSFG", "EXPERIMENT", "Best So Far Fitness Generation");
+            stats.createLongStat("BSFG", "EXPERIMENT", "Best So Far Fitness Generation");
             for (int i = 1; i <= experiments; i++) {
                 System.out.println("PARAMETER SETTING: " + combination);
                 GP.MAX_GENERATIONS = combination.getInteger("GP.MAX_GENERATIONS");

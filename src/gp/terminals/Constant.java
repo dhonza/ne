@@ -28,7 +28,7 @@ public class Constant extends Node {
         this.value = value;
     }
 
-    protected Node create(int depth, Node[] children) {
+    public Node create(int depth, Node[] children) {
         return new Constant(depth, value);
     }
 
@@ -50,6 +50,7 @@ public class Constant extends Node {
     }
 
     //TODO brackets!
+
     public String toMathematicaExpression() {
         return Double.toString(value).replace("E", "*10^");
     }

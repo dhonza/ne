@@ -34,7 +34,7 @@ public abstract class Node implements Serializable {
         return innovation;
     }
 
-    abstract protected Node create(int depth, Node[] children);
+    public abstract Node create(int depth, Node[] children);
 
     abstract protected Node copy(Node[] children);
 

@@ -24,7 +24,7 @@ public class Atan extends Node {
         super(depth, nodes, innovation);
     }
 
-    protected Node create(int depth, Node[] children) {
+    public Node create(int depth, Node[] children) {
         return new Atan(depth, children);
     }
 
@@ -42,6 +42,9 @@ public class Atan extends Node {
 
     @Override
     public String toString() {
+        if (nodes[0] == null) {
+            return "atan";
+        }
         return new StringBuilder("atan(").append(nodes[0].toString()).append(")").toString();
     }
 

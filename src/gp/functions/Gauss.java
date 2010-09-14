@@ -24,7 +24,7 @@ public class Gauss extends Node {
         super(depth, nodes, innovation);
     }
 
-    protected Node create(int depth, Node[] children) {
+    public Node create(int depth, Node[] children) {
         return new Gauss(depth, children);
     }
 
@@ -43,6 +43,9 @@ public class Gauss extends Node {
 
     @Override
     public String toString() {
+        if (nodes[0] == null) {
+            return "exp";
+        }
         return new StringBuilder("exp(-").append(nodes[0].toString()).append("^2)").toString();
     }
 

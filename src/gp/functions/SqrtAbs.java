@@ -24,7 +24,7 @@ public class SqrtAbs extends Node {
         super(depth, nodes, innovation);
     }
 
-    protected Node create(int depth, Node[] children) {
+    public Node create(int depth, Node[] children) {
         return new SqrtAbs(depth, children);
     }
 
@@ -42,6 +42,9 @@ public class SqrtAbs extends Node {
 
     @Override
     public String toString() {
+        if (nodes[0] == null) {
+            return "sa";
+        }
         return new StringBuilder("sqrt(|").append(nodes[0].toString()).append("|)").toString();
     }
 
