@@ -20,7 +20,8 @@ import java.util.Random;
 
 public class RND implements Serializable {
 
-    private static int SAMPLE_WITHOUT_REPLACEMENT_THRESHOLD = 10;
+    private static double SAMPLE_WITHOUT_REPLACEMENT_RATIO = 0.2;
+    private static double SAMPLE_RANGE_WITHOUT_REPLACEMENT_RATIO = 0.2;
 
     /**
      * The seed of random numbers.
@@ -287,9 +288,28 @@ public class RND implements Serializable {
      * @param array  source array
      * @param sample target array, its size determines the size of the sample
      */
-
     public static void sampleWithoutReplacement(int[] array, int[] sample) {
-        sampleWithoutReplacementHelper(array, sample);
+        if (array.length < sample.length) {
+            throw new IllegalArgumentException("Array size < sample size!");
+        }
+        if (((double) sample.length / (double) array.length) < SAMPLE_WITHOUT_REPLACEMENT_RATIO) {
+            sampleWithoutReplacement2(array, sample);
+        } else {
+            sampleWithoutReplacement1(array, sample);
+        }
+    }
+
+    //Shuffles cloned array of all numbers -> slow for small samples
+
+    private static void sampleWithoutReplacement1(int[] array, int[] sample) {
+        int[] t = array.clone();
+        shuffle(t);
+        System.arraycopy(t, 0, sample, 0, sample.length);
+    }
+
+    //Picks not sampled numbers -> fast for small samples
+
+    private static void sampleWithoutReplacement2(int[] array, int[] sample) {
         int cnt = 0;
         while (cnt < sample.length) {
             int r = array[seed.nextInt(array.length)];
@@ -306,21 +326,23 @@ public class RND implements Serializable {
         }
     }
 
-    private static void sampleWithoutReplacementHelper(int[] array, int[] sample) {
-        if (array.length < sample.length) {
-            throw new IllegalArgumentException("Array size < sample size!");
-        }
-
-        if (sample.length > SAMPLE_WITHOUT_REPLACEMENT_THRESHOLD) {
-//            System.out.println("WARNING!: RND.sampleWithoutReplacement() not effective for large sample sizes!!!");
-        }
-    }
-
     public static void sampleRangeWithoutReplacement(int range, int[] sample) {
         sampleRangeWithoutReplacement(0, range - 1, sample);
     }
 
     public static void sampleRangeWithoutReplacement(int min, int max, int[] sample) {
+        int range = max - min + 1;
+        //the constant to switch between algorithms was chosen experimentally
+        if (((double) sample.length / (double) range) < SAMPLE_RANGE_WITHOUT_REPLACEMENT_RATIO) {
+            sampleRangeWithoutReplacement2(min, max, sample);
+        } else {
+            sampleRangeWithoutReplacement1(min, max, sample);
+        }
+    }
+
+    //Shuffles array of all numbers -> slow for small samples
+
+    private static void sampleRangeWithoutReplacement1(int min, int max, int[] sample) {
         int range = max - min + 1;
         if (range < sample.length) {
             throw new IllegalArgumentException("Array size < sample size!");
@@ -332,12 +354,9 @@ public class RND implements Serializable {
         System.arraycopy(a, 0, sample, 0, sample.length);
     }
 
+    //Picks not sampled numbers -> fast for small samples
 
-    public static void sampleRangeWithoutReplacement2(int range, int[] sample) {
-        sampleRangeWithoutReplacement2(0, range - 1, sample);
-    }
-
-    public static void sampleRangeWithoutReplacement2(int min, int max, int[] sample) {
+    private static void sampleRangeWithoutReplacement2(int min, int max, int[] sample) {
         int range = max - min + 1;
         int cnt = 0;
         while (cnt < sample.length) {
@@ -363,19 +382,22 @@ public class RND implements Serializable {
         int[] s = new int[10];
         RND.sampleWithReplacement(a, s);
         System.out.println(ArrayUtils.toString(s));
-        RND.sampleWithoutReplacement(a, s);
+        RND.sampleWithoutReplacement2(a, s);
         System.out.println(ArrayUtils.toString(s));
 
-        sampleRangeWithoutReplacement2(10, s);
+        sampleRangeWithoutReplacement2(0, 9, s);
         System.out.println(ArrayUtils.toString(s));
         System.out.println("");
 
-        for (int i = 100; i <= 1000; i += 100) {
-            for (int j = 2; j <= i; j += 1) {
+        //tuning sample without replacement
+        for (int i = 100; i <= 1500; i += 100) {
+            int[] array = new int[i];
+            ArrayHelper.range(array, 1);
+            for (int j = 2; j <= i; j += i / 100) {
                 Bench b = new Bench();
                 for (int k = 0; k <= 1000; k++) {
                     s = new int[j];
-                    sampleRangeWithoutReplacement(i, s);
+                    sampleWithoutReplacement1(array, s);
 //                    System.out.println("RANGE: " + i + " SAMPLE SIZE: " + j + " " + ArrayUtils.toString(s));
                 }
                 double time = b.stop() / 1000.0;
@@ -383,12 +405,49 @@ public class RND implements Serializable {
                 b = new Bench();
                 for (int k = 0; k <= 1000; k++) {
                     s = new int[j];
-                    sampleRangeWithoutReplacement2(i, s);
+                    sampleWithoutReplacement2(array, s);
 //                    System.out.println("RANGE: " + i + " SAMPLE SIZE: " + j + " " + ArrayUtils.toString(s));
                 }
-                b.stop();
-                System.out.println("RANGE: " + i + " SAMPLE SIZE: " + j + " TIME (s): " + time + " / " + b.getLastTimeInterval() / 1000.0);
+                double time2 = b.stop() / 1000.0;
+
+                b = new Bench();
+                for (int k = 0; k <= 1000; k++) {
+                    s = new int[j];
+                    sampleRangeWithoutReplacement(0, i - 1, s);
+//                    System.out.println("RANGE: " + i + " SAMPLE SIZE: " + j + " " + ArrayUtils.toString(s));
+                }
+                double time3 = b.stop() / 1000.0;
+                System.out.println("RANGE: " + i + " SAMPLE SIZE: " + j + " TIME (s): " + time + " / " + time2 + " / " + time3);
             }
         }
+
+//        //tuning range sample without replacement
+//        for (int i = 100; i <= 1000; i += 100) {
+//            for (int j = 2; j <= i; j += i / 100) {
+//                Bench b = new Bench();
+//                for (int k = 0; k <= 1000; k++) {
+//                    s = new int[j];
+//                    sampleRangeWithoutReplacement1(0, i - 1, s);
+////                    System.out.println("RANGE: " + i + " SAMPLE SIZE: " + j + " " + ArrayUtils.toString(s));
+//                }
+//                double time = b.stop() / 1000.0;
+//
+//                b = new Bench();
+//                for (int k = 0; k <= 1000; k++) {
+//                    s = new int[j];
+//                    sampleRangeWithoutReplacement2(0, i - 1, s);
+////                    System.out.println("RANGE: " + i + " SAMPLE SIZE: " + j + " " + ArrayUtils.toString(s));
+//                }
+//                double time2 = b.stop() / 1000.0;
+//                b = new Bench();
+//                for (int k = 0; k <= 1000; k++) {
+//                    s = new int[j];
+//                    sampleRangeWithoutReplacement(0, i - 1, s);
+////                    System.out.println("RANGE: " + i + " SAMPLE SIZE: " + j + " " + ArrayUtils.toString(s));
+//                }
+//                double time3 = b.stop() / 1000.0;
+//                System.out.println("RANGE: " + i + " SAMPLE SIZE: " + j + " TIME (s): " + time + " / " + time2 + " / " + time3);
+//            }
+//        }
     }
 }
