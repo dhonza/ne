@@ -91,14 +91,26 @@ public class RND implements Serializable {
     }
 
     /**
-     * Returns a random integer from given range.
+     * Returns a random integer from given range. Both bounds are inclusive.
      *
-     * @param omin the lower bound
-     * @param omax the higher bound
-     * @return the int from <i>&lt;omin; omax&gt;</i>
+     * @param min the lower bound
+     * @param max the higher bound
+     * @return the int from <i>&lt;min; max&gt;</i>
      */
-    public static int getInt(int omin, int omax) {
-        return seed.nextInt(omax - omin + 1) + omin;
+    public static int getInt(int min, int max) {
+        return seed.nextInt(max - min + 1) + min;
+    }
+
+    /**
+     * Returns a random integer from range 0 to <i>max</i>.
+     * Both bounds are inclusive.
+     *
+     * @param max the higher bound
+     * @return the int from <i>&lt;0; max&gt;</i>
+     */
+
+    public static int getIntZero(int max) {
+        return seed.nextInt(max + 1);
     }
 
     /**
@@ -112,4 +124,93 @@ public class RND implements Serializable {
         return Math.tan(Math.PI * (seed.nextDouble() - 0.5));
     }
 
+    //------------ SHUFFLE -----------
+
+    /**
+     * Randomly shuffles array of Objects. Using Durstenfeld's algorithm.
+     * See http://en.wikipedia.org/wiki/Fisher-Yates_shuffle
+     *
+     * @param array
+     */
+    public static void shuffle(Object[] array) {
+        for (int i = array.length; i > 1; i--) {
+            int r = seed.nextInt(i); // r one of 0..(i-1)
+            Object tmp = array[i - 1];
+            array[i - 1] = array[r];
+            array[r] = tmp;
+        }
+    }
+
+    /**
+     * Randomly shuffles array of int. Using Durstenfeld's algorithm.
+     * See http://en.wikipedia.org/wiki/Fisher-Yates_shuffle
+     *
+     * @param array
+     */
+    public static void shuffle(int[] array) {
+        for (int i = array.length; i > 1; i--) {
+            int r = seed.nextInt(i); // r one of 0..(i-1)
+            int tmp = array[i - 1];
+            array[i - 1] = array[r];
+            array[r] = tmp;
+        }
+    }
+
+    /**
+     * Randomly shuffles array of double. Using Durstenfeld's algorithm.
+     * See http://en.wikipedia.org/wiki/Fisher-Yates_shuffle
+     *
+     * @param array
+     */
+    public static void shuffle(double[] array) {
+        for (int i = array.length; i > 1; i--) {
+            int r = seed.nextInt(i); // r one of 0..(i-1)
+            double tmp = array[i - 1];
+            array[i - 1] = array[r];
+            array[r] = tmp;
+        }
+    }
+
+    // SAMPLE WITH REPLACEMENT
+
+    /**
+     * Simple random sample with replacement (SRSWR) from Object array.
+     * See http://en.wikipedia.org/wiki/Simple_random_sample
+     *
+     * @param array  source array
+     * @param sample target array, its size determines the size of the sample
+     */
+    public static void sampleWithReplacement(Object[] array, Object[] sample) {
+        for (int i = 0; i < sample.length; i++) {
+            sample[i] = array[seed.nextInt(array.length)];
+        }
+    }
+
+    /**
+     * Simple random sample with replacement (SRSWR) from int array.
+     * See http://en.wikipedia.org/wiki/Simple_random_sample
+     *
+     * @param array  source array
+     * @param sample target array, its size determines the size of the sample
+     */
+    public static void sampleWithReplacement(int[] array, int[] sample) {
+        for (int i = 0; i < sample.length; i++) {
+            sample[i] = array[seed.nextInt(array.length)];
+        }
+    }
+
+    /**
+     * Simple random sample with replacement (SRSWR) from double array.
+     * See http://en.wikipedia.org/wiki/Simple_random_sample
+     *
+     * @param array  source array
+     * @param sample target array, its size determines the size of the sample
+     */
+    public static void sampleWithReplacement(double[] array, double[] sample) {
+        for (int i = 0; i < sample.length; i++) {
+            sample[i] = array[seed.nextInt(array.length)];
+        }
+    }
+
+    // SAMPLE WITHOUT REPLACEMENT
 }
