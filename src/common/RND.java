@@ -1,5 +1,7 @@
 package common;
 
+import org.apache.commons.lang.ArrayUtils;
+
 import java.io.Serializable;
 import java.util.Random;
 
@@ -17,6 +19,8 @@ import java.util.Random;
  */
 
 public class RND implements Serializable {
+
+    private static int SAMPLE_WITHOUT_REPLACEMENT_THRESHOLD = 10;
 
     /**
      * The seed of random numbers.
@@ -71,14 +75,39 @@ public class RND implements Serializable {
     }
 
     /**
+     * Fills a random boolean array.
+     *
+     * @param array to fill
+     */
+    public static void fillBoolean(boolean[] array) {
+        for (int i = 0; i < array.length; i++) {
+            array[i] = seed.nextBoolean();
+        }
+    }
+
+    /**
      * Returns a random double from the given range.
      *
-     * @param omin the lower bound
-     * @param omax the higher bound
-     * @return double from <i>&lt;omin; omax&gt;</i>
+     * @param min the lower bound
+     * @param max the higher bound
+     * @return double from <i>&lt;min; max&gt;</i>
      */
-    public static double getDouble(double omin, double omax) {
-        return (omax - omin) * seed.nextDouble() + omin;
+    public static double getDouble(double min, double max) {
+        return (max - min) * seed.nextDouble() + min;
+    }
+
+    /**
+     * Fills a random double array from the given range.
+     *
+     * @param max
+     * @param min
+     * @param array to fill from <i>&lt;min; max&gt;</i>
+     */
+    public static void fillDouble(double[] array, double min, double max) {
+        double range = max - min;
+        for (int i = 0; i < array.length; i++) {
+            array[i] = range * seed.nextDouble() + min;
+        }
     }
 
     /**
@@ -88,6 +117,17 @@ public class RND implements Serializable {
      */
     public static double getDouble() {
         return seed.nextDouble();
+    }
+
+    /**
+     * Fills a random double array.
+     *
+     * @param array to fill from <i>&lt;0; 1&gt;</i>
+     */
+    public static void fillDouble(double[] array) {
+        for (int i = 0; i < array.length; i++) {
+            array[i] = seed.nextDouble();
+        }
     }
 
     /**
@@ -102,6 +142,20 @@ public class RND implements Serializable {
     }
 
     /**
+     * Fills a random integer array from given range. Both bounds are inclusive.
+     *
+     * @param min   the lower bound
+     * @param max   the higher bound
+     * @param array to fill from <i>&lt;min; max&gt;</i>
+     */
+    public static void fillInt(int[] array, int min, int max) {
+        int base = max - min + 1;
+        for (int i = 0; i < array.length; i++) {
+            array[i] = seed.nextInt(base) + min;
+        }
+    }
+
+    /**
      * Returns a random integer from range 0 to <i>max</i>.
      * Both bounds are inclusive.
      *
@@ -111,6 +165,18 @@ public class RND implements Serializable {
 
     public static int getIntZero(int max) {
         return seed.nextInt(max + 1);
+    }
+
+    /**
+     * Returns a random integer from range 1 to <i>max</i>.
+     * Both bounds are inclusive.
+     *
+     * @param max the higher bound
+     * @return the int from <i>&lt;1; max&gt;</i>
+     */
+
+    public static int getIntOne(int max) {
+        return seed.nextInt(max) + 1;
     }
 
     /**
@@ -130,7 +196,7 @@ public class RND implements Serializable {
      * Randomly shuffles array of Objects. Using Durstenfeld's algorithm.
      * See http://en.wikipedia.org/wiki/Fisher-Yates_shuffle
      *
-     * @param array
+     * @param array to shuffle
      */
     public static void shuffle(Object[] array) {
         for (int i = array.length; i > 1; i--) {
@@ -145,7 +211,7 @@ public class RND implements Serializable {
      * Randomly shuffles array of int. Using Durstenfeld's algorithm.
      * See http://en.wikipedia.org/wiki/Fisher-Yates_shuffle
      *
-     * @param array
+     * @param array to shuffle
      */
     public static void shuffle(int[] array) {
         for (int i = array.length; i > 1; i--) {
@@ -160,7 +226,7 @@ public class RND implements Serializable {
      * Randomly shuffles array of double. Using Durstenfeld's algorithm.
      * See http://en.wikipedia.org/wiki/Fisher-Yates_shuffle
      *
-     * @param array
+     * @param array to shuffle
      */
     public static void shuffle(double[] array) {
         for (int i = array.length; i > 1; i--) {
@@ -213,4 +279,116 @@ public class RND implements Serializable {
     }
 
     // SAMPLE WITHOUT REPLACEMENT
+
+    /**
+     * Simple random sample without replacement (SRSWOR) from int array.
+     * See http://en.wikipedia.org/wiki/Simple_random_sample
+     *
+     * @param array  source array
+     * @param sample target array, its size determines the size of the sample
+     */
+
+    public static void sampleWithoutReplacement(int[] array, int[] sample) {
+        sampleWithoutReplacementHelper(array, sample);
+        int cnt = 0;
+        while (cnt < sample.length) {
+            int r = array[seed.nextInt(array.length)];
+            boolean alreadyChosen = false;
+            for (int i = 0; i < cnt; i++) {
+                if (sample[i] == r) {
+                    alreadyChosen = true;
+                    break;
+                }
+            }
+            if (!alreadyChosen) {
+                sample[cnt++] = r;
+            }
+        }
+    }
+
+    private static void sampleWithoutReplacementHelper(int[] array, int[] sample) {
+        if (array.length < sample.length) {
+            throw new IllegalArgumentException("Array size < sample size!");
+        }
+
+        if (sample.length > SAMPLE_WITHOUT_REPLACEMENT_THRESHOLD) {
+//            System.out.println("WARNING!: RND.sampleWithoutReplacement() not effective for large sample sizes!!!");
+        }
+    }
+
+    public static void sampleRangeWithoutReplacement(int range, int[] sample) {
+        sampleRangeWithoutReplacement(0, range - 1, sample);
+    }
+
+    public static void sampleRangeWithoutReplacement(int min, int max, int[] sample) {
+        int range = max - min + 1;
+        if (range < sample.length) {
+            throw new IllegalArgumentException("Array size < sample size!");
+        }
+
+        int[] a = new int[range];
+        ArrayHelper.range(a, min);
+        RND.shuffle(a);
+        System.arraycopy(a, 0, sample, 0, sample.length);
+    }
+
+
+    public static void sampleRangeWithoutReplacement2(int range, int[] sample) {
+        sampleRangeWithoutReplacement2(0, range - 1, sample);
+    }
+
+    public static void sampleRangeWithoutReplacement2(int min, int max, int[] sample) {
+        int range = max - min + 1;
+        int cnt = 0;
+        while (cnt < sample.length) {
+            int r = seed.nextInt(range) + min;
+            boolean alreadyChosen = false;
+            for (int i = 0; i < cnt; i++) {
+                if (sample[i] == r) {
+                    alreadyChosen = true;
+                    break;
+                }
+            }
+            if (!alreadyChosen) {
+                sample[cnt++] = r;
+            }
+        }
+    }
+
+    public static void main(String[] args) {
+        int[] a = new int[10];
+        ArrayHelper.range(a, 1);
+        RND.initializeTime();
+        System.out.println(ArrayUtils.toString(a));
+        int[] s = new int[10];
+        RND.sampleWithReplacement(a, s);
+        System.out.println(ArrayUtils.toString(s));
+        RND.sampleWithoutReplacement(a, s);
+        System.out.println(ArrayUtils.toString(s));
+
+        sampleRangeWithoutReplacement2(10, s);
+        System.out.println(ArrayUtils.toString(s));
+        System.out.println("");
+
+        for (int i = 100; i <= 1000; i += 100) {
+            for (int j = 2; j <= i; j += 1) {
+                Bench b = new Bench();
+                for (int k = 0; k <= 1000; k++) {
+                    s = new int[j];
+                    sampleRangeWithoutReplacement(i, s);
+//                    System.out.println("RANGE: " + i + " SAMPLE SIZE: " + j + " " + ArrayUtils.toString(s));
+                }
+                double time = b.stop() / 1000.0;
+
+                b = new Bench();
+                for (int k = 0; k <= 1000; k++) {
+                    s = new int[j];
+                    sampleRangeWithoutReplacement2(i, s);
+//                    System.out.println("RANGE: " + i + " SAMPLE SIZE: " + j + " " + ArrayUtils.toString(s));
+                }
+                b.stop();
+                System.out.println("RANGE: " + i + " SAMPLE SIZE: " + j + " TIME (s): " + time + " / " + b.getLastTimeInterval() / 1000.0);
+            }
+        }
+    }
 }
