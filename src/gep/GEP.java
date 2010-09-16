@@ -16,10 +16,13 @@ import java.util.Arrays;
  */
 public class GEP<P> extends GPBase<P, GEPChromosome> {
     //the length of transposed sequences are from 1 to this number (inclusive)
-    public static int MAX_IS_TRANSPOSITION_LENGTH = 2;
+    public static int MAX_IS_TRANSPOSITION_LENGTH = 3;
 
     //the length of transposed sequences are from 1 to this number (inclusive)
     public static int MAX_RIS_TRANSPOSITION_LENGTH = 2;
+
+    //the length of transposed sequences are from 1 to this number (inclusive)
+    public static int MAX_DC_TRANSPOSITION_LENGTH = 3;
 
     protected static double MUTATION_HEADTAIL_RATE;
     protected static double MUTATION_DC_RATE;
@@ -30,7 +33,7 @@ public class GEP<P> extends GPBase<P, GEPChromosome> {
     protected static int DC;
     protected static int HEAD_TAIL;
     //number of directly evolved constants
-    public static int C_SIZE = 10;
+    public static int C_SIZE = 3;
 
     public GEP(PopulationManager<GEPChromosome, P> populationManager, Node[] functions, Node[] terminals) {
         super(populationManager, functions, terminals);

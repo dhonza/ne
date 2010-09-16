@@ -3,6 +3,7 @@ package common;
 import org.apache.commons.lang.ArrayUtils;
 
 import java.io.Serializable;
+import java.util.Arrays;
 import java.util.Random;
 
 /**
@@ -330,8 +331,23 @@ public class RND implements Serializable {
         sampleRangeWithoutReplacement(0, range - 1, sample);
     }
 
+    public static void sampleRangeWithoutReplacementSorted(int range, int[] sample) {
+        sampleRangeWithoutReplacementSorted(0, range - 1, sample);
+    }
+
+    public static void sampleRangeWithoutReplacementSorted(int min, int max, int[] sample) {
+        sampleRangeWithoutReplacement(min, max, sample);
+        Arrays.sort(sample);
+    }
+
     public static void sampleRangeWithoutReplacement(int min, int max, int[] sample) {
         int range = max - min + 1;
+        if (range < 0) {
+            throw new IllegalArgumentException(" Min: " + min + " max:" + max + " negative range!");
+        }
+        if (range < sample.length) {
+            throw new IllegalArgumentException("Array size: " + range + " < sample size: " + sample.length + "!");
+        }
         //the constant to switch between algorithms was chosen experimentally
         if (((double) sample.length / (double) range) < SAMPLE_RANGE_WITHOUT_REPLACEMENT_RATIO) {
             sampleRangeWithoutReplacement2(min, max, sample);
@@ -344,9 +360,6 @@ public class RND implements Serializable {
 
     private static void sampleRangeWithoutReplacement1(int min, int max, int[] sample) {
         int range = max - min + 1;
-        if (range < sample.length) {
-            throw new IllegalArgumentException("Array size < sample size!");
-        }
 
         int[] a = new int[range];
         ArrayHelper.range(a, min);

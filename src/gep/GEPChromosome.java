@@ -12,7 +12,6 @@ import gp.terminals.Constant;
 import gp.terminals.RNC;
 
 import java.io.Serializable;
-import java.util.ArrayList;
 
 /**
  * Created by IntelliJ IDEA.
@@ -93,6 +92,9 @@ public class GEPChromosome implements IGPForest, Comparable, Serializable {
     GEPChromosome mutate(NodeCollection nodeCollection, int generationOfOrigin) {
         GEPChromosome forest = new GEPChromosome(generationOfOrigin, this.getNumOfInputs());
         forest.genes = new Gene[genes.length];
+        forest.setFitness(Double.NaN);
+        forest.setEvaluationInfo(new EvaluationInfo(Double.NaN));
+
         for (int k = 0; k < genes.length; k++) {
 
             //for each gene do the actual mutation
@@ -106,13 +108,35 @@ public class GEPChromosome implements IGPForest, Comparable, Serializable {
                     }
                 }
             }
+            forest.genes[k] = mutated;
+        }
+        return forest;
 
+    }
+
+    GEPChromosome mutateDC(int generationOfOrigin) {
+        GEPChromosome forest = new GEPChromosome(generationOfOrigin, this.getNumOfInputs());
+        forest.genes = new Gene[genes.length];
+        for (int k = 0; k < genes.length; k++) {
+
+            Gene mutated = this.genes[k].clone();
             for (int i = 0; i < GEP.DC; i++) {
                 if (RND.getDouble() < GEP.MUTATION_DC_RATE) {
                     mutated.dc[i] = RND.getInt(0, GEP.C_SIZE - 1);
                 }
             }
+            forest.genes[k] = mutated;
+        }
 
+        return forest;
+    }
+
+    GEPChromosome mutateRNC(int generationOfOrigin) {
+        GEPChromosome forest = new GEPChromosome(generationOfOrigin, this.getNumOfInputs());
+        forest.genes = new Gene[genes.length];
+        for (int k = 0; k < genes.length; k++) {
+
+            Gene mutated = this.genes[k].clone();
             for (int i = 0; i < GEP.C_SIZE; i++) {
                 if (RND.getDouble() < GEP.MUTATION_CAUCHY_PROBABILITY) {
                     mutated.constants[i] += GEP.MUTATION_CAUCHY_POWER * RND.getCauchy();
@@ -120,11 +144,7 @@ public class GEPChromosome implements IGPForest, Comparable, Serializable {
             }
             forest.genes[k] = mutated;
         }
-        //TODO - kam to dat? asi do clone?
-        forest.setFitness(Double.NaN);
-        forest.setEvaluationInfo(new EvaluationInfo(Double.NaN));
         return forest;
-
     }
 
     GEPChromosome invert(int generationOfOrigin) {
@@ -132,13 +152,13 @@ public class GEPChromosome implements IGPForest, Comparable, Serializable {
 
         //choose a random gene
         int randomGeneIdx = RND.getIntZero(genes.length);
-        Gene inverted = this.genes[randomGeneIdx].clone();
+        Gene inverted = forest.genes[randomGeneIdx];
 
         //and make an inversion
         int[] startStop = new int[2];
-        RND.sampleRangeWithoutReplacement(GEP.HEAD, startStop);
-        int start = startStop[0] <= startStop[1] ? startStop[0] : startStop[1];
-        int stop = startStop[0] > startStop[1] ? startStop[0] : startStop[1];
+        RND.sampleRangeWithoutReplacementSorted(GEP.HEAD, startStop);
+        int start = startStop[0];
+        int stop = startStop[1];
 //        System.out.println("start: " + start + " stop: " + stop);
         while (start < stop) {
             Node t = inverted.headTail[start];
@@ -147,7 +167,30 @@ public class GEPChromosome implements IGPForest, Comparable, Serializable {
             start++;
             stop--;
         }
-        forest.genes[randomGeneIdx] = inverted;
+
+        return forest;
+    }
+
+    GEPChromosome invertDC(int generationOfOrigin) {
+        GEPChromosome forest = copy(generationOfOrigin);
+
+        //choose a random gene
+        int randomGeneIdx = RND.getIntZero(genes.length);
+        Gene inverted = forest.genes[randomGeneIdx];
+
+        //and make an inversion
+        int[] startStop = new int[2];
+        RND.sampleRangeWithoutReplacementSorted(GEP.DC, startStop);
+        int start = startStop[0];
+        int stop = startStop[1];
+//        System.out.println("start: " + start + " stop: " + stop);
+        while (start < stop) {
+            int t = inverted.dc[start];
+            inverted.dc[start] = inverted.dc[stop];
+            inverted.dc[stop] = t;
+            start++;
+            stop--;
+        }
 
         return forest;
     }
@@ -222,23 +265,27 @@ public class GEPChromosome implements IGPForest, Comparable, Serializable {
         int targetGeneIdx = RND.getIntZero(genes.length);
 //        System.out.println("sourceGeneIdx: " + sourceGeneIdx + " targetGeneIdx: " + targetGeneIdx);
 
-        //search for all function indices in the head of the source gene
-        ArrayList<Integer> functionIndices = new ArrayList<Integer>();
-        for (int i = 0; i < GEP.HEAD; i++) {
+        //random point in the head
+        int functionIdx = RND.getIntZero(GEP.HEAD);
+        boolean foundFunction = false;
+
+        //go downstream and find a function
+        for (int i = functionIdx; i < GEP.HEAD; i++) {
             if (genes[sourceGeneIdx].headTail[i].getArity() > 0) {
-                functionIndices.add(i);
+                foundFunction = true;
+                functionIdx = i;
+                break;
             }
         }
-
-//        System.out.println("function indices: " + functionIndices);
+//        System.out.println("functionIdx: " + functionIdx);
 
         //do nothing if there is no function
-        if (functionIndices.size() == 0) {
+        if (!foundFunction) {
             return forest;
         }
 
         //pick one, truncate if required
-        int start = functionIndices.get(RND.getIntZero(functionIndices.size()));
+        int start = functionIdx;
         int end = start + length;
         end = end >= GEP.HEAD_TAIL ? GEP.HEAD_TAIL - 1 : end;
 //        System.out.println("start: " + start + " end: " + end);
@@ -256,6 +303,51 @@ public class GEPChromosome implements IGPForest, Comparable, Serializable {
         System.arraycopy(genes[targetGeneIdx].headTail, 0,
                 forest.genes[targetGeneIdx].headTail, length,
                 GEP.HEAD - length);
+
+        return forest;
+    }
+
+    GEPChromosome transposeDC(int generationOfOrigin) {
+        GEPChromosome forest = copy(generationOfOrigin);
+
+        //get random transposition sequence length
+        int length = RND.getInt(1, GEP.MAX_DC_TRANSPOSITION_LENGTH);
+
+        //source and target genes -> can be same
+        int sourceGeneIdx = RND.getIntZero(genes.length);
+        int targetGeneIdx = RND.getIntZero(genes.length);
+        System.out.println("sourceGeneIdx: " + sourceGeneIdx + " targetGeneIdx: " + targetGeneIdx);
+
+        //extract transposition sequence, truncate if required
+        //note, that this differs from PyGEP where the sequence is
+        //truncated to the head
+        int start = RND.getIntZero(GEP.DC);
+        int end = start + length - 1;
+        end = end >= GEP.DC ? GEP.DC - 1 : end;
+//        System.out.println("start: " + start + " end: " + end);
+        length = end - start + 1; //recompute length
+
+        //offset into target
+        int offset = RND.getInt(0, GEP.DC - 1);
+//        System.out.println("offset: " + offset);
+
+        //determine real targetLength (might be truncated to head)
+        int allowableTargetLength = GEP.DC - offset;
+        int targetLength = length <= allowableTargetLength ? length : allowableTargetLength;
+//        System.out.println("targetLength = " + targetLength);
+
+        //extract transposed sequence first
+        int[] seq = new int[targetLength];
+        System.arraycopy(genes[sourceGeneIdx].dc, start, seq, 0, seq.length);
+//        System.out.println("seq: " + ArrayUtils.toString(seq));
+
+        //now copy sequence over target's head
+        System.arraycopy(seq, 0, forest.genes[targetGeneIdx].dc, offset, targetLength);
+
+        //and also shifted rest of the original head
+        System.arraycopy(genes[targetGeneIdx].dc, offset,
+                forest.genes[targetGeneIdx].dc, offset + targetLength,
+                GEP.DC - offset - targetLength);
 
         return forest;
     }
@@ -287,6 +379,77 @@ public class GEPChromosome implements IGPForest, Comparable, Serializable {
         return forest;
     }
 
+    GEPChromosome[] crossoverOnePoint(GEPChromosome other, int generationOfOrigin) {
+        GEPChromosome a = this.copy(generationOfOrigin);
+        GEPChromosome b = other.copy(generationOfOrigin);
+
+        //select crossover point
+        int geneIdx = RND.getIntZero(a.genes.length);
+        int cIdx = RND.getInt(0, GEP.HEAD_TAIL);
+//        System.out.println("geneIdx: " + geneIdx + " cIdx: " + cIdx);
+
+
+        //the crossover happens in geneIdx gene
+        //otherwise it happens just after
+        if (cIdx < GEP.HEAD_TAIL) {
+            for (int i = cIdx; i < GEP.HEAD_TAIL; i++) {
+                Node t = a.genes[geneIdx].headTail[i];
+                a.genes[geneIdx].headTail[i] = b.genes[geneIdx].headTail[i];
+                b.genes[geneIdx].headTail[i] = t;
+            }
+        }
+
+        //now swap the rest of genes
+        for (int i = geneIdx + 1; i < a.genes.length; i++) {
+            Gene t = a.genes[i];
+            a.genes[i] = b.genes[i];
+            b.genes[i] = t;
+        }
+
+        return new GEPChromosome[]{a, b};
+    }
+
+    GEPChromosome[] crossoverTwoPoint(GEPChromosome other, int generationOfOrigin) {
+        GEPChromosome a = this.copy(generationOfOrigin);
+        GEPChromosome b = other.copy(generationOfOrigin);
+
+        //select crossover points
+        int[] g = new int[2]; //genes
+        RND.sampleRangeWithoutReplacementSorted(a.genes.length, g);
+        int[] c = new int[2]; //points inside
+        RND.sampleRangeWithoutReplacementSorted(GEP.HEAD_TAIL + 1, c);
+//        System.out.println("g1: " + g[0] + " c1: " + c[0]);
+//        System.out.println("g2: " + g[1] + " c2: " + c[1]);
+
+        int cIdx = c[0];
+        for (int i = g[0]; i <= g[1]; i++) {//all swapped genes
+            for (int j = cIdx; j < GEP.HEAD_TAIL; j++) {//at first go exactly from the first crossover point
+                if (i < g[1] || j < c[1]) {// if not second crossover point
+                    Node t = a.genes[i].headTail[j];
+                    a.genes[i].headTail[j] = b.genes[i].headTail[j];
+                    b.genes[i].headTail[j] = t;
+                }
+            }
+            cIdx = 0;//go through whole following genes 
+        }
+        return new GEPChromosome[]{a, b};
+    }
+
+    GEPChromosome[] crossoverGene(GEPChromosome other, int generationOfOrigin) {
+        GEPChromosome a = this.copy(generationOfOrigin);
+        GEPChromosome b = other.copy(generationOfOrigin);
+
+        //choose gene to swap
+        int geneIdx = RND.getIntZero(a.genes.length);
+        System.out.println("geneIdx: " + geneIdx);
+
+        Gene t = a.genes[geneIdx];
+        a.genes[geneIdx] = b.genes[geneIdx];
+        b.genes[geneIdx] = t;
+
+        return new GEPChromosome[]{a, b};
+    }
+
     public int getNumOfInputs() {
         return treeInputs.getNumOfInputs();
     }
@@ -313,7 +476,8 @@ public class GEPChromosome implements IGPForest, Comparable, Serializable {
         for (int i = 0; i < genes.length; i++) {
             c.genes[i] = genes[i].clone();
         }
-
+        c.setFitness(Double.NaN);
+        c.setEvaluationInfo(new EvaluationInfo(Double.NaN));
         return c;
     }
 
@@ -340,13 +504,25 @@ public class GEPChromosome implements IGPForest, Comparable, Serializable {
         GEP gep = new GEP(null, functions, terminals);
         NodeCollection nc = new NodeCollection(functions, terminals);
         RND.initializeTime();
-        GEPChromosome c1 = createRandom(1, 0, 1, nc);
+
+        int genes = 2;
+
+        GEPChromosome c1 = createRandom(1, 0, genes, nc);
         System.out.println(c1.toStringKarva());
         System.out.println("-------- mutate");
         GEPChromosome c2 = c1.mutate(nc, 1);
         System.out.println(c2.toStringKarva());
+        System.out.println("-------- mutateDC");
+        c2 = c2.mutateDC(1);
+        System.out.println(c2.toStringKarva());
+        System.out.println("-------- mutateRNC");
+        c2 = c2.mutateRNC(1);
+        System.out.println(c2.toStringKarva());
         System.out.println("-------- invert");
         GEPChromosome c3 = c2.invert(1);
+        System.out.println(c3.toStringKarva());
+        System.out.println("-------- invertDC");
+        c3 = c3.invertDC(1);
         System.out.println(c3.toStringKarva());
         System.out.println("-------- transpose IS");
         GEPChromosome c4 = c3.transposeIS(1);
@@ -354,9 +530,45 @@ public class GEPChromosome implements IGPForest, Comparable, Serializable {
         System.out.println("-------- transpose RIS");
         GEPChromosome c5 = c4.transposeRIS(1);
         System.out.println(c5.toStringKarva());
+        System.out.println("-------- transpose DC");
+        c5 = c5.transposeDC(1);
+        System.out.println(c5.toStringKarva());
+
+/*
         System.out.println("-------- transpose Gene");
         GEPChromosome c6 = c5.transposeGene(1);
         System.out.println(c6.toStringKarva());
+
+        System.out.println("-------- crossover One Point");
+        c1 = createRandom(1, 0, genes, nc);
+        c2 = createRandom(1, 0, genes, nc);
+        System.out.println(c1.toStringKarva());
+        System.out.println(c2.toStringKarva());
+        System.out.println("----------------------------");
+        GEPChromosome[] c7 = c1.crossoverOnePoint(c2, 1);
+        System.out.println(c7[0].toStringKarva());
+        System.out.println(c7[1].toStringKarva());
+
+        System.out.println("-------- crossover Two Point");
+        c1 = createRandom(1, 0, genes, nc);
+        c2 = createRandom(1, 0, genes, nc);
+        System.out.println(c1.toStringKarva());
+        System.out.println(c2.toStringKarva());
+        System.out.println("----------------------------");
+        GEPChromosome[] c8 = c1.crossoverTwoPoint(c2, 1);
+        System.out.println(c8[0].toStringKarva());
+        System.out.println(c8[1].toStringKarva());
+
+        System.out.println("-------- crossover Gene");
+        c1 = createRandom(1, 0, genes, nc);
+        c2 = createRandom(1, 0, genes, nc);
+        System.out.println(c1.toStringKarva());
+        System.out.println(c2.toStringKarva());
+        System.out.println("----------------------------");
+        GEPChromosome[] c9 = c1.crossoverGene(c2, 1);
+        System.out.println(c9[0].toStringKarva());
+        System.out.println(c9[1].toStringKarva());
+  //*/
     }
 
     // ----------------------------------------------------------------------------------------------
