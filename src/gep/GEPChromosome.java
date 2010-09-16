@@ -117,6 +117,9 @@ public class GEPChromosome implements IGPForest, Comparable, Serializable {
     GEPChromosome mutateDC(int generationOfOrigin) {
         GEPChromosome forest = new GEPChromosome(generationOfOrigin, this.getNumOfInputs());
         forest.genes = new Gene[genes.length];
+        forest.setFitness(Double.NaN);
+        forest.setEvaluationInfo(new EvaluationInfo(Double.NaN));
+
         for (int k = 0; k < genes.length; k++) {
 
             Gene mutated = this.genes[k].clone();
@@ -134,6 +137,9 @@ public class GEPChromosome implements IGPForest, Comparable, Serializable {
     GEPChromosome mutateRNC(int generationOfOrigin) {
         GEPChromosome forest = new GEPChromosome(generationOfOrigin, this.getNumOfInputs());
         forest.genes = new Gene[genes.length];
+        forest.setFitness(Double.NaN);
+        forest.setEvaluationInfo(new EvaluationInfo(Double.NaN));
+
         for (int k = 0; k < genes.length; k++) {
 
             Gene mutated = this.genes[k].clone();
@@ -470,7 +476,7 @@ public class GEPChromosome implements IGPForest, Comparable, Serializable {
         return -new Double(fitness).compareTo(((GEPChromosome) o).fitness);
     }
 
-    private GEPChromosome copy(int generationOfOrigin) {
+    GEPChromosome copy(int generationOfOrigin) {
         GEPChromosome c = new GEPChromosome(generationOfOrigin, getNumOfInputs());
         c.genes = new Gene[genes.length];
         for (int i = 0; i < genes.length; i++) {

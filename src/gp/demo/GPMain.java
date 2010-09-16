@@ -9,8 +9,7 @@ import common.pmatrix.Utils;
 import common.stats.Stats;
 import gep.GEP;
 import gp.*;
-import gp.terminals.Constant;
-import gp.terminals.Random;
+import gp.terminals.RNC;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -44,7 +43,8 @@ public class GPMain {
                 GP.TARGET_FITNESS = combination.getDouble("GP.TARGET_FITNESS");
 
                 Node[] functions = NodeFactory.createByNameList("gp.functions.", combination.getString("GP.FUNCTIONS"));
-                Node[] terminals = new Node[]{new Constant(-1.0), new Random()};
+//                Node[] terminals = new Node[]{new Constant(-1.0), new Random()};//GP
+                Node[] terminals = new Node[]{new RNC()};//GEP
 
                 List<IGenotypeToPhenotype<Forest, Forest>> converter = new ArrayList<IGenotypeToPhenotype<Forest, Forest>>();
                 converter.add(new IdentityConversion<Forest>());
