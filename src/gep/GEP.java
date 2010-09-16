@@ -15,6 +15,12 @@ import java.util.Arrays;
  * To change this template use File | Settings | File Templates.
  */
 public class GEP<P> extends GPBase<P, GEPChromosome> {
+    //the length of transposed sequences are from 1 to this number (inclusive)
+    public static int MAX_IS_TRANSPOSITION_LENGTH = 2;
+
+    //the length of transposed sequences are from 1 to this number (inclusive)
+    public static int MAX_RIS_TRANSPOSITION_LENGTH = 2;
+
     protected static double MUTATION_HEADTAIL_RATE;
     protected static double MUTATION_DC_RATE;
 

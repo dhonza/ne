@@ -157,15 +157,15 @@ public class RND implements Serializable {
     }
 
     /**
-     * Returns a random integer from range 0 to <i>max</i>.
+     * Returns a random integer from range 0 to <i>max-1</i>.
      * Both bounds are inclusive.
      *
      * @param max the higher bound
-     * @return the int from <i>&lt;0; max&gt;</i>
+     * @return the int from <i>&lt;0; max)</i>
      */
 
     public static int getIntZero(int max) {
-        return seed.nextInt(max + 1);
+        return seed.nextInt(max);
     }
 
     /**

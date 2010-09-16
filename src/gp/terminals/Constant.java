@@ -46,6 +46,9 @@ public class Constant extends Node {
 
     @Override
     public String toString() {
+        if (value == Math.round(value)) {
+            return Integer.toString((int) value);
+        }
         return Double.toString(value);
     }
 
