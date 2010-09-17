@@ -2,7 +2,7 @@ package hyper.evaluate.converter;
 
 import common.evolution.IGenotypeToPhenotype;
 import common.net.INet;
-import gp.Forest;
+import gp.IGPForest;
 import hyper.builder.IEvaluableSubstrateBuilder;
 import hyper.cppn.BasicGPCPPN;
 import hyper.cppn.ICPPN;
@@ -14,14 +14,14 @@ import hyper.cppn.ICPPN;
  * Time: 12:29:20 PM
  * To change this template use File | Settings | File Templates.
  */
-public class GPForestToINet implements IGenotypeToPhenotype<Forest, INet> {
+public class GPForestToINet implements IGenotypeToPhenotype<IGPForest, INet> {
     final private IEvaluableSubstrateBuilder substrateBuilder;
 
     public GPForestToINet(IEvaluableSubstrateBuilder substrateBuilder) {
         this.substrateBuilder = substrateBuilder;
     }
 
-    public INet transform(Forest genome) {
+    public INet transform(IGPForest genome) {
         ICPPN aCPPN = new BasicGPCPPN(genome, substrateBuilder.getSubstrate().getMaxDimension());
         substrateBuilder.build(aCPPN);
         return substrateBuilder.getNet();
