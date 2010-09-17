@@ -27,9 +27,11 @@ public class GPMain {
         System.out.println("INITIALIZED SEED: " + RND.initializeTime());
 //        RND.initialize(8725627961384450L); //4
 
-
+        //--------------------
 //        ParameterMatrixManager manager = ParameterMatrixStorage.load(new File("cfg/gpdemo.properties"));
         ParameterMatrixManager manager = ParameterMatrixStorage.load(new File("cfg/gepdemo.properties"));
+        //--------------------
+
         for (ParameterCombination combination : manager) {
             int experiments = combination.getInteger("EXPERIMENTS");
             Stats stats = new Stats();
@@ -43,8 +45,10 @@ public class GPMain {
                 GP.TARGET_FITNESS = combination.getDouble("GP.TARGET_FITNESS");
 
                 Node[] functions = NodeFactory.createByNameList("gp.functions.", combination.getString("GP.FUNCTIONS"));
+                //--------------------
 //                Node[] terminals = new Node[]{new Constant(-1.0), new Random()};//GP
                 Node[] terminals = new Node[]{new RNC()};//GEP
+                //--------------------
 
                 List<IGenotypeToPhenotype<Forest, Forest>> converter = new ArrayList<IGenotypeToPhenotype<Forest, Forest>>();
                 converter.add(new IdentityConversion<Forest>());
@@ -58,8 +62,11 @@ public class GPMain {
                 Utils.setStaticParameters(combination, GP.class, "GP");
                 Utils.setStaticParameters(combination, GEP.class, "GEP");
 
+                //--------------------
 //                GP gp = GPFactory.createByName(combination.getString("GP.TYPE"), populationManager, functions, terminals);
                 GEP gp = new GEP(populationManager, functions, terminals);
+                //--------------------
+
 
                 EvolutionaryAlgorithmSolver solver = new EvolutionaryAlgorithmSolver(gp, stats, false);
                 solver.addProgressPrinter(new GPBasicProgressPrinter(gp));

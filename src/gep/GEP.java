@@ -33,7 +33,7 @@ public class GEP<P> extends GPBase<P, GEPChromosome> {
     protected static int DC;
     protected static int HEAD_TAIL;
     //number of directly evolved constants
-    public static int C_SIZE = 15;
+    public static int C_SIZE = 10;
 
     public GEP(PopulationManager<GEPChromosome, P> populationManager, Node[] functions, Node[] terminals) {
         super(populationManager, functions, terminals);
@@ -63,59 +63,76 @@ public class GEP<P> extends GPBase<P, GEPChromosome> {
     }
 
     protected void selectAndReproduce() {
-        //find best one (elite)
-        //according to the book we get the last best
-        double best = population[0].getFitness();
-        int bestI = 0;
-        for (int i = 1; i < population.length; i++) {
-            if (population[i].getFitness() >= best) {
-                best = population[i].getFitness();
-                bestI = i;
-            }
-        }
-        //swap it to the position 0
-        GEPChromosome tc = population[bestI];
-        population[bestI] = population[0];
-        population[0] = tc;
-
-        //roulette
-        double[] fitness = new double[population.length];
-        double sum = 0.0;
-        for (int i = 0; i < population.length; i++) {
-            fitness[i] = population[i].getFitness();
-            sum += fitness[i];
-        }
-        for (int i = 0; i < population.length; i++) {
-            fitness[i] /= sum;
-        }
-        for (int i = 1; i < population.length; i++) {
-            fitness[i] += fitness[i - 1];
-        }
-        fitness[population.length - 1] = 1.0;//rounding errors
-
-        newPopulation[0] = population[0];//copy elite
-
-        for (int i = 1; i < newPopulation.length; i++) {
-            double roulette = RND.getDouble();
-            //TODO turn the wheel... binary search would be better
-            int chosen = 0;
-            while (roulette > fitness[chosen]) {
-                chosen++;
-            }
-            newPopulation[i] = population[chosen];
-        }
-
-        for (int i = 1; i < newPopulation.length; i++) {
-            newPopulation[i] = newPopulation[i].mutate(nodeCollection, generation);
-            newPopulation[i] = newPopulation[i].mutateDC(generation);
-            newPopulation[i] = newPopulation[i].mutateRNC(generation);
+        System.arraycopy(population, 0, newPopulation, 0, population.length);
+        for (int i = 0; i < newPopulation.length; i++) {
+            GEPChromosome p1 = population[RND.getInt(0, population.length - 1)];
+            GEPChromosome p2 = population[RND.getInt(0, population.length - 1)];
+            GEPChromosome p = p1.getFitness() > p2.getFitness() ? p1 : p2;
+            newPopulation[i] = p.mutate(nodeCollection, generation);
         }
     }
 
     protected void reduce() {
-        Arrays.sort(newPopulation);
-        System.arraycopy(newPopulation, 0, population, 0, population.length);
+        GEPChromosome[] oldAndNewPopulation = new GEPChromosome[population.length + newPopulation.length];
+        System.arraycopy(population, 0, oldAndNewPopulation, 0, population.length);
+        System.arraycopy(newPopulation, 0, oldAndNewPopulation, population.length, newPopulation.length);
+        Arrays.sort(oldAndNewPopulation);
+        System.arraycopy(oldAndNewPopulation, 0, population, 0, population.length);
     }
+    /*
+        protected void selectAndReproduce() {
+            //find best one (elite)
+            //according to the book we get the last best
+            double best = population[0].getFitness();
+            int bestI = 0;
+            for (int i = 1; i < population.length; i++) {
+                if (population[i].getFitness() >= best) {
+                    best = population[i].getFitness();
+                    bestI = i;
+                }
+            }
+            //swap it to the position 0
+            GEPChromosome tc = population[bestI];
+            population[bestI] = population[0];
+            population[0] = tc;
+
+            //roulette
+            double[] fitness = new double[population.length];
+            double sum = 0.0;
+            for (int i = 0; i < population.length; i++) {
+                fitness[i] = population[i].getFitness();
+                sum += fitness[i];
+            }
+            for (int i = 0; i < population.length; i++) {
+                fitness[i] /= sum;
+            }
+            for (int i = 1; i < population.length; i++) {
+                fitness[i] += fitness[i - 1];
+            }
+            fitness[population.length - 1] = 1.0;//rounding errors
+
+            newPopulation[0] = population[0];//copy elite
+
+            for (int i = 1; i < newPopulation.length; i++) {
+                double roulette = RND.getDouble();
+                //TODO turn the wheel... binary search would be better
+                int chosen = 0;
+                while (roulette > fitness[chosen]) {
+                    chosen++;
+                }
+                newPopulation[i] = population[chosen];
+            }
+
+            for (int i = 1; i < newPopulation.length; i++) {
+                newPopulation[i] = newPopulation[i].mutate(nodeCollection, generation);
+            }
+        }
+
+        protected void reduce() {
+            Arrays.sort(newPopulation);
+            System.arraycopy(newPopulation, 0, population, 0, population.length);
+        }
+    */
 
     public String getConfigString() {
         return "IMPLEMENT CONFIG STRING!!!!";

@@ -108,49 +108,25 @@ public class GEPChromosome implements IGPForest, Comparable, Serializable {
                     }
                 }
             }
-            forest.genes[k] = mutated;
-        }
-        return forest;
 
-    }
-
-    GEPChromosome mutateDC(int generationOfOrigin) {
-        GEPChromosome forest = new GEPChromosome(generationOfOrigin, this.getNumOfInputs());
-        forest.genes = new Gene[genes.length];
-        forest.setFitness(Double.NaN);
-        forest.setEvaluationInfo(new EvaluationInfo(Double.NaN));
-
-        for (int k = 0; k < genes.length; k++) {
-
-            Gene mutated = this.genes[k].clone();
+            //mutate DC
             for (int i = 0; i < GEP.DC; i++) {
                 if (RND.getDouble() < GEP.MUTATION_DC_RATE) {
                     mutated.dc[i] = RND.getInt(0, GEP.C_SIZE - 1);
                 }
             }
-            forest.genes[k] = mutated;
-        }
 
-        return forest;
-    }
-
-    GEPChromosome mutateRNC(int generationOfOrigin) {
-        GEPChromosome forest = new GEPChromosome(generationOfOrigin, this.getNumOfInputs());
-        forest.genes = new Gene[genes.length];
-        forest.setFitness(Double.NaN);
-        forest.setEvaluationInfo(new EvaluationInfo(Double.NaN));
-
-        for (int k = 0; k < genes.length; k++) {
-
-            Gene mutated = this.genes[k].clone();
+            //directly mutate constants
             for (int i = 0; i < GEP.C_SIZE; i++) {
                 if (RND.getDouble() < GEP.MUTATION_CAUCHY_PROBABILITY) {
                     mutated.constants[i] += GEP.MUTATION_CAUCHY_POWER * RND.getCauchy();
                 }
             }
+
             forest.genes[k] = mutated;
         }
         return forest;
+
     }
 
     GEPChromosome invert(int generationOfOrigin) {
@@ -518,12 +494,6 @@ public class GEPChromosome implements IGPForest, Comparable, Serializable {
         System.out.println("-------- mutate");
         GEPChromosome c2 = c1.mutate(nc, 1);
         System.out.println(c2.toStringKarva());
-        System.out.println("-------- mutateDC");
-        c2 = c2.mutateDC(1);
-        System.out.println(c2.toStringKarva());
-        System.out.println("-------- mutateRNC");
-        c2 = c2.mutateRNC(1);
-        System.out.println(c2.toStringKarva());
         System.out.println("-------- invert");
         GEPChromosome c3 = c2.invert(1);
         System.out.println(c3.toStringKarva());
@@ -622,7 +592,7 @@ public class GEPChromosome implements IGPForest, Comparable, Serializable {
 
         protected Gene clone() {
             Gene gene = new Gene();
-
+            gene.root = null;
             gene.headTail = this.headTail.clone();
             gene.dc = this.dc.clone();
             gene.constants = this.constants.clone();
