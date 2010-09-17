@@ -15,8 +15,25 @@ import java.util.Arrays;
  * To change this template use File | Settings | File Templates.
  */
 public class GEP<P> extends GPBase<P, GEPChromosome> {
+
+    protected static double MUTATION_HEADTAIL_RATE;
+
+    public static double INVERSION_RATE = 0.1;
+
+    public static double IS_TRANSPOSITION_RATE = 0.1;
+
     //the length of transposed sequences are from 1 to this number (inclusive)
     public static int MAX_IS_TRANSPOSITION_LENGTH = 3;
+
+    public static double RIS_TRANSPOSITION_RATE = 0.1;
+
+    public static double GENE_TRANSPOSITION_RATE = 0.0;
+
+    public static double ONE_POINT_RECOMBINATION_RATE = 0.0;
+
+    public static double TWO_POINT_RECOMBINATION_RATE = 0.0;
+
+    public static double GENE_RECOMBINATION_RATE = 0.0;
 
     //the length of transposed sequences are from 1 to this number (inclusive)
     public static int MAX_RIS_TRANSPOSITION_LENGTH = 2;
@@ -24,8 +41,11 @@ public class GEP<P> extends GPBase<P, GEPChromosome> {
     //the length of transposed sequences are from 1 to this number (inclusive)
     public static int MAX_DC_TRANSPOSITION_LENGTH = 3;
 
-    protected static double MUTATION_HEADTAIL_RATE;
     protected static double MUTATION_DC_RATE;
+
+    public static double INVERSION_DC_RATE = 0.1;
+
+    public static double DC_TRANSPOSITION_RATE = 0.1;
 
     public static int HEAD = 5;
     protected static int TAIL;
@@ -62,14 +82,80 @@ public class GEP<P> extends GPBase<P, GEPChromosome> {
         }
     }
 
+    private void reproduce(int startIdx) {
+        int size = population.length - startIdx;
+        for (int i = startIdx; i < newPopulation.length; i++) {
+            newPopulation[i] = newPopulation[i].mutate(nodeCollection, generation);
+
+            if (RND.getDouble() < INVERSION_RATE) {
+                newPopulation[i] = newPopulation[i].invert(generation);
+            }
+
+            if (RND.getDouble() < INVERSION_DC_RATE) {
+                newPopulation[i] = newPopulation[i].invertDC(generation);
+            }
+
+            if (RND.getDouble() < IS_TRANSPOSITION_RATE) {
+                newPopulation[i] = newPopulation[i].transposeIS(generation);
+            }
+
+            if (RND.getDouble() < RIS_TRANSPOSITION_RATE) {
+                newPopulation[i] = newPopulation[i].transposeRIS(generation);
+            }
+
+            if (RND.getDouble() < GENE_TRANSPOSITION_RATE) {
+                newPopulation[i] = newPopulation[i].transposeGene(generation);
+            }
+
+            if (RND.getDouble() < DC_TRANSPOSITION_RATE) {
+                newPopulation[i] = newPopulation[i].transposeDC(generation);
+            }
+
+            //recombination expected numbers
+            int onePointRecombinations = ((int) Math.round(size * ONE_POINT_RECOMBINATION_RATE)) / 2;
+            int[] indices = new int[2 * onePointRecombinations];//pairs of parents
+            RND.sampleRangeWithoutReplacement(startIdx, population.length - 1, indices);
+            for (int j = 0; j < onePointRecombinations; j += 2) {
+                GEPChromosome[] children =
+                        newPopulation[indices[j]].crossoverOnePoint(newPopulation[indices[j + 1]], generation);
+                newPopulation[indices[j]] = children[0];
+                newPopulation[indices[j + 1]] = children[1];
+            }
+
+            int twoPointRecombinations = ((int) Math.round(size * TWO_POINT_RECOMBINATION_RATE)) / 2;
+            indices = new int[2 * twoPointRecombinations];//pairs of parents
+            RND.sampleRangeWithoutReplacement(startIdx, population.length, indices);
+            for (int j = 0; j < onePointRecombinations; j += 2) {
+                GEPChromosome[] children =
+                        newPopulation[indices[j]].crossoverTwoPoint(newPopulation[indices[j + 1]], generation);
+                newPopulation[indices[j]] = children[0];
+                newPopulation[indices[j + 1]] = children[1];
+            }
+
+            int geneRecombinations = ((int) Math.round(size * GENE_RECOMBINATION_RATE)) / 2;
+            indices = new int[2 * geneRecombinations];//pairs of parents
+            RND.sampleRangeWithoutReplacement(startIdx, population.length, indices);
+            for (int j = 0; j < onePointRecombinations; j += 2) {
+                GEPChromosome[] children =
+                        newPopulation[indices[j]].crossoverGene(newPopulation[indices[j + 1]], generation);
+                newPopulation[indices[j]] = children[0];
+                newPopulation[indices[j + 1]] = children[1];
+            }
+        }
+
+    }
+
+//    /*
+
     protected void selectAndReproduce() {
         System.arraycopy(population, 0, newPopulation, 0, population.length);
         for (int i = 0; i < newPopulation.length; i++) {
             GEPChromosome p1 = population[RND.getInt(0, population.length - 1)];
             GEPChromosome p2 = population[RND.getInt(0, population.length - 1)];
             GEPChromosome p = p1.getFitness() > p2.getFitness() ? p1 : p2;
-            newPopulation[i] = p.mutate(nodeCollection, generation);
+            newPopulation[i] = p;
         }
+        reproduce(0);
     }
 
     protected void reduce() {
@@ -79,7 +165,8 @@ public class GEP<P> extends GPBase<P, GEPChromosome> {
         Arrays.sort(oldAndNewPopulation);
         System.arraycopy(oldAndNewPopulation, 0, population, 0, population.length);
     }
-    /*
+//*/
+/*
         protected void selectAndReproduce() {
             //find best one (elite)
             //according to the book we get the last best
@@ -122,17 +209,14 @@ public class GEP<P> extends GPBase<P, GEPChromosome> {
                 }
                 newPopulation[i] = population[chosen];
             }
-
-            for (int i = 1; i < newPopulation.length; i++) {
-                newPopulation[i] = newPopulation[i].mutate(nodeCollection, generation);
-            }
+            reproduce(1);
         }
 
         protected void reduce() {
             Arrays.sort(newPopulation);
             System.arraycopy(newPopulation, 0, population, 0, population.length);
         }
-    */
+*/
 
     public String getConfigString() {
         return "IMPLEMENT CONFIG STRING!!!!";

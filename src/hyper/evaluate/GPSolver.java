@@ -4,9 +4,8 @@ import common.evolution.EvolutionaryAlgorithmSolver;
 import common.pmatrix.ParameterCombination;
 import common.pmatrix.Utils;
 import common.stats.Stats;
+import gep.GEP;
 import gp.*;
-import gp.terminals.Constant;
-import gp.terminals.Random;
 import hyper.evaluate.printer.GPProgressPrinter1D;
 import hyper.experiments.reco.FileProgressPrinter;
 import hyper.experiments.reco.ReportStorage;
@@ -21,7 +20,7 @@ import hyper.experiments.reco.ReportStorage;
 
 public class GPSolver extends AbstractSolver {
 
-    private GP gp;
+    private GPBase gp;
 
     protected GPSolver(ParameterCombination parameters, Stats stats, ReportStorage reportStorage) {
         super(parameters, stats, reportStorage);
@@ -31,9 +30,10 @@ public class GPSolver extends AbstractSolver {
 
     private void init() {
         Utils.setStaticParameters(parameters, GP.class, "GP");
+        Utils.setStaticParameters(parameters, GEP.class, "GEP");
 
         Node[] functions = NodeFactory.createByNameList("gp.functions.", parameters.getString("GP.FUNCTIONS"));
-        Node[] terminals = new Node[]{new Constant(-1.0), new Random()};
+        Node[] terminals = GPFactory.createTerminalsByName(parameters.getString("GP.TYPE"));
 
         GP.TARGET_FITNESS = problem.getTargetFitness();
 

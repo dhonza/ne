@@ -123,6 +123,13 @@ public class GEPChromosome implements IGPForest, Comparable, Serializable {
                 }
             }
 
+            //reset constants
+//            for (int i = 0; i < GEP.C_SIZE; i++) {
+//                if (RND.getDouble() < 0.01) {
+//                    mutated.constants[i] += RND.getDouble(-GEP.CONSTANT_AMPLITUDE, GEP.CONSTANT_AMPLITUDE);
+//                }
+//            }
+
             forest.genes[k] = mutated;
         }
         return forest;
@@ -298,7 +305,7 @@ public class GEPChromosome implements IGPForest, Comparable, Serializable {
         //source and target genes -> can be same
         int sourceGeneIdx = RND.getIntZero(genes.length);
         int targetGeneIdx = RND.getIntZero(genes.length);
-        System.out.println("sourceGeneIdx: " + sourceGeneIdx + " targetGeneIdx: " + targetGeneIdx);
+//        System.out.println("sourceGeneIdx: " + sourceGeneIdx + " targetGeneIdx: " + targetGeneIdx);
 
         //extract transposition sequence, truncate if required
         //note, that this differs from PyGEP where the sequence is
@@ -397,7 +404,12 @@ public class GEPChromosome implements IGPForest, Comparable, Serializable {
 
         //select crossover points
         int[] g = new int[2]; //genes
-        RND.sampleRangeWithoutReplacementSorted(a.genes.length, g);
+        if (a.genes.length == 1) {
+            g[0] = 0;
+            g[1] = 0;
+        } else {
+            RND.sampleRangeWithoutReplacementSorted(a.genes.length, g);
+        }
         int[] c = new int[2]; //points inside
         RND.sampleRangeWithoutReplacementSorted(GEP.HEAD_TAIL + 1, c);
 //        System.out.println("g1: " + g[0] + " c1: " + c[0]);
@@ -423,7 +435,7 @@ public class GEPChromosome implements IGPForest, Comparable, Serializable {
 
         //choose gene to swap
         int geneIdx = RND.getIntZero(a.genes.length);
-        System.out.println("geneIdx: " + geneIdx);
+//        System.out.println("geneIdx: " + geneIdx);
 
         Gene t = a.genes[geneIdx];
         a.genes[geneIdx] = b.genes[geneIdx];

@@ -22,7 +22,7 @@ public class GPProgressPrinter1D extends CommonProgressPrinter1D {
         this.gp = gp;
     }
 
-    public GPProgressPrinter1D(GP gp, IProblem problem, ParameterCombination parameters) {
+    public GPProgressPrinter1D(GPBase gp, IProblem problem, ParameterCombination parameters) {
         this(gp, new GPBasicProgressPrinter(gp), problem, parameters);
     }
 
@@ -36,7 +36,9 @@ public class GPProgressPrinter1D extends CommonProgressPrinter1D {
         IGPForest forestBSF = gp.getBestSoFar();
         //TODO storage
         System.out.println("Now storing only Forest (GP) implement for GEP!!!");
-        ForestStorage.save((Forest) forestBSF, fileName);
+        if (forestBSF instanceof Forest) {
+            ForestStorage.save((Forest) forestBSF, fileName);
+        }
 //        ForestStorage.save(forestBSF, fileName);
     }
 }

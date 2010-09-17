@@ -1,6 +1,9 @@
 package gp;
 
 import common.evolution.PopulationManager;
+import gp.terminals.Constant;
+import gp.terminals.RNC;
+import gp.terminals.Random;
 
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
@@ -13,11 +16,11 @@ import java.lang.reflect.InvocationTargetException;
  * To change this template use File | Settings | File Templates.
  */
 public class GPFactory {
-    public static GP createByName(String className, PopulationManager populationManager, Node[] functions, Node[] terminals) {
-        GP gp = null;
+    public static GPBase createByName(String className, PopulationManager populationManager, Node[] functions, Node[] terminals) {
+        GPBase gp = null;
         try {
             Constructor constructor = Class.forName(className).getConstructor(PopulationManager.class, Node[].class, Node[].class);
-            gp = (GP) constructor.newInstance(populationManager, functions, terminals);
+            gp = (GPBase) constructor.newInstance(populationManager, functions, terminals);
         } catch (NoSuchMethodException e) {
             System.err.println(e.getCause());
             e.printStackTrace();
@@ -40,5 +43,12 @@ public class GPFactory {
             System.exit(1);
         }
         return gp;
+    }
+
+    public static Node[] createTerminalsByName(String className) {
+        if (className.equals("gep.GEP")) {
+            return new Node[]{new Constant(-1.0), new RNC()};
+        }
+        return new Node[]{new Constant(-1.0), new Random()};
     }
 }

@@ -44,7 +44,7 @@ public class Gauss extends Node {
     @Override
     public String toString() {
         if (nodes[0] == null) {
-            return "exp";
+            return "gauss";
         }
         return new StringBuilder("exp(-").append(nodes[0].toString()).append("^2)").toString();
     }

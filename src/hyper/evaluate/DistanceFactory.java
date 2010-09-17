@@ -2,6 +2,7 @@ package hyper.evaluate;
 
 import common.evolution.IDistance;
 import common.pmatrix.ParameterCombination;
+import gep.GEPChromosomeDistance;
 import gp.ForestDistance;
 import neat.GenomeDistance;
 import opt.DoubleVectorGenomeDistance;
@@ -22,6 +23,9 @@ public class DistanceFactory {
         if (solver.equals("NEAT")) {
             return new GenomeDistance();
         } else if (solver.equals("GP")) {
+            if (parameters.getString("GP.TYPE").equals("gep.GEP")) {
+                return new GEPChromosomeDistance();
+            }
             return new ForestDistance();
         } else if (solver.equals("SNEAT")) {
             return new ForestDistance();
