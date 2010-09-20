@@ -11,7 +11,6 @@ import common.evolution.IDistance;
  */
 public class GEPChromosomeDistance implements IDistance<GEPChromosome> {
     public double distance(GEPChromosome a, GEPChromosome b) {
-        double distances = 0.0;
-        return distances;
+        return a.distance(b);
     }
 }

@@ -1,5 +1,6 @@
 package gep;
 
+import common.ArrayHelper;
 import common.RND;
 import common.evolution.EvaluationInfo;
 import gp.IGPForest;
@@ -444,6 +445,15 @@ public class GEPChromosome implements IGPForest, Comparable, Serializable {
         return new GEPChromosome[]{a, b};
     }
 
+
+    public double distance(GEPChromosome other) {
+        double sum = 0.0;
+        for (int i = 0; i < genes.length; i++) {
+            sum += this.genes[i].distance(other.genes[i]);
+        }
+        return sum /= genes.length;
+    }
+
     public int getNumOfInputs() {
         return treeInputs.getNumOfInputs();
     }
@@ -456,6 +466,12 @@ public class GEPChromosome implements IGPForest, Comparable, Serializable {
         double[] outputs = new double[genes.length];
         for (int i = 0; i < genes.length; i++) {
             outputs[i] = genes[i].evaluate(treeInputs);
+//            if(Double.isNaN(outputs[i])) {
+//                System.out.println("NaN");
+//            }
+//            if(Double.isInfinite(outputs[i])) {
+//                System.out.println("Inf");
+//            }
         }
         return outputs;
     }
@@ -577,6 +593,41 @@ public class GEPChromosome implements IGPForest, Comparable, Serializable {
         public double evaluate(TreeInputs treeInputs) {
             buildTree();
             return root.evaluate(treeInputs);
+        }
+
+        public double distance(Gene other) {
+            Gene a = this;
+            Gene b = other;
+
+            double avg1 = 0.0;
+            for (int i = 0; i < headTail.length; i++) {
+                avg1 += a.headTail[i].getClass().equals(b.headTail[i].getClass()) ? 0.0 : 1.0;
+            }
+            avg1 /= headTail.length;
+
+            double avg2 = 0.0;
+            for (int i = 0; i < dc.length; i++) {
+                avg2 += a.dc[i] == b.dc[i] ? 0.0 : 1.0;
+            }
+            avg2 /= dc.length;
+
+            double[] diffs = new double[constants.length];
+            double maxDiff = 0.0;
+            for (int i = 0; i < constants.length; i++) {
+                double diff = Math.abs(a.constants[i] - b.constants[i]);
+                if (diff > maxDiff) {
+                    maxDiff = diff;
+                }
+                diffs[i] = diff;
+            }
+
+            for (int i = 0; i < constants.length; i++) {
+                diffs[i] /= maxDiff;
+            }
+
+            double avg3 = ArrayHelper.mean(diffs);
+
+            return (avg1 + avg2 + avg3) / 3.0;
         }
 
         private void buildTree() {

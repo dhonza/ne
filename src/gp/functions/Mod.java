@@ -39,6 +39,10 @@ public class Mod extends Node {
         }
         double a = nodes[0].evaluate(treeInputs);
         double q = Math.floor(a / n);
+        if (Double.isInfinite(q)) {
+            return 0.0;
+        }
+
         return a - n * q;
     }
 

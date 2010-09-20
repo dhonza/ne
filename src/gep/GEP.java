@@ -145,7 +145,7 @@ public class GEP<P> extends GPBase<P, GEPChromosome> {
 
     }
 
-//    /*
+    ///*
 
     protected void selectAndReproduce() {
         System.arraycopy(population, 0, newPopulation, 0, population.length);
@@ -164,6 +164,8 @@ public class GEP<P> extends GPBase<P, GEPChromosome> {
         System.arraycopy(newPopulation, 0, oldAndNewPopulation, population.length, newPopulation.length);
         Arrays.sort(oldAndNewPopulation);
         System.arraycopy(oldAndNewPopulation, 0, population, 0, population.length);
+//        System.arraycopy(newPopulation, 0, population, 0, population.length);
+
     }
 //*/
 /*
@@ -216,7 +218,7 @@ public class GEP<P> extends GPBase<P, GEPChromosome> {
             Arrays.sort(newPopulation);
             System.arraycopy(newPopulation, 0, population, 0, population.length);
         }
-*/
+//*/
 
     public String getConfigString() {
         return "IMPLEMENT CONFIG STRING!!!!";
