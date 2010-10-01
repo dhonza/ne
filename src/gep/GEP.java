@@ -124,8 +124,8 @@ public class GEP<P> extends GPBase<P, GEPChromosome> {
 
             int twoPointRecombinations = ((int) Math.round(size * TWO_POINT_RECOMBINATION_RATE)) / 2;
             indices = new int[2 * twoPointRecombinations];//pairs of parents
-            RND.sampleRangeWithoutReplacement(startIdx, population.length, indices);
-            for (int j = 0; j < onePointRecombinations; j += 2) {
+            RND.sampleRangeWithoutReplacement(startIdx, population.length - 1, indices);
+            for (int j = 0; j < twoPointRecombinations; j += 2) {
                 GEPChromosome[] children =
                         newPopulation[indices[j]].crossoverTwoPoint(newPopulation[indices[j + 1]], generation);
                 newPopulation[indices[j]] = children[0];
@@ -134,8 +134,8 @@ public class GEP<P> extends GPBase<P, GEPChromosome> {
 
             int geneRecombinations = ((int) Math.round(size * GENE_RECOMBINATION_RATE)) / 2;
             indices = new int[2 * geneRecombinations];//pairs of parents
-            RND.sampleRangeWithoutReplacement(startIdx, population.length, indices);
-            for (int j = 0; j < onePointRecombinations; j += 2) {
+            RND.sampleRangeWithoutReplacement(startIdx, population.length - 1, indices);
+            for (int j = 0; j < geneRecombinations; j += 2) {
                 GEPChromosome[] children =
                         newPopulation[indices[j]].crossoverGene(newPopulation[indices[j + 1]], generation);
                 newPopulation[indices[j]] = children[0];

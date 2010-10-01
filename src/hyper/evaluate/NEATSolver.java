@@ -49,7 +49,7 @@ public class NEATSolver extends AbstractSolver {
         solver.addStopCondition(new MaxGenerationsStopCondition(neat));
         solver.addStopCondition(new MaxEvaluationsStopCondition(neat));
         solver.addStopCondition(new TargetFitnessStopCondition(neat));
-        solver.addStopCondition(new SolvedStopCondition(problem));
+        solver.addStopCondition(new SolvedStopCondition(populationManager));
     }
 
     private static Genome getPrototype(PopulationManager<Genome, INet> populationManager) {

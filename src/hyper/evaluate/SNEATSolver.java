@@ -50,7 +50,7 @@ public class SNEATSolver extends AbstractSolver {
         solver.addStopCondition(new MaxGenerationsStopCondition(sneat));
         solver.addStopCondition(new MaxEvaluationsStopCondition(sneat));
         solver.addStopCondition(new TargetFitnessStopCondition(sneat));
-        solver.addStopCondition(new SolvedStopCondition(problem));
+        solver.addStopCondition(new SolvedStopCondition(populationManager));
 
     }
 

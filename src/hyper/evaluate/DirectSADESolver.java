@@ -38,7 +38,7 @@ public class DirectSADESolver extends AbstractSolver {
         solver.addStopCondition(new MaxGenerationsStopCondition(sade));
         solver.addStopCondition(new MaxEvaluationsStopCondition(sade));
         solver.addStopCondition(new TargetFitnessStopCondition(sade));
-        solver.addStopCondition(new SolvedStopCondition(problem));
+        solver.addStopCondition(new SolvedStopCondition(populationManager));
 
     }
 

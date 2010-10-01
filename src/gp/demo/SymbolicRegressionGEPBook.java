@@ -11,6 +11,7 @@ import gp.IGPForest;
  * Time: 5:02:46 PM
  */
 public class SymbolicRegressionGEPBook implements IEvaluable<IGPForest> {
+    private boolean solved = false;
 
     //ten randomly sampled points
     double[][] data = new double[][]{
@@ -29,11 +30,17 @@ public class SymbolicRegressionGEPBook implements IEvaluable<IGPForest> {
 
     public EvaluationInfo evaluate(IGPForest forest) {
         double sum = 0;
+        boolean solved = true;
         for (int i = 0; i < data.length; i++) {
             forest.loadInputs(new double[]{data[i][0]});
             double output = forest.getOutputs()[0];
-            sum += 100 - Math.abs(output - data[i][1]);
+            double diff = Math.abs(output - data[i][1]);
+            if (diff > 0.01) {
+                solved = false;
+            }
+            sum += 100 - diff;//selection range 100
         }
+        this.solved = solved;
         return new EvaluationInfo(sum);
     }
 
@@ -42,7 +49,7 @@ public class SymbolicRegressionGEPBook implements IEvaluable<IGPForest> {
     }
 
     public boolean isSolved() {
-        return false;
+        return solved;
     }
 
     public int getNumberOfInputs() {

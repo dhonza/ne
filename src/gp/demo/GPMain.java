@@ -10,6 +10,7 @@ import common.stats.Stats;
 import gep.GEP;
 import gp.*;
 import gp.terminals.RNC;
+import hyper.evaluate.SolvedStopCondition;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -73,6 +74,7 @@ public class GPMain {
                 solver.addStopCondition(new MaxGenerationsStopCondition(gp, GP.MAX_GENERATIONS));
                 solver.addStopCondition(new MaxEvaluationsStopCondition(gp, GP.MAX_EVALUATIONS));
                 solver.addStopCondition(new TargetFitnessStopCondition(gp, GP.TARGET_FITNESS));
+                solver.addStopCondition(new SolvedStopCondition(populationManager));
                 solver.run();
 
                 stats.addSample("BSF", gp.getBestSoFar().getFitness());

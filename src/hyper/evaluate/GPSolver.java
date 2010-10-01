@@ -45,7 +45,7 @@ public class GPSolver extends AbstractSolver {
         solver.addStopCondition(new MaxGenerationsStopCondition(gp, GP.MAX_GENERATIONS));
         solver.addStopCondition(new MaxEvaluationsStopCondition(gp, GP.MAX_EVALUATIONS));
         solver.addStopCondition(new TargetFitnessStopCondition(gp, GP.TARGET_FITNESS));
-        solver.addStopCondition(new SolvedStopCondition(problem));
+        solver.addStopCondition(new SolvedStopCondition(populationManager));
     }
 
     public void solve() {

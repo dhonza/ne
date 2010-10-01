@@ -36,7 +36,7 @@ public class DirectCMAESSolver extends AbstractSolver {
         solver.addStopCondition(new MaxGenerationsStopCondition(cmaes));
         solver.addStopCondition(new MaxEvaluationsStopCondition(cmaes));
         solver.addStopCondition(new TargetFitnessStopCondition(cmaes));
-        solver.addStopCondition(new SolvedStopCondition(problem));
+        solver.addStopCondition(new SolvedStopCondition(populationManager));
     }
 
     public void solve() {
