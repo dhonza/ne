@@ -18,7 +18,7 @@ public interface INode {
 
     int getArity();
 
-    INode getChildren(int idx);
+    INode getChild(int idx);
 
     int getDepth();
 

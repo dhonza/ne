@@ -34,7 +34,7 @@ public abstract class AbstractNode implements INode {
         return null;
     }
 
-    public INode getChildren(int idx) {
+    public INode getChild(int idx) {
         if (idx >= getArity()) {
             throw new IndexOutOfBoundsException("Not enough children, arity = " +
                     getArity() + " idx = " + idx + ".");

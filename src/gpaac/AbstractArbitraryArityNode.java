@@ -76,7 +76,7 @@ public abstract class AbstractArbitraryArityNode implements IArbitraryArityNode 
         return children.size();
     }
 
-    public INode getChildren(int idx) {
+    public INode getChild(int idx) {
         return children.get(idx);
     }
 

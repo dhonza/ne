@@ -11,22 +11,22 @@ import gp.TreeInputs;
  * To change this template use File | Settings | File Templates.
  */
 public class Functions {
-    public static class Multiply extends AbstractNode {
+    public static class Times extends AbstractNode {
 
-        public Multiply(int depth, long innovation, INode[] children) {
+        public Times(int depth, long innovation, INode[] children) {
             super(depth, innovation, children);
         }
 
-        public Multiply() {
+        public Times() {
             super();
         }
 
         public INode create(int depth, INode[] children) {
-            return new Multiply(depth, InnovationCounter.getInstance().getNext(), children);
+            return new Times(depth, InnovationCounter.getInstance().getNext(), children);
         }
 
         public double evaluate(TreeInputs treeInputs) {
-            return getChildren(0).evaluate(treeInputs) * getChildren(1).evaluate(treeInputs);
+            return getChild(0).evaluate(treeInputs) * getChild(1).evaluate(treeInputs);
         }
 
         @Override
@@ -35,7 +35,7 @@ public class Functions {
         }
 
         public String getName() {
-            return "Times";
+            return "times";
         }
     }
 
@@ -56,13 +56,13 @@ public class Functions {
         public double evaluate(TreeInputs treeInputs) {
             double value = 0;
             for (int i = 0; i < getArity(); i++) {
-                value += getConstants(i) * getChildren(i).evaluate(treeInputs);
+                value += getConstants(i) * getChild(i).evaluate(treeInputs);
             }
             return value;
         }
 
         public String getName() {
-            return "Plus";
+            return "plus";
         }
     }
 }
