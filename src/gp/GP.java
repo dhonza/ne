@@ -17,13 +17,13 @@ public class GP<P> extends GPBase<P, Forest> {
     public static int MAX_DEPTH = 3;
     public static double MUTATION_SUBTREE_PROBABLITY = 0.5;
 
-    public GP(PopulationManager<Forest, P> populationManager, Node[] functions, Node[] terminals) {
+    public GP(PopulationManager<Forest, P> populationManager, INode[] functions, INode[] terminals) {
         super(populationManager, functions, terminals);
         bestOfGeneration = bestSoFar = Forest.createEmpty();
     }
 
     @Override
-    protected void init(Node[] functions) {
+    protected void init(INode[] functions) {
     }
 
     protected void createInitialGeneration() {

@@ -1,5 +1,6 @@
 package gp.functions;
 
+import gp.INode;
 import gp.Node;
 import gp.TreeInputs;
 
@@ -16,19 +17,19 @@ public class SqrtAbs extends Node {
         super();
     }
 
-    private SqrtAbs(int depth, Node[] children) {
+    private SqrtAbs(int depth, INode[] children) {
         super(depth, children.clone());
     }
 
-    private SqrtAbs(int depth, Node[] nodes, long innovation) {
+    private SqrtAbs(int depth, INode[] nodes, long innovation) {
         super(depth, nodes, innovation);
     }
 
-    public Node create(int depth, Node[] children) {
+    public Node create(int depth, INode[] children) {
         return new SqrtAbs(depth, children);
     }
 
-    protected Node copy(Node[] children) {
+    public INode copy(INode[] children) {
         return new SqrtAbs(depth, children, innovation);
     }
 
@@ -51,4 +52,9 @@ public class SqrtAbs extends Node {
     public String toMathematicaExpression() {
         return new StringBuilder("Sqrt[Abs[").append(nodes[0].toMathematicaExpression()).append("]]").toString();
     }
+
+    public String getName() {
+        return "sqrtabs";
+    }
+
 }

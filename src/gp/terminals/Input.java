@@ -1,5 +1,6 @@
 package gp.terminals;
 
+import gp.INode;
 import gp.Node;
 import gp.TreeInputs;
 
@@ -13,7 +14,7 @@ import gp.TreeInputs;
 public class Input extends Node {
     final private int index;
 
-    public Input(int index, TreeInputs treeInputs) {
+    public Input(int index) {
         this(0, index);
     }
 
@@ -22,16 +23,16 @@ public class Input extends Node {
         this.index = index;
     }
 
-    private Input(int depth, Node[] nodes, long innovation, int index) {
+    private Input(int depth, INode[] nodes, long innovation, int index) {
         super(depth, nodes, innovation);
         this.index = index;
     }
 
-    public Node create(int depth, Node[] children) {
+    public INode create(int depth, INode[] children) {
         return new Input(depth, index);
     }
 
-    protected Node copy(Node[] children) {
+    public INode copy(INode[] children) {
         return new Input(depth, children, innovation, index);
     }
 
@@ -50,5 +51,9 @@ public class Input extends Node {
 
     public String toMathematicaExpression() {
         return "x" + index;
+    }
+
+    public String getName() {
+        return "x";
     }
 }

@@ -1,6 +1,4 @@
-package gpaac;
-
-import gp.TreeInputs;
+package gp;
 
 /**
  * Created by IntelliJ IDEA.
@@ -31,4 +29,10 @@ public interface INode {
     long getInnovation();
 
     String getName();
+
+    //TODO remove these two
+
+    String innovationToString();
+
+    String toMathematicaExpression();
 }

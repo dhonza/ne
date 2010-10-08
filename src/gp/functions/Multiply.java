@@ -1,5 +1,6 @@
 package gp.functions;
 
+import gp.INode;
 import gp.Node;
 import gp.TreeInputs;
 
@@ -16,19 +17,19 @@ public class Multiply extends Node {
         super();
     }
 
-    private Multiply(int depth, Node[] children) {
+    private Multiply(int depth, INode[] children) {
         super(depth, children.clone());
     }
 
-    private Multiply(int depth, Node[] nodes, long innovation) {
+    private Multiply(int depth, INode[] nodes, long innovation) {
         super(depth, nodes, innovation);
     }
 
-    public Node create(int depth, Node[] children) {
+    public INode create(int depth, INode[] children) {
         return new Multiply(depth, children);
     }
 
-    protected Node copy(Node[] children) {
+    public INode copy(INode[] children) {
         return new Multiply(depth, children, innovation);
     }
 
@@ -50,5 +51,9 @@ public class Multiply extends Node {
 
     public String toMathematicaExpression() {
         return new StringBuilder("(").append(nodes[0].toMathematicaExpression()).append("*").append(nodes[1].toMathematicaExpression()).append(")").toString();
+    }
+
+    public String getName() {
+        return "times";
     }
 }

@@ -1,8 +1,9 @@
 package gpaac;
 
+import gp.INode;
+
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Collections;
 import java.util.List;
 
 /**
@@ -54,7 +55,7 @@ public abstract class AbstractArbitraryArityNode implements IArbitraryArityNode,
     }
 
     public INode copySubtree() {
-        if(getArity() == 0) {
+        if (getArity() == 0) {
             return copy(null);
         }
         INode[] childrenCopy = new INode[getArity()];
@@ -119,7 +120,7 @@ public abstract class AbstractArbitraryArityNode implements IArbitraryArityNode,
     @Override
     public String toString() {
         if (getArity() == 0) {
-            return getName()+  "|" + super.toString() + "|";
+            return getName();//+  "|" + super.toString() + "|";
         }
         StringBuilder b = new StringBuilder(getName());
         b.append("[");
@@ -131,6 +132,14 @@ public abstract class AbstractArbitraryArityNode implements IArbitraryArityNode,
             }
         }
         b.append("]");
-        return b.toString()+  "|" + super.toString() + "|";
+        return b.toString();//+  "|" + super.toString() + "|";
+    }
+
+    public String innovationToString() {
+        throw new IllegalStateException("NOT IMPLEMENTED: remove!");
+    }
+
+    public String toMathematicaExpression() {
+        throw new IllegalStateException("NOT IMPLEMENTED: remove!");
     }
 }

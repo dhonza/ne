@@ -4,7 +4,6 @@ import common.evolution.BasicInfo;
 import common.evolution.EvaluationInfo;
 import common.evolution.IEvolutionaryAlgorithm;
 import common.evolution.PopulationManager;
-import gp.terminals.Input;
 
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -43,7 +42,7 @@ abstract public class GPBase<P, T extends IGPForest> implements IEvolutionaryAlg
     private int generalizationGeneration;
     private EvaluationInfo generalizationEvaluationInfo;
 
-    public GPBase(PopulationManager<T, P> populationManager, Node[] functions, Node[] terminals) {
+    public GPBase(PopulationManager<T, P> populationManager, INode[] functions, INode[] terminals) {
         this.populationManager = populationManager;
         if (populationManager == null) {//for debuging only
             this.inputs = 0;
@@ -55,17 +54,14 @@ abstract public class GPBase<P, T extends IGPForest> implements IEvolutionaryAlg
 
         init(functions);
 
-        Node[] allTerminals = new Node[terminals.length + inputs];
-
-        System.arraycopy(terminals, 0, allTerminals, 0, terminals.length);
-        TreeInputs treeInputs = new TreeInputs(inputs);
-        for (int i = 0; i < inputs; i++) {
-            allTerminals[terminals.length + i] = new Input(i, treeInputs);
-        }
-        this.nodeCollection = new NodeCollection(functions, allTerminals);
+        this.nodeCollection = createNodeCollection(functions, terminals, populationManager.getNumberOfInputs());
     }
 
-    abstract protected void init(Node[] functions);
+    abstract protected void init(INode[] functions);
+
+    protected NodeCollection createNodeCollection(INode[] functions, INode[] terminals, int numOfInputs) {
+        return new NodeCollection(functions, terminals, numOfInputs);
+    }
 
     public void initialGeneration() {
         generation = 1;

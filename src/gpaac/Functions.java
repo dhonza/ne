@@ -1,5 +1,6 @@
 package gpaac;
 
+import gp.INode;
 import gp.InnovationCounter;
 import gp.TreeInputs;
 

@@ -3,7 +3,7 @@ package gep;
 import common.RND;
 import common.evolution.PopulationManager;
 import gp.GPBase;
-import gp.Node;
+import gp.INode;
 
 import java.util.Arrays;
 
@@ -55,14 +55,14 @@ public class GEP<P> extends GPBase<P, GEPChromosome> {
     //number of directly evolved constants
     public static int C_SIZE = 10;
 
-    public GEP(PopulationManager<GEPChromosome, P> populationManager, Node[] functions, Node[] terminals) {
+    public GEP(PopulationManager<GEPChromosome, P> populationManager, INode[] functions, INode[] terminals) {
         super(populationManager, functions, terminals);
         bestOfGeneration = bestSoFar = GEPChromosome.createEmpty();
     }
 
-    protected void init(Node[] functions) {
+    protected void init(INode[] functions) {
         int maxArity = 0;
-        for (Node function : functions) {
+        for (INode function : functions) {
             if (function.getArity() > maxArity) {
                 maxArity = function.getArity();
             }

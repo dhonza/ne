@@ -1,8 +1,9 @@
 package gpaac;
 
 import common.RND;
+import gp.INode;
+import gp.NodeCollection;
 
-import java.io.Serializable;
 import java.util.*;
 
 /**
@@ -12,25 +13,28 @@ import java.util.*;
  * Time: 10:27:34 AM
  * To change this template use File | Settings | File Templates.
  */
-public class NodeCollection implements Serializable {
-    final private INode[] functions;
-    final private INode[] terminals;
-    final private INode[] all;
-    final private Map<Integer, List<INode>> nodesPerArity;
+public class AACNodeCollection extends NodeCollection {
     private int maxArity;
     private List<INode> arbitraryArity;
 
-    public NodeCollection(INode[] functions, INode[] terminals) {
-        this.functions = functions.clone();
-        this.terminals = terminals.clone();
-        this.all = new INode[this.functions.length + this.terminals.length];
-        System.arraycopy(this.functions, 0, all, 0, this.functions.length);
-        System.arraycopy(this.terminals, 0, all, this.functions.length, this.terminals.length);
-        nodesPerArity = new HashMap<Integer, List<INode>>();
-        createNodePerArityMap();
+    public AACNodeCollection(INode[] functions, INode[] terminals, int numOfInputs) {
+        super(functions, terminals, numOfInputs);
     }
 
-    private void createNodePerArityMap() {
+    @Override
+    protected INode[] addInputs(INode[] terminals, int numOfInputs) {
+        INode[] allTerminals = new INode[terminals.length + numOfInputs];
+
+        System.arraycopy(terminals, 0, allTerminals, 0, terminals.length);
+        for (int i = 0; i < numOfInputs; i++) {
+            allTerminals[terminals.length + i] = new Terminals.Input(i);
+        }
+        return allTerminals;
+    }
+
+    @Override
+    protected void createNodePerArityMap() {
+        nodesPerArity = new HashMap<Integer, List<INode>>();
         //minimum arity of nodes with arbitrary arity
         Map<Integer, List<INode>> nodesMinArity = new HashMap<Integer, List<INode>>();
         //stores minimum arities of arbitrary arity nodes
@@ -71,18 +75,7 @@ public class NodeCollection implements Serializable {
         arbitraryArity = equalOrSmallerMinArity;
     }
 
-    public INode getRandomOfAll() {
-        return all[RND.getInt(0, all.length - 1)];
-    }
-
-    public INode getRandomFunction() {
-        return functions[RND.getInt(0, functions.length - 1)];
-    }
-
-    public INode getRandomTerminal() {
-        return terminals[RND.getInt(0, terminals.length - 1)];
-    }
-
+    @Override
     public INode getRandomWithArity(int arity) {
         List<INode> list;
         if (arity > maxArity) {

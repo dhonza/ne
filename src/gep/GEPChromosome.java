@@ -3,10 +3,7 @@ package gep;
 import common.ArrayHelper;
 import common.RND;
 import common.evolution.EvaluationInfo;
-import gp.IGPForest;
-import gp.Node;
-import gp.NodeCollection;
-import gp.TreeInputs;
+import gp.*;
 import gp.functions.Add;
 import gp.functions.Multiply;
 import gp.terminals.Constant;
@@ -151,7 +148,7 @@ public class GEPChromosome implements IGPForest, Comparable, Serializable {
         int stop = startStop[1];
 //        System.out.println("start: " + start + " stop: " + stop);
         while (start < stop) {
-            Node t = inverted.headTail[start];
+            INode t = inverted.headTail[start];
             inverted.headTail[start] = inverted.headTail[stop];
             inverted.headTail[stop] = t;
             start++;
@@ -383,7 +380,7 @@ public class GEPChromosome implements IGPForest, Comparable, Serializable {
         //otherwise it happens just after
         if (cIdx < GEP.HEAD_TAIL) {
             for (int i = cIdx; i < GEP.HEAD_TAIL; i++) {
-                Node t = a.genes[geneIdx].headTail[i];
+                INode t = a.genes[geneIdx].headTail[i];
                 a.genes[geneIdx].headTail[i] = b.genes[geneIdx].headTail[i];
                 b.genes[geneIdx].headTail[i] = t;
             }
@@ -420,7 +417,7 @@ public class GEPChromosome implements IGPForest, Comparable, Serializable {
         for (int i = g[0]; i <= g[1]; i++) {//all swapped genes
             for (int j = cIdx; j < GEP.HEAD_TAIL; j++) {//at first go exactly from the first crossover point
                 if (i < g[1] || j < c[1]) {// if not second crossover point
-                    Node t = a.genes[i].headTail[j];
+                    INode t = a.genes[i].headTail[j];
                     a.genes[i].headTail[j] = b.genes[i].headTail[j];
                     b.genes[i].headTail[j] = t;
                 }
@@ -512,7 +509,7 @@ public class GEPChromosome implements IGPForest, Comparable, Serializable {
         Node[] functions = new Node[]{new Add(), new Multiply()};
         Node[] terminals = new Node[]{new RNC(), new Constant(1), new Constant(2)};
         GEP gep = new GEP(null, functions, terminals);
-        NodeCollection nc = new NodeCollection(functions, terminals);
+        NodeCollection nc = new NodeCollection(functions, terminals, 0);
         RND.initializeTime();
 
         int genes = 2;
@@ -581,9 +578,9 @@ public class GEPChromosome implements IGPForest, Comparable, Serializable {
     // ----------------------------------------------------------------------------------------------
 
     private class Gene {
-        private Node root = null;
+        private INode root = null;
 
-        private Node[] headTail;
+        private INode[] headTail;
         private int[] dc;
         private double[] constants;
 
@@ -638,8 +635,8 @@ public class GEPChromosome implements IGPForest, Comparable, Serializable {
             }
         }
 
-        private Node buildTree(Node node, int depth) {
-            Node[] children = new Node[node.getArity()];
+        private INode buildTree(INode node, int depth) {
+            INode[] children = new Node[node.getArity()];
             if (node instanceof RNC) {
                 double value = constants[dc[constPtr++]];
                 return new RNC(depth, value);

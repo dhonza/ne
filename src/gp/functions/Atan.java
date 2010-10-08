@@ -1,5 +1,6 @@
 package gp.functions;
 
+import gp.INode;
 import gp.Node;
 import gp.TreeInputs;
 
@@ -16,19 +17,19 @@ public class Atan extends Node {
         super();
     }
 
-    private Atan(int depth, Node[] children) {
+    private Atan(int depth, INode[] children) {
         super(depth, children.clone());
     }
 
-    private Atan(int depth, Node[] nodes, long innovation) {
+    private Atan(int depth, INode[] nodes, long innovation) {
         super(depth, nodes, innovation);
     }
 
-    public Node create(int depth, Node[] children) {
+    public Node create(int depth, INode[] children) {
         return new Atan(depth, children);
     }
 
-    protected Node copy(Node[] children) {
+    public Node copy(INode[] children) {
         return new Atan(depth, children, innovation);
     }
 
@@ -50,5 +51,9 @@ public class Atan extends Node {
 
     public String toMathematicaExpression() {
         return new StringBuilder("Atan[").append(nodes[0].toMathematicaExpression()).append("]").toString();
+    }
+
+    public String getName() {
+        return "atan";
     }
 }

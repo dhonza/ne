@@ -1,6 +1,7 @@
 package gp;
 
 import common.RND;
+import gp.terminals.Input;
 
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -16,47 +17,56 @@ import java.util.Map;
  * To change this template use File | Settings | File Templates.
  */
 public class NodeCollection implements Serializable {
-    final private Node[] functions;
-    final private Node[] terminals;
-    final private Node[] all;
-    final private Map<Integer, List<Node>> nodesPerArity;
+    final protected INode[] functions;
+    final protected INode[] terminals;
+    final protected INode[] all;
+    protected Map<Integer, List<INode>> nodesPerArity;
 
-    public NodeCollection(Node[] functions, Node[] terminals) {
+    public NodeCollection(INode[] functions, INode[] terminals, int numOfInputs) {
         this.functions = functions.clone();
-        this.terminals = terminals.clone();
-        this.all = new Node[this.functions.length + this.terminals.length];
+        this.terminals = addInputs(terminals, numOfInputs);
+        this.all = new INode[this.functions.length + this.terminals.length];
         System.arraycopy(this.functions, 0, all, 0, this.functions.length);
         System.arraycopy(this.terminals, 0, all, this.functions.length, this.terminals.length);
-        nodesPerArity = createNodePerArityMap();
+        createNodePerArityMap();
     }
 
-    private Map<Integer, List<Node>> createNodePerArityMap() {
-        Map<Integer, List<Node>> tempMap = new HashMap<Integer, List<Node>>();
-        for (Node node : all) {
-            List<Node> list = tempMap.get(node.getArity());
+    protected INode[] addInputs(INode[] terminals, int numOfInputs) {
+        INode[] allTerminals = new Node[terminals.length + numOfInputs];
+
+        System.arraycopy(terminals, 0, allTerminals, 0, terminals.length);
+        for (int i = 0; i < numOfInputs; i++) {
+            allTerminals[terminals.length + i] = new Input(i);
+        }
+        return allTerminals;
+    }
+
+    protected void createNodePerArityMap() {
+        nodesPerArity = new HashMap<Integer, List<INode>>();
+        for (INode node : all) {
+            List<INode> list = nodesPerArity.get(node.getArity());
             if (list == null) {
-                list = new ArrayList<Node>();
-                tempMap.put(node.getArity(), list);
+                list = new ArrayList<INode>();
+                nodesPerArity.put(node.getArity(), list);
             }
             list.add(node);
         }
-        return tempMap;
     }
 
-    public Node getRandomOfAll() {
+    public INode getRandomOfAll() {
         return all[RND.getInt(0, all.length - 1)];
     }
 
-    public Node getRandomFunction() {
+    public INode getRandomFunction() {
         return functions[RND.getInt(0, functions.length - 1)];
     }
 
-    public Node getRandomTerminal() {
+    public INode getRandomTerminal() {
         return terminals[RND.getInt(0, terminals.length - 1)];
     }
 
-    public Node getRandomWithArity(int arity) {
-        List<Node> list = nodesPerArity.get(arity);
+    public INode getRandomWithArity(int arity) {
+        List<INode> list = nodesPerArity.get(arity);
         if (list == null) {
             throw new IllegalStateException("Nodes of arity " + arity + "not exist.");
         }

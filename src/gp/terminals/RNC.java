@@ -1,5 +1,6 @@
 package gp.terminals;
 
+import gp.INode;
 import gp.Node;
 import gp.TreeInputs;
 
@@ -26,16 +27,16 @@ public class RNC extends Node {
         this.value = value;
     }
 
-    private RNC(int depth, Node[] nodes, long innovation, double value) {
+    private RNC(int depth, INode[] nodes, long innovation, double value) {
         super(depth, nodes, innovation);
         this.value = value;
     }
 
-    public Node create(int depth, Node[] children) {
+    public INode create(int depth, INode[] children) {
         return new Constant(depth, value);
     }
 
-    protected Node copy(Node[] children) {
+    public INode copy(INode[] children) {
         return new RNC(depth, children, innovation, value);
     }
 
@@ -60,4 +61,9 @@ public class RNC extends Node {
     public String toMathematicaExpression() {
         return Double.toString(value).replace("E", "*10^");
     }
+
+    public String getName() {
+        return "rnc";
+    }
+
 }

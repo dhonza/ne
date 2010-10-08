@@ -1,5 +1,6 @@
 package gp.functions;
 
+import gp.INode;
 import gp.Node;
 import gp.TreeInputs;
 
@@ -16,19 +17,19 @@ public class Gauss extends Node {
         super();
     }
 
-    private Gauss(int depth, Node[] children) {
+    private Gauss(int depth, INode[] children) {
         super(depth, children.clone());
     }
 
-    private Gauss(int depth, Node[] nodes, long innovation) {
+    private Gauss(int depth, INode[] nodes, long innovation) {
         super(depth, nodes, innovation);
     }
 
-    public Node create(int depth, Node[] children) {
+    public INode create(int depth, INode[] children) {
         return new Gauss(depth, children);
     }
 
-    protected Node copy(Node[] children) {
+    public INode copy(INode[] children) {
         return new Gauss(depth, children, innovation);
     }
 
@@ -51,5 +52,9 @@ public class Gauss extends Node {
 
     public String toMathematicaExpression() {
         return new StringBuilder("Exp[- ").append(nodes[0].toMathematicaExpression()).append("^2]").toString();
+    }
+
+    public String getName() {
+        return "gauss";
     }
 }

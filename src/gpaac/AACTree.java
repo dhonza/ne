@@ -1,6 +1,9 @@
 package gpaac;
 
 import common.RND;
+import gp.INode;
+import gp.NodeCollection;
+import gp.TreeInputs;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -53,6 +56,10 @@ public class AACTree {
         node = choice.create(startDepth, children);
 
         return node;
+    }
+
+    public double evaluate(TreeInputs treeInputs) {
+        return root.evaluate(treeInputs);
     }
 
     public AACTree mutateNode(NodeCollection nodeCollection) {
@@ -126,8 +133,8 @@ public class AACTree {
 
     public static void main(String[] args) {
         INode[] functions = new INode[]{new Functions.Times(), new Functions.APlus()};
-        INode[] terminals = new INode[]{new Terminals.Input(1), new Terminals.Input(2)};
-        NodeCollection nodeCollection = new NodeCollection(functions, terminals);
+        INode[] terminals = new INode[]{};
+        AACNodeCollection nodeCollection = new AACNodeCollection(functions, terminals, 2);
 
         RND.initializeTime();
         AACTree tree = AACTree.createRandom(nodeCollection);

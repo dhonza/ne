@@ -2,6 +2,7 @@ package gp.terminals;
 
 import common.RND;
 import gp.GP;
+import gp.INode;
 import gp.Node;
 import gp.TreeInputs;
 
@@ -28,16 +29,16 @@ public class Random extends Node {
         this.value = value;
     }
 
-    private Random(int depth, Node[] nodes, long innovation, double value) {
+    private Random(int depth, INode[] nodes, long innovation, double value) {
         super(depth, nodes, innovation);
         this.value = value;
     }
 
-    public Node create(int depth, Node[] children) {
+    public INode create(int depth, INode[] children) {
         return new Random(depth);
     }
 
-    protected Node copy(Node[] children) {
+    public INode copy(INode[] children) {
         return new Random(depth, children, innovation, value);
     }
 
@@ -62,5 +63,9 @@ public class Random extends Node {
 
     public String toMathematicaExpression() {
         return Double.toString(value).replace("E", "*10^");
+    }
+
+    public String getName() {
+        return "rnd";
     }
 }

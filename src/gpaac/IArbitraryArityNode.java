@@ -1,5 +1,7 @@
 package gpaac;
 
+import gp.INode;
+
 /**
  * Created by IntelliJ IDEA.
  * User: drchaj1

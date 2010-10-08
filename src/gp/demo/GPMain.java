@@ -9,7 +9,7 @@ import common.pmatrix.Utils;
 import common.stats.Stats;
 import gep.GEP;
 import gp.*;
-import gp.terminals.RNC;
+import gpaac.GPAAC;
 import hyper.evaluate.SolvedStopCondition;
 
 import java.io.File;
@@ -30,7 +30,8 @@ public class GPMain {
 
         //--------------------
 //        ParameterMatrixManager manager = ParameterMatrixStorage.load(new File("cfg/gpdemo.properties"));
-        ParameterMatrixManager manager = ParameterMatrixStorage.load(new File("cfg/gepdemo.properties"));
+//        ParameterMatrixManager manager = ParameterMatrixStorage.load(new File("cfg/gepdemo.properties"));
+        ParameterMatrixManager manager = ParameterMatrixStorage.load(new File("cfg/gpaccdemo.properties"));
         //--------------------
 
         for (ParameterCombination combination : manager) {
@@ -45,10 +46,16 @@ public class GPMain {
                 GP.POPULATION_SIZE = combination.getInteger("GP.POPULATION_SIZE");
                 GP.TARGET_FITNESS = combination.getDouble("GP.TARGET_FITNESS");
 
-                Node[] functions = NodeFactory.createByNameList("gp.functions.", combination.getString("GP.FUNCTIONS"));
+//                INode[] functions = NodeFactory.createByNameList("gp.functions.",
+//                        combination.getString("GP.FUNCTIONS"));//GP, GEP
+
+                INode[] functions = NodeFactory.createByNameList("gpaac.Functions$",
+                        combination.getString("GP.FUNCTIONS"));//GPACC
+
                 //--------------------
-//                Node[] terminals = new Node[]{new Constant(-1.0), new Random()};//GP
-                Node[] terminals = new Node[]{new RNC()};//GEP
+//                INode[] terminals = new Node[]{new Constant(-1.0), new Random()};//GP
+//                INode[] terminals = new Node[]{new RNC()};//GEP
+                INode[] terminals = new INode[]{};//GPACC
                 //--------------------
 
                 List<IGenotypeToPhenotype<Forest, Forest>> converter = new ArrayList<IGenotypeToPhenotype<Forest, Forest>>();
@@ -62,10 +69,12 @@ public class GPMain {
                         converter, evaluator);
                 Utils.setStaticParameters(combination, GP.class, "GP");
                 Utils.setStaticParameters(combination, GEP.class, "GEP");
+                Utils.setStaticParameters(combination, GEP.class, "GPAAC");
 
                 //--------------------
-//                GP gp = GPFactory.createByName(combination.getString("GP.TYPE"), populationManager, functions, terminals);
-                GEP gp = new GEP(populationManager, functions, terminals);
+//                GPBase gp = GPFactory.createByName(combination.getString("GP.TYPE"), populationManager, functions, terminals);
+//                GEP gp = new GEP(populationManager, functions, terminals);
+                GPAAC gp = new GPAAC(populationManager, functions, terminals);
                 //--------------------
 
 

@@ -14,12 +14,12 @@ import java.util.*;
  * To change this template use File | Settings | File Templates.
  */
 public class Tree implements Serializable {
-    private Node root;
+    private INode root;
 
-    transient private List<Node> nodes = new ArrayList<Node>();
-    transient private Map<Node, Node> ancestors = new HashMap<Node, Node>();
+    transient private List<INode> nodes = new ArrayList<INode>();
+    transient private Map<INode, INode> ancestors = new HashMap<INode, INode>();
 
-    public Node getRoot() {
+    public INode getRoot() {
         return root;
     }
 
@@ -29,16 +29,16 @@ public class Tree implements Serializable {
         return tree;
     }
 
-    private static Node createRandomSubtree(NodeCollection nodeCollection, int startDepth) {
-        Node node;
-        Node choice;
+    private static INode createRandomSubtree(NodeCollection nodeCollection, int startDepth) {
+        INode node;
+        INode choice;
         if (startDepth < GP.MAX_DEPTH) {
             choice = nodeCollection.getRandomOfAll();
         } else {
             choice = nodeCollection.getRandomTerminal();
         }
         int arity = choice.getArity();
-        Node[] children = new Node[arity];
+        INode[] children = new Node[arity];
         for (int i = 0; i < arity; i++) {
             children[i] = createRandomSubtree(nodeCollection, startDepth + 1);
         }
@@ -59,15 +59,15 @@ public class Tree implements Serializable {
         populateNodes(root, null);
         int mutationPoint = RND.getInt(0, nodes.size() - 1);
 
-        Node mutatedNode = nodes.get(mutationPoint);
-        Node mutatedNodeAncestor = ancestors.get(mutatedNode);
-        Node prototype = nodeCollection.getRandomWithArity(mutatedNode.getArity());
+        INode mutatedNode = nodes.get(mutationPoint);
+        INode mutatedNodeAncestor = ancestors.get(mutatedNode);
+        INode prototype = nodeCollection.getRandomWithArity(mutatedNode.getArity());
 
         if (prototype.getClass() == mutatedNode.getClass()) {//no change at all
             return this;
         }
 
-        Node newNode = prototype.create(mutatedNode.getDepth(), mutatedNode.getChildren());
+        INode newNode = prototype.create(mutatedNode.getDepth(), mutatedNode.getChildren());
 
         Tree mutated = new Tree();
         mutated.root = replaceAncestors(mutatedNodeAncestor, mutatedNode, newNode);
@@ -84,9 +84,9 @@ public class Tree implements Serializable {
         populateNodes(root, null);
         int mutationPoint = RND.getInt(0, nodes.size() - 1);
 
-        Node mutatedNode = nodes.get(mutationPoint);
-        Node mutatedNodeAncestor = ancestors.get(mutatedNode);
-        Node newSubtree;
+        INode mutatedNode = nodes.get(mutationPoint);
+        INode mutatedNodeAncestor = ancestors.get(mutatedNode);
+        INode newSubtree;
         if (mutatedNode instanceof Random && RND.getDouble() < GP.MUTATION_CAUCHY_PROBABILITY) {
             newSubtree = ((Random) mutatedNode).localMutate();
         } else {
@@ -101,27 +101,27 @@ public class Tree implements Serializable {
         return mutated;
     }
 
-    private void populateNodes(Node startNode, Node ancestor) {
+    private void populateNodes(INode startNode, INode ancestor) {
         nodes.add(startNode);
         ancestors.put(startNode, ancestor);
-        for (Node child : startNode.getChildren()) {
+        for (INode child : startNode.getChildren()) {
             populateNodes(child, startNode);
         }
     }
 
-    private Node replaceAncestors(Node ancestor, Node oldNode, Node newNode) {
-        Node newRoot;
+    private INode replaceAncestors(INode ancestor, INode oldNode, INode newNode) {
+        INode newRoot;
         if (ancestor == null) {
             newRoot = newNode;
         } else {
-            Node[] newAncestorChildren = ancestor.getChildren();
+            INode[] newAncestorChildren = ancestor.getChildren();
             for (int i = 0; i < newAncestorChildren.length; i++) {
                 if (newAncestorChildren[i] == oldNode) {
                     newAncestorChildren[i] = newNode;
                     break;
                 }
             }
-            Node newAncestor = ancestor.copy(newAncestorChildren);
+            INode newAncestor = ancestor.copy(newAncestorChildren);
             newRoot = replaceAncestors(ancestors.get(ancestor), ancestor, newAncestor);
         }
         return newRoot;
@@ -137,9 +137,9 @@ public class Tree implements Serializable {
         return 1.0 - (double) innovationsA.size() / mean;
     }
 
-    private void populateInnovations(Set<Long> innovationList, Node startNode) {
+    private void populateInnovations(Set<Long> innovationList, INode startNode) {
         innovationList.add(startNode.getInnovation());
-        for (Node child : startNode.getChildren()) {
+        for (INode child : startNode.getChildren()) {
             populateInnovations(innovationList, child);
         }
     }

@@ -32,8 +32,8 @@ public class GPSolver extends AbstractSolver {
         Utils.setStaticParameters(parameters, GP.class, "GP");
         Utils.setStaticParameters(parameters, GEP.class, "GEP");
 
-        Node[] functions = NodeFactory.createByNameList("gp.functions.", parameters.getString("GP.FUNCTIONS"));
-        Node[] terminals = GPFactory.createTerminalsByName(parameters.getString("GP.TYPE"));
+        INode[] functions = NodeFactory.createByNameList("gp.functions.", parameters.getString("GP.FUNCTIONS"));
+        INode[] terminals = GPFactory.createTerminalsByName(parameters.getString("GP.TYPE"));
 
         GP.TARGET_FITNESS = problem.getTargetFitness();
 

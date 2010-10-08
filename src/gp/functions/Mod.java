@@ -1,5 +1,6 @@
 package gp.functions;
 
+import gp.INode;
 import gp.Node;
 import gp.TreeInputs;
 
@@ -16,19 +17,19 @@ public class Mod extends Node {
         super();
     }
 
-    private Mod(int depth, Node[] children) {
+    private Mod(int depth, INode[] children) {
         super(depth, children.clone());
     }
 
-    private Mod(int depth, Node[] nodes, long innovation) {
+    private Mod(int depth, INode[] nodes, long innovation) {
         super(depth, nodes, innovation);
     }
 
-    public Node create(int depth, Node[] children) {
+    public INode create(int depth, INode[] children) {
         return new Mod(depth, children);
     }
 
-    protected Node copy(Node[] children) {
+    public INode copy(INode[] children) {
         return new Mod(depth, children, innovation);
     }
 
@@ -68,4 +69,8 @@ public class Mod extends Node {
 //        double q = Math.floor(a / n);
 //        System.out.println( "q=" + q + " r=" + (a - n * q));
 //    }
+
+    public String getName() {
+        return "mod";
+    }
 }

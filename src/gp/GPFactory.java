@@ -16,10 +16,10 @@ import java.lang.reflect.InvocationTargetException;
  * To change this template use File | Settings | File Templates.
  */
 public class GPFactory {
-    public static GPBase createByName(String className, PopulationManager populationManager, Node[] functions, Node[] terminals) {
+    public static GPBase createByName(String className, PopulationManager populationManager, INode[] functions, INode[] terminals) {
         GPBase gp = null;
         try {
-            Constructor constructor = Class.forName(className).getConstructor(PopulationManager.class, Node[].class, Node[].class);
+            Constructor constructor = Class.forName(className).getConstructor(PopulationManager.class, INode[].class, INode[].class);
             gp = (GPBase) constructor.newInstance(populationManager, functions, terminals);
         } catch (NoSuchMethodException e) {
             System.err.println(e.getCause());
