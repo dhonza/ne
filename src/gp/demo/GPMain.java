@@ -10,6 +10,7 @@ import common.stats.Stats;
 import gep.GEP;
 import gp.*;
 import gpaac.GPAAC;
+import gpaac.Terminals;
 import hyper.evaluate.SolvedStopCondition;
 
 import java.io.File;
@@ -55,7 +56,7 @@ public class GPMain {
                 //--------------------
 //                INode[] terminals = new Node[]{new Constant(-1.0), new Random()};//GP
 //                INode[] terminals = new Node[]{new RNC()};//GEP
-                INode[] terminals = new INode[]{};//GPACC
+                INode[] terminals = new INode[]{new Terminals.Constant(1.0)};//GPACC
                 //--------------------
 
                 List<IGenotypeToPhenotype<Forest, Forest>> converter = new ArrayList<IGenotypeToPhenotype<Forest, Forest>>();

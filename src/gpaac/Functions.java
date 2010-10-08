@@ -55,7 +55,7 @@ public class Functions {
         }
 
         public double evaluate(TreeInputs treeInputs) {
-            double value = 0;
+            double value = 0.0;
             for (int i = 0; i < getArity(); i++) {
                 value += getConstants(i) * getChild(i).evaluate(treeInputs);
             }

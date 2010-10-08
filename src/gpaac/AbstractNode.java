@@ -23,6 +23,7 @@ public abstract class AbstractNode implements INode, Cloneable {
     protected AbstractNode() {
         this.depth = -1;
         this.innovation = -1L;
+        this.children = new INode[0];
     }
 
     public INode copy(INode[] children) {
@@ -38,7 +39,7 @@ public abstract class AbstractNode implements INode, Cloneable {
 
     public INode copySubtree() {
         if (getArity() == 0) {
-            return copy(null);
+            return copy(new INode[0]);
         }
         INode[] childrenCopy = new INode[getArity()];
         for (int i = 0; i < getArity(); i++) {
@@ -64,6 +65,9 @@ public abstract class AbstractNode implements INode, Cloneable {
     }
 
     public INode[] getChildren() {
+        if (children == null) {
+            System.out.println("a");
+        }
         return children.clone();
     }
 

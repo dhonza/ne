@@ -36,5 +36,6 @@ public class GPBasicProgressPrinter implements IProgressPrinter {
 
     public void printFinished() {
         System.out.println("FINISHED");
+        System.out.println(" CHAMP:" + gp.getBestSoFar());
     }
 }

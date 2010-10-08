@@ -51,6 +51,7 @@ public class AACForest implements IGPForest, Comparable, Serializable {
             } else {
                 forest.trees[i] = this.trees[i].mutateNode(nodeCollection);
             }
+            forest.trees[i] = forest.trees[i].mutateConstants();
         }
         forest.setFitness(Double.NaN);
         forest.setEvaluationInfo(new EvaluationInfo(Double.NaN));

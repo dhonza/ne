@@ -15,8 +15,8 @@ public class Terminals {
     public static class Input extends AbstractNode {
         final private int idx;
 
-        public Input(int depth, long innovation, INode[] children, int idx) {
-            super(depth, innovation, children);
+        public Input(int depth, long innovation, int idx) {
+            super(depth, innovation, new INode[]{});
             this.idx = idx;
         }
 
@@ -26,7 +26,7 @@ public class Terminals {
         }
 
         public INode create(int depth, INode[] children) {
-            return new Input(depth, InnovationCounter.getInstance().getNext(), null, idx);
+            return new Input(depth, InnovationCounter.getInstance().getNext(), idx);
         }
 
         public double evaluate(TreeInputs treeInputs) {
@@ -35,6 +35,35 @@ public class Terminals {
 
         public String getName() {
             return "x" + idx;
+        }
+    }
+
+    public static class Constant extends AbstractNode {
+        final private double value;
+
+        public Constant(int depth, long innovation, double value) {
+            super(depth, innovation, new INode[]{});
+            this.value = value;
+        }
+
+        public Constant(double value) {
+            super();
+            this.value = value;
+        }
+
+        public double evaluate(TreeInputs treeInputs) {
+            return value;
+        }
+
+        public INode create(int depth, INode[] children) {
+            return new Constant(depth, InnovationCounter.getInstance().getNext(), value);
+        }
+
+        public String getName() {
+            if (value == Math.round(value)) {
+                return Integer.toString((int) value);
+            }
+            return Double.toString(value);
         }
     }
 }

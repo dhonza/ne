@@ -67,9 +67,11 @@ public abstract class AbstractArbitraryArityNode implements IArbitraryArityNode,
 
     public void addChild(INode child) {
         children.add(child);
+        constants.add(1.0);
     }
 
     public void removeChild(int idx) {
+        children.remove(idx);
         children.remove(idx);
     }
 
