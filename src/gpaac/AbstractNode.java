@@ -7,7 +7,7 @@ package gpaac;
  * Time: 3:54:35 PM
  * To change this template use File | Settings | File Templates.
  */
-public abstract class AbstractNode implements INode {
+public abstract class AbstractNode implements INode, Cloneable {
     protected INode[] children;
     protected int depth;
     protected long innovation;
@@ -34,12 +34,35 @@ public abstract class AbstractNode implements INode {
         return null;
     }
 
+    public INode copySubtree() {
+        if (getArity() == 0) {
+            return copy(null);
+        }
+        INode[] childrenCopy = new INode[getArity()];
+        for (int i = 0; i < getArity(); i++) {
+            childrenCopy[i] = children[i].copySubtree();
+        }
+        return copy(childrenCopy);
+    }
+
     public INode getChild(int idx) {
         if (idx >= getArity()) {
             throw new IndexOutOfBoundsException("Not enough children, arity = " +
                     getArity() + " idx = " + idx + ".");
         }
         return children[idx];
+    }
+
+    public void setChild(int idx, INode child) {
+        if (idx >= getArity()) {
+            throw new IndexOutOfBoundsException("Not enough children, arity = " +
+                    getArity() + " idx = " + idx + ".");
+        }
+        children[idx] = child;
+    }
+
+    public INode[] getChildren() {
+        return children.clone();
     }
 
     public int getArity() {
@@ -57,7 +80,7 @@ public abstract class AbstractNode implements INode {
     @Override
     public String toString() {
         if (getArity() == 0) {
-            return getName();
+            return getName() + "|" + super.toString() + "|";
         }
         StringBuilder b = new StringBuilder(getName());
         b.append("[");
@@ -69,6 +92,6 @@ public abstract class AbstractNode implements INode {
             }
         }
         b.append("]");
-        return b.toString();
+        return b.toString() + "|" + super.toString() + "|";
     }
 }

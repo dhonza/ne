@@ -3,10 +3,7 @@ package gpaac;
 import common.RND;
 
 import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /**
  * Created by IntelliJ IDEA.
@@ -20,6 +17,8 @@ public class NodeCollection implements Serializable {
     final private INode[] terminals;
     final private INode[] all;
     final private Map<Integer, List<INode>> nodesPerArity;
+    private int maxArity;
+    private List<INode> arbitraryArity;
 
     public NodeCollection(INode[] functions, INode[] terminals) {
         this.functions = functions.clone();
@@ -27,20 +26,49 @@ public class NodeCollection implements Serializable {
         this.all = new INode[this.functions.length + this.terminals.length];
         System.arraycopy(this.functions, 0, all, 0, this.functions.length);
         System.arraycopy(this.terminals, 0, all, this.functions.length, this.terminals.length);
-        nodesPerArity = createNodePerArityMap();
+        nodesPerArity = new HashMap<Integer, List<INode>>();
+        createNodePerArityMap();
     }
 
-    private Map<Integer, List<INode>> createNodePerArityMap() {
-        Map<Integer, List<INode>> tempMap = new HashMap<Integer, List<INode>>();
+    private void createNodePerArityMap() {
+        //minimum arity of nodes with arbitrary arity
+        Map<Integer, List<INode>> nodesMinArity = new HashMap<Integer, List<INode>>();
+        //stores minimum arities of arbitrary arity nodes
+        SortedSet<Integer> arities = new TreeSet<Integer>();
         for (INode node : all) {
-            List<INode> list = tempMap.get(node.getArity());
+            if (node instanceof IArbitraryArityNode) {
+                int arity = ((IArbitraryArityNode) node).getMinArity();
+                List<INode> list = nodesMinArity.get(arity);
+                if (list == null) {
+                    list = new ArrayList<INode>();
+                    nodesMinArity.put(arity, list);
+                }
+                list.add(node);
+                arities.add(arity);
+            } else {
+                List<INode> list = nodesPerArity.get(node.getArity());
+                if (list == null) {
+                    list = new ArrayList<INode>();
+                    nodesPerArity.put(node.getArity(), list);
+                }
+                list.add(node);
+            }
+        }
+        maxArity = arities.last();
+        List<INode> equalOrSmallerMinArity = new ArrayList<INode>();
+        for (int arity = arities.first(); arity <= maxArity; arity++) {
+            List<INode> minArityList = nodesMinArity.get(arity);
+            if (minArityList != null) {
+                equalOrSmallerMinArity.addAll(minArityList);
+            }
+            List<INode> list = nodesPerArity.get(arity);
             if (list == null) {
                 list = new ArrayList<INode>();
-                tempMap.put(node.getArity(), list);
+                nodesPerArity.put(arity, list);
             }
-            list.add(node);
+            list.addAll(equalOrSmallerMinArity);
         }
-        return tempMap;
+        arbitraryArity = equalOrSmallerMinArity;
     }
 
     public INode getRandomOfAll() {
@@ -56,7 +84,12 @@ public class NodeCollection implements Serializable {
     }
 
     public INode getRandomWithArity(int arity) {
-        List<INode> list = nodesPerArity.get(arity);
+        List<INode> list;
+        if (arity > maxArity) {
+            list = arbitraryArity;
+        } else {
+            list = nodesPerArity.get(arity);
+        }
         if (list == null) {
             throw new IllegalStateException("Nodes of arity " + arity + "not exist.");
         }

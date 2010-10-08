@@ -17,8 +17,18 @@ import java.util.Map;
 public class AACTree {
     private INode root;
 
+    private static class AncestorInfo {
+        private AncestorInfo(INode ancestor, int childIdx) {
+            this.ancestor = ancestor;
+            this.childIdx = childIdx;
+        }
+
+        public INode ancestor;
+        public int childIdx;
+    }
+
     transient private List<INode> nodes = new ArrayList<INode>();
-    transient private Map<INode, INode> ancestors = new HashMap<INode, INode>();
+    transient private Map<INode, AncestorInfo> ancestors = new HashMap<INode, AncestorInfo>();
 
     public static AACTree createRandom(NodeCollection nodeCollection) {
         AACTree tree = new AACTree();
@@ -45,31 +55,68 @@ public class AACTree {
         return node;
     }
 
-    private void populateNodes(INode startNode, INode ancestor) {
+    public AACTree mutateNode(NodeCollection nodeCollection) {
+        AACTree mutated = copy();
+        mutated.populateNodes();
+
+        int mutationPoint = RND.getInt(0, mutated.nodes.size() - 1);
+
+        INode mutatedNode = mutated.nodes.get(mutationPoint);
+        INode mutatedNodeAncestor = mutated.ancestors.get(mutatedNode).ancestor;
+        int mutatedNodeAncestorChildIdx = mutated.ancestors.get(mutatedNode).childIdx;
+        INode prototype = nodeCollection.getRandomWithArity(mutatedNode.getArity());
+
+        if (prototype.getClass() == mutatedNode.getClass()) {//no change at all
+            return this;
+        }
+
+        INode newNode = prototype.create(mutatedNode.getDepth(), mutatedNode.getChildren());
+
+        if (mutatedNodeAncestor == null) {
+            mutated.root = newNode;
+        } else {
+            mutatedNodeAncestor.setChild(mutatedNodeAncestorChildIdx, newNode);
+        }
+        return mutated;
+    }
+
+    public AACTree mutateSubtree(NodeCollection nodeCollection) {
+        AACTree mutated = copy();
+        mutated.populateNodes();
+
+        int mutationPoint = RND.getInt(0, mutated.nodes.size() - 1);
+
+        INode mutatedNode = mutated.nodes.get(mutationPoint);
+        INode mutatedNodeAncestor = mutated.ancestors.get(mutatedNode).ancestor;
+        int mutatedNodeAncestorChildIdx = mutated.ancestors.get(mutatedNode).childIdx;
+        INode newSubtree = createRandomSubtree(nodeCollection, mutatedNode.getDepth());
+
+        if (mutatedNodeAncestor == null) {
+            mutated.root = newSubtree;
+        } else {
+            mutatedNodeAncestor.setChild(mutatedNodeAncestorChildIdx, newSubtree);
+        }
+        return mutated;
+    }
+
+    private void populateNodes() {
+        nodes.clear();
+        ancestors.clear();
+        populateNodes(root, null, 0);
+    }
+
+    private void populateNodes(INode startNode, INode ancestor, int childIdx) {
         nodes.add(startNode);
-        ancestors.put(startNode, ancestor);
+        ancestors.put(startNode, new AncestorInfo(ancestor, childIdx));
         for (int i = 0; i < startNode.getArity(); i++) {
-            populateNodes(startNode.getChild(i), startNode);
+            populateNodes(startNode.getChild(i), startNode, i);
         }
     }
 
-    private INode replaceAncestors(INode ancestor, INode oldNode, INode newNode) {
-        INode newRoot;
-        if (ancestor == null) {
-            newRoot = newNode;
-        } else {
-            INode[] newAncestorChildren = new INode[ancestor.getArity()];
-            for (int i = 0; i < ancestor.getArity(); i++) {
-                if (ancestor.getChild(i) == oldNode) {
-                    newAncestorChildren[i] = newNode;
-                } else {
-                    newAncestorChildren[i] = ancestor.getChild(i);
-                }
-            }
-            INode newAncestor = ancestor.copy(newAncestorChildren);
-            newRoot = replaceAncestors(ancestors.get(ancestor), ancestor, newAncestor);
-        }
-        return newRoot;
+    private AACTree copy() {
+        AACTree copy = new AACTree();
+        copy.root = root.copySubtree();
+        return copy;
     }
 
     @Override
@@ -85,5 +132,10 @@ public class AACTree {
         RND.initializeTime();
         AACTree tree = AACTree.createRandom(nodeCollection);
         System.out.println(tree);
+        AACTree tree2 = tree.mutateNode(nodeCollection);
+        System.out.println(tree2);
+        AACTree tree3 = tree.mutateSubtree(nodeCollection);
+        System.out.println(tree3);
+
     }
 }

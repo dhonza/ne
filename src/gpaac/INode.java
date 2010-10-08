@@ -16,9 +16,15 @@ public interface INode {
 
     INode copy(INode[] children);
 
+    INode copySubtree();
+
     int getArity();
 
     INode getChild(int idx);
+
+    void setChild(int idx, INode child);
+
+    INode[] getChildren();
 
     int getDepth();
 

@@ -2,6 +2,7 @@ package gpaac;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 
 /**
@@ -11,7 +12,7 @@ import java.util.List;
  * Time: 3:59:36 PM
  * To change this template use File | Settings | File Templates.
  */
-public abstract class AbstractArbitraryArityNode implements IArbitraryArityNode {
+public abstract class AbstractArbitraryArityNode implements IArbitraryArityNode, Cloneable {
     final private int depth;
     final private long innovation;
 
@@ -52,6 +53,17 @@ public abstract class AbstractArbitraryArityNode implements IArbitraryArityNode 
         return null;
     }
 
+    public INode copySubtree() {
+        if(getArity() == 0) {
+            return copy(null);
+        }
+        INode[] childrenCopy = new INode[getArity()];
+        for (int i = 0; i < getArity(); i++) {
+            childrenCopy[i] = children.get(i).copySubtree();
+        }
+        return copy(childrenCopy);
+    }
+
     public void addChild(INode child) {
         children.add(child);
     }
@@ -80,6 +92,14 @@ public abstract class AbstractArbitraryArityNode implements IArbitraryArityNode 
         return children.get(idx);
     }
 
+    public void setChild(int idx, INode child) {
+        children.set(idx, child);
+    }
+
+    public INode[] getChildren() {
+        return children.toArray(new INode[children.size()]);
+    }
+
     public int getDefaultArity() {
         return 2;
     }
@@ -99,7 +119,7 @@ public abstract class AbstractArbitraryArityNode implements IArbitraryArityNode 
     @Override
     public String toString() {
         if (getArity() == 0) {
-            return getName();
+            return getName()+  "|" + super.toString() + "|";
         }
         StringBuilder b = new StringBuilder(getName());
         b.append("[");
@@ -111,6 +131,6 @@ public abstract class AbstractArbitraryArityNode implements IArbitraryArityNode 
             }
         }
         b.append("]");
-        return b.toString();
+        return b.toString()+  "|" + super.toString() + "|";
     }
 }
