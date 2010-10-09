@@ -44,14 +44,18 @@ public class AACForest implements IGPForest, Comparable, Serializable {
     public AACForest mutate(NodeCollection nodeCollection, int generationOfOrigin) {
         AACForest forest = new AACForest(generationOfOrigin, this.getNumOfInputs());
         forest.trees = new AACTree[trees.length];
-        //TODO nebo vybrat jeden?
         for (int i = 0; i < trees.length; i++) {
+            AACTree toMutate = this.trees[i];
             if (RND.getDouble() < GPAAC.MUTATION_SUBTREE_PROBABLITY) {
-                forest.trees[i] = this.trees[i].mutateSubtree(nodeCollection);
-            } else {
-                forest.trees[i] = this.trees[i].mutateNode(nodeCollection);
+                toMutate = toMutate.mutateSubtree(nodeCollection);
+
             }
-            forest.trees[i] = forest.trees[i].mutateConstants();
+            if (RND.getDouble() < GPAAC.MUTATION_NODE_PROBABLITY) {
+                toMutate = toMutate.mutateNode(nodeCollection);
+            }
+            toMutate = toMutate.mutateConstants();
+            toMutate = toMutate.mutateReplaceConstants();
+            forest.trees[i] = toMutate;
         }
         forest.setFitness(Double.NaN);
         forest.setEvaluationInfo(new EvaluationInfo(Double.NaN));

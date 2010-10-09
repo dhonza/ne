@@ -33,6 +33,7 @@ public class AACTree {
 
     transient private List<INode> nodes = null;
     transient private List<IArbitraryArityNode> arbitraryArityNodes = null;
+    transient private List<INode> randomNodes = null;
     transient private Map<INode, AncestorInfo> ancestors = null;
 
     public static AACTree createRandom(NodeCollection nodeCollection) {
@@ -75,7 +76,7 @@ public class AACTree {
         INode prototype = nodeCollection.getRandomWithArity(mutatedNode.getArity());
 
         if (prototype.getClass() == mutatedNode.getClass()) {//no change at all
-            return this;
+            return mutated;
         }
 
         INode newNode = prototype.create(mutatedNode.getDepth(), mutatedNode.getChildren());
@@ -121,12 +122,35 @@ public class AACTree {
                 }
             }
         }
+        for (INode node : mutated.randomNodes) {
+            Terminals.Random randomNode = (Terminals.Random) node;
+            randomNode.setValue(randomNode.getValue() +
+                    GP.MUTATION_CAUCHY_POWER * RND.getCauchy());
+        }
+        return mutated;
+    }
+
+    public AACTree mutateReplaceConstants() {
+        AACTree mutated = copy();
+        for (IArbitraryArityNode node : mutated.arbitraryArityNodes) {
+            for (int i = 0; i < node.getNumOfConstants(); i++) {
+                if (RND.getDouble() < GP.MUTATION_CAUCHY_PROBABILITY) {
+                    node.setConstant(i,
+                            RND.getDouble(-GP.CONSTANT_AMPLITUDE, GP.CONSTANT_AMPLITUDE));
+                }
+            }
+        }
+        for (INode node : mutated.randomNodes) {
+            Terminals.Random randomNode = (Terminals.Random) node;
+            randomNode.setValue(RND.getDouble(-GP.CONSTANT_AMPLITUDE, GP.CONSTANT_AMPLITUDE));
+        }
         return mutated;
     }
 
     private void populateNodes() {
         nodes = new ArrayList<INode>();
         arbitraryArityNodes = new ArrayList<IArbitraryArityNode>();
+        randomNodes = new ArrayList<INode>();
         ancestors = new HashMap<INode, AncestorInfo>();
         populateNodes(root, null, 0);
     }
@@ -135,6 +159,9 @@ public class AACTree {
         nodes.add(startNode);
         if (startNode instanceof IArbitraryArityNode) {
             arbitraryArityNodes.add((IArbitraryArityNode) startNode);
+        }
+        if (startNode instanceof Terminals.Random) {
+            randomNodes.add(startNode);
         }
         ancestors.put(startNode, new AncestorInfo(ancestor, childIdx));
         for (int i = 0; i < startNode.getArity(); i++) {

@@ -1,5 +1,7 @@
 package gpaac;
 
+import common.RND;
+import gp.GP;
 import gp.INode;
 import gp.InnovationCounter;
 import gp.TreeInputs;
@@ -64,6 +66,43 @@ public class Terminals {
                 return Integer.toString((int) value);
             }
             return Double.toString(value);
+        }
+    }
+
+    public static class Random extends AbstractNode {
+        private double value;
+
+        public Random(int depth, long innovation) {
+            super(depth, innovation, new INode[]{});
+            this.value = RND.getDouble(-GP.CONSTANT_AMPLITUDE, GP.CONSTANT_AMPLITUDE);
+        }
+
+        public Random() {
+            super();
+            this.value = 1.0;
+        }
+
+        public double getValue() {
+            return value;
+        }
+
+        public void setValue(double value) {
+            this.value = value;
+        }
+
+        public double evaluate(TreeInputs treeInputs) {
+            return value;
+        }
+
+        public INode create(int depth, INode[] children) {
+            return new Random(depth, InnovationCounter.getInstance().getNext());
+        }
+
+        public String getName() {
+            if (value == Math.round(value)) {
+                return "C" + Integer.toString((int) value);
+            }
+            return "C" + Double.toString(value);
         }
     }
 }

@@ -56,7 +56,7 @@ public class GPMain {
                 //--------------------
 //                INode[] terminals = new Node[]{new Constant(-1.0), new Random()};//GP
 //                INode[] terminals = new Node[]{new RNC()};//GEP
-                INode[] terminals = new INode[]{new Terminals.Constant(1.0)};//GPACC
+                INode[] terminals = new INode[]{new Terminals.Constant(1.0), new Terminals.Random()};//GPACC
                 //--------------------
 
                 List<IGenotypeToPhenotype<Forest, Forest>> converter = new ArrayList<IGenotypeToPhenotype<Forest, Forest>>();
