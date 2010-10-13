@@ -14,7 +14,6 @@ import gp.terminals.RNC;
 import gp.terminals.Random;
 import gpaac.GPAAC;
 import gpaac.Terminals;
-import hyper.evaluate.SolvedStopCondition;
 
 import java.io.File;
 import java.util.ArrayList;

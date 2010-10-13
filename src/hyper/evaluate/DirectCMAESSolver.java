@@ -1,6 +1,7 @@
 package hyper.evaluate;
 
 import common.evolution.EvolutionaryAlgorithmSolver;
+import common.evolution.SolvedStopCondition;
 import common.pmatrix.ParameterCombination;
 import common.pmatrix.Utils;
 import common.stats.Stats;

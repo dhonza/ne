@@ -12,6 +12,34 @@ import gp.TreeInputs;
  * To change this template use File | Settings | File Templates.
  */
 public class Functions {
+    public static class Plus extends AbstractNode {
+
+        public Plus(int depth, long innovation, INode[] children) {
+            super(depth, innovation, children);
+        }
+
+        public Plus() {
+            super();
+        }
+
+        public INode create(int depth, INode[] children) {
+            return new Plus(depth, InnovationCounter.getInstance().getNext(), children);
+        }
+
+        public double evaluate(TreeInputs treeInputs) {
+            return getChild(0).evaluate(treeInputs) + getChild(1).evaluate(treeInputs);
+        }
+
+        @Override
+        public int getArity() {
+            return 2;
+        }
+
+        public String getName() {
+            return "plus";
+        }
+    }
+
     public static class Times extends AbstractNode {
 
         public Times(int depth, long innovation, INode[] children) {
@@ -63,7 +91,7 @@ public class Functions {
         }
 
         public String getName() {
-            return "plus";
+            return "aplus";
         }
     }
 }

@@ -2,6 +2,7 @@ package hyper.evaluate;
 
 import common.evolution.EvolutionaryAlgorithmSolver;
 import common.evolution.PopulationManager;
+import common.evolution.SolvedStopCondition;
 import common.net.INet;
 import common.net.linked.Net;
 import common.net.linked.Neuron;

@@ -1,7 +1,4 @@
-package hyper.evaluate;
-
-import common.evolution.IStopCondition;
-import common.evolution.PopulationManager;
+package common.evolution;
 
 /**
  * Created by IntelliJ IDEA.

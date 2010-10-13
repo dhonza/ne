@@ -58,6 +58,10 @@ public class AACNodeCollection extends NodeCollection {
                 list.add(node);
             }
         }
+        if (arities.size() == 0) {
+            maxArity = -1;
+            return;
+        }
         maxArity = arities.last();
         List<INode> equalOrSmallerMinArity = new ArrayList<INode>();
         for (int arity = arities.first(); arity <= maxArity; arity++) {
@@ -78,7 +82,7 @@ public class AACNodeCollection extends NodeCollection {
     @Override
     public INode getRandomWithArity(int arity) {
         List<INode> list;
-        if (arity > maxArity) {
+        if (arity > maxArity && maxArity != -1) {
             list = arbitraryArity;
         } else {
             list = nodesPerArity.get(arity);
