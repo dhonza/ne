@@ -9,6 +9,9 @@ import common.pmatrix.Utils;
 import common.stats.Stats;
 import gep.GEP;
 import gp.*;
+import gp.terminals.Constant;
+import gp.terminals.RNC;
+import gp.terminals.Random;
 import gpaac.GPAAC;
 import gpaac.Terminals;
 import hyper.evaluate.SolvedStopCondition;
@@ -28,12 +31,11 @@ public class GPMain {
     public static void main(String[] args) {
         System.out.println("INITIALIZED SEED: " + RND.initializeTime());
 //        RND.initialize(8725627961384450L); //4
+//        String type = "GP";
+//        String type = "GEP";
+        String type = "GPAAC";
 
-        //--------------------
-//        ParameterMatrixManager manager = ParameterMatrixStorage.load(new File("cfg/gpdemo.properties"));
-//        ParameterMatrixManager manager = ParameterMatrixStorage.load(new File("cfg/gepdemo.properties"));
-        ParameterMatrixManager manager = ParameterMatrixStorage.load(new File("cfg/gpaccdemo.properties"));
-        //--------------------
+        ParameterMatrixManager manager = createManager(type);
 
         for (ParameterCombination combination : manager) {
             int experiments = combination.getInteger("EXPERIMENTS");
@@ -47,16 +49,8 @@ public class GPMain {
                 GP.POPULATION_SIZE = combination.getInteger("GP.POPULATION_SIZE");
                 GP.TARGET_FITNESS = combination.getDouble("GP.TARGET_FITNESS");
 
-//                INode[] functions = NodeFactory.createByNameList("gp.functions.",
-//                        combination.getString("GP.FUNCTIONS"));//GP, GEP
-
-                INode[] functions = NodeFactory.createByNameList("gpaac.Functions$",
-                        combination.getString("GP.FUNCTIONS"));//GPACC
-
-                //--------------------
-//                INode[] terminals = new Node[]{new Constant(-1.0), new Random()};//GP
-//                INode[] terminals = new Node[]{new RNC()};//GEP
-                INode[] terminals = new INode[]{new Terminals.Constant(1.0), new Terminals.Random()};//GPACC
+                INode[] functions = createFunctions(type, combination);
+                INode[] terminals = createTerminals(type);
                 //--------------------
 
                 List<IGenotypeToPhenotype<Forest, Forest>> converter = new ArrayList<IGenotypeToPhenotype<Forest, Forest>>();
@@ -70,14 +64,9 @@ public class GPMain {
                         converter, evaluator);
                 Utils.setStaticParameters(combination, GP.class, "GP");
                 Utils.setStaticParameters(combination, GEP.class, "GEP");
-                Utils.setStaticParameters(combination, GEP.class, "GPAAC");
+                Utils.setStaticParameters(combination, GPAAC.class, "GPAAC");
 
-                //--------------------
-//                GPBase gp = GPFactory.createByName(combination.getString("GP.TYPE"), populationManager, functions, terminals);
-//                GEP gp = new GEP(populationManager, functions, terminals);
-                GPAAC gp = new GPAAC(populationManager, functions, terminals);
-                //--------------------
-
+                GPBase gp = createAlgorithm(type, combination, populationManager, functions, terminals);
 
                 EvolutionaryAlgorithmSolver solver = new EvolutionaryAlgorithmSolver(gp, stats, false);
                 solver.addProgressPrinter(new GPBasicProgressPrinter(gp));
@@ -91,6 +80,54 @@ public class GPMain {
                 stats.addSample("BSFG", gp.getLastInnovation());
             }
             System.out.println(stats.scopeToString("EXPERIMENT"));
+        }
+    }
+
+    private static ParameterMatrixManager createManager(String type) {
+        if (type.equals("GP")) {
+            return ParameterMatrixStorage.load(new File("cfg/gpdemo.properties"));
+        } else if (type.equals("GEP")) {
+            return ParameterMatrixStorage.load(new File("cfg/gepdemo.properties"));
+        } else if (type.equals("GPAAC")) {
+            return ParameterMatrixStorage.load(new File("cfg/gpaacdemo.properties"));
+        } else {
+            throw new IllegalArgumentException("Unsupported algorithm type");
+        }
+    }
+
+    private static INode[] createFunctions(String type, ParameterCombination combination) {
+        if (type.equals("GP")) {
+            return NodeFactory.createByNameList("gp.functions.", combination.getString("GP.FUNCTIONS"));
+        } else if (type.equals("GEP")) {
+            return NodeFactory.createByNameList("gp.functions.", combination.getString("GP.FUNCTIONS"));
+        } else if (type.equals("GPAAC")) {
+            return NodeFactory.createByNameList("gpaac.Functions$", combination.getString("GP.FUNCTIONS"));
+        } else {
+            throw new IllegalArgumentException("Unsupported algorithm type");
+        }
+    }
+
+    private static INode[] createTerminals(String type) {
+        if (type.equals("GP")) {
+            return new Node[]{new Constant(-1.0), new Random()};//GP
+        } else if (type.equals("GEP")) {
+            return new Node[]{new RNC()};//GEP
+        } else if (type.equals("GPAAC")) {
+            return new INode[]{new Terminals.Constant(1.0), new Terminals.Random()};//GPACC
+        } else {
+            throw new IllegalArgumentException("Unsupported algorithm type");
+        }
+    }
+
+    private static GPBase createAlgorithm(String type, ParameterCombination combination, PopulationManager populationManager, INode[] functions, INode[] terminals) {
+        if (type.equals("GP")) {
+            return GPFactory.createByName(combination.getString("GP.TYPE"), populationManager, functions, terminals);
+        } else if (type.equals("GEP")) {
+            return new GEP(populationManager, functions, terminals);
+        } else if (type.equals("GPAAC")) {
+            return new GPAAC(populationManager, functions, terminals);
+        } else {
+            throw new IllegalArgumentException("Unsupported algorithm type");
         }
     }
 }
