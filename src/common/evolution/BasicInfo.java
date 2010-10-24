@@ -20,6 +20,10 @@ public class BasicInfo {
         this.infoMap.putAll(infoMap);
     }
 
+    public void put(String key, Object value) {
+        this.infoMap.put(key, value);
+    }
+
     public Object getInfo(String name) {
         return infoMap.get(name);
     }

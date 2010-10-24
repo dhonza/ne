@@ -14,6 +14,7 @@ import gp.terminals.RNC;
 import gp.terminals.Random;
 import gpaac.GPAAC;
 import gpaac.Terminals;
+import hyper.experiments.reco.ReportStorage;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -35,6 +36,8 @@ public class GPMain {
         String type = "GPAAC";
 
         ParameterMatrixManager manager = createManager(type);
+
+        ReportStorage reportStorage = new ReportStorage();
 
         for (ParameterCombination combination : manager) {
             int experiments = combination.getInteger("EXPERIMENTS");
@@ -77,9 +80,16 @@ public class GPMain {
 
                 stats.addSample("BSF", gp.getBestSoFar().getFitness());
                 stats.addSample("BSFG", gp.getLastInnovation());
+
+                reportStorage.storeSingleRunResults();
+                reportStorage.incrementExperimentId();
             }
+            reportStorage.storeExperimentResults(stats);
+            reportStorage.appendExperimentsOverallResults(combination.toStringOnlyChannging(), stats);
             System.out.println(stats.scopeToString("EXPERIMENT"));
+            reportStorage.incrementParameterCombinationId();
         }
+        reportStorage.storeExperimentsOverallResults();
     }
 
     private static ParameterMatrixManager createManager(String type) {

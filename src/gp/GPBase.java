@@ -6,9 +6,7 @@ import common.evolution.IEvolutionaryAlgorithm;
 import common.evolution.PopulationManager;
 
 import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
+import java.util.*;
 
 /**
  * Created by IntelliJ IDEA.
@@ -42,6 +40,8 @@ abstract public class GPBase<P, T extends IGPForest> implements IEvolutionaryAlg
     private int generalizationGeneration;
     private EvaluationInfo generalizationEvaluationInfo;
 
+    protected Map<String, Long> origins;
+
     public GPBase(PopulationManager<T, P> populationManager, INode[] functions, INode[] terminals) {
         this.populationManager = populationManager;
         if (populationManager == null) {//for debuging only
@@ -55,6 +55,7 @@ abstract public class GPBase<P, T extends IGPForest> implements IEvolutionaryAlg
         init(functions);
 
         this.nodeCollection = createNodeCollection(functions, terminals, populationManager.getNumberOfInputs());
+        this.origins = new HashMap<String, Long>();
     }
 
     abstract protected void init(INode[] functions);
@@ -84,6 +85,16 @@ abstract public class GPBase<P, T extends IGPForest> implements IEvolutionaryAlg
     abstract protected void createInitialGeneration();
 
     abstract protected void selectAndReproduce();
+
+    protected void saveOrigin(IGPForest forest) {
+        for (String origin : forest.getOrigins()) {
+            if (origins.containsKey(origin)) {
+                origins.put(origin, 1L);
+            } else {
+                origins.put(origin, origins.get(origin) + 1L);
+            }
+        }
+    }
 
     private void evaluate(T[] evalPopulation) {
         populationManager.loadGenotypes(Arrays.asList(evalPopulation));
@@ -157,7 +168,11 @@ abstract public class GPBase<P, T extends IGPForest> implements IEvolutionaryAlg
     }
 
     public BasicInfo getPopulationInfo() {
-        return populationManager.getPopulationInfo();
+        BasicInfo infoMap = populationManager.getPopulationInfo();
+        for (String origin : origins.keySet()) {
+            infoMap.put(origin, "O_" + origins.get(origin));
+        }
+        return infoMap;
     }
 
     public boolean isSolved() {

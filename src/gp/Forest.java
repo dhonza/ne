@@ -69,7 +69,8 @@ public class Forest implements IGPForest, Comparable, Serializable {
             }
         }
         forest.setFitness(Double.NaN);
-        forest.setEvaluationInfo(new EvaluationInfo(Double.NaN));
+        EvaluationInfo evaluationInfo = new EvaluationInfo(Double.NaN);
+        forest.setEvaluationInfo(evaluationInfo);
         return forest;
 
     }
@@ -126,5 +127,13 @@ public class Forest implements IGPForest, Comparable, Serializable {
             s += tree.innovationToString() + ", ";
         }
         return s;
+    }
+
+    public String[] getOrigins() {
+        String[] o = new String[trees.length];
+        for (int i = 0; i < trees.length; i++) {
+            o[i] = trees[i].getOrigin();
+        }
+        return o;
     }
 }

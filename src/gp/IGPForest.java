@@ -23,4 +23,6 @@ public interface IGPForest {
     void loadInputs(double[] inputs);
 
     double[] getOutputs();
+
+    String[] getOrigins();
 }

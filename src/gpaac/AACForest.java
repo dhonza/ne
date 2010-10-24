@@ -103,4 +103,8 @@ public class AACForest implements IGPForest, Comparable, Serializable {
     public String toString() {
         return Arrays.asList(trees) + " F: " + fitness + " G: " + generationOfOrigin;
     }
+
+    public String[] getOrigins() {
+        return new String[0];
+    }
 }

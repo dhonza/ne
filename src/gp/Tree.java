@@ -16,11 +16,17 @@ import java.util.*;
 public class Tree implements Serializable {
     private INode root;
 
+    private String origin = "NEW";
+
     transient private List<INode> nodes = new ArrayList<INode>();
     transient private Map<INode, INode> ancestors = new HashMap<INode, INode>();
 
     public INode getRoot() {
         return root;
+    }
+
+    public String getOrigin() {
+        return origin;
     }
 
     public static Tree createRandom(NodeCollection nodeCollection) {
@@ -70,6 +76,7 @@ public class Tree implements Serializable {
         INode newNode = prototype.create(mutatedNode.getDepth(), mutatedNode.getChildren());
 
         Tree mutated = new Tree();
+        mutated.origin = "N";
         mutated.root = replaceAncestors(mutatedNodeAncestor, mutatedNode, newNode);
         return mutated;
     }
@@ -87,14 +94,18 @@ public class Tree implements Serializable {
         INode mutatedNode = nodes.get(mutationPoint);
         INode mutatedNodeAncestor = ancestors.get(mutatedNode);
         INode newSubtree;
+
+        Tree mutated = new Tree();
+
         if (mutatedNode instanceof Random && RND.getDouble() < GP.MUTATION_CAUCHY_PROBABILITY) {
+            mutated.origin = "R";
             newSubtree = ((Random) mutatedNode).localMutate();
         } else {
+            mutated.origin = "S";
             newSubtree = createRandomSubtree(nodeCollection, mutatedNode.getDepth());
         }
 //        System.out.println("(" + mutatedNode + " -> " + newSubtree + ")");
 
-        Tree mutated = new Tree();
         mutated.root = replaceAncestors(mutatedNodeAncestor, mutatedNode, newSubtree);
 //        System.out.println(mutated);
 //        System.out.println("-------------------");
