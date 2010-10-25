@@ -70,13 +70,14 @@ public class Tree implements Serializable {
         INode prototype = nodeCollection.getRandomWithArity(mutatedNode.getArity());
 
         if (prototype.getClass() == mutatedNode.getClass()) {//no change at all
+            this.origin = "NO";
             return this;
         }
 
         INode newNode = prototype.create(mutatedNode.getDepth(), mutatedNode.getChildren());
 
         Tree mutated = new Tree();
-        mutated.origin = "N";
+        mutated.origin = "NODE";
         mutated.root = replaceAncestors(mutatedNodeAncestor, mutatedNode, newNode);
         return mutated;
     }
@@ -98,10 +99,10 @@ public class Tree implements Serializable {
         Tree mutated = new Tree();
 
         if (mutatedNode instanceof Random && RND.getDouble() < GP.MUTATION_CAUCHY_PROBABILITY) {
-            mutated.origin = "R";
+            mutated.origin = "CAUCHY";
             newSubtree = ((Random) mutatedNode).localMutate();
         } else {
-            mutated.origin = "S";
+            mutated.origin = "SUBTREE";
             newSubtree = createRandomSubtree(nodeCollection, mutatedNode.getDepth());
         }
 //        System.out.println("(" + mutatedNode + " -> " + newSubtree + ")");

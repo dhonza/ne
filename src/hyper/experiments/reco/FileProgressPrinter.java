@@ -89,7 +89,7 @@ public class FileProgressPrinter implements IProgressPrinter {
         //extract origins
         for (String name : generationsKeys) {
             if(name.startsWith("O_")) {
-                itemList.add(new ReportStorage.SingleRunFile(name, extractPopulationInfo(name).toString()));
+                itemList.add(new ReportStorage.SingleRunFile(name, extractPopulationInfo(name, 0L).toString()));
             }            
         }
 
@@ -155,9 +155,17 @@ public class FileProgressPrinter implements IProgressPrinter {
     }
 
     private StringBuilder extractPopulationInfo(String name) {
+        return extractPopulationInfo(name, null);
+    }
+
+    private StringBuilder extractPopulationInfo(String name, Object defaultValue) {
         StringBuilder builder = new StringBuilder();
         for (InfoContainer generation : generations) {
-            builder.append(generation.populationInfo.getInfo(name)).append("\n");
+            Object value = generation.populationInfo.getInfo(name);
+            if(value == null) {
+                value = defaultValue;
+            }
+            builder.append(value).append("\n");
         }
         return builder;
     }

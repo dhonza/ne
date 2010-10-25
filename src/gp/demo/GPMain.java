@@ -65,7 +65,7 @@ public class GPMain {
                 evaluator.add(evaluable);
 
                 PopulationManager<Forest, Forest> populationManager = new PopulationManager<Forest, Forest>(
-                        converter, evaluator);
+                        combination, converter, evaluator);
                 Utils.setStaticParameters(combination, GP.class, "GP");
                 Utils.setStaticParameters(combination, GEP.class, "GEP");
                 Utils.setStaticParameters(combination, GPAAC.class, "GPAAC");
