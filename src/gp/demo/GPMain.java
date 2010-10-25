@@ -14,6 +14,8 @@ import gp.terminals.RNC;
 import gp.terminals.Random;
 import gpaac.GPAAC;
 import gpaac.Terminals;
+import hyper.experiments.DummyProblem;
+import hyper.experiments.reco.FileProgressPrinter;
 import hyper.experiments.reco.ReportStorage;
 
 import java.io.File;
@@ -31,9 +33,9 @@ public class GPMain {
     public static void main(String[] args) {
         System.out.println("INITIALIZED SEED: " + RND.initializeTime());
 //        RND.initialize(8725627961384450L); //4
-//        String type = "GP";
+        String type = "GP";
 //        String type = "GEP";
-        String type = "GPAAC";
+//        String type = "GPAAC";
 
         ParameterMatrixManager manager = createManager(type);
 
@@ -72,6 +74,7 @@ public class GPMain {
 
                 EvolutionaryAlgorithmSolver solver = new EvolutionaryAlgorithmSolver(gp, stats, false);
                 solver.addProgressPrinter(new GPBasicProgressPrinter(gp));
+                solver.addProgressPrinter(new FileProgressPrinter(gp, new DummyProblem(), reportStorage, combination));
                 solver.addStopCondition(new MaxGenerationsStopCondition(gp, GP.MAX_GENERATIONS));
                 solver.addStopCondition(new MaxEvaluationsStopCondition(gp, GP.MAX_EVALUATIONS));
                 solver.addStopCondition(new TargetFitnessStopCondition(gp, GP.TARGET_FITNESS));

@@ -2,6 +2,7 @@ package common.evolution;
 
 import java.util.LinkedHashMap;
 import java.util.Map;
+import java.util.Set;
 
 /**
  * Created by IntelliJ IDEA.
@@ -26,5 +27,9 @@ public class BasicInfo {
 
     public Object getInfo(String name) {
         return infoMap.get(name);
+    }
+
+    public Set<String> getKeys() {
+        return infoMap.keySet();
     }
 }

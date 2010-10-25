@@ -10,7 +10,9 @@ import hyper.evaluate.IProblem;
 import hyper.evaluate.IProblemGeneralization;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 /**
  * Created by IntelliJ IDEA.
@@ -34,6 +36,7 @@ public class FileProgressPrinter implements IProgressPrinter {
     private boolean storeRun;
 
     final private List<InfoContainer> generations = new ArrayList<InfoContainer>();
+    final private Set<String> generationsKeys = new HashSet<String>();
 
     public FileProgressPrinter(IEvolutionaryAlgorithm ea, IProblem problem, ReportStorage reportStorage, ParameterCombination parameters) {
         this.ea = ea;
@@ -54,6 +57,7 @@ public class FileProgressPrinter implements IProgressPrinter {
             container.generalizationInfo = ea.getGeneralizationEvaluationInfo();
         }
         container.populationInfo = ea.getPopulationInfo();
+        generationsKeys.addAll(container.populationInfo.getKeys());
         generations.add(container);
     }
 
@@ -77,9 +81,16 @@ public class FileProgressPrinter implements IProgressPrinter {
             }
         }
         for (String name : new String[]{"G_DIVERSITY", "P_DIVERSITY"}) {
-            if (generations.get(0).populationInfo.getInfo(name) != null) {
+            if (generationsKeys != null) {
                 itemList.add(new ReportStorage.SingleRunFile(name, extractPopulationInfo(name).toString()));
             }
+        }
+
+        //extract origins
+        for (String name : generationsKeys) {
+            if(name.startsWith("O_")) {
+                itemList.add(new ReportStorage.SingleRunFile(name, extractPopulationInfo(name).toString()));
+            }            
         }
 
         reportStorage.prepareSingleRunResults(itemList);

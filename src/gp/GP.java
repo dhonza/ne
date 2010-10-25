@@ -40,8 +40,7 @@ public class GP<P> extends GPBase<P, Forest> {
             Forest p1 = population[RND.getInt(0, population.length - 1)];
             Forest p2 = population[RND.getInt(0, population.length - 1)];
             Forest p = p1.getFitness() > p2.getFitness() ? p1 : p2;
-            newPopulation[i] = p.mutate(nodeCollection, generation);
-            saveOrigin(newPopulation[i]);
+            newPopulation[i] = p.mutate(nodeCollection, generation);            
         }
     }
 

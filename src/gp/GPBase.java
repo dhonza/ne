@@ -86,23 +86,26 @@ abstract public class GPBase<P, T extends IGPForest> implements IEvolutionaryAlg
 
     abstract protected void selectAndReproduce();
 
-    protected void saveOrigin(IGPForest forest) {
-        for (String origin : forest.getOrigins()) {
-            if (origins.containsKey(origin)) {
-                origins.put(origin, 1L);
-            } else {
-                origins.put(origin, origins.get(origin) + 1L);
-            }
-        }
-    }
-
     private void evaluate(T[] evalPopulation) {
         populationManager.loadGenotypes(Arrays.asList(evalPopulation));
         List<EvaluationInfo> evaluationInfos = populationManager.evaluate();
         int cnt = 0;
+
+        origins.clear();
         for (T forest : evalPopulation) {
             forest.setFitness(evaluationInfos.get(cnt).getFitness());
             forest.setEvaluationInfo(evaluationInfos.get(cnt++));
+            saveOrigin(forest);
+        }
+    }
+
+    protected void saveOrigin(IGPForest forest) {
+        for (String origin : forest.getOrigins()) {
+            if (!origins.containsKey(origin)) {
+                origins.put(origin, 1L);
+            } else {
+                origins.put(origin, origins.get(origin) + 1L);
+            }
         }
     }
 
@@ -170,7 +173,7 @@ abstract public class GPBase<P, T extends IGPForest> implements IEvolutionaryAlg
     public BasicInfo getPopulationInfo() {
         BasicInfo infoMap = populationManager.getPopulationInfo();
         for (String origin : origins.keySet()) {
-            infoMap.put(origin, "O_" + origins.get(origin));
+            infoMap.put("O_" + origin, origins.get(origin));
         }
         return infoMap;
     }
