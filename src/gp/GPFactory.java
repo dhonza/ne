@@ -4,6 +4,7 @@ import common.evolution.PopulationManager;
 import gp.terminals.Constant;
 import gp.terminals.RNC;
 import gp.terminals.Random;
+import gpaac.Terminals;
 
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
@@ -45,10 +46,13 @@ public class GPFactory {
         return gp;
     }
 
-    public static Node[] createTerminalsByName(String className) {
+    public static INode[] createTerminalsByName(String className) {
         if (className.equals("gep.GEP")) {
-            return new Node[]{new Constant(-1.0), new RNC()};
+            return new INode[]{new Constant(-1.0), new RNC()};
         }
-        return new Node[]{new Constant(-1.0), new Random()};
+        if (className.equals("gpaac.GPAAC")) {
+            return new INode[]{new Terminals.Constant(-1.0)};
+        }
+        return new INode[]{new Constant(-1.0), new Random()};
     }
 }

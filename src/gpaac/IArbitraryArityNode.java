@@ -23,4 +23,8 @@ public interface IArbitraryArityNode extends INode {
     double getConstants(int idx);
 
     void setConstant(int idx, double value);
+
+    boolean isLockedConstants(int idx);
+
+    void setLockedConstants(int idx, boolean value);
 }

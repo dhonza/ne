@@ -100,9 +100,11 @@ public class Terminals {
 
         public String getName() {
             if (value == Math.round(value)) {
-                return "C" + Integer.toString((int) value);
+                return Integer.toString((int) value);
+//                return "C" + Integer.toString((int) value);
             }
-            return "C" + Double.toString(value);
+//            return "C" + Double.toString(value);
+            return Double.toString(value);
         }
     }
 }

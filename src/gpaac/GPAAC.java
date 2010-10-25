@@ -20,6 +20,7 @@ public class GPAAC<P> extends GPBase<P, AACForest> {
     public static double MUTATION_SUBTREE_PROBABLITY = 0.1;
     public static double MUTATION_NODE_PROBABLITY = 0.1;
     public static double MUTATION_REPLACE_CONSTANTS = 0.2;
+    public static double MUTATION_SWITCH_CONSTANT_LOCK = 0.01;
 
     public GPAAC(PopulationManager<AACForest, P> populationManager, INode[] functions, INode[] terminals) {
         super(populationManager, functions, terminals);

@@ -7,6 +7,7 @@ import common.pmatrix.Utils;
 import common.stats.Stats;
 import gep.GEP;
 import gp.*;
+import gpaac.GPAAC;
 import hyper.evaluate.printer.GPProgressPrinter1D;
 import hyper.experiments.reco.FileProgressPrinter;
 import hyper.experiments.reco.ReportStorage;
@@ -32,8 +33,14 @@ public class GPSolver extends AbstractSolver {
     private void init() {
         Utils.setStaticParameters(parameters, GP.class, "GP");
         Utils.setStaticParameters(parameters, GEP.class, "GEP");
+        Utils.setStaticParameters(parameters, GPAAC.class, "GPAAC");
 
-        INode[] functions = NodeFactory.createByNameList("gp.functions.", parameters.getString("GP.FUNCTIONS"));
+        String functionPackage = "gp.functions.";
+        if(parameters.getString("GP.TYPE").equals("gpaac.GPAAC")) {
+            functionPackage = "gpaac.Functions$";
+        }
+
+        INode[] functions = NodeFactory.createByNameList(functionPackage, parameters.getString("GP.FUNCTIONS"));
         INode[] terminals = GPFactory.createTerminalsByName(parameters.getString("GP.TYPE"));
 
         GP.TARGET_FITNESS = problem.getTargetFitness();

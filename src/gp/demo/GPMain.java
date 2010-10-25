@@ -33,9 +33,9 @@ public class GPMain {
     public static void main(String[] args) {
         System.out.println("INITIALIZED SEED: " + RND.initializeTime());
 //        RND.initialize(8725627961384450L); //4
-        String type = "GP";
+//        String type = "GP";
 //        String type = "GEP";
-//        String type = "GPAAC";
+        String type = "GPAAC";
 
         ParameterMatrixManager manager = createManager(type);
 
@@ -46,6 +46,12 @@ public class GPMain {
             Stats stats = new Stats();
             stats.createDoubleStat("BSF", "EXPERIMENT", "Best So Far Fitness");
             stats.createLongStat("BSFG", "EXPERIMENT", "Best So Far Fitness Generation");
+
+            StringBuilder parameterString = new StringBuilder();
+            parameterString.append("FIXED:\n").append("-----\n").append(manager.toStringNewLines());
+            parameterString.append("\nCHANGING:\n").append("--------\n").append(combination.toStringOnlyChanngingNewLines());
+            reportStorage.storeParameters(parameterString.toString());
+            
             for (int i = 1; i <= experiments; i++) {
                 System.out.println("PARAMETER SETTING: " + combination);
                 GP.MAX_GENERATIONS = combination.getInteger("GP.MAX_GENERATIONS");
@@ -125,7 +131,8 @@ public class GPMain {
         } else if (type.equals("GEP")) {
             return new Node[]{new RNC()};//GEP
         } else if (type.equals("GPAAC")) {
-            return new INode[]{new Terminals.Constant(1.0), new Terminals.Random()};//GPACC
+//            return new INode[]{new Terminals.Constant(1.0), new Terminals.Random()};//GPACC
+            return new INode[]{new Terminals.Constant(1.0)};//GPACC
         } else {
             throw new IllegalArgumentException("Unsupported algorithm type");
         }

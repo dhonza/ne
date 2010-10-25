@@ -30,7 +30,7 @@ public class ReportStorage implements Serializable {
         }
     }
 
-    final private static String BASE_DIR_PREFIX = "exp";
+    final private static String BASE_DIR_PREFIX = "../exp";
     final private static String PARAMETER_FILE_PREFIX = "parameters_";
     final private static String EXPERIMENT_FILE_PREFIX = "experiments_";
     final private static String EXPERIMENTS_OVERALL_FILE_PREFIX = "experiments_overall";

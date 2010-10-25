@@ -4,6 +4,7 @@ import common.evolution.IDistance;
 import common.pmatrix.ParameterCombination;
 import gep.GEPChromosomeDistance;
 import gp.ForestDistance;
+import gpaac.AACForestDistance;
 import neat.GenomeDistance;
 import opt.DoubleVectorGenomeDistance;
 
@@ -25,6 +26,9 @@ public class DistanceFactory {
         } else if (solver.equals("GP")) {
             if (parameters.getString("GP.TYPE").equals("gep.GEP")) {
                 return new GEPChromosomeDistance();
+            }
+            if (parameters.getString("GP.TYPE").equals("gpaac.GPAAC")) {
+                return new AACForestDistance();
             }
             return new ForestDistance();
         } else if (solver.equals("SNEAT")) {

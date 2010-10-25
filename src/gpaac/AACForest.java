@@ -5,9 +5,12 @@ import common.evolution.EvaluationInfo;
 import gp.IGPForest;
 import gp.NodeCollection;
 import gp.TreeInputs;
+import org.apache.commons.lang.ArrayUtils;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 
 /**
  * Created by IntelliJ IDEA.
@@ -46,6 +49,7 @@ public class AACForest implements IGPForest, Comparable, Serializable {
         forest.trees = new AACTree[trees.length];
         for (int i = 0; i < trees.length; i++) {
             AACTree toMutate = this.trees[i];
+            toMutate.resetOrigin();
             if (RND.getDouble() < GPAAC.MUTATION_SUBTREE_PROBABLITY) {
                 toMutate = toMutate.mutateSubtree(nodeCollection);
 
@@ -53,6 +57,7 @@ public class AACForest implements IGPForest, Comparable, Serializable {
             if (RND.getDouble() < GPAAC.MUTATION_NODE_PROBABLITY) {
                 toMutate = toMutate.mutateNode(nodeCollection);
             }
+            toMutate = toMutate.mutateSwitchConstantLock();
             toMutate = toMutate.mutateConstants();
             toMutate = toMutate.mutateReplaceConstants();
             forest.trees[i] = toMutate;
@@ -105,6 +110,11 @@ public class AACForest implements IGPForest, Comparable, Serializable {
     }
 
     public String[] getOrigins() {
-        return new String[0];
+        List<String> originList = new ArrayList<String>();
+        for (int i = 0; i < trees.length; i++) {
+            originList.addAll(trees[i].getOrigin());
+        }
+        String[] o = originList.toArray(new String[0]);
+        return o;
     }
 }

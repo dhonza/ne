@@ -19,6 +19,7 @@ public abstract class AbstractArbitraryArityNode implements IArbitraryArityNode,
 
     private List<INode> children;
     private List<Double> constants;
+    private List<Boolean> lockConstants;
 
     protected AbstractArbitraryArityNode(int depth, long innovation, INode[] children) {
         this.depth = depth;
@@ -26,8 +27,10 @@ public abstract class AbstractArbitraryArityNode implements IArbitraryArityNode,
         this.children = new ArrayList<INode>();
         this.children.addAll(Arrays.asList(children));
         this.constants = new ArrayList<Double>();
+        this.lockConstants = new ArrayList<Boolean>();
         for (int i = 0; i < this.children.size(); i++) {
             this.constants.add(1.0);
+            this.lockConstants.add(true);
         }
     }
 
@@ -43,10 +46,8 @@ public abstract class AbstractArbitraryArityNode implements IArbitraryArityNode,
             AbstractArbitraryArityNode c = (AbstractArbitraryArityNode) this.clone();
             c.children = new ArrayList<INode>();
             c.children.addAll(Arrays.asList(children));
-            for (int i = 0; i < this.constants.size(); i++) {
-                c.constants.set(i, this.constants.get(i));
-            }
-
+            c.constants = new ArrayList<Double>(this.constants);
+            c.lockConstants = new ArrayList<Boolean>(this.lockConstants);
             return c;
         } catch (CloneNotSupportedException e) {
             e.printStackTrace();
@@ -68,11 +69,13 @@ public abstract class AbstractArbitraryArityNode implements IArbitraryArityNode,
     public void addChild(INode child) {
         children.add(child);
         constants.add(1.0);
+        lockConstants.add(true);
     }
 
     public void removeChild(int idx) {
         children.remove(idx);
-        children.remove(idx);
+        constants.remove(idx);
+        lockConstants.remove(idx);
     }
 
     public int getNumOfConstants() {
@@ -85,6 +88,14 @@ public abstract class AbstractArbitraryArityNode implements IArbitraryArityNode,
 
     public void setConstant(int idx, double value) {
         constants.set(idx, value);
+    }
+
+    public boolean isLockedConstants(int idx) {
+        return lockConstants.get(idx);
+    }
+
+    public void setLockedConstants(int idx, boolean value) {
+        lockConstants.set(idx, value);
     }
 
     public int getArity() {

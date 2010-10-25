@@ -21,6 +21,8 @@ import java.util.Map;
 public class AACTree {
     private INode root;
 
+    private List<String> origin = new ArrayList<String>();
+
     private static class AncestorInfo {
         private AncestorInfo(INode ancestor, int childIdx) {
             this.ancestor = ancestor;
@@ -35,6 +37,15 @@ public class AACTree {
     transient private List<IArbitraryArityNode> arbitraryArityNodes = null;
     transient private List<INode> randomNodes = null;
     transient private Map<INode, AncestorInfo> ancestors = null;
+
+
+    public List<String> getOrigin() {
+        return origin;
+    }
+
+    public void resetOrigin() {
+        origin.clear();
+    }
 
     public static AACTree createRandom(NodeCollection nodeCollection) {
         AACTree tree = new AACTree();
@@ -65,6 +76,11 @@ public class AACTree {
         return root.evaluate(treeInputs);
     }
 
+    public double distance(AACTree other) {
+        //TODO implement!!!
+        return 0.0;
+    }
+
     public AACTree mutateNode(NodeCollection nodeCollection) {
         AACTree mutated = copy();
 
@@ -76,6 +92,7 @@ public class AACTree {
         INode prototype = nodeCollection.getRandomWithArity(mutatedNode.getArity());
 
         if (prototype.getClass() == mutatedNode.getClass()) {//no change at all
+            this.origin.add("NO");
             return mutated;
         }
 
@@ -86,6 +103,7 @@ public class AACTree {
         } else {
             mutatedNodeAncestor.setChild(mutatedNodeAncestorChildIdx, newNode);
         }
+        mutated.origin.add("NODE");
         return mutated;
     }
 
@@ -104,6 +122,7 @@ public class AACTree {
         } else {
             mutatedNodeAncestor.setChild(mutatedNodeAncestorChildIdx, newSubtree);
         }
+        mutated.origin.add("SUBTREE");
         return mutated;
     }
 
@@ -116,17 +135,21 @@ public class AACTree {
         AACTree mutated = copy();
         for (IArbitraryArityNode node : mutated.arbitraryArityNodes) {
             for (int i = 0; i < node.getNumOfConstants(); i++) {
-                if (RND.getDouble() < GP.MUTATION_CAUCHY_PROBABILITY) {
+                if (!node.isLockedConstants(i) &&
+                        RND.getDouble() < GP.MUTATION_CAUCHY_PROBABILITY) {
                     node.setConstant(i, node.getConstants(i) +
                             GP.MUTATION_CAUCHY_POWER * RND.getCauchy());
                 }
             }
         }
         for (INode node : mutated.randomNodes) {
-            Terminals.Random randomNode = (Terminals.Random) node;
-            randomNode.setValue(randomNode.getValue() +
-                    GP.MUTATION_CAUCHY_POWER * RND.getCauchy());
+            if (RND.getDouble() < GP.MUTATION_CAUCHY_PROBABILITY) {
+                Terminals.Random randomNode = (Terminals.Random) node;
+                randomNode.setValue(randomNode.getValue() +
+                        GP.MUTATION_CAUCHY_POWER * RND.getCauchy());
+            }
         }
+        mutated.origin.add("CAUCHY");
         return mutated;
     }
 
@@ -134,16 +157,36 @@ public class AACTree {
         AACTree mutated = copy();
         for (IArbitraryArityNode node : mutated.arbitraryArityNodes) {
             for (int i = 0; i < node.getNumOfConstants(); i++) {
-                if (RND.getDouble() < GP.MUTATION_CAUCHY_PROBABILITY) {
+                if (!node.isLockedConstants(i) &&
+                        RND.getDouble() < GPAAC.MUTATION_REPLACE_CONSTANTS) {
                     node.setConstant(i,
                             RND.getDouble(-GP.CONSTANT_AMPLITUDE, GP.CONSTANT_AMPLITUDE));
                 }
             }
         }
         for (INode node : mutated.randomNodes) {
-            Terminals.Random randomNode = (Terminals.Random) node;
-            randomNode.setValue(RND.getDouble(-GP.CONSTANT_AMPLITUDE, GP.CONSTANT_AMPLITUDE));
+            if (RND.getDouble() < GPAAC.MUTATION_REPLACE_CONSTANTS) {
+                Terminals.Random randomNode = (Terminals.Random) node;
+                randomNode.setValue(RND.getDouble(-GP.CONSTANT_AMPLITUDE, GP.CONSTANT_AMPLITUDE));
+            }
         }
+        mutated.origin.add("REPLACE");
+        return mutated;
+    }
+
+    public AACTree mutateSwitchConstantLock() {
+        AACTree mutated = copy();
+        for (IArbitraryArityNode node : mutated.arbitraryArityNodes) {
+            for (int i = 0; i < node.getNumOfConstants(); i++) {
+                if (RND.getDouble() < GPAAC.MUTATION_SWITCH_CONSTANT_LOCK) {
+                    node.setLockedConstants(i, !node.isLockedConstants(i));
+                    if (node.isLockedConstants(i)) {
+//                        node.setConstant(i, 1.0);
+                    }
+                }
+            }
+        }
+        mutated.origin.add("LOCK");
         return mutated;
     }
 
@@ -172,6 +215,7 @@ public class AACTree {
     private AACTree copy() {
         AACTree copy = new AACTree();
         copy.root = root.copySubtree();
+        copy.origin = new ArrayList<String>(origin);
         copy.populateNodes();
         return copy;
     }

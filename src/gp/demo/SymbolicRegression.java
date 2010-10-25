@@ -2,6 +2,7 @@ package gp.demo;
 
 import common.evolution.EvaluationInfo;
 import common.evolution.IEvaluable;
+import gp.GP;
 import gp.IGPForest;
 
 /**
@@ -12,6 +13,7 @@ import gp.IGPForest;
  * To change this template use File | Settings | File Templates.
  */
 public class SymbolicRegression implements IEvaluable<IGPForest> {
+    private boolean solved = false;
     public EvaluationInfo evaluate(IGPForest forest) {
         int steps = 20;
         double startX = -10.0;
@@ -27,7 +29,11 @@ public class SymbolicRegression implements IEvaluable<IGPForest> {
 //            error -= Math.abs((x * x * x) - output);
             x += stepX;
         }
-        return new EvaluationInfo(error / steps);
+        error /= steps;
+        if(error >= GP.TARGET_FITNESS) {
+            solved = true;
+        }
+        return new EvaluationInfo(error);
     }
 
     public EvaluationInfo evaluateGeneralization(IGPForest forest) {
@@ -35,7 +41,7 @@ public class SymbolicRegression implements IEvaluable<IGPForest> {
     }
 
     public boolean isSolved() {
-        return false;
+        return solved;
     }
 
     public int getNumberOfInputs() {
