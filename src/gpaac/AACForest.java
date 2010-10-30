@@ -57,6 +57,9 @@ public class AACForest implements IGPForest, Comparable, Serializable {
             if (RND.getDouble() < GPAAC.MUTATION_NODE_PROBABLITY) {
                 toMutate = toMutate.mutateNode(nodeCollection);
             }
+            if (RND.getDouble() < GPAAC.MUTATION_ADD_CHILD) {
+                toMutate = toMutate.mutateAddChild(nodeCollection);
+            }
             toMutate = toMutate.mutateSwitchConstantLock();
             toMutate = toMutate.mutateConstants();
             toMutate = toMutate.mutateReplaceConstants();

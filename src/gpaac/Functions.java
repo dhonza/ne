@@ -153,6 +153,62 @@ public class Functions {
         }
     }
 
+    //------------- ARBITRARY ARITY NODES -----------------------------------
+
+    public static class AAtan extends AbstractArbitraryArityOneNode {
+
+        public AAtan(int depth, long innovation, INode[] children) {
+            super(depth, innovation, children);
+        }
+
+        public AAtan() {
+            super();
+        }
+
+        public INode create(int depth, INode[] children) {
+            return new AAtan(depth, InnovationCounter.getInstance().getNext(), children);
+        }
+
+        public double evaluate(TreeInputs treeInputs) {
+            double value = 0.0;
+            for (int i = 0; i < getArity(); i++) {
+                value += getConstants(i) * getChild(i).evaluate(treeInputs);
+            }
+            return Math.atan(value);
+        }
+
+        public String getName() {
+            return "aatan";
+        }
+    }
+
+    public static class AGauss extends AbstractArbitraryArityOneNode {
+
+        public AGauss(int depth, long innovation, INode[] children) {
+            super(depth, innovation, children);
+        }
+
+        public AGauss() {
+            super();
+        }
+
+        public INode create(int depth, INode[] children) {
+            return new AGauss(depth, InnovationCounter.getInstance().getNext(), children);
+        }
+
+        public double evaluate(TreeInputs treeInputs) {
+            double value = 0.0;
+            for (int i = 0; i < getArity(); i++) {
+                value += getConstants(i) * getChild(i).evaluate(treeInputs);
+            }
+            return Math.exp(-(value * value));
+        }
+
+        public String getName() {
+            return "agauss";
+        }
+    }
+
     public static class APlus extends AbstractArbitraryArityNode {
 
         public APlus(int depth, long innovation, INode[] children) {
@@ -177,6 +233,33 @@ public class Functions {
 
         public String getName() {
             return "aplus";
+        }
+    }
+
+    public static class ASin extends AbstractArbitraryArityOneNode {
+
+        public ASin(int depth, long innovation, INode[] children) {
+            super(depth, innovation, children);
+        }
+
+        public ASin() {
+            super();
+        }
+
+        public INode create(int depth, INode[] children) {
+            return new ASin(depth, InnovationCounter.getInstance().getNext(), children);
+        }
+
+        public double evaluate(TreeInputs treeInputs) {
+            double value = 0.0;
+            for (int i = 0; i < getArity(); i++) {
+                value += getConstants(i) * getChild(i).evaluate(treeInputs);
+            }
+            return Math.sin(value);
+        }
+
+        public String getName() {
+            return "asin";
         }
     }
 }

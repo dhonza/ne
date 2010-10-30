@@ -87,7 +87,11 @@ public abstract class AbstractArbitraryArityNode implements IArbitraryArityNode,
     }
 
     public void setConstant(int idx, double value) {
-        constants.set(idx, value);
+        if (idx == constants.size()) {
+            constants.add(value);
+        } else {
+            constants.set(idx, value);
+        }
     }
 
     public boolean isLockedConstants(int idx) {
@@ -95,7 +99,11 @@ public abstract class AbstractArbitraryArityNode implements IArbitraryArityNode,
     }
 
     public void setLockedConstants(int idx, boolean value) {
-        lockConstants.set(idx, value);
+        if (idx == lockConstants.size()) {
+            lockConstants.add(value);
+        } else {
+            lockConstants.set(idx, value);
+        }
     }
 
     public int getArity() {
@@ -107,7 +115,11 @@ public abstract class AbstractArbitraryArityNode implements IArbitraryArityNode,
     }
 
     public void setChild(int idx, INode child) {
-        children.set(idx, child);
+        if (idx == children.size()) {
+            children.add(child);
+        } else {
+            children.set(idx, child);
+        }
     }
 
     public INode[] getChildren() {

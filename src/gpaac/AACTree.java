@@ -128,6 +128,22 @@ public class AACTree {
 
     public AACTree mutateAddChild(NodeCollection nodeCollection) {
         AACTree mutated = copy();
+        if(mutated.arbitraryArityNodes.size() == 0) {
+            this.origin.add("NO");
+            return mutated;
+        }
+
+        int mutationPoint = RND.getInt(0, mutated.arbitraryArityNodes.size() - 1);
+
+        IArbitraryArityNode mutatedNode = mutated.arbitraryArityNodes.get(mutationPoint);
+        INode newSubtree = createRandomSubtree(nodeCollection, mutatedNode.getDepth());
+        int originalArity = mutatedNode.getArity();
+
+        mutatedNode.setChild(originalArity, newSubtree);
+        mutatedNode.setConstant(originalArity, 1.0);
+        mutatedNode.setLockedConstants(originalArity, true);
+        
+        mutated.origin.add("ADDCHILD");
         return mutated;
     }
 

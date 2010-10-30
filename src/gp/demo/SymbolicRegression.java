@@ -14,6 +14,7 @@ import gp.IGPForest;
  */
 public class SymbolicRegression implements IEvaluable<IGPForest> {
     private boolean solved = false;
+
     public EvaluationInfo evaluate(IGPForest forest) {
         int steps = 20;
         double startX = -10.0;
@@ -25,12 +26,13 @@ public class SymbolicRegression implements IEvaluable<IGPForest> {
         for (int i = 0; i < steps; i++) {
             forest.loadInputs(new double[]{x});
             double output = forest.getOutputs()[0];
-            error -= Math.abs((x * x * x + 1.5) - output);
+//            error -= Math.abs((x * x * x + 1.5) - output);
+            error -= Math.abs((-1.1 * x * x * x + 2.3 * x + 1.5) - output);
 //            error -= Math.abs((x * x * x) - output);
             x += stepX;
         }
         error /= steps;
-        if(error >= GP.TARGET_FITNESS) {
+        if (error >= GP.TARGET_FITNESS) {
             solved = true;
         }
         return new EvaluationInfo(error);
