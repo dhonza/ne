@@ -195,15 +195,15 @@ public class RND implements Serializable {
     //------------ SHUFFLE -----------
 
     /**
-     * Randomly shuffles array of Objects. Using Durstenfeld's algorithm.
+     * Randomly shuffles array of generic objects. Using Durstenfeld's algorithm.
      * See http://en.wikipedia.org/wiki/Fisher-Yates_shuffle
      *
      * @param array to shuffle
      */
-    public static void shuffle(Object[] array) {
+    public static <T> void shuffle(T[] array) {
         for (int i = array.length; i > 1; i--) {
             int r = seed.nextInt(i); // r one of 0..(i-1)
-            Object tmp = array[i - 1];
+            T tmp = array[i - 1];
             array[i - 1] = array[r];
             array[r] = tmp;
         }
@@ -239,16 +239,29 @@ public class RND implements Serializable {
         }
     }
 
+    // RANDOM CHOICE
+
+    /**
+     * Random choice from generic object array.
+     *
+     * @param array source array
+     * @return randomly chosen element of the array
+     */
+    public static <T> T randomChoice(T[] array) {
+        return array[seed.nextInt(array.length)];
+    }
+
+
     // SAMPLE WITH REPLACEMENT
 
     /**
-     * Simple random sample with replacement (SRSWR) from Object array.
+     * Simple random sample with replacement (SRSWR) from generic object array.
      * See http://en.wikipedia.org/wiki/Simple_random_sample
      *
      * @param array  source array
      * @param sample target array, its size determines the size of the sample
      */
-    public static void sampleWithReplacement(Object[] array, Object[] sample) {
+    public static <T> void sampleWithReplacement(T[] array, T[] sample) {
         for (int i = 0; i < sample.length; i++) {
             sample[i] = array[seed.nextInt(array.length)];
         }

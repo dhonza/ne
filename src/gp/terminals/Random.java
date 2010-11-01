@@ -13,7 +13,7 @@ import gp.TreeInputs;
  * Time: 11:23:16 AM
  * To change this template use File | Settings | File Templates.
  */
-public class Random extends Node {
+public class Random extends Node implements ITerminal {
     protected double value;
 
     public Random() {

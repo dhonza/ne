@@ -11,7 +11,7 @@ import gp.TreeInputs;
  * Time: 7:12:04 PM
  * To change this template use File | Settings | File Templates.
  */
-public class RNC extends Node {
+public class RNC extends Node implements ITerminal {
     protected double value;
 
     public RNC() {

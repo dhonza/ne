@@ -57,7 +57,7 @@ public abstract class AbstractArbitraryArityNode implements IArbitraryArityNode,
 
     public INode copySubtree() {
         if (getArity() == 0) {
-            return copy(null);
+            return copy(new INode[0]);
         }
         INode[] childrenCopy = new INode[getArity()];
         for (int i = 0; i < getArity(); i++) {
@@ -131,7 +131,7 @@ public abstract class AbstractArbitraryArityNode implements IArbitraryArityNode,
     }
 
     public int getMinArity() {
-        return 2;
+        return 0;
     }
 
     public int getDepth() {

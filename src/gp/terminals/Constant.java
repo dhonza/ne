@@ -11,7 +11,7 @@ import gp.TreeInputs;
  * Time: 11:23:16 AM
  * To change this template use File | Settings | File Templates.
  */
-public class Constant extends Node {
+public class Constant extends Node implements ITerminal {
     protected double value;
 
     public Constant(double value) {

@@ -5,6 +5,7 @@ import gp.GP;
 import gp.INode;
 import gp.InnovationCounter;
 import gp.TreeInputs;
+import gp.terminals.ITerminal;
 
 /**
  * Created by IntelliJ IDEA.
@@ -14,7 +15,7 @@ import gp.TreeInputs;
  * To change this template use File | Settings | File Templates.
  */
 public class Terminals {
-    public static class Input extends AbstractNode {
+    public static class Input extends AbstractNode implements ITerminal {
         final private int idx;
 
         public Input(int depth, long innovation, int idx) {
@@ -40,7 +41,7 @@ public class Terminals {
         }
     }
 
-    public static class Constant extends AbstractNode {
+    public static class Constant extends AbstractNode implements ITerminal {
         final private double value;
 
         public Constant(int depth, long innovation, double value) {
@@ -69,7 +70,7 @@ public class Terminals {
         }
     }
 
-    public static class Random extends AbstractNode {
+    public static class Random extends AbstractNode implements ITerminal {
         private double value;
 
         public Random(int depth, long innovation) {

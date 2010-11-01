@@ -22,9 +22,4 @@ public abstract class AbstractArbitraryArityOneNode extends AbstractArbitraryAri
     public int getDefaultArity() {
         return 1;
     }
-
-    @Override
-    public int getMinArity() {
-        return 1;
-    }
 }
