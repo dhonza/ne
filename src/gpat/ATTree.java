@@ -24,14 +24,19 @@ import java.util.List;
 public class ATTree {
     IArbitraryArityNode root;
 
-    LinkedHashSet<IArbitraryArityNode> nodeGenes;
-    List<ATLink> linkGenes = new ArrayList<ATLink>();
+    List<IArbitraryArityNode> nodeGenes;
+    List<ATLink> possibleLinks;
 
-    public static ATTree createMinimalSubstrate() {
+    public static ATTree createMinimalSubstrate(NodeCollection nodeCollection) {
         ATTree tree = new ATTree();
         tree.root = new Functions.APlus(1, 1L, new INode[0]);
-        tree.nodeGenes = new LinkedHashSet<IArbitraryArityNode>();
+        tree.nodeGenes = new ArrayList<IArbitraryArityNode>();
         tree.nodeGenes.add(tree.root);
+        tree.possibleLinks = new ArrayList<ATLink>();
+        for (INode from : nodeCollection.getTerminals()) {
+            ATLink link = new ATLink(from, tree.root, 1L);
+            tree.possibleLinks.add(link);
+        }
         return tree;
     }
 
@@ -55,7 +60,7 @@ public class ATTree {
     }
 
     private void populateNodes() {
-        nodeGenes = new LinkedHashSet<IArbitraryArityNode>();
+        nodeGenes = new ArrayList<IArbitraryArityNode>();
         populateNodes(root);
     }
 
@@ -71,7 +76,14 @@ public class ATTree {
 
     @Override
     public String toString() {
-        return root.toString();
+        StringBuilder builder = new StringBuilder(root.toString()).append("\n N");
+        for (IArbitraryArityNode nodeGene : nodeGenes) {
+            builder.append(nodeGene).append('\n');
+        }
+        for (ATLink possibleLink : possibleLinks) {
+            builder.append(possibleLink).append('\n');
+        }
+        return builder.toString();
     }
 
     public static void main(String[] args) {
@@ -80,11 +92,11 @@ public class ATTree {
         AACNodeCollection nodeCollection = new AACNodeCollection(functions, terminals, 2);
 
         RND.initializeTime();
-        ATTree tree = ATTree.createMinimalSubstrate();
+        ATTree tree = ATTree.createMinimalSubstrate(nodeCollection);
         System.out.println(tree);
         ATTree tree2 = tree.mutateAddLink(nodeCollection);
         System.out.println(tree2);
-        for (int i = 0; i < 10; i++) {
+        for (int i = 0; i < 4; i++) {
             ATTree tree3 = tree2.mutateAddLink(nodeCollection);
             System.out.println(tree3);
         }

@@ -31,4 +31,9 @@ public class ATLink {
     public long getInnovation() {
         return innovation;
     }
+
+    @Override
+    public String toString() {
+        return "IN: " + innovation + " " + from + " ----> " + to; 
+    }
 }

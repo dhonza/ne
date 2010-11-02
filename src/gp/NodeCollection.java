@@ -72,4 +72,8 @@ public class NodeCollection implements Serializable {
         }
         return list.get(RND.getInt(0, list.size() - 1));
     }
+
+    public INode[] getTerminals() {
+        return terminals.clone();
+    }
 }
