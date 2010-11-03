@@ -37,7 +37,7 @@ public class GPSolver extends AbstractSolver {
 
         String functionPackage = "gp.functions.";
         if(parameters.getString("GP.TYPE").equals("gpaac.GPAAC")) {
-            functionPackage = "gpaac.Functions$";
+            functionPackage = "gpaac.AACFunctions$";
         }
 
         INode[] functions = NodeFactory.createByNameList(functionPackage, parameters.getString("GP.FUNCTIONS"));

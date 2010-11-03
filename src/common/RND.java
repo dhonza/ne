@@ -4,6 +4,8 @@ import org.apache.commons.lang.ArrayUtils;
 
 import java.io.Serializable;
 import java.util.Arrays;
+import java.util.Collection;
+import java.util.List;
 import java.util.Random;
 
 /**
@@ -251,6 +253,15 @@ public class RND implements Serializable {
         return array[seed.nextInt(array.length)];
     }
 
+        /**
+     * Random choice from List.
+     *
+     * @param list source List
+     * @return randomly chosen element of the list
+     */
+    public static <T> T randomChoice(List<T> list) {
+        return list.get(seed.nextInt(list.size()));
+    }
 
     // SAMPLE WITH REPLACEMENT
 

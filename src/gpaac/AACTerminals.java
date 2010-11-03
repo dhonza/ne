@@ -14,7 +14,7 @@ import gp.terminals.ITerminal;
  * Time: 6:00:16 PM
  * To change this template use File | Settings | File Templates.
  */
-public class Terminals {
+public class AACTerminals {
     public static class Input extends AbstractNode implements ITerminal {
         final private int idx;
 

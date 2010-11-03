@@ -160,7 +160,7 @@ public class AACTree {
         }
         for (INode node : mutated.randomNodes) {
             if (RND.getDouble() < GP.MUTATION_CAUCHY_PROBABILITY) {
-                Terminals.Random randomNode = (Terminals.Random) node;
+                AACTerminals.Random randomNode = (AACTerminals.Random) node;
                 randomNode.setValue(randomNode.getValue() +
                         GP.MUTATION_CAUCHY_POWER * RND.getCauchy());
             }
@@ -182,7 +182,7 @@ public class AACTree {
         }
         for (INode node : mutated.randomNodes) {
             if (RND.getDouble() < GPAAC.MUTATION_REPLACE_CONSTANTS) {
-                Terminals.Random randomNode = (Terminals.Random) node;
+                AACTerminals.Random randomNode = (AACTerminals.Random) node;
                 randomNode.setValue(RND.getDouble(-GP.CONSTANT_AMPLITUDE, GP.CONSTANT_AMPLITUDE));
             }
         }
@@ -219,7 +219,7 @@ public class AACTree {
         if (startNode instanceof IArbitraryArityNode) {
             arbitraryArityNodes.add((IArbitraryArityNode) startNode);
         }
-        if (startNode instanceof Terminals.Random) {
+        if (startNode instanceof AACTerminals.Random) {
             randomNodes.add(startNode);
         }
         ancestors.put(startNode, new AncestorInfo(ancestor, childIdx));
@@ -242,7 +242,7 @@ public class AACTree {
     }
 
     public static void main(String[] args) {
-        INode[] functions = new INode[]{new Functions.Times(), new Functions.APlus()};
+        INode[] functions = new INode[]{new AACFunctions.Times(), new AACFunctions.APlus()};
         INode[] terminals = new INode[]{};
         AACNodeCollection nodeCollection = new AACNodeCollection(functions, terminals, 2);
 

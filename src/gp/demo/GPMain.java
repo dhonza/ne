@@ -12,8 +12,8 @@ import gp.*;
 import gp.terminals.Constant;
 import gp.terminals.RNC;
 import gp.terminals.Random;
+import gpaac.AACTerminals;
 import gpaac.GPAAC;
-import gpaac.Terminals;
 import hyper.experiments.DummyProblem;
 import hyper.experiments.reco.FileProgressPrinter;
 import hyper.experiments.reco.ReportStorage;
@@ -119,7 +119,7 @@ public class GPMain {
         } else if (type.equals("GEP")) {
             return NodeFactory.createByNameList("gp.functions.", combination.getString("GP.FUNCTIONS"));
         } else if (type.equals("GPAAC")) {
-            return NodeFactory.createByNameList("gpaac.Functions$", combination.getString("GP.FUNCTIONS"));
+            return NodeFactory.createByNameList("gpaac.AACFunctions$", combination.getString("GP.FUNCTIONS"));
         } else {
             throw new IllegalArgumentException("Unsupported algorithm type");
         }
@@ -131,8 +131,8 @@ public class GPMain {
         } else if (type.equals("GEP")) {
             return new Node[]{new RNC()};//GEP
         } else if (type.equals("GPAAC")) {
-//            return new INode[]{new Terminals.Constant(1.0), new Terminals.Random()};//GPACC
-            return new INode[]{new Terminals.Constant(1.0)};//GPACC
+//            return new INode[]{new AACTerminals.Constant(1.0), new AACTerminals.Random()};//GPACC
+            return new INode[]{new AACTerminals.Constant(1.0)};//GPACC
         } else {
             throw new IllegalArgumentException("Unsupported algorithm type");
         }

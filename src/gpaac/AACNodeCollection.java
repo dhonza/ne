@@ -27,7 +27,7 @@ public class AACNodeCollection extends NodeCollection {
 
         System.arraycopy(terminals, 0, allTerminals, 0, terminals.length);
         for (int i = 0; i < numOfInputs; i++) {
-            allTerminals[terminals.length + i] = new Terminals.Input(i);
+            allTerminals[terminals.length + i] = new AACTerminals.Input(i);
         }
         return allTerminals;
     }

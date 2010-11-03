@@ -11,7 +11,7 @@ import gp.TreeInputs;
  * Time: 4:46:50 PM
  * To change this template use File | Settings | File Templates.
  */
-public class Functions {
+public class AACFunctions {
     public static class Atan extends AbstractNode {
 
         public Atan(int depth, long innovation, INode[] children) {
