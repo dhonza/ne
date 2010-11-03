@@ -2,6 +2,7 @@ package gpat;
 
 import gp.TreeInputs;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -15,14 +16,17 @@ abstract public class ATNode {
     final private int id;
     final private int depth;
 
-    protected ATLink parentLink;
-    protected List<ATLink> childrenLinks;
+    protected ATNode parent;
+    protected List<ATNode> children;
     protected List<Double> constants;
     protected List<Boolean> constantLocks;
 
     protected ATNode(int id, int depth) {
         this.id = id;
         this.depth = depth;
+        children = new ArrayList<ATNode>();
+        constants = new ArrayList<Double>();
+        constantLocks = new ArrayList<Boolean>();
     }
 
     public ATNode() {
@@ -39,14 +43,32 @@ abstract public class ATNode {
     }
 
     public int getArity() {
-        return childrenLinks.size();
+        return children.size();
+    }
+
+    public void setParent(ATNode parent) {
+        this.parent = parent;
     }
 
     public ATNode getChild(int idx) {
-        return childrenLinks.get(idx).getTo();
+        return children.get(idx);
+    }
+
+    public void addChild(ATNode child) {
+        children.add(child);
+        constants.add(1.0);
+        constantLocks.add(true);
+    }
+    public void removeChild(ATNode child) {
+        int idx = children.indexOf(child);
+        children.remove(idx);
+        constants.remove(idx);
+        constantLocks.remove(idx);
     }
 
     abstract public String getName();
+
+    abstract public ATNode create(int id, int depth);
 
     abstract public double evaluate(TreeInputs treeInputs);
 

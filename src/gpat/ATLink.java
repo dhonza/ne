@@ -50,6 +50,6 @@ public class ATLink {
 
     @Override
     public String toString() {
-        return from.getId() + " ----> " + to.getId() + " IN: " + innovation;
+        return from.getId() + "(" + from.getName() + ") ----> " + to.getId() + "(" + to.getName() + ") IN: " + innovation;
     }
 }
