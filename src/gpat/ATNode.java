@@ -59,6 +59,7 @@ abstract public class ATNode {
         constants.add(1.0);
         constantLocks.add(true);
     }
+
     public void removeChild(ATNode child) {
         int idx = children.indexOf(child);
         children.remove(idx);
@@ -66,9 +67,29 @@ abstract public class ATNode {
         constantLocks.remove(idx);
     }
 
+    public double getConstant(int idx) {
+        return constants.get(idx);
+    }
+
+    public void setConstant(int idx, double value) {
+        constants.set(idx, value);
+    }
+
+    public boolean isConstantLock(int idx) {
+        return constantLocks.get(idx);
+    }
+
+    public void setConstantLock(int idx, boolean lock) {
+        constantLocks.set(idx, lock);
+    }
+
     abstract public String getName();
 
     abstract public ATNode create(int id, int depth);
+
+    public ATNode copy() {
+        return create(id, depth);
+    }
 
     abstract public double evaluate(TreeInputs treeInputs);
 

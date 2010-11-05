@@ -3,6 +3,7 @@ package gpat;
 import common.RND;
 
 import java.util.ArrayList;
+import java.util.LinkedHashMap;
 import java.util.LinkedHashSet;
 import java.util.List;
 
@@ -16,31 +17,37 @@ import java.util.List;
 public class ATTree {
     final private ATNodeCollection nodeCollection;
 
+    final private List<String> origin;
+
     private ATNode root;
     //TODO HashSet should suffice
-    private LinkedHashSet<ATNode> nodeGenes;
+    private LinkedHashMap<Integer, ATNode> nodeGenes;
     private List<ATNode> nodeGeneList;
     private LinkedHashSet<ATLink> linkGenes;
     private List<ATLink> linkGenesList;
-    private List<ATNode> terminals;
+    private LinkedHashMap<Integer, ATNode> terminals;
+    private List<ATNode> terminalList;
 
     int maxNodeId = 0;
 
     private ATTree(ATNodeCollection nodeCollection) {
         this.nodeCollection = nodeCollection;
-        nodeGenes = new LinkedHashSet<ATNode>();
+        nodeGenes = new LinkedHashMap<Integer, ATNode>();
         nodeGeneList = new ArrayList<ATNode>();
         linkGenes = new LinkedHashSet<ATLink>();
         linkGenesList = new ArrayList<ATLink>();
-        terminals = new ArrayList<ATNode>();
+        terminals = new LinkedHashMap<Integer, ATNode>();
+        terminalList = new ArrayList<ATNode>();
+        origin = new ArrayList<String>();
         for (ATNode terminal : nodeCollection.terminals) {
             ATNode node = terminal.create(++maxNodeId, 0);
-            terminals.add(node);
+            terminals.put(node.getId(), node);
+            terminalList.add(node);
         }
     }
 
     private void addNode(ATNode node) {
-        nodeGenes.add(node);
+        nodeGenes.put(node.getId(), node);
         nodeGeneList.add(node);
     }
 
@@ -48,6 +55,7 @@ public class ATTree {
         ATTree tree = new ATTree(nodeCollection);
         tree.root = new ATFunctions.Plus(++tree.maxNodeId, 1);
         tree.addNode(tree.root);
+        tree.origin.add("NEW");
         return tree;
     }
 
@@ -55,7 +63,7 @@ public class ATTree {
         ATLink link;
         //TODO or list of possible Links?
         for (int i = 0; i < 10; i++) {
-            ATNode from = RND.randomChoice(terminals);
+            ATNode from = RND.randomChoice(terminalList);
             ATNode to = RND.randomChoice(nodeGeneList);
             link = new ATLink(from, to, 1L);
             if (!linkGenes.contains(link)) {
@@ -63,6 +71,7 @@ public class ATTree {
                 to.addChild(from);
                 linkGenes.add(link);
                 linkGenesList.add(link);
+                origin.add("ADD_LINK");
                 return;
             }
         }
@@ -75,7 +84,7 @@ public class ATTree {
         ATLink link = RND.randomChoice(linkGenesList);
         System.out.println("REPLACE LINK: " + link);
         ATNode node = RND.randomChoice(nodeCollection.functions).create(++maxNodeId, -1);
-        nodeGenes.add(node);
+        nodeGenes.put(node.getId(), node);
         nodeGeneList.add(node);
 
         ATNode from = link.getFrom();
@@ -93,12 +102,75 @@ public class ATTree {
         linkGenesList.remove(link);
         linkGenesList.add(fromLink);
         linkGenesList.add(toLink);
+        origin.add("ADD_NODE");
+    }
+
+    public void mutateConstants() {
+        boolean mutation = false;
+        for (ATNode node : nodeGeneList) {
+            for (int i = 0; i < node.getArity(); i++) {
+                if (!node.isConstantLock(i) &&
+                        RND.getDouble() < GPAT.MUTATION_CAUCHY_PROBABILITY) {
+                    node.setConstant(i, node.getConstant(i) +
+                            GPAT.MUTATION_CAUCHY_POWER * RND.getCauchy());
+                    mutation = true;
+                }
+            }
+        }
+        if (mutation) {
+            origin.add("CONSTANTS");
+        }
+    }
+
+    public void mutateSwitchConstantLocks() {
+        boolean mutation = false;
+        for (ATNode node : nodeGeneList) {
+            for (int i = 0; i < node.getArity(); i++) {
+                if (RND.getDouble() < GPAT.MUTATION_SWITCH_CONSTANT_LOCK) {
+                    node.setConstantLock(i, !node.isConstantLock(i));
+                    mutation = true;
+                }
+            }
+        }
+        if (mutation) {
+            origin.add("CONSTANT_LOCKS");
+        }
+    }
+
+    public ATTree copy() {
+        ATTree copy = new ATTree(nodeCollection);
+        for (ATNode node : nodeGeneList) {
+            ATNode nodeCopy = node.copy();
+            copy.nodeGenes.put(nodeCopy.getId(), nodeCopy);
+            copy.nodeGeneList.add(nodeCopy);
+        }
+        copy.root = copy.nodeGenes.get(root.getId());
+
+        for (ATLink link : linkGenesList) {
+            ATNode fromNode = copy.terminals.get(link.getFrom().getId());
+            if (fromNode == null) {
+                fromNode = copy.nodeGenes.get(link.getFrom().getId());
+            }
+            ATNode toNode = copy.nodeGenes.get(link.getTo().getId());
+            fromNode.setParent(toNode);
+            toNode.addChild(fromNode);
+            ATLink linkCopy = new ATLink(
+                    fromNode,
+                    toNode,
+                    link.getInnovation());
+            copy.linkGenes.add(linkCopy);
+            copy.linkGenesList.add(linkCopy);
+        }
+
+        copy.maxNodeId = maxNodeId;
+
+        return copy;
     }
 
     @Override
     public String toString() {
         StringBuilder builder = new StringBuilder(" NODES:\n");
-        for (ATNode nodeGene : nodeGenes) {
+        for (ATNode nodeGene : nodeGeneList) {
             builder.append(nodeGene.getId()).append(" ").append(nodeGene.getName()).append('\n');
         }
         builder.append(" LINKS:\n");
@@ -116,11 +188,13 @@ public class ATTree {
         RND.initializeTime();
         ATTree tree = ATTree.createMinimalSubstrate(nodeCollection);
         System.out.println(tree);
-        for (int i = 0; i < 5; i++) {
+        for (int i = 0; i < 1; i++) {
             tree.mutateAddLink();
             System.out.println(tree);
             tree.mutateAddNode();
             System.out.println(tree);
         }
+        ATTree tree2 = tree.copy();
+        System.out.println(tree2);
     }
 }
