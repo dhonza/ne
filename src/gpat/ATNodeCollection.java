@@ -33,6 +33,6 @@ public class ATNodeCollection {
     }
 
     protected ATNode randomTerminal() {
-        return RND.randomChoice(terminals);
+        return (ATNode) RND.randomChoice(terminals);
     }
 }

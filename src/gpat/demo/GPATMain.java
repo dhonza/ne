@@ -1,4 +1,4 @@
-package gp.demo;
+package gpat.demo;
 
 import common.RND;
 import common.evolution.*;
@@ -9,12 +9,9 @@ import common.pmatrix.Utils;
 import common.stats.Stats;
 import gep.GEP;
 import gp.*;
-import gp.terminals.Constant;
-import gp.terminals.RNC;
-import gp.terminals.Random;
-import gpaac.AACTerminals;
 import gpaac.GPAAC;
 import gpat.ATNode;
+import gpat.ATNodeFactory;
 import gpat.ATTerminals;
 import gpat.GPAT;
 import hyper.experiments.DummyProblem;
@@ -32,14 +29,11 @@ import java.util.List;
  * Time: 11:04:48 AM
  * To change this template use File | Settings | File Templates.
  */
-public class GPMain {
+public class GPATMain {
     public static void main(String[] args) {
         System.out.println("INITIALIZED SEED: " + RND.initializeTime());
 //        RND.initialize(8725627961384450L); //4
-//        String type = "GP";
-//        String type = "GEP";
-        String type = "GPAAC";
-//        String type = "GPAT";
+        String type = "GPAT";
 
         ParameterMatrixManager manager = createManager(type);
 
@@ -63,8 +57,8 @@ public class GPMain {
                 GP.POPULATION_SIZE = combination.getInteger("GP.POPULATION_SIZE");
                 GP.TARGET_FITNESS = combination.getDouble("GP.TARGET_FITNESS");
 
-                INode[] functions = createFunctions(type, combination);
-                INode[] terminals = createTerminals(type);
+                ATNode[] functions = createFunctions(type, combination);
+                ATNode[] terminals = createTerminals(type);
                 //--------------------
 
                 List<IGenotypeToPhenotype<Forest, Forest>> converter = new ArrayList<IGenotypeToPhenotype<Forest, Forest>>();
@@ -77,11 +71,9 @@ public class GPMain {
                 PopulationManager<Forest, Forest> populationManager = new PopulationManager<Forest, Forest>(
                         combination, converter, evaluator);
                 Utils.setStaticParameters(combination, GP.class, "GP");
-                Utils.setStaticParameters(combination, GEP.class, "GEP");
-                Utils.setStaticParameters(combination, GPAAC.class, "GPAAC");
-                Utils.setStaticParameters(combination, GPAAC.class, "GPAT");
+                Utils.setStaticParameters(combination, GPAT.class, "GPAT");
 
-                GPBase gp = createAlgorithm(type, combination, populationManager, functions, terminals);
+                GPAT gp = createAlgorithm(type, combination, populationManager, functions, terminals);
 
                 EvolutionaryAlgorithmSolver solver = new EvolutionaryAlgorithmSolver(gp, stats, false);
                 solver.addProgressPrinter(new GPBasicProgressPrinter(gp));
@@ -107,51 +99,32 @@ public class GPMain {
     }
 
     private static ParameterMatrixManager createManager(String type) {
-        if (type.equals("GP")) {
-            return ParameterMatrixStorage.load(new File("cfg/gpdemo.properties"));
-        } else if (type.equals("GEP")) {
-            return ParameterMatrixStorage.load(new File("cfg/gepdemo.properties"));
-        } else if (type.equals("GPAAC")) {
-            return ParameterMatrixStorage.load(new File("cfg/gpaacdemo.properties"));
-        } else if (type.equals("GPAT")) {
+        if (type.equals("GPAT")) {
             return ParameterMatrixStorage.load(new File("cfg/gpatdemo.properties"));
         } else {
             throw new IllegalArgumentException("Unsupported algorithm type");
         }
     }
 
-    private static INode[] createFunctions(String type, ParameterCombination combination) {
-        if (type.equals("GP")) {
-            return NodeFactory.createByNameList("gp.functions.", combination.getString("GP.FUNCTIONS"));
-        } else if (type.equals("GEP")) {
-            return NodeFactory.createByNameList("gp.functions.", combination.getString("GP.FUNCTIONS"));
-        } else if (type.equals("GPAAC")) {
-            return NodeFactory.createByNameList("gpaac.AACFunctions$", combination.getString("GP.FUNCTIONS"));
+    private static ATNode[] createFunctions(String type, ParameterCombination combination) {
+        if (type.equals("GPAT")) {
+            return ATNodeFactory.createByNameList("gpat.ATFunctions$", combination.getString("GPAT.FUNCTIONS"));
         } else {
             throw new IllegalArgumentException("Unsupported algorithm type");
         }
     }
 
-    private static INode[] createTerminals(String type) {
-        if (type.equals("GP")) {
-            return new Node[]{new Constant(-1.0), new Random()};//GP
-        } else if (type.equals("GEP")) {
-            return new Node[]{new RNC()};//GEP
-        } else if (type.equals("GPAAC")) {
-//            return new INode[]{new AACTerminals.Constant(1.0), new AACTerminals.Random()};//GPACC
-            return new INode[]{new AACTerminals.Constant(1.0)};//GPACC
+    private static ATNode[] createTerminals(String type) {
+        if (type.equals("GPAT")) {
+            return new ATNode[]{new ATTerminals.Constant(1.0)};//GPAT
         } else {
             throw new IllegalArgumentException("Unsupported algorithm type");
         }
     }
 
-    private static GPBase createAlgorithm(String type, ParameterCombination combination, PopulationManager populationManager, INode[] functions, INode[] terminals) {
-        if (type.equals("GP")) {
-            return GPFactory.createByName(combination.getString("GP.TYPE"), populationManager, functions, terminals);
-        } else if (type.equals("GEP")) {
-            return new GEP(populationManager, functions, terminals);
-        } else if (type.equals("GPAAC")) {
-            return new GPAAC(populationManager, functions, terminals);
+    private static GPAT createAlgorithm(String type, ParameterCombination combination, PopulationManager populationManager, ATNode[] functions, ATNode[] terminals) {
+        if (type.equals("GPAT")) {
+            return new GPAT(populationManager, functions, terminals);
         } else {
             throw new IllegalArgumentException("Unsupported algorithm type");
         }

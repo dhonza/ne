@@ -1,6 +1,7 @@
 package gpat;
 
 import common.RND;
+import gp.TreeInputs;
 
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
@@ -46,6 +47,10 @@ public class ATTree {
         }
     }
 
+    public List<String> getOrigin() {
+        return origin;
+    }
+
     private void addNode(ATNode node) {
         nodeGenes.put(node.getId(), node);
         nodeGeneList.add(node);
@@ -82,7 +87,7 @@ public class ATTree {
             return;
         }
         ATLink link = RND.randomChoice(linkGenesList);
-        System.out.println("REPLACE LINK: " + link);
+//        System.out.println("REPLACE LINK: " + link);
         ATNode node = RND.randomChoice(nodeCollection.functions).create(++maxNodeId, -1);
         nodeGenes.put(node.getId(), node);
         nodeGeneList.add(node);
@@ -165,6 +170,14 @@ public class ATTree {
         copy.maxNodeId = maxNodeId;
 
         return copy;
+    }
+
+    public double evaluate(TreeInputs treeInputs) {
+        return root.evaluate(treeInputs);
+    }
+
+    public double distance(ATTree tree) {
+        return 0.0;
     }
 
     @Override
