@@ -109,4 +109,22 @@ abstract public class ATNode {
     public int hashCode() {
         return id;
     }
+
+    public String toMathematicaExpression() {
+        if (getArity() == 0) {
+            return getName();
+        } else {
+            StringBuilder b = new StringBuilder(getName());
+            b.append("[");
+            for (int i = 0; i < children.size(); i++) {
+                ATNode child = children.get(i);
+                b.append(constants.get(i)).append("*").append(child.toMathematicaExpression());
+                if (i < children.size() - 1) {
+                    b.append(",");
+                }
+            }
+            b.append("]");
+            return b.toString();
+        }
+    }
 }

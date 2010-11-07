@@ -5,6 +5,7 @@ import common.evolution.BasicInfo;
 import common.evolution.EvaluationInfo;
 import common.evolution.IEvolutionaryAlgorithm;
 import common.evolution.PopulationManager;
+import gp.GP;
 import gp.IGP;
 import gp.IGPForest;
 
@@ -18,14 +19,6 @@ import java.util.*;
  * To change this template use File | Settings | File Templates.
  */
 public class GPAT<P> implements IEvolutionaryAlgorithm, IGP<ATForest> {
-    public static double CONSTANT_AMPLITUDE = 5.0;
-    public static int MAX_GENERATIONS = 1000;
-    public static int MAX_EVALUATIONS = Integer.MAX_VALUE;
-    public static int POPULATION_SIZE = 100;
-    public static double TARGET_FITNESS = Double.MAX_VALUE;
-
-    public static double MUTATION_CAUCHY_PROBABILITY = 0.8;
-    public static double MUTATION_CAUCHY_POWER = 0.01;
     public static double MUTATION_ADD_LINK = 0.01;
     public static double MUTATION_ADD_NODE = 0.01;
     public static double MUTATION_SWITCH_CONSTANT_LOCK = 0.01;
@@ -85,8 +78,8 @@ public class GPAT<P> implements IEvolutionaryAlgorithm, IGP<ATForest> {
     }
 
     protected void createInitialGeneration() {
-        population = new ATForest[POPULATION_SIZE];
-        newPopulation = new ATForest[POPULATION_SIZE];
+        population = new ATForest[GP.POPULATION_SIZE];
+        newPopulation = new ATForest[GP.POPULATION_SIZE];
         for (int i = 0; i < population.length; i++) {
             population[i] = ATForest.createRandom(generation, inputs, outputs, nodeCollection);
         }
@@ -110,6 +103,7 @@ public class GPAT<P> implements IEvolutionaryAlgorithm, IGP<ATForest> {
         origins.clear();
         for (ATForest forest : evalPopulation) {
             forest.setFitness(evaluationInfos.get(cnt).getFitness());
+//            System.out.println(cnt + ": " + forest);
             forest.setEvaluationInfo(evaluationInfos.get(cnt++));
             saveOrigin(forest);
         }
@@ -206,13 +200,13 @@ public class GPAT<P> implements IEvolutionaryAlgorithm, IGP<ATForest> {
 
     public String getConfigString() {
         StringBuilder s = new StringBuilder();
-        s.append("CONSTANT_AMPLITUDE = ").append(CONSTANT_AMPLITUDE);
-        s.append("\nMAX_GENERATIONS = ").append(MAX_GENERATIONS);
-        s.append("\nMAX_EVALUATIONS = ").append(MAX_EVALUATIONS);
-        s.append("\nMUTATION_CAUCHY_PROBABILITY = ").append(MUTATION_CAUCHY_PROBABILITY);
-        s.append("\nMUTATION_CAUCHY_POWER = ").append(MUTATION_CAUCHY_POWER);
-        s.append("\nPOPULATION_SIZE = ").append(POPULATION_SIZE);
-        s.append("\nTARGET_FITNESS = ").append(TARGET_FITNESS);
+        s.append("CONSTANT_AMPLITUDE = ").append(GP.CONSTANT_AMPLITUDE);
+        s.append("\nMAX_GENERATIONS = ").append(GP.MAX_GENERATIONS);
+        s.append("\nMAX_EVALUATIONS = ").append(GP.MAX_EVALUATIONS);
+        s.append("\nMUTATION_CAUCHY_PROBABILITY = ").append(GP.MUTATION_CAUCHY_PROBABILITY);
+        s.append("\nMUTATION_CAUCHY_POWER = ").append(GP.MUTATION_CAUCHY_POWER);
+        s.append("\nPOPULATION_SIZE = ").append(GP.POPULATION_SIZE);
+        s.append("\nTARGET_FITNESS = ").append(GP.TARGET_FITNESS);
         s.append("\n");
         return s.toString();
     }

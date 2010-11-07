@@ -116,7 +116,8 @@ public class GPATMain {
 
     private static ATNode[] createTerminals(String type) {
         if (type.equals("GPAT")) {
-            return new ATNode[]{new ATTerminals.Constant(1.0)};//GPAT
+            return new ATNode[]{};//GPAT
+//            return new ATNode[]{new ATTerminals.Constant(1.0)};//GPAT
         } else {
             throw new IllegalArgumentException("Unsupported algorithm type");
         }

@@ -1,6 +1,7 @@
 package gpat;
 
 import common.RND;
+import gp.GP;
 import gp.TreeInputs;
 
 import java.util.ArrayList;
@@ -64,22 +65,36 @@ public class ATTree {
         return tree;
     }
 
+    /*
+     public void mutateAddLink() {
+         ATLink link;
+         //TODO or list of possible Links?
+         for (int i = 0; i < 10; i++) {
+             ATNode from = RND.randomChoice(terminalList);
+             ATNode to = RND.randomChoice(nodeGeneList);
+             link = new ATLink(from, to, 1L);
+             if (!linkGenes.contains(link)) {
+                 from.setParent(to);
+                 to.addChild(from);
+                 linkGenes.add(link);
+                 linkGenesList.add(link);
+                 origin.add("ADD_LINK");
+                 return;
+             }
+         }
+     }
+    */
+
     public void mutateAddLink() {
         ATLink link;
-        //TODO or list of possible Links?
-        for (int i = 0; i < 10; i++) {
-            ATNode from = RND.randomChoice(terminalList);
-            ATNode to = RND.randomChoice(nodeGeneList);
-            link = new ATLink(from, to, 1L);
-            if (!linkGenes.contains(link)) {
-                from.setParent(to);
-                to.addChild(from);
-                linkGenes.add(link);
-                linkGenesList.add(link);
-                origin.add("ADD_LINK");
-                return;
-            }
-        }
+        ATNode from = RND.randomChoice(terminalList);
+        ATNode to = RND.randomChoice(nodeGeneList);
+        link = new ATLink(from, to, 1L);
+        from.setParent(to);
+        to.addChild(from);
+        linkGenes.add(link);
+        linkGenesList.add(link);
+        origin.add("ADD_LINK");
     }
 
     public void mutateAddNode() {
@@ -115,9 +130,9 @@ public class ATTree {
         for (ATNode node : nodeGeneList) {
             for (int i = 0; i < node.getArity(); i++) {
                 if (!node.isConstantLock(i) &&
-                        RND.getDouble() < GPAT.MUTATION_CAUCHY_PROBABILITY) {
+                        RND.getDouble() < GP.MUTATION_CAUCHY_PROBABILITY) {
                     node.setConstant(i, node.getConstant(i) +
-                            GPAT.MUTATION_CAUCHY_POWER * RND.getCauchy());
+                            GP.MUTATION_CAUCHY_POWER * RND.getCauchy());
                     mutation = true;
                 }
             }
@@ -182,6 +197,7 @@ public class ATTree {
 
     @Override
     public String toString() {
+        /*
         StringBuilder builder = new StringBuilder(" NODES:\n");
         for (ATNode nodeGene : nodeGeneList) {
             builder.append(nodeGene.getId()).append(" ").append(nodeGene.getName()).append('\n');
@@ -190,7 +206,10 @@ public class ATTree {
         for (ATLink linkGene : linkGenes) {
             builder.append(linkGene).append('\n');
         }
+        builder.append(" EXPRESSION:\n").append(root.toMathematicaExpression()).append('\n');
         return builder.toString();
+        */
+        return root.toMathematicaExpression();
     }
 
     public static void main(String[] args) {
