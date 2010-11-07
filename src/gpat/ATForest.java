@@ -23,6 +23,7 @@ public class ATForest implements IGPForest, Comparable, Serializable {
     private EvaluationInfo evaluationInfo;
     private int generationOfOrigin;
     private TreeInputs treeInputs;
+    private ATInnovationHistory innovationHistory;
 
     private ATForest(int generationOfOrigin, int numOfInputs) {
         this.generationOfOrigin = generationOfOrigin;
@@ -33,11 +34,11 @@ public class ATForest implements IGPForest, Comparable, Serializable {
         return new ATForest(0, 0);
     }
 
-    public static ATForest createRandom(int generationOfOrigin, int numOfInputs, int numOfOutputs, ATNodeCollection nodeCollection) {
+    public static ATForest createRandom(int generationOfOrigin, int numOfInputs, int numOfOutputs, ATNodeCollection nodeCollection, ATInnovationHistory innovationHistory) {
         ATForest forest = new ATForest(generationOfOrigin, numOfInputs);
         forest.trees = new ATTree[numOfOutputs];
         for (int i = 0; i < numOfOutputs; i++) {
-            forest.trees[i] = ATTree.createMinimalSubstrate(nodeCollection);
+            forest.trees[i] = ATTree.createMinimalSubstrate(nodeCollection, innovationHistory);
         }
         return forest;
     }

@@ -18,6 +18,7 @@ import java.util.List;
  */
 public class ATTree {
     final private ATNodeCollection nodeCollection;
+    final private ATInnovationHistory innovationHistory;
 
     final private List<String> origin;
 
@@ -30,10 +31,11 @@ public class ATTree {
     private LinkedHashMap<Integer, ATNode> terminals;
     private List<ATNode> terminalList;
 
-    int maxNodeId = 0;
+    private int initialNodeInnovation = 0;
 
-    private ATTree(ATNodeCollection nodeCollection) {
+    private ATTree(ATNodeCollection nodeCollection, ATInnovationHistory innovationHistory) {
         this.nodeCollection = nodeCollection;
+        this.innovationHistory = innovationHistory;
         nodeGenes = new LinkedHashMap<Integer, ATNode>();
         nodeGeneList = new ArrayList<ATNode>();
         linkGenes = new LinkedHashSet<ATLink>();
@@ -42,7 +44,7 @@ public class ATTree {
         terminalList = new ArrayList<ATNode>();
         origin = new ArrayList<String>();
         for (ATNode terminal : nodeCollection.terminals) {
-            ATNode node = terminal.create(++maxNodeId, 0);
+            ATNode node = terminal.create(initialNodeInnovation++, 0);
             terminals.put(node.getId(), node);
             terminalList.add(node);
         }
@@ -57,9 +59,9 @@ public class ATTree {
         nodeGeneList.add(node);
     }
 
-    public static ATTree createMinimalSubstrate(ATNodeCollection nodeCollection) {
-        ATTree tree = new ATTree(nodeCollection);
-        tree.root = new ATFunctions.Plus(++tree.maxNodeId, 1);
+    public static ATTree createMinimalSubstrate(ATNodeCollection nodeCollection, ATInnovationHistory innovationHistory) {
+        ATTree tree = new ATTree(nodeCollection, innovationHistory);
+        tree.root = new ATFunctions.Plus(tree.initialNodeInnovation, 1);
         tree.addNode(tree.root);
         tree.origin.add("NEW");
         return tree;
@@ -89,7 +91,7 @@ public class ATTree {
         ATLink link;
         ATNode from = RND.randomChoice(terminalList);
         ATNode to = RND.randomChoice(nodeGeneList);
-        link = new ATLink(from, to, 1L);
+        link = new ATLink(from, to, innovationHistory.getLinkInnovation(from.getId(), to.getId()));
         from.setParent(to);
         to.addChild(from);
         linkGenes.add(link);
@@ -103,14 +105,21 @@ public class ATTree {
         }
         ATLink link = RND.randomChoice(linkGenesList);
 //        System.out.println("REPLACE LINK: " + link);
-        ATNode node = RND.randomChoice(nodeCollection.functions).create(++maxNodeId, -1);
+        ATNode nodePrototype = RND.randomChoice(nodeCollection.functions);
+        ATNode from = link.getFrom();
+        ATNode to = link.getTo();
+
+        ATInnovationHistory.NodeInnovation innovation =
+                innovationHistory.getNodeInnovation(from.getId(),
+                        to.getId(),
+                        nodePrototype.getClass());
+
+        ATNode node = nodePrototype.create(innovation.getNodeId(), -1);
         nodeGenes.put(node.getId(), node);
         nodeGeneList.add(node);
 
-        ATNode from = link.getFrom();
-        ATNode to = link.getTo();
-        ATLink fromLink = new ATLink(from, node, 1L);
-        ATLink toLink = new ATLink(node, to, 1L);
+        ATLink fromLink = new ATLink(from, node, innovation.getFromId());
+        ATLink toLink = new ATLink(node, to, innovation.getToId());
         node.setParent(to);
         node.addChild(from);
         from.setParent(node);
@@ -158,7 +167,7 @@ public class ATTree {
     }
 
     public ATTree copy() {
-        ATTree copy = new ATTree(nodeCollection);
+        ATTree copy = new ATTree(nodeCollection, innovationHistory);
         for (ATNode node : nodeGeneList) {
             ATNode nodeCopy = node.copy();
             copy.nodeGenes.put(nodeCopy.getId(), nodeCopy);
@@ -182,8 +191,6 @@ public class ATTree {
             copy.linkGenesList.add(linkCopy);
         }
 
-        copy.maxNodeId = maxNodeId;
-
         return copy;
     }
 
@@ -197,7 +204,7 @@ public class ATTree {
 
     @Override
     public String toString() {
-        /*
+        ///*
         StringBuilder builder = new StringBuilder(" NODES:\n");
         for (ATNode nodeGene : nodeGeneList) {
             builder.append(nodeGene.getId()).append(" ").append(nodeGene.getName()).append('\n');
@@ -208,8 +215,8 @@ public class ATTree {
         }
         builder.append(" EXPRESSION:\n").append(root.toMathematicaExpression()).append('\n');
         return builder.toString();
-        */
-        return root.toMathematicaExpression();
+        //*/
+//        return root.toMathematicaExpression();
     }
 
     public static void main(String[] args) {
@@ -218,7 +225,7 @@ public class ATTree {
         ATNodeCollection nodeCollection = new ATNodeCollection(functions, terminals, 2);
 
         RND.initializeTime();
-        ATTree tree = ATTree.createMinimalSubstrate(nodeCollection);
+        ATTree tree = ATTree.createMinimalSubstrate(nodeCollection, new ATInnovationHistory(terminals.length + 1));
         System.out.println(tree);
         for (int i = 0; i < 1; i++) {
             tree.mutateAddLink();

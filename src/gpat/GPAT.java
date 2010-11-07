@@ -33,6 +33,7 @@ public class GPAT<P> implements IEvolutionaryAlgorithm, IGP<ATForest> {
     protected int generation;
     protected ATForest bestOfGeneration;
     protected ATForest bestSoFar;
+    private ATInnovationHistory innovationHistory;
     private int lastInnovation;
 
     private int generalizationGeneration;
@@ -52,6 +53,7 @@ public class GPAT<P> implements IEvolutionaryAlgorithm, IGP<ATForest> {
 
         this.nodeCollection = createNodeCollection(functions, terminals, populationManager.getNumberOfInputs());
         this.origins = new HashMap<String, Long>();
+        this.innovationHistory = new ATInnovationHistory(this.inputs + terminals.length + 1);
         bestOfGeneration = bestSoFar = ATForest.createEmpty();
     }
 
@@ -81,7 +83,7 @@ public class GPAT<P> implements IEvolutionaryAlgorithm, IGP<ATForest> {
         population = new ATForest[GP.POPULATION_SIZE];
         newPopulation = new ATForest[GP.POPULATION_SIZE];
         for (int i = 0; i < population.length; i++) {
-            population[i] = ATForest.createRandom(generation, inputs, outputs, nodeCollection);
+            population[i] = ATForest.createRandom(generation, inputs, outputs, nodeCollection, innovationHistory);
         }
     }
 
@@ -103,10 +105,11 @@ public class GPAT<P> implements IEvolutionaryAlgorithm, IGP<ATForest> {
         origins.clear();
         for (ATForest forest : evalPopulation) {
             forest.setFitness(evaluationInfos.get(cnt).getFitness());
-//            System.out.println(cnt + ": " + forest);
+            System.out.println(cnt + ": " + forest);
             forest.setEvaluationInfo(evaluationInfos.get(cnt++));
             saveOrigin(forest);
         }
+        System.out.println(innovationHistory);
     }
 
     protected void saveOrigin(IGPForest forest) {
