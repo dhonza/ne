@@ -1,6 +1,7 @@
 package gpat;
 
 import gp.TreeInputs;
+import gp.terminals.ITerminal;
 
 /**
  * Created by IntelliJ IDEA.
@@ -13,7 +14,7 @@ public class ATTerminals {
     private ATTerminals() {
     }
 
-    public static class Input extends ATNode {
+    public static class Input extends ATNode implements ITerminal {
         final private int idx;
 
         public Input(int id, int depth, int idx) {
@@ -39,7 +40,7 @@ public class ATTerminals {
         }
     }
 
-    public static class Constant extends ATNode {
+    public static class Constant extends ATNode implements ITerminal {
         final private double value;
 
         public Constant(int id, int depth, double value) {

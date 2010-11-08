@@ -14,28 +14,33 @@ public class ATInnovationHistory {
     private static class Link {
         int fromId;
         int toId;
+        int toCount;
 
-        private Link(int fromId, int toId) {
+        private Link(int fromId, int toId, int toCount) {
             this.fromId = fromId;
             this.toId = toId;
+            this.toCount = toCount;
         }
 
         @Override
         public int hashCode() {
-            return (fromId + "_" + toId).hashCode();
+            return (fromId + "_" + toId + "_" + toCount).hashCode();
         }
 
         @Override
         public boolean equals(Object o) {
             Link other = (Link) o;
-            return fromId == other.fromId && toId == other.toId;
+            return fromId == other.fromId &&
+                    toId == other.toId &&
+                    toCount == other.toCount;
         }
 
         @Override
         public String toString() {
             return "Link{" +
-                    "fromId=" + fromId +
-                    ", toId=" + toId +
+                    "fromInnovation=" + fromId +
+                    ", toInnovation=" + toId +
+                    ", toCount=" + toCount +
                     '}';
         }
     }
@@ -65,30 +70,30 @@ public class ATInnovationHistory {
         @Override
         public String toString() {
             return "Node{" +
-                    "fromId=" + fromId +
-                    ", toId=" + toId +
+                    "fromInnovation=" + fromId +
+                    ", toInnovation=" + toId +
                     ", type=" + type +
                     '}';
         }
     }
 
     public static class NodeInnovation {
-        private long fromId;
-        private long toId;
+        private long fromInnovation;
+        private long toInnovation;
         private int nodeId;
 
-        public NodeInnovation(long fromId, long toId, int nodeId) {
-            this.fromId = fromId;
-            this.toId = toId;
+        public NodeInnovation(long fromInnovation, long toInnovation, int nodeId) {
+            this.fromInnovation = fromInnovation;
+            this.toInnovation = toInnovation;
             this.nodeId = nodeId;
         }
 
-        public long getFromId() {
-            return fromId;
+        public long getFromInnovation() {
+            return fromInnovation;
         }
 
-        public long getToId() {
-            return toId;
+        public long getToInnovation() {
+            return toInnovation;
         }
 
         public int getNodeId() {
@@ -98,8 +103,8 @@ public class ATInnovationHistory {
         @Override
         public String toString() {
             return "NodeInnovation{" +
-                    "fromId=" + fromId +
-                    ", toId=" + toId +
+                    "fromInnovation=" + fromInnovation +
+                    ", toInnovation=" + toInnovation +
                     ", nodeId=" + nodeId +
                     '}';
         }
@@ -115,8 +120,8 @@ public class ATInnovationHistory {
         this.nodeInnovation = nodeInnovation;
     }
 
-    public long getLinkInnovation(int fromId, int toId) {
-        Link link = new Link(fromId, toId);
+    public long getLinkInnovation(int fromId, int toId, int toCount) {
+        Link link = new Link(fromId, toId, toCount);
         if (links.containsKey(link)) {
             return links.get(link);
         } else {
@@ -125,11 +130,13 @@ public class ATInnovationHistory {
         }
     }
 
-    public int getInitialNodeInnovation() {
-        return nodeInnovation++;
+    public void storeLinkInnovation(int fromId, int toId, int toCount, long innovation) {
+        Link link = new Link(fromId, toId, toCount);
+        links.put(link, innovation);
     }
 
-    public NodeInnovation getNodeInnovation(int fromId, int toId, Class type) {
+
+    public NodeInnovation newNodeInnovation(int fromId, int toId, Class type) {
         Node node = new Node(fromId, toId, type);
         if (nodes.containsKey(node)) {
             return nodes.get(node);
@@ -142,13 +149,22 @@ public class ATInnovationHistory {
         }
     }
 
+    public NodeInnovation forceNewNodeInnovation(int fromId, int toId, Class type) {
+        Node node = new Node(fromId, toId, type);
+        NodeInnovation innovation = new NodeInnovation(linkInnovation,
+                linkInnovation + 1, nodeInnovation++);
+        linkInnovation += 2;
+        nodes.put(node, innovation);
+        return innovation;
+
+    }
+
     @Override
     public String toString() {
         StringBuilder b = new StringBuilder();
         for (Link link : links.keySet()) {
-            b.append(links.get(link)).append(", ");
+            b.append(link).append('\n');
         }
-        b.append('\n');
         for (Node node : nodes.keySet()) {
             b.append(nodes.get(node)).append('\n');
         }
