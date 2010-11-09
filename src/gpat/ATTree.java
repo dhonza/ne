@@ -199,8 +199,9 @@ public class ATTree {
         node.setParent(to);
         node.addChild(from);
         from.setParent(node);
-        to.removeChild(from);//remove connection between "from" and "to"
-        to.addChild(node);
+        //Replace "from" child by the new "node" child, 
+        //keeping constants and locks.
+        to.replaceChild(from, node);
 
         //Correct link counters
         getNextConnectionCount(from, node);

@@ -60,11 +60,9 @@ abstract public class ATNode {
         constantLocks.add(true);
     }
 
-    public void removeChild(ATNode child) {
-        int idx = children.indexOf(child);
-        children.remove(idx);
-        constants.remove(idx);
-        constantLocks.remove(idx);
+    public void replaceChild(ATNode oldChild, ATNode newChild) {
+        int idx = children.indexOf(oldChild);
+        children.set(idx, newChild);
     }
 
     public double getConstant(int idx) {
