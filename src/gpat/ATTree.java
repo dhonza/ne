@@ -156,7 +156,8 @@ public class ATTree {
         }
 
         //Get a random link.
-        ATLink link = RND.randomChoice(linkGenesList);
+        int linkIdx = RND.getIntZero(linkGenesList.size());//we must remember it's index to remove it later
+        ATLink link = linkGenesList.get(linkIdx);
         ATNode from = link.getFrom();
         ATNode to = link.getTo();
 
@@ -181,12 +182,20 @@ public class ATTree {
 
         //If there is already such innovation in the tree, force
         //new innovation numbers
+
+//        boolean notNew = true;//DEBUG
+
         if (nodeGenes.containsKey(innovation.getNodeId())) {
             innovation = innovationHistory.forceNewNodeInnovation(
                     from.getId(),
                     to.getId(),
                     nodePrototype.getClass());
+//            notNew = false;//DEBUG
         }
+
+//        if(notNew && innovation.getToInnovation() <= to.getMaxLinkInnovation()) {//DEBUG
+//            System.out.println("Needs sorting");
+//        }
 
         //Now, create the actual node.
         ATNode node = nodePrototype.create(innovation.getNodeId(), -1);
@@ -212,14 +221,14 @@ public class ATTree {
         from.setParent(node);
         //Replace "from" child by the new "node" child, 
         //keeping constants and locks.
-        to.replaceChild(from, node, innovation.getFromInnovation());
+        to.replaceChild(from, node, innovation.getToInnovation());
 
         //Correct link counters
         getNextConnectionCount(from, node);
         getNextConnectionCount(node, to);
 
         //Remove original link from the list.
-        linkGenesList.remove(link);
+        linkGenesList.remove(linkIdx);
 
         //Store new links: "fromLink" and "toLink".
         ATLink fromLink = new ATLink(from, node, innovation.getFromInnovation());
@@ -311,13 +320,58 @@ public class ATTree {
     }
 
     public double distance(ATTree other) {
-        return 0.0;
+        ATTree a = this;
+        ATTree b = other;
+        int disjoint = 0, excess;
+        int common = 0; // how many genes have the same innovation numbers
+        double wDif = 0.0; // weight difference
+        double actDif = 0.0; // activation function difference
+
+        int i = 0, j = 0;
+        ATLink il, jl;
+
+        int iLen = a.linkGenesList.size(), jLen = b.linkGenesList.size();
+
+        while ((i < iLen) && (j < jLen)) {
+            il = a.linkGenesList.get(i);
+            jl = b.linkGenesList.get(j);
+            if (il.getInnovation() == jl.getInnovation()) {
+                i++;
+                j++;
+                common++;
+//                wDif += Math.abs(il.getWeight() - jl.getWeight());
+            } else if (il.getInnovation() > jl.getInnovation()) {
+                disjoint++;
+                j++;
+            } else {
+                disjoint++;
+                i++;
+            }
+        }
+        if (i < iLen) {
+            excess = iLen - i;
+        } else {
+            excess = jLen - j;
+        }
+        double c1 = 0.0;
+        double c2 = 0.0;
+        double c3 = 1.0;
+        //TODO different for larg genes: see neat.GenomeDistance
+        //TODO involve locks?
+
+        double weights = (c3 * wDif) / common;
+        if(Double.isNaN(weights)) {
+            weights = 0.0;
+        }
+        double distance = c1 * excess + c2 * disjoint + weights;
+        return distance;
     }
 
     /**
-     * Just temporary checking.
+     * Just debug checking.
      */
     private static void checkInnovationSorted(ATTree tree) {
+        //DEBUG
         for (int i = 1; i < tree.linkGenesList.size(); i++) {
             ATLink link = tree.linkGenesList.get(i);
             ATLink prevLink = tree.linkGenesList.get(i - 1);

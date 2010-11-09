@@ -3,7 +3,6 @@ package gpat;
 import gp.TreeInputs;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
 /**
@@ -57,7 +56,7 @@ abstract public class ATNode {
         return children.get(idx);
     }
 
-    private void switchChildren(int one, int two) {
+    private void swapChildren(int one, int two) {
         ATNode tnode = children.get(one);
         Long tincomingLinkInnovation = incomingLinkInnovations.get(one);
         Double tconstant = constants.get(one);
@@ -74,24 +73,53 @@ abstract public class ATNode {
         constantLocks.set(two, tconstantLock);
     }
 
-    private void insertSortNode(ATNode child, long incomingLinkInnovation) {
-        int pos = Collections.binarySearch(incomingLinkInnovations, incomingLinkInnovation);
-                
+    //Child at index is the only one "possibly" unsorted item.
+    //This method finds the right place for it and moves it there
+
+    private void insertSortChild(int childIdx) {
+        if (children.size() == 1) {
+            return;
+        }
+
+        long innovation = incomingLinkInnovations.get(childIdx);
+
+        boolean exit = false;
+
+        while (childIdx > 0 && incomingLinkInnovations.get(childIdx - 1) > innovation) {
+            //The right place for the child is in direction to the beginning
+            //of list.
+            swapChildren(childIdx - 1, childIdx);
+            childIdx--;
+            exit = true;
+        }
+
+        if (exit) {
+            return;
+        }
+
+        while (childIdx < children.size() - 1 && incomingLinkInnovations.get(childIdx + 1) < innovation) {
+            //The right place for the child is in direction to the end
+            //of list.
+            swapChildren(childIdx + 1, childIdx);
+            childIdx++;
+        }
     }
 
     public void addChild(ATNode child, long incomingLinkInnovation) {
-        if (children.size() > 0 && incomingLinkInnovation <= incomingLinkInnovations.get(children.size() - 1)) {
-            System.out.println("ZZZZZZZZ");
-        }
         children.add(child);
         incomingLinkInnovations.add(incomingLinkInnovation);
         constants.add(1.0);
         constantLocks.add(true);
+        insertSortChild(children.size() - 1);
+        checkIntegrity();
     }
 
     public void replaceChild(ATNode oldChild, ATNode newChild, long newIncomingLinkInnovation) {
         int idx = children.indexOf(oldChild);
         children.set(idx, newChild);
+        incomingLinkInnovations.set(idx, newIncomingLinkInnovation);
+        insertSortChild(idx);
+        checkIntegrity();
     }
 
     public double getConstant(int idx) {
@@ -108,6 +136,14 @@ abstract public class ATNode {
 
     public void setConstantLock(int idx, boolean lock) {
         constantLocks.set(idx, lock);
+    }
+
+    public long getMaxLinkInnovation() {
+        if (children.size() == 0) {
+            return -1L;
+        } else {
+            return incomingLinkInnovations.get(children.size() - 1);
+        }
     }
 
     abstract public String getName();
@@ -152,6 +188,20 @@ abstract public class ATNode {
             }
             b.append("]");
             return b.toString();
+        }
+    }
+
+    private void checkIntegrity() {
+        //DEBUG
+        if (!((children.size() == incomingLinkInnovations.size()) &&
+                (incomingLinkInnovations.size() == constants.size()) &&
+                (constants.size() == constantLocks.size()))) {
+            throw new IllegalStateException("Different sizes of lists!");
+        }
+        for (int i = 2; i < children.size(); i++) {
+            if (incomingLinkInnovations.get(i - 1) >= incomingLinkInnovations.get(i)) {
+                throw new IllegalStateException("Not sorted by innovations!");
+            }
         }
     }
 }
