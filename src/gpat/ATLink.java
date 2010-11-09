@@ -7,7 +7,7 @@ package gpat;
  * Time: 6:45:42 PM
  * To change this template use File | Settings | File Templates.
  */
-public class ATLink implements Comparable {
+public class ATLink implements Comparable<ATLink> {
     final private ATNode from;
     final private ATNode to;
     final private long innovation;
@@ -31,8 +31,7 @@ public class ATLink implements Comparable {
     }
 
 
-    public int compareTo(Object o) {
-        ATLink other = (ATLink) o;
+    public int compareTo(ATLink other) {
         if(this.innovation < other.innovation) {
             return -1;
         }

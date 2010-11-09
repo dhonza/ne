@@ -3,6 +3,7 @@ package gpat;
 import gp.TreeInputs;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 /**
@@ -18,6 +19,7 @@ abstract public class ATNode {
 
     protected ATNode parent;
     protected List<ATNode> children;
+    protected List<Long> incomingLinkInnovations; //children are sorted by incoming link innovation numbers
     protected List<Double> constants;
     protected List<Boolean> constantLocks;
 
@@ -25,6 +27,7 @@ abstract public class ATNode {
         this.id = id;
         this.depth = depth;
         children = new ArrayList<ATNode>();
+        incomingLinkInnovations = new ArrayList<Long>();
         constants = new ArrayList<Double>();
         constantLocks = new ArrayList<Boolean>();
     }
@@ -54,13 +57,39 @@ abstract public class ATNode {
         return children.get(idx);
     }
 
-    public void addChild(ATNode child) {
+    private void switchChildren(int one, int two) {
+        ATNode tnode = children.get(one);
+        Long tincomingLinkInnovation = incomingLinkInnovations.get(one);
+        Double tconstant = constants.get(one);
+        Boolean tconstantLock = constantLocks.get(one);
+
+        children.set(one, children.get(two));
+        incomingLinkInnovations.set(one, incomingLinkInnovations.get(two));
+        constants.set(one, constants.get(two));
+        constantLocks.set(one, constantLocks.get(two));
+
+        children.set(two, tnode);
+        incomingLinkInnovations.set(two, tincomingLinkInnovation);
+        constants.set(two, tconstant);
+        constantLocks.set(two, tconstantLock);
+    }
+
+    private void insertSortNode(ATNode child, long incomingLinkInnovation) {
+        int pos = Collections.binarySearch(incomingLinkInnovations, incomingLinkInnovation);
+                
+    }
+
+    public void addChild(ATNode child, long incomingLinkInnovation) {
+        if (children.size() > 0 && incomingLinkInnovation <= incomingLinkInnovations.get(children.size() - 1)) {
+            System.out.println("ZZZZZZZZ");
+        }
         children.add(child);
+        incomingLinkInnovations.add(incomingLinkInnovation);
         constants.add(1.0);
         constantLocks.add(true);
     }
 
-    public void replaceChild(ATNode oldChild, ATNode newChild) {
+    public void replaceChild(ATNode oldChild, ATNode newChild, long newIncomingLinkInnovation) {
         int idx = children.indexOf(oldChild);
         children.set(idx, newChild);
     }

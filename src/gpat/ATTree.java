@@ -101,6 +101,18 @@ public class ATTree {
         return cnt; //return it
     }
 
+
+    //Inserts "link" to the sorted linkGenesList.
+
+    private void insertLinkGene(ATLink link) {
+        //find position for the link
+        int pos = Collections.binarySearch(linkGenesList, link);
+        if (pos < 0) {//see binarySearch docs
+            pos = -pos - 1;
+        }
+        linkGenesList.add(pos, link);
+    }
+
     public void mutateAddLink() {
         checkInnovationSorted(this);
         //choose a random link to create
@@ -110,7 +122,7 @@ public class ATTree {
         ATNode to = RND.randomChoice(nodeGeneList);
 
         //Check (return counter) if we already have such connection.
-        //If no such connection exists -> return 0.
+        //If such connection does yet not exists -> return 0.
         int cnt = getNextConnectionCount(from, to);
 
         //Get new link innovation number.
@@ -123,15 +135,14 @@ public class ATTree {
         //Finally create the link.
         link = new ATLink(from, to, innovation);
 
-        linkGenesList.add(link);
+        //Insert link. Link genes must be sorted for later comparisons
+        //using innovation numbers.
+        insertLinkGene(link);
 
         //And make corresponding changes in the tree structure.
         from.setParent(to);
-        to.addChild(from);
+        to.addChild(from, innovation);
 
-        //Link genes must be sorted for later comparisons
-        //using innovation numbers.
-        Collections.sort(linkGenesList);
         origin.add("ADD_LINK");
         checkInnovationSorted(this);
     }
@@ -197,11 +208,11 @@ public class ATTree {
 
         //Reconnect "node" with "from" and "to".
         node.setParent(to);
-        node.addChild(from);
+        node.addChild(from, innovation.getFromInnovation());
         from.setParent(node);
         //Replace "from" child by the new "node" child, 
         //keeping constants and locks.
-        to.replaceChild(from, node);
+        to.replaceChild(from, node, innovation.getFromInnovation());
 
         //Correct link counters
         getNextConnectionCount(from, node);
@@ -213,12 +224,11 @@ public class ATTree {
         //Store new links: "fromLink" and "toLink".
         ATLink fromLink = new ATLink(from, node, innovation.getFromInnovation());
         ATLink toLink = new ATLink(node, to, innovation.getToInnovation());
-        linkGenesList.add(fromLink);
-        linkGenesList.add(toLink);
-
-        //Link genes must be sorted for later comparisons
+        //Insert links. Link genes must be sorted for later comparisons
         //using innovation numbers.
-        Collections.sort(linkGenesList);
+        insertLinkGene(fromLink);
+        insertLinkGene(toLink);
+
         origin.add("ADD_NODE");
         checkInnovationSorted(this);
     }
@@ -271,7 +281,7 @@ public class ATTree {
             }
             ATNode toNode = copy.nodeGenes.get(link.getTo().getId());
             fromNode.setParent(toNode);
-            toNode.addChild(fromNode);
+            toNode.addChild(fromNode, link.getInnovation());
             ATLink linkCopy = new ATLink(
                     fromNode,
                     toNode,
