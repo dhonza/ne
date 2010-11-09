@@ -145,6 +145,7 @@ public class ATTree {
 
         origin.add("ADD_LINK");
         checkInnovationSorted(this);
+        checkLinkGenesVsNodes(this);
     }
 
     public void mutateAddNode() {
@@ -160,8 +161,6 @@ public class ATTree {
         ATLink link = linkGenesList.get(linkIdx);
         ATNode from = link.getFrom();
         ATNode to = link.getTo();
-
-//        System.out.println("REPLACE LINK: " + link);
 
         //A prototype of a node to add. Just to know what type it will be
         //in advance.
@@ -219,9 +218,10 @@ public class ATTree {
         node.setParent(to);
         node.addChild(from, innovation.getFromInnovation());
         from.setParent(node);
-        //Replace "from" child by the new "node" child, 
+
+        //Replace "from" child by the new "node" child,
         //keeping constants and locks.
-        to.replaceChild(from, node, innovation.getToInnovation());
+        to.replaceChild(from, node, link.getInnovation(), innovation.getToInnovation());
 
         //Correct link counters
         getNextConnectionCount(from, node);
@@ -240,6 +240,7 @@ public class ATTree {
 
         origin.add("ADD_NODE");
         checkInnovationSorted(this);
+        checkLinkGenesVsNodes(this);
     }
 
     public void mutateConstants() {
@@ -339,7 +340,14 @@ public class ATTree {
                 i++;
                 j++;
                 common++;
-//                wDif += Math.abs(il.getWeight() - jl.getWeight());
+                int iIdx = il.getTo().getIdxForInnovation(il.getInnovation());
+                int jIdx = jl.getTo().getIdxForInnovation(jl.getInnovation());
+                if (jIdx == -1) {
+                    System.out.println("");
+                }
+                double iConstant = il.getTo().getConstant(iIdx);
+                double jConstant = jl.getTo().getConstant(jIdx);
+                wDif += Math.abs(iConstant - jConstant);
             } else if (il.getInnovation() > jl.getInnovation()) {
                 disjoint++;
                 j++;
@@ -360,7 +368,7 @@ public class ATTree {
         //TODO involve locks?
 
         double weights = (c3 * wDif) / common;
-        if(Double.isNaN(weights)) {
+        if (Double.isNaN(weights)) {
             weights = 0.0;
         }
         double distance = c1 * excess + c2 * disjoint + weights;
@@ -377,6 +385,19 @@ public class ATTree {
             ATLink prevLink = tree.linkGenesList.get(i - 1);
             if (link.getInnovation() <= prevLink.getInnovation()) {
                 throw new IllegalStateException("Unsorted link lists.\n" + tree);
+            }
+        }
+    }
+
+    private static void checkLinkGenesVsNodes(ATTree tree) {
+        //DEBUG
+        for (int i = 0; i < tree.linkGenesList.size(); i++) {
+            ATLink link = tree.linkGenesList.get(i);
+            long innovation = link.getInnovation();
+            int pos = link.getTo().getIdxForInnovation(innovation);
+            if (pos < 0) {
+                throw new IllegalStateException("linkGenesList does not match node id : " +
+                        link.getTo().getId());
             }
         }
     }

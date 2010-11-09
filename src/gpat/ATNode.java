@@ -3,6 +3,7 @@ package gpat;
 import gp.TreeInputs;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 /**
@@ -114,13 +115,30 @@ abstract public class ATNode {
         checkIntegrity();
     }
 
-    public void replaceChild(ATNode oldChild, ATNode newChild, long newIncomingLinkInnovation) {
-        int idx = children.indexOf(oldChild);
+    public void replaceChild(ATNode oldChild, ATNode newChild,
+                             long oldIncomingLinkInnovation,
+                             long newIncomingLinkInnovation) {
+        //Search for the position of the old node to replace.
+        //Match also using innovation.
+        int idx;
+        for (idx = 0; true; idx++) {
+            if(children.get(idx).equals(oldChild) &&
+                    incomingLinkInnovations.get(idx) == oldIncomingLinkInnovation) {
+                break;
+            }
+        }
         children.set(idx, newChild);
         incomingLinkInnovations.set(idx, newIncomingLinkInnovation);
         insertSortChild(idx);
         checkIntegrity();
     }
+
+    public int getIdxForInnovation(long innovation) {
+        //TODO this should be done in constant time -> this is massively used
+        //for ATTree distance computations
+        return Collections.binarySearch(incomingLinkInnovations, innovation);
+    }
+
 
     public double getConstant(int idx) {
         return constants.get(idx);
