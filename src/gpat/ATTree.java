@@ -364,7 +364,7 @@ public class ATTree {
         double c1 = 0.0;
         double c2 = 0.0;
         double c3 = 1.0;
-        //TODO different for larg genes: see neat.GenomeDistance
+        //TODO different for large genes: see neat.GenomeDistance
         //TODO involve locks?
 
         double weights = (c3 * wDif) / common;

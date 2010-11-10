@@ -22,6 +22,7 @@ public class GPAT<P> implements IEvolutionaryAlgorithm, IGP<ATForest> {
     public static double MUTATION_ADD_LINK = 0.01;
     public static double MUTATION_ADD_NODE = 0.01;
     public static double MUTATION_SWITCH_CONSTANT_LOCK = 0.01;
+    public static double DISTANCE_DELTA = 0.02;
 
     final protected int inputs;
     final protected int outputs;
@@ -35,6 +36,9 @@ public class GPAT<P> implements IEvolutionaryAlgorithm, IGP<ATForest> {
     protected ATForest bestSoFar;
     private ATInnovationHistory innovationHistory;
     private int lastInnovation;
+
+    final private List<ATSpecies> species;
+    private int maxSpecieId = 0;
 
     private int generalizationGeneration;
     private EvaluationInfo generalizationEvaluationInfo;
@@ -55,6 +59,7 @@ public class GPAT<P> implements IEvolutionaryAlgorithm, IGP<ATForest> {
         this.origins = new HashMap<String, Long>();
         this.innovationHistory = new ATInnovationHistory(this.inputs + terminals.length + 1);
         bestOfGeneration = bestSoFar = ATForest.createEmpty();
+        this.species = new ArrayList<ATSpecies>();
     }
 
     protected ATNodeCollection createNodeCollection(ATNode[] functions, ATNode[] terminals, int numOfInputs) {
@@ -69,6 +74,7 @@ public class GPAT<P> implements IEvolutionaryAlgorithm, IGP<ATForest> {
         createInitialGeneration();
         evaluate(population);
         recomputeBest();
+        manageSpecie();
     }
 
     public void nextGeneration() {
@@ -77,6 +83,7 @@ public class GPAT<P> implements IEvolutionaryAlgorithm, IGP<ATForest> {
         evaluate(newPopulation);
         reduce();
         recomputeBest();
+        manageSpecie();
     }
 
     protected void createInitialGeneration() {
@@ -105,11 +112,11 @@ public class GPAT<P> implements IEvolutionaryAlgorithm, IGP<ATForest> {
         origins.clear();
         for (ATForest forest : evalPopulation) {
             forest.setFitness(evaluationInfos.get(cnt).getFitness());
-            System.out.println(cnt + ": " + forest);
+//            System.out.println(cnt + ": " + forest);
             forest.setEvaluationInfo(evaluationInfos.get(cnt++));
             saveOrigin(forest);
         }
-        System.out.println(innovationHistory);
+//        System.out.println(innovationHistory);
     }
 
     protected void saveOrigin(IGPForest forest) {
@@ -142,6 +149,39 @@ public class GPAT<P> implements IEvolutionaryAlgorithm, IGP<ATForest> {
             lastInnovation = 0;
         } else {
             lastInnovation++;
+        }
+    }
+
+    private void manageSpecie() {
+        for (Iterator<ATSpecies> iterator = species.iterator(); iterator.hasNext();) {
+            ATSpecies spec = iterator.next();
+            if (spec.getSize() > 0) {
+                spec.resetSpecies();
+            } else {
+                iterator.remove();
+            }
+        }
+        for (ATForest forest : population) {
+            boolean found = false;
+            for (ATSpecies spec : species) {
+                if (populationManager.getGenomeDistance(forest, spec.getRepresentative()) < GPAT.DISTANCE_DELTA) {
+                    spec.addMember(forest);
+                    found = true;
+                    break;
+                }
+            }
+            if (!found) {
+                ATSpecies spec = new ATSpecies(++maxSpecieId);
+                species.add(spec);
+                spec.setRepresentative(forest);
+                spec.addMember(forest);
+            }
+        }
+        for (ATSpecies spec : species) {
+            spec.sort();
+        }
+        for (ATSpecies spec : species) {
+            System.out.println(spec);
         }
     }
 

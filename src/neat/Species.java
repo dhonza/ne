@@ -44,7 +44,6 @@ public class Species implements Comparable {
      * The randomly chosen Genome: representative of this Species.
      */
     Genome representative;
-    int representativeIdx;
 
     /**
      * The best Genome of this Species.

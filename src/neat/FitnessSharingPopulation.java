@@ -153,7 +153,7 @@ public class FitnessSharingPopulation<P> extends Population<P> {
             boolean found = false;
             tg = genomes[i];
             for (Species specie : species) {
-                if (populationManager.getDistance(i, specie.representativeIdx) < NEAT.getConfig().distanceDelta) { // it fits into this
+                if (populationManager.getGenomeDistance(genomes[i], specie.representative) < NEAT.getConfig().distanceDelta) { // it fits into this
                     // Species
                     specie.genomes.add(tg);
                     found = true;
@@ -163,7 +163,6 @@ public class FitnessSharingPopulation<P> extends Population<P> {
             if (!found) {
                 ts = addSpecies(tg); // creating new Species
                 ts.representative = tg; // it's the first and also the only
-                ts.representativeIdx = i;
                 // Genome of the new Species, so let it
                 // be the Species representative...
             }

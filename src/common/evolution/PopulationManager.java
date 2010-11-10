@@ -106,6 +106,10 @@ public class PopulationManager<G, P> {
         }
     }
 
+    public double getGenomeDistance(G a, G b) {
+        return genomeDistance.distance(a, b);
+    }
+
     public double getDistanceToPrevious(int idxCur, int idxPrev) {
         if (defaultDistance == DefaultDistance.GENOTYPE) {
             return genomeDistanceStorage.distanceToPrev(idxCur, idxPrev);
