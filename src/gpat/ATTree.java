@@ -361,17 +361,14 @@ public class ATTree {
         } else {
             excess = jLen - j;
         }
-        double c1 = 0.0;
-        double c2 = 0.0;
-        double c3 = 1.0;
         //TODO different for large genes: see neat.GenomeDistance
         //TODO involve locks?
 
-        double weights = (c3 * wDif) / common;
+        double weights = (GPAT.DISTANCE_C3 * wDif) / common;
         if (Double.isNaN(weights)) {
             weights = 0.0;
         }
-        double distance = c1 * excess + c2 * disjoint + weights;
+        double distance = GPAT.DISTANCE_C1 * excess + GPAT.DISTANCE_C2 * disjoint + weights;
         return distance;
     }
 

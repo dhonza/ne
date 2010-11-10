@@ -4,7 +4,6 @@ import org.apache.commons.lang.ArrayUtils;
 
 import java.io.Serializable;
 import java.util.Arrays;
-import java.util.Collection;
 import java.util.List;
 import java.util.Random;
 
@@ -253,7 +252,7 @@ public class RND implements Serializable {
         return array[seed.nextInt(array.length)];
     }
 
-        /**
+    /**
      * Random choice from List.
      *
      * @param list source List
@@ -353,6 +352,12 @@ public class RND implements Serializable {
 
     public static void sampleRangeWithoutReplacement(int range, int[] sample) {
         sampleRangeWithoutReplacement(0, range - 1, sample);
+    }
+
+    public static void sampleRangeWithReplacement(int range, int[] sample) {
+        for (int i = 0; i < sample.length; i++) {
+            sample[i] = seed.nextInt(range);
+        }
     }
 
     public static void sampleRangeWithoutReplacementSorted(int range, int[] sample) {

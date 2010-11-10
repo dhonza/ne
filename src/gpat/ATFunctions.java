@@ -41,7 +41,7 @@ public class ATFunctions {
         }
     }
 
-    public static class Times extends ATNode {
+    public static class Times extends ATNodeIgnoreConstants {
         protected Times(int id, int depth) {
             super(id, depth);
         }
