@@ -23,11 +23,11 @@ public class GPAT<P> implements IEvolutionaryAlgorithm, IGP<ATForest> {
     public static double MUTATION_ADD_NODE = 0.005;
     public static double MUTATION_SWITCH_CONSTANT_LOCK = 0.05;
     public static double DISTANCE_DELTA = 0.04;
-    public static int ELITIST_SIZE = 1;
     public static double SPECIES_REPRODUCTION_RATIO = 0.1;
     public static double DISTANCE_C1 = 1.0;
     public static double DISTANCE_C2 = 1.0;
     public static double DISTANCE_C3 = 2.0;
+    public static double ELITIST_PROPORTION_SIZE = 0.2;
 
     final protected int inputs;
     final protected int outputs;
@@ -221,8 +221,13 @@ public class GPAT<P> implements IEvolutionaryAlgorithm, IGP<ATForest> {
         }
 
         for (int i : toAssign) {
-            species.get(i).setEstimatedOffspring(species.get(i).getEstimatedOffspring() + 1);
+            ATSpecies spec = species.get(i);
+            spec.setEstimatedOffspring(spec.getEstimatedOffspring() + 1);
             assigned++;
+            spec.setElitistSize((int) Math.min(spec.getSize(), (species.get(i).getEstimatedOffspring() * GPAT.ELITIST_PROPORTION_SIZE)));
+            if (spec.getElitistSize() == 0 && spec.getEstimatedOffspring() > 1) {
+                spec.setElitistSize(1);
+            }
         }
         if (assigned != distribute) {
             throw new IllegalStateException("ERROR: bad sum of expected offspring: " + assigned);

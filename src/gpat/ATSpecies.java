@@ -20,6 +20,7 @@ public class ATSpecies {
     private double averageFitness;
     private int estimatedOffspring;
     private int reproductionThreshold;
+    private int elitistSize;
 
     public ATSpecies(int id) {
         this.id = id;
@@ -50,6 +51,14 @@ public class ATSpecies {
         this.estimatedOffspring = estimatedOffspring;
     }
 
+    public int getElitistSize() {
+        return elitistSize;
+    }
+
+    public void setElitistSize(int elitistSize) {
+        this.elitistSize = elitistSize;
+    }
+
     public void addMember(ATForest forest) {
         members.add(forest);
     }
@@ -73,6 +82,9 @@ public class ATSpecies {
             averageFitness += member.getFitness();
         }
         averageFitness /= members.size();
+        if(averageFitness < -10000E10) {
+            System.out.println("sdsadada");
+        }
     }
 
     void markForReproduction() {
