@@ -107,7 +107,12 @@ public class GPAT<P> implements IEvolutionaryAlgorithm, IGP<ATForest> {
         int cnt = 0;
         for (ATSpecies spec : species) {
             spec.markForReproduction();
-            for (int i = 0; i < spec.getEstimatedOffspring(); i++) {
+
+            for (int i = 0; i < spec.getElitistSize(); i++) {
+                newPopulation[cnt++] = spec.getMember(i).eliteCopy(generation);
+            }
+
+            for (int i = spec.getElitistSize(); i < spec.getEstimatedOffspring(); i++) {
                 newPopulation[cnt++] = spec.getRandomMember().mutate(generation);
             }
         }
@@ -196,6 +201,12 @@ public class GPAT<P> implements IEvolutionaryAlgorithm, IGP<ATForest> {
                 iterator.remove();
             }
         }
+
+        if(species.size() > 8) {
+            GPAT.DISTANCE_DELTA *= 2;
+        } else if(species.size() < 4) {
+            GPAT.DISTANCE_DELTA /= 2;
+        }
     }
 
     private void estimateOffspring() {
@@ -224,13 +235,17 @@ public class GPAT<P> implements IEvolutionaryAlgorithm, IGP<ATForest> {
             ATSpecies spec = species.get(i);
             spec.setEstimatedOffspring(spec.getEstimatedOffspring() + 1);
             assigned++;
-            spec.setElitistSize((int) Math.min(spec.getSize(), (species.get(i).getEstimatedOffspring() * GPAT.ELITIST_PROPORTION_SIZE)));
+        }
+
+        if (assigned != distribute) {
+            throw new IllegalStateException("ERROR: bad sum of expected offspring: " + assigned);
+        }
+
+        for (ATSpecies spec : species) {
+            spec.setElitistSize((int) Math.min(spec.getSize(), (spec.getEstimatedOffspring() * GPAT.ELITIST_PROPORTION_SIZE)));
             if (spec.getElitistSize() == 0 && spec.getEstimatedOffspring() > 1) {
                 spec.setElitistSize(1);
             }
-        }
-        if (assigned != distribute) {
-            throw new IllegalStateException("ERROR: bad sum of expected offspring: " + assigned);
         }
     }
 

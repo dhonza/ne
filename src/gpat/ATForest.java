@@ -65,6 +65,19 @@ public class ATForest implements IGPForest, Comparable, Serializable {
 
     }
 
+    public ATForest eliteCopy(int generationOfOrigin) {
+        ATForest forest = new ATForest(generationOfOrigin, this.getNumOfInputs());
+        forest.trees = new ATTree[trees.length];
+        for (int i = 0; i < trees.length; i++) {
+            ATTree eliteCopy = this.trees[i].copy();
+            eliteCopy.elite();
+            forest.trees[i] = eliteCopy;
+        }
+        forest.setFitness(Double.NaN);
+        forest.setEvaluationInfo(new EvaluationInfo(Double.NaN));
+        return forest;
+    }    
+
     public int getNumOfInputs() {
         return treeInputs.getNumOfInputs();
     }

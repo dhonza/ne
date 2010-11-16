@@ -32,6 +32,10 @@ public class SymbolicRegression implements IEvaluable<IGPForest> {
             x += stepX;
         }
         error /= steps;
+        error = 30 + error;
+        if(error < 0.0) {
+            error = 0.0;
+        }
         if (error >= GP.TARGET_FITNESS) {
             solved = true;
         }

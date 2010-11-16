@@ -63,6 +63,10 @@ public class ATSpecies {
         members.add(forest);
     }
 
+    ATForest getMember(int idx) {
+        return members.get(idx);
+    }
+
     ATForest getRandomMember() {
         return members.get(RND.getInt(0, reproductionThreshold));
     }
@@ -82,9 +86,6 @@ public class ATSpecies {
             averageFitness += member.getFitness();
         }
         averageFitness /= members.size();
-        if(averageFitness < -10000E10) {
-            System.out.println("sdsadada");
-        }
     }
 
     void markForReproduction() {
@@ -98,6 +99,7 @@ public class ATSpecies {
     public String toString() {
         StringBuffer b = new StringBuffer("SPECIES: ");
         b.append(id).append(" SIZE: ").append(members.size());
+        b.append(" BST: ").append(members.get(0).getFitness());
         b.append(" AVG: ").append(averageFitness);
         b.append(" EST: ").append(estimatedOffspring);
         return b.toString();

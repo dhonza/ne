@@ -260,6 +260,10 @@ public class ATTree {
         }
     }
 
+    public void elite() {
+        origin.add("ELITE");
+    }
+
     public void mutateSwitchConstantLocks() {
         boolean mutation = false;
         for (ATNode node : nodeGeneList) {
