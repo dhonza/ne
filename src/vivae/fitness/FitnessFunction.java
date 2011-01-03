@@ -1,5 +1,7 @@
 package vivae.fitness;
 
+import vivae.arena.Arena;
+
 /**
  * Created by IntelliJ IDEA.
  * User: koutnij

@@ -1,5 +1,3 @@
-
-
 /**
  * This is VIVAE (Visual Vector Agent Environment)
  * a library allowing for simulations of agents in co-evolution 
@@ -8,7 +6,6 @@
  * at Czech Technical University in Prague
  * in 2008
  */
-
 package vivae.util;
 
 import vivae.arena.*;
@@ -18,24 +15,16 @@ import java.awt.geom.Point2D;
 import java.lang.reflect.Constructor;
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
 import java.util.Vector;
 import java.util.logging.Logger;
-
 import vivae.arena.parts.ArenaPart;
-
 
 /**
  * @author Petr Smejkal
  */
 public class ArenaPartsGenerator {
-
-    public static boolean isTextOutputEnable = true;
-
-    
-    public ArenaPartsGenerator(){}
 
     /**
      * Takes a map of shapes indexed by their type and creates Vector of ArenaParts.
@@ -44,21 +33,20 @@ public class ArenaPartsGenerator {
      * @param arena An Arena Reference is required for Robot's constructor.
      * @return Vector of ArenaParts
      */
-    public static Vector<ArenaPart> createParts(HashMap<String, Vector<Shape>> shapesWithTypeMap, int layer, Arena arena){
-        Vector<ArenaPart> v = new Vector<ArenaPart>();
-        Set<String> s = shapesWithTypeMap.keySet();
-
-        for (Iterator<String> it = s.iterator(); it.hasNext();) {
-            String type = (String) it.next();
-            for (Iterator<Shape> shapeIter = shapesWithTypeMap.get(type).iterator(); shapeIter.hasNext();) {
-                Shape shape = (Shape) shapeIter.next();
+    public static Vector<ArenaPart> createParts(
+            HashMap<String, Vector<Shape>> shapesWithTypeMap, int layer, Arena arena) {
+        Vector<ArenaPart> parts = new Vector<ArenaPart>();
+        Set<String> types = shapesWithTypeMap.keySet();
+        for (String type : types) {
+            for (Shape shape : shapesWithTypeMap.get(type)) {
                 ArenaPart part = createPart(shape, type, layer, arena);
-                if (part != null) v.add(part);
+                if (part != null) {
+                    parts.add(part);
+                }
             }
         }
-        return v;
+        return parts;
     }
-
 
     /**
      * Tries to create a child class of ArenaPart of exact name given as the second parameter.
@@ -68,54 +56,29 @@ public class ArenaPartsGenerator {
      * @param arena An Arena reference is required for Robot's constructor. 
      * @return A new ArenaPart child class.
      */
-    public static ArenaPart createPart(Shape shape, String type, int layer, Arena arena){
-        
+    public static ArenaPart createPart(Shape shape, String type, int layer, Arena arena) {
         Object[] constructorArgs = {shape, layer, arena};
         Class[] argTypes = {Shape.class, int.class, Arena.class};
-                         
+
         Object reflectedArenaPart = null;
-        //type = String.valueOf(Character.toUpperCase(type.charAt(0))).concat(type.substring(1)); //Makes first letter in type uppercase.
-
-        // no more uppercase
-
-        //type = "vivae.arena.parts.".concat(type);
-            
 
         try {
-            Constructor cons;
-            try{
-
-                cons = Class.forName("vivae.arena.parts.".concat(type)).getConstructor(argTypes);
-                type = "vivae.arena.parts.".concat(type);
-            }catch (Exception ex){
-                cons = Class.forName(type).getConstructor(argTypes);
+            Constructor cons = null;
+            //pokud jmeno nema balicek, tak se predpoklada vivae.arena.parts
+            if(!type.contains(".")) {
+                type = "vivae.arena.parts." + type;
             }
+            cons = Class.forName(type).getConstructor(argTypes);
             reflectedArenaPart = cons.newInstance(constructorArgs);
-            
             if (!ArenaPart.class.isAssignableFrom(Class.forName(type))) {
                 System.out.println("Error: Unrecognized type of Object: " + type);
             }
             return (ArenaPart) reflectedArenaPart;
         } catch (Exception ex) {
             Logger.getLogger("vivae").info("Class " + type + " cannot be constructed by reflection.");
-            ex.printStackTrace(); 
+            ex.printStackTrace();
             return null;
-
         }
-    }
-    /**
-     * Text output info during the construction of the parts.
-     *
-     */
-    public boolean isTextOutputEnable() {
-        return isTextOutputEnable;
-    }
-    /**
-     * Toggles on and off text output info during the construction of the parts.
-     *
-     */
-    public void setTextOutputEnable(boolean isTextOutputEnable) {
-        this.isTextOutputEnable = isTextOutputEnable;
     }
 
     /**
@@ -130,24 +93,21 @@ public class ArenaPartsGenerator {
         PathIterator pit = shape.getPathIterator(null);
         float[] coords = new float[6];
         int count = 0;
-        while(!pit.isDone()) {
+        while (!pit.isDone()) {
             int type = pit.currentSegment(coords);
-            switch(type) {
+            switch (type) {
                 case PathIterator.SEG_MOVETO:
-                    // fall through
+                // fall through
                 case PathIterator.SEG_LINETO:
                     list.add(new Point2D.Float(coords[0] - centerX, coords[1] - centerY));
                     break;
                 case PathIterator.SEG_CLOSE:
                     break;
                 default:
-                    //System.out.println("unexpected type = : " + type);
             }
             count++;
             pit.next();
         }
-        return list.toArray(new Point2D.Float[list.size()-1]);
+        return list.toArray(new Point2D.Float[list.size() - 1]);
     }
- 
-
 }

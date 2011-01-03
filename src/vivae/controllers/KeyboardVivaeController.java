@@ -45,6 +45,7 @@ public class KeyboardVivaeController extends VivaeController implements KeyListe
        //
     }
 
+       @Override
     public void keyPressed(KeyEvent e) {
 
         switch (e.getKeyCode()) {
@@ -67,6 +68,7 @@ public class KeyboardVivaeController extends VivaeController implements KeyListe
         }
     }
 
+    @Override
     public void keyReleased(KeyEvent e) {
         switch (e.getKeyCode()) {
             case KeyEvent.VK_LEFT:

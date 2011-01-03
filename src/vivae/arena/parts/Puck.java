@@ -24,7 +24,6 @@ import net.phys2d.raw.shapes.Circle;
 public abstract class Puck extends Movable {
 
     private int diameter;
-    private float mass;
     protected abstract int getDiameter();
     protected abstract float getMass();
 
@@ -33,23 +32,22 @@ public abstract class Puck extends Movable {
     public Puck(float x, float y){
         super(x,y);
         diameter = getDiameter();
-        mass = getMass();
         shape =  new Ellipse2D.Double(0,0,diameter, diameter);
         boundingCircleRadius = diameter;
         body = new Body("Puck", new Circle(diameter/2), 100f);
-       // body.setPosition(x + diameter/2,y + diameter/2);
+       
         // puck placed to the topleft corner - position in the svg file, not nice,
         // but fitness works correctly (position is not changed)
         body.setPosition(x,y);
         body.setRotation(0);
         setBaseDamping(0.3f);
-        body.setDamping(new Float(baseDamping));
-        body.setRotDamping(new Float(ROT_DAMPING_MUTIPLYING_CONST * baseDamping));
+        body.setDamping(baseDamping);
+        body.setRotDamping(ROT_DAMPING_MUTIPLYING_CONST * baseDamping);
     }
 	
+    @Override
     public AffineTransform getTranslation(){
             return AffineTransform.getTranslateInstance(x-diameter/2, y-diameter/2);
-
     }
 
     @Override

@@ -14,7 +14,8 @@ import java.io.File;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.Vector;
-
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import org.apache.batik.bridge.BridgeContext;
 import org.apache.batik.bridge.DocumentLoader;
 import org.apache.batik.bridge.UserAgent;
@@ -37,7 +38,7 @@ import org.w3c.dom.svg.SVGDocument;
  * 
  * @author Petr Smejkal
  */
-public class SVGShapeLoader extends Thread {
+public class SVGShapeLoader extends Thread{
 
     private Vector<Shape> shapes = new Vector<Shape>();
     private File file;
@@ -110,18 +111,17 @@ public class SVGShapeLoader extends Thread {
      */
     @Override
     public void run() {
-        //Logger.getLogger("vivae").info("zacatek ShapeLoaderu");
         shapesCount = 0;
         String tagName;
         String type = "";
         boolean arenaPartDefiningTag;
-        if(isReady) builder.run();
-        while(!isDoneGeneratingGVTTree){
-            try {
-                    sleep(500);
-            } catch (InterruptedException e) {
-                    e.printStackTrace();
-            }
+        if (isReady) {
+            builder.start();
+        }
+        try {
+            builder.join();
+        } catch (InterruptedException ex) {
+            Logger.getLogger(SVGShapeLoader.class.getName()).log(Level.SEVERE, null, ex);
         }
         GVTTreeWalker treeWalker = new GVTTreeWalker(rootGraphicsNode);
         GraphicsNode graphicsNode = treeWalker.getGVTRoot();
@@ -176,68 +176,7 @@ public class SVGShapeLoader extends Thread {
         addCurrentLayerMapToAllLayersMap();
         isAllDone = true;
     }
-/*
-public void run() {
-        Logger.getLogger("vivae").info("zacatek ShapeLoaderu");
-        shapesCount = 0;
-        String tagName;
-        if(isReady) builder.run();
-        while(!isDoneGeneratingGVTTree){
-            try {
-                    sleep(500);
-            } catch (InterruptedException e) {
-                    e.printStackTrace();
-            }
-        }
-        GVTTreeWalker treeWalker = new GVTTreeWalker(rootGraphicsNode);
-        GraphicsNode graphicsNode = treeWalker.getGVTRoot();
-        while((graphicsNode = treeWalker.nextGraphicsNode()) != null) {      	
-            Element el = ctx.getElement(graphicsNode);
-            tagName = el.getTagName();
-            if (el != null) {
-                NamedNodeMap map = el.getAttributes();
-                for (int i = 0; i < map.getLength(); i++) {
-                    Node attr = map.item(i);
-                    if(attr.getNodeName().equals("inkscape:label") && !tagName.equals("svg") && map.getNamedItem("inkscape:groupmode")==null){
-                        String type = attr.getTextContent();
-                        Shape shape = graphicsNode.getOutline();
-                        if(shapesWithTypeMapActualLevel.containsKey(type)) {
-                            shapesWithTypeMapActualLevel.get(type).add(shape);
-                        }
-                        else{
-                            Vector<Shape> v = new Vector<Shape>();
-                            v.add(shape);
-                            shapesWithTypeMapActualLevel.put(type, v);
-                        }
-                        shapesCount++;
-                    }
-                    else if("inkscape:groupmode".equals(attr.getNodeName()) && "layer".equals(attr.getTextContent())){
-                        addCurrenetLayerMapToAllLayersMap();
-                    }
-                    else if(attr.getNodeName().equals("width") && tagName.equals("svg")) {
-                        try {
-                            svgFileWidth = Integer.parseInt(attr.getTextContent());
-                        } catch (NumberFormatException nfe) {
-                            nfe.printStackTrace();
-                        }
-                    }
-                    else if(attr.getNodeName().equals("height") && tagName.equals("svg")) {
-                        try {
-                            svgFileHeight = Integer.parseInt(attr.getTextContent());
-                        } catch (NumberFormatException nfe) {
-                            nfe.printStackTrace();
-                        }
-                    }
-                    
 
-                }
-            }
-        }
-        addCurrenetLayerMapToAllLayersMap();
-        isAllDone = true;
-    }
-*/
-    
 
     private void addCurrentLayerMapToAllLayersMap(){
             HashMap<String, Vector<Shape>> mapForThisLevel = new HashMap<String, Vector<Shape>>();

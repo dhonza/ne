@@ -6,7 +6,6 @@
  * at Czech Technical University in Prague
  * in 2008
  */
-
 package vivae.arena.parts;
 
 import java.awt.Color;
@@ -34,27 +33,25 @@ import vivae.util.Util;
  */
 public class Robot extends Active {
 
-    public static int robotsCounter =0;
+    public static int robotsCounter = 0;
     public static final float ACCELERATION = 15f;
     public static final float ROTATION = 80f;
-    protected static final float MAX_SPEED = 50f; 
+    protected static final float MAX_SPEED = 50f;
     protected int diameter;
-    protected Vector<Sensor> sensors; // = new Vector<Sensor>();
+    protected Vector<Sensor> sensors;
     protected boolean isShowingSensors = true;
     protected int sensorNumber = 0;
-    protected Map<Integer, Sensor> sensorsMap; // = new HashMap<Integer, Sensor>();
+    protected Map<Integer, Sensor> sensorsMap;
     protected World world;
-    
 
-    public Robot(float x, float y){
-         super(x,y);
-         sensors = new Vector<Sensor>();
-         sensorsMap = new HashMap<Integer,Sensor>();
+    public Robot(float x, float y) {
+        super(x, y);
+        sensors = new Vector<Sensor>();
+        sensorsMap = new HashMap<Integer, Sensor>();
     }
-    
-    
+
     public Robot(Shape shape, int layer, Arena arena) {
-        this((float) shape.getBounds2D().getCenterX(), (float)shape.getBounds2D().getCenterY(), arena);
+        this((float) shape.getBounds2D().getCenterX(), (float) shape.getBounds2D().getCenterY(), arena);
     }
 
     public Robot(float x, float y, Arena arena) {
@@ -67,46 +64,29 @@ public class Robot extends Active {
         body = new Body("Robot", new Box(diameter, diameter), 50f);
         body.setPosition((float) x, (float) y);
         body.setRotation(0);
-        body.setDamping(new Float(baseDamping));
-        body.setRotDamping(new Float(ROT_DAMPING_MUTIPLYING_CONST * baseDamping));
-        setShape(new Rectangle2D.Double(0,0,diameter, diameter));
+        body.setDamping(baseDamping);
+        body.setRotDamping(ROT_DAMPING_MUTIPLYING_CONST * baseDamping);
+        setShape(new Rectangle2D.Double(0, 0, diameter, diameter));
         Rectangle r = getShape().getBounds();
-        centerX = new Float(r.getCenterX());
-        centerY = new Float(r.getCenterY());
-        /*setSensors(3, -Math.PI/6, Math.PI/6);*/
-    }
-    /*
-    public void setSensors(int howMany, double startingAngle, double angleIncrement){
-        for(int i = 0; i < howMany; i++){
-            addSensor(startingAngle + i*angleIncrement);
-        }
-    }
-         */
-    @Override
-    public void moveComponent(){
-//        speed = body.getVelocity().length();
-//        if (speed != 0) {
-//            inMotion = true;
-//        }
-        inMotion = true;
-        direction = body.getRotation();
-        net.phys2d.math.ROVector2f p =body.getPosition();
-        x = p.getX();
-        y = p.getY();
-        odometer+= Util.euclideanDistance(lastX,lastY,x,y);
-        lastX=x;
-        lastY=y;
-        /*
-        for (Iterator<Sensor> sIter = sensors.iterator(); sIter.hasNext();) {
-            Sensor s = (Sensor) sIter.next();
-            s.moveComponent();
-        }     */
-        
+        centerX = (float) r.getCenterX();
+        centerY = (float) r.getCenterY();
     }
 
     @Override
-    public AffineTransform getTranslation(){
-        AffineTransform af = AffineTransform.getTranslateInstance(x - diameter/2, y - diameter/2);
+    public void moveComponent() {
+        inMotion = true;
+        direction = body.getRotation();
+        net.phys2d.math.ROVector2f p = body.getPosition();
+        x = p.getX();
+        y = p.getY();
+        odometer += Util.euclideanDistance(lastX, lastY, x, y);
+        lastX = x;
+        lastY = y;
+    }
+
+    @Override
+    public AffineTransform getTranslation() {
+        AffineTransform af = AffineTransform.getTranslateInstance(x - diameter / 2, y - diameter / 2);
         af.rotate(direction, centerX, centerY);
         return af;
     }
@@ -115,49 +95,46 @@ public class Robot extends Active {
     public void paintComponent(Graphics g) {
         Graphics2D g2 = (Graphics2D) g;
         Object hint = new Object();
-        if(isAntialiased()){
+        if (isAntialiased()) {
             hint = g2.getRenderingHint(RenderingHints.KEY_ANTIALIASING);
-            g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING,RenderingHints.VALUE_ANTIALIAS_ON);	
+            g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
         }
-        translation = getTranslation();        
+        translation = getTranslation();
         Color oldColor = g2.getColor();
-        g2.setColor(new Color(230,230,250));
+        g2.setColor(new Color(230, 230, 250));
         g2.fill(translation.createTransformedShape(getShape()));
         g2.setColor(Color.BLACK);
         g2.draw(translation.createTransformedShape(getShape()));
-        /*
-        if(isShowingSensors){
-                for (Iterator<Sensor> sIter = sensors.iterator(); sIter.hasNext();) {
-                        Sensor s = (Sensor) sIter.next();
-                        s.paintComponent(g2);
-                }
-        }  */
-        if(isShowingStatusFrame) paintStatusFrame(g2);
+        if (isShowingStatusFrame) {
+            paintStatusFrame(g2);
+        }
         g2.setColor(oldColor);
-        if(isAntialiased()) g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING,hint);
+        if (isAntialiased()) {
+            g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, hint);
+        }
     }
 
     @Override
-     public void accelerate(float s) {
-        float spd = (float)this.speed;
-        spd+=s;
-        spd=Math.max(Math.min(spd,this.MAX_SPEED),0);
-        if(body.getVelocity().length()<MAX_SPEED){
-          float dirx = s*(float)Math.cos(body.getRotation() - Math.PI/2);
-          float diry = s*(float)Math.sin(body.getRotation() - Math.PI/2);
-          body.adjustVelocity(new Vector2f(dirx,diry));
+    public void accelerate(float s) {
+        float spd = (float) this.speed;
+        spd += s;
+        spd = Math.max(Math.min(spd, this.MAX_SPEED), 0);
+        if (body.getVelocity().length() < MAX_SPEED) {
+            float dirx = s * (float) Math.cos(body.getRotation() - Math.PI / 2);
+            float diry = s * (float) Math.sin(body.getRotation() - Math.PI / 2);
+            body.adjustVelocity(new Vector2f(dirx, diry));
         }
-      }
+    }
 
     @Override
     public void decelerate(float s) {
         // to be fixed, this implementation does not reflect the reality
-        float spd = (float)this.speed;
-        spd-=s;
-        spd=Math.max(Math.min(spd,this.MAX_SPEED),0);
-        float dx = (float) (speed*(float)Math.cos(body.getRotation() - Math.PI/2));
-        float dy = (float) (speed*(float)Math.sin(body.getRotation() - Math.PI/2));
-        body.adjustVelocity(new Vector2f(-ACCELERATION*dx, -ACCELERATION*dy));
+        float spd = (float) this.speed;
+        spd -= s;
+        spd = Math.max(Math.min(spd, this.MAX_SPEED), 0);
+        float dx = (float) (speed * (float) Math.cos(body.getRotation() - Math.PI / 2));
+        float dy = (float) (speed * (float) Math.sin(body.getRotation() - Math.PI / 2));
+        body.adjustVelocity(new Vector2f(-ACCELERATION * dx, -ACCELERATION * dy));
     }
 
     @Override
@@ -192,27 +169,18 @@ public class Robot extends Active {
     }
 
     @Override
-    public String toString(){
+    public String toString() {
         return "Robot " + myNumber;
     }
 
     public Vector<Sensor> getSensors() {
         return sensors;
     }
-   /*
-    public void addSensor(Double angle){
-        Sensor s = new Sensor(this, angle, sensorNumber);
-        sensors.add(s);
-        sensorsMap.put(sensorNumber, s);
-        sensorNumber++;
-    }  */
 
     @Override
     public void reportObjectOnSight(Sensor s, Body b) {
         System.out.println("Object seen from sensor " + s);
     }
-
-
 
     public World getWorld() {
         return world;
@@ -225,6 +193,5 @@ public class Robot extends Active {
     public void setShowingSensors(boolean showingSensors) {
         isShowingSensors = showingSensors;
     }
-
 }
 
