@@ -108,7 +108,7 @@
        height="20"
        x="150"
        y="360"
-       inkscape:label="robots.vivae.example.MyRobot" />
+       inkscape:label="vivae.example.MyRobot" />
     <path
        style="fill:#ff0000;fill-opacity:1;fill-rule:evenodd;stroke:none;stroke-width:1.20000005;stroke-linecap:square;stroke-miterlimit:4;stroke-opacity:1"
        d="M 105,5 L 220,5 L 220,120 L 195,120 L 195,40 L 130,40 L 130,120 L 105,120 L 105,5 z"

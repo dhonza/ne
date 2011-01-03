@@ -98,7 +98,7 @@
        height="20"
        x="560"
        y="430"
-       inkscape:label="robots.vivae.example.FRNNControlledRobot" />
+       inkscape:label="vivae.example.FRNNControlledRobot" />
     <rect
        style="fill:#000000;fill-opacity:1;fill-rule:evenodd;stroke:#000000;stroke-width:1;stroke-linecap:square;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
        id="rect2402"
@@ -142,7 +142,7 @@
        height="20"
        x="130.68468"
        y="324.7027"
-       inkscape:label="robots.vivae.example.FRNNControlledRobot" />
+       inkscape:label="vivae.example.FRNNControlledRobot" />
     <path
        style="fill:#ff0000;fill-opacity:1;fill-rule:evenodd;stroke:none;stroke-width:1.20000005;stroke-linecap:square;stroke-miterlimit:4;stroke-opacity:1"
        d="M 270,270 L 350,270 L 350,300 L 270,300 L 270,270 z"
@@ -156,7 +156,7 @@
        height="20"
        x="300"
        y="400"
-       inkscape:label="robots.vivae.example.FRNNControlledRobot" />
+       inkscape:label="vivae.example.FRNNControlledRobot" />
     <rect
        style="fill:#999999;fill-opacity:1;fill-rule:evenodd;stroke:#000000;stroke-width:1;stroke-linecap:square;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
        id="rect2394"
