@@ -1,4 +1,4 @@
-package nn;
+package vivae.controllers.nn;
 
 import java.util.Arrays;
 import static java.lang.System.*;

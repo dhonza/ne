@@ -10,7 +10,7 @@ package vivae.example;
 
 import java.util.Vector;
 import javax.swing.JFrame;
-import nn.FRNN;
+import vivae.controllers.nn.FRNN;
 import vivae.arena.parts.Active;
 import vivae.arena.Arena;
 import vivae.util.Util;

@@ -180,9 +180,9 @@ public class Main {
         experiment.setupExperiment();
 
         //when using joystick don;t forget to set VM option -Djava.library.path=lib
-//        JoystickDriver joystickController = new JoystickDriver();
-//        JFrame frame = new MainForm(robot, joystickController);
-        JFrame frame = new MainForm(robot);
+        JoystickDriver joystickController = new JoystickDriver();
+        JFrame frame = new MainForm(robot, joystickController);
+//        JFrame frame = new MainForm(robot);
         frame.setVisible(true);
 
         experiment.startExperiment();
@@ -201,9 +201,9 @@ public class Main {
 //        runJoystickHWDemo();
 //        runFileReaderHWDemo();
 //        runMultipleDemo();
-        runHWDemo();
+//        runHWDemo();
 //        runHWUserUIDemo();
-//        runVivaeUserUI();
+        runVivaeUserUI();
 //        runFileWriterDemo();
     }
 }

@@ -114,9 +114,10 @@ public class NetSubstrateBuilder implements IEvaluableSubstrateBuilder {
                     Neuron to = nodeMap.get(nodeTo);
                     //number of incoming links
                     int incomingLinks = connection.getFrom().getNodes().length;
-                    if (incomingLinks == 1) {
-                        throw new IllegalStateException("Incorrect!!! incomingLinks");
-                    }
+                    //commented out because this code prevented from use of bias neurons
+//                    if (incomingLinks == 1) {
+//                        throw new IllegalStateException("Incorrect!!! incomingLinks");
+//                    }
                     double weight = weightEvaluator.evaluate(aCPPN, aCPPNOutput, nodeFrom, nodeTo, incomingLinks);
                     if (weight == 0.0) {
                         continue;
