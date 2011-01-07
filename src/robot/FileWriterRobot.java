@@ -34,6 +34,10 @@ public class FileWriterRobot implements IRobotInterface {
         stream.println(left + " " + right);
     }
 
+    public double[] getSensorData() {
+        throw new IllegalStateException("FileWriterRobot has no sensors!");
+    }
+
     public void close() {
         stream.close();
     }

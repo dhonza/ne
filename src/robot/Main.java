@@ -18,7 +18,7 @@ import java.io.IOException;
 public class Main {
 
     public static void runVivaeDemo() {
-        IRobotInterface robot = new VivaeRobot();
+        IRobotInterface robot = new VivaeRobot(null);
         IRobotController controller = new DemoController(robot);
         VivaeControllerAdapter vivaeControllerAdapter = new VivaeControllerAdapter(controller);
 
@@ -135,7 +135,7 @@ public class Main {
             HardwareRobot robot2 = new HardwareRobot("localhost", 6005);
             robot2.connect();
 
-            VivaeRobot robot3 = new VivaeRobot();
+            VivaeRobot robot3 = new VivaeRobot(null);
 
             IRobotController controller1 = new DemoController(robot1);
             IRobotController controller2 = new DemoController(robot2);
@@ -145,7 +145,7 @@ public class Main {
             VivaeControllerAdapter vivaeControllerAdapter = new VivaeControllerAdapter(controller3);
 
             BuildExperiment experiment = new BuildExperiment(vivaeControllerAdapter);
-            experiment.createArena("cfg/vivae/scenarios/arena3.svg", true);
+            experiment.createArena("cfg/vivae/scenarios/arena3_h.svg", true);
             experiment.setupExperiment();
 //            experiment.stepExperiment();
 
@@ -170,7 +170,7 @@ public class Main {
 //        IHardwareRobotInterface robot = new HardwareRobot(
 //                "localhost", 6005);
 
-        IRobotInterface robot = new VivaeRobot();
+        IRobotInterface robot = new VivaeRobot(null);
 
         IRobotController controller = new UIUserController(robot);
         VivaeControllerAdapter vivaeControllerAdapter = new VivaeControllerAdapter(controller);
@@ -197,13 +197,13 @@ public class Main {
     }
 
     public static void main(String[] args) {
-//        runVivaeDemo();
+        runVivaeDemo();
 //        runJoystickHWDemo();
 //        runFileReaderHWDemo();
 //        runMultipleDemo();
 //        runHWDemo();
 //        runHWUserUIDemo();
-        runVivaeUserUI();
+//        runVivaeUserUI();
 //        runFileWriterDemo();
     }
 }

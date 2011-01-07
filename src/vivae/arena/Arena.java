@@ -146,7 +146,7 @@ public class Arena extends JPanel implements KeyListener, Runnable {
 
     public boolean capture = false;
     private boolean isEnclosedWithWalls = false;
-    private final boolean DEBUG_FRICTION_CACHE = true;
+    private final boolean DEBUG_FRICTION_CACHE = false;
     private String svgFileName = "";
 
     /**

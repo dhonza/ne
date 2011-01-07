@@ -51,4 +51,8 @@ public class HardwareRobotAdapter implements IHardwareRobotInterface {
     public void setWheelSpeed(double left, double right) {
         adaptedRobot.setWheelSpeed(left, right);
     }
+
+    public double[] getSensorData() {
+        throw new IllegalStateException("Not yet implemented!");
+    }
 }

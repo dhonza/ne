@@ -21,4 +21,10 @@ public class ArrayHelper {
             array[i] = min++;
         }
     }
+
+    public static void printArray(double[] array) {
+        for (double v : array) {
+            System.out.print(v + " ");
+        }
+    }
 }

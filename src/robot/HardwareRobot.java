@@ -421,6 +421,10 @@ public class HardwareRobot implements IHardwareRobotInterface {
         return socket.isConnected();
     }
 
+    public double[] getSensorData() {
+        throw new IllegalStateException("Not yet implemented!");
+    }
+
     @Override
     public void finalize() {
         try {

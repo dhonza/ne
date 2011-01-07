@@ -11,6 +11,6 @@ public interface IRobotInterface {
 	
 	public void setWheelSpeed(double left, double right);
 	
-//	public double[] getSensorData();
+	public double[] getSensorData();
 	
 }

@@ -7,15 +7,19 @@ import hyper.evaluate.IProblem;
 import hyper.evaluate.IProblemGeneralization;
 import hyper.experiments.reco.ReportStorage;
 import hyper.substrate.ISubstrate;
+import robot.IRobotInterface;
+import robot.VivaeControllerAdapter;
+import robot.VivaeRobot;
 import vivae.arena.Arena;
 import vivae.arena.parts.Active;
-import vivae.example.FRNNController;
 import vivae.fitness.AverageSpeed;
 import vivae.fitness.FitnessFunction;
 import vivae.util.FrictionBuffer;
 
 import javax.swing.*;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Scanner;
 import java.util.Vector;
 
 /**
@@ -25,9 +29,10 @@ import java.util.Vector;
  * Time: 3:50 PM
  * To change this template use File | Settings | File Templates.
  */
-public class Robots implements IProblem<INet>, IProblemGeneralization<INet> {
+public class Robots implements IProblem<INet> {
     private Arena arena = null;
     private Vector<Active> agents = null;
+    private VivaeControllerAdapter vivaeControllerAdapter;
 
     private int inputs = 5;
     private int hiddenOutputs = 3;
@@ -36,24 +41,41 @@ public class Robots implements IProblem<INet>, IProblemGeneralization<INet> {
     }
 
     public EvaluationInfo evaluate(INet hyperNet) {
-        createArena("cfg/vivae/scenarios/arena1.svg", true);
-        setupAgent(0, hyperNet, 50);
-
+        createArena("cfg/vivae/scenarios/arena3_h.svg", false);
         FitnessFunction avg = new AverageSpeed(arena);
+
+        IRobotInterface robot = new VivaeRobot((NetControlledRobot) agents.get(0));
+        NetController controller = new NetController(robot, hyperNet);
+        vivaeControllerAdapter = new VivaeControllerAdapter(controller);
+
+        setupExperiment();
+        arena.run();
 
         return new EvaluationInfo(avg.getFitness());
     }
 
     public boolean isSolved() {
-        return false;  //To change body of implemented methods use File | Settings | File Templates.
+        return false;
     }
 
     public void show(INet hyperNet) {
-        //To change body of implemented methods use File | Settings | File Templates.
+        System.out.println("Press any key");
+        Scanner s = new Scanner(System.in);
+        String token = s.next();
+        createArena("cfg/vivae/scenarios/oval1_h.svg", true);
+        FitnessFunction avg = new AverageSpeed(arena);
+
+        IRobotInterface robot = new VivaeRobot((NetControlledRobot) agents.get(0));
+        NetController controller = new NetController(robot, hyperNet);
+        vivaeControllerAdapter = new VivaeControllerAdapter(controller);
+
+        setupExperiment();
+        arena.run();
+        System.out.println("Fitness reached: " + avg.getFitness());
     }
 
     public double getTargetFitness() {
-        return 0;  //To change body of implemented methods use File | Settings | File Templates.
+        return 10.0;
     }
 
     public ISubstrate getSubstrate() {
@@ -61,21 +83,15 @@ public class Robots implements IProblem<INet>, IProblemGeneralization<INet> {
     }
 
     public List<String> getEvaluationInfoItemNames() {
-        return null;  //To change body of implemented methods use File | Settings | File Templates.
-    }
-
-    public EvaluationInfo evaluateGeneralization(INet hyperNet) {
-        return null;  //To change body of implemented methods use File | Settings | File Templates.
-    }
-
-    public void showGeneralization(INet hyperNet) {
-        //To change body of implemented methods use File | Settings | File Templates.
+        List<String> listOfNames = new ArrayList<String>();
+        return listOfNames;
     }
 
     private void createArena(String svgFilename, boolean visible) {
         if (visible) {
             JFrame f = new JFrame("Hyper Experiment");
             arena = new Arena(f);
+            arena.totalStepsPerSimulation = 3000;
             arena.loadScenario(svgFilename);
             arena.setAllArenaPartsAntialiased(true);
             f.setBounds(50, 0, arena.screenWidth, arena.screenHeight + 30);
@@ -96,14 +112,20 @@ public class Robots implements IProblem<INet>, IProblemGeneralization<INet> {
         agents = arena.getActives();
     }
 
-    public void setupAgent(int number, INet hyperNet, double frictionDistance) {
+    public void setupAgent(int number) {
         Active agent = agents.get(number);
-        double sangle = -Math.PI;
-//        double ai = Math.PI / (snum  - 1);
-        FRNNController frnnc = new FRNNController();
-        arena.registerController(agent, frnnc);
-//        if (agent instanceof FRNNControlledRobot) {
-//            ((FRNNControlledRobot) agent).setSensors(snum / 2, sangle, ai, maxDistance, frictionDistance);
-//        }
+        arena.registerController(agent, vivaeControllerAdapter);
+
+        if (agent instanceof NetControlledRobot) {
+            ((NetControlledRobot) agent).setSensors(inputs, -Math.PI / 2, Math.PI / (inputs - 1), 30);
+        }
+    }
+
+    public void setupExperiment() {
+        int agentnum = agents.size();
+        for (int i = 0; i < agentnum; i++) {
+            setupAgent(i);
+        }
+        arena.init();
     }
 }
