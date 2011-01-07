@@ -18,13 +18,13 @@ import opt.cmaes.CMAESBasicProgressPrinter;
 public class CMAESProgressPrinter1D extends CommonProgressPrinter1D {
     final private CMAES cmaes;
 
-    public CMAESProgressPrinter1D(CMAES cmaes, IProgressPrinter progressPrinter, IProblem problem, ParameterCombination parameters) {
-        super(progressPrinter, problem, parameters);
+    public CMAESProgressPrinter1D(CMAES cmaes, IProgressPrinter progressPrinter, IProblem problem, ReportStorage reportStorage, ParameterCombination parameters) {
+        super(progressPrinter, problem, reportStorage, parameters);
         this.cmaes = cmaes;
     }
 
-    public CMAESProgressPrinter1D(CMAES cmaes, IProblem problem, ParameterCombination parameters) {
-        this(cmaes, new CMAESBasicProgressPrinter(cmaes), problem, parameters);
+    public CMAESProgressPrinter1D(CMAES cmaes, IProblem problem, ReportStorage reportStorage, ParameterCombination parameters) {
+        this(cmaes, new CMAESBasicProgressPrinter(cmaes), problem, reportStorage, parameters);
     }
 
     @Override

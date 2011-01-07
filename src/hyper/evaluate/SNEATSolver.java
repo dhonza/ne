@@ -5,8 +5,8 @@ import common.evolution.SolvedStopCondition;
 import common.pmatrix.ParameterCombination;
 import common.stats.Stats;
 import hyper.evaluate.printer.SNEATProgressPrinter1D;
-import hyper.experiments.reco.FileProgressPrinter;
-import hyper.experiments.reco.ReportStorage;
+import hyper.evaluate.printer.FileProgressPrinter;
+import hyper.evaluate.printer.ReportStorage;
 import sneat.MaxEvaluationsStopCondition;
 import sneat.MaxGenerationsStopCondition;
 import sneat.SNEAT;
@@ -46,7 +46,7 @@ public class SNEATSolver extends AbstractSolver {
         sneat = new SNEAT(exp);
 
         solver = new EvolutionaryAlgorithmSolver(sneat, stats, problem instanceof IProblemGeneralization);
-        solver.addProgressPrinter(new SNEATProgressPrinter1D(sneat, problem, parameters));
+        solver.addProgressPrinter(new SNEATProgressPrinter1D(sneat, problem, reportStorage, parameters));
         solver.addProgressPrinter(new FileProgressPrinter(sneat, problem, reportStorage, parameters));
         solver.addStopCondition(new MaxGenerationsStopCondition(sneat));
         solver.addStopCondition(new MaxEvaluationsStopCondition(sneat));

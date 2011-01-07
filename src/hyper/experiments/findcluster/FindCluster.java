@@ -6,7 +6,7 @@ import common.net.INet;
 import common.pmatrix.ParameterCombination;
 import hyper.evaluate.IProblem;
 import hyper.evaluate.IProblemGeneralization;
-import hyper.experiments.reco.ReportStorage;
+import hyper.evaluate.printer.ReportStorage;
 import hyper.substrate.ISubstrate;
 
 import java.util.ArrayList;

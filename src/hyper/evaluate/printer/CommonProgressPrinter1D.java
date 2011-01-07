@@ -18,6 +18,7 @@ import hyper.evaluate.IProblem;
 abstract public class CommonProgressPrinter1D implements IProgressPrinter {
     final private IProgressPrinter progressPrinter;
     final protected IProblem problem;
+    final protected ReportStorage reportStorage;
     final protected ParameterCombination parameters;
 
     protected boolean generation = true;
@@ -30,9 +31,10 @@ abstract public class CommonProgressPrinter1D implements IProgressPrinter {
     protected boolean finishedShowHyperNet = true;
     protected boolean finishedShowProblem = true;
 
-    public CommonProgressPrinter1D(IProgressPrinter progressPrinter, IProblem problem, ParameterCombination parameters) {
+    public CommonProgressPrinter1D(IProgressPrinter progressPrinter, IProblem problem, ReportStorage reportStorage, ParameterCombination parameters) {
         this.progressPrinter = progressPrinter;
         this.problem = problem;
+        this.reportStorage = reportStorage;
         this.parameters = parameters;
         setParameters();
     }
@@ -81,7 +83,7 @@ abstract public class CommonProgressPrinter1D implements IProgressPrinter {
 
         System.out.println("");
 
-        storeBSFCPPN("best.xml");
+        storeBSFCPPN("bestCPPN_");
 
         /*
         System.out.println("trees := " + gp.getBestSoFar().toMathematicaExpression());

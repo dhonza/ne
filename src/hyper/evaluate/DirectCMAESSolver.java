@@ -6,8 +6,8 @@ import common.pmatrix.ParameterCombination;
 import common.pmatrix.Utils;
 import common.stats.Stats;
 import hyper.evaluate.printer.CMAESProgressPrinter1D;
-import hyper.experiments.reco.FileProgressPrinter;
-import hyper.experiments.reco.ReportStorage;
+import hyper.evaluate.printer.FileProgressPrinter;
+import hyper.evaluate.printer.ReportStorage;
 import opt.cmaes.CMAES;
 import opt.cmaes.MaxEvaluationsStopCondition;
 import opt.cmaes.MaxGenerationsStopCondition;
@@ -32,7 +32,7 @@ public class DirectCMAESSolver extends AbstractSolver {
         Utils.setParameters(parameters, cmaes.getOptions(), "DIRECT_CMAES");
 
         solver = new EvolutionaryAlgorithmSolver(cmaes, stats, problem instanceof IProblemGeneralization);
-        solver.addProgressPrinter(new CMAESProgressPrinter1D(cmaes, problem, parameters));
+        solver.addProgressPrinter(new CMAESProgressPrinter1D(cmaes, problem, reportStorage, parameters));
         solver.addProgressPrinter(new FileProgressPrinter(cmaes, problem, reportStorage, parameters));
         solver.addStopCondition(new MaxGenerationsStopCondition(cmaes));
         solver.addStopCondition(new MaxEvaluationsStopCondition(cmaes));

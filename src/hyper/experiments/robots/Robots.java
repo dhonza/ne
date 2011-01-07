@@ -4,8 +4,7 @@ import common.evolution.EvaluationInfo;
 import common.net.INet;
 import common.pmatrix.ParameterCombination;
 import hyper.evaluate.IProblem;
-import hyper.evaluate.IProblemGeneralization;
-import hyper.experiments.reco.ReportStorage;
+import hyper.evaluate.printer.ReportStorage;
 import hyper.substrate.ISubstrate;
 import robot.IRobotInterface;
 import robot.VivaeControllerAdapter;
@@ -41,7 +40,7 @@ public class Robots implements IProblem<INet> {
     }
 
     public EvaluationInfo evaluate(INet hyperNet) {
-        createArena("cfg/vivae/scenarios/arena3_h.svg", false);
+        createArena("cfg/vivae/scenarios/oval1_h.svg", false);
         FitnessFunction avg = new AverageSpeed(arena);
 
         IRobotInterface robot = new VivaeRobot((NetControlledRobot) agents.get(0));
@@ -59,9 +58,9 @@ public class Robots implements IProblem<INet> {
     }
 
     public void show(INet hyperNet) {
-        System.out.println("Press any key");
-        Scanner s = new Scanner(System.in);
-        String token = s.next();
+//        System.out.println("Press any key");
+//        Scanner s = new Scanner(System.in);
+//        String token = s.next();
         createArena("cfg/vivae/scenarios/oval1_h.svg", true);
         FitnessFunction avg = new AverageSpeed(arena);
 
@@ -91,7 +90,7 @@ public class Robots implements IProblem<INet> {
         if (visible) {
             JFrame f = new JFrame("Hyper Experiment");
             arena = new Arena(f);
-            arena.totalStepsPerSimulation = 3000;
+            arena.totalStepsPerSimulation = 1500;
             arena.loadScenario(svgFilename);
             arena.setAllArenaPartsAntialiased(true);
             f.setBounds(50, 0, arena.screenWidth, arena.screenHeight + 30);

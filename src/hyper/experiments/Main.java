@@ -7,7 +7,7 @@ import common.pmatrix.ParameterMatrixStorage;
 import common.stats.Stats;
 import hyper.evaluate.Solver;
 import hyper.evaluate.SolverFactory;
-import hyper.experiments.reco.ReportStorage;
+import hyper.evaluate.printer.ReportStorage;
 
 import java.io.File;
 

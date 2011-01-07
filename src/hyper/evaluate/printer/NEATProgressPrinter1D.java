@@ -21,14 +21,14 @@ public class NEATProgressPrinter1D extends CommonProgressPrinter1D {
     final private NEAT neat;
     final private Population pop;
 
-    public NEATProgressPrinter1D(NEAT neat, IProgressPrinter progressPrinter, IProblem problem, ParameterCombination parameters) {
-        super(progressPrinter, problem, parameters);
+    public NEATProgressPrinter1D(NEAT neat, IProgressPrinter progressPrinter, IProblem problem, ReportStorage reportStorage, ParameterCombination parameters) {
+        super(progressPrinter, problem, reportStorage, parameters);
         this.neat = neat;
         this.pop = neat.getPopulation();
     }
 
-    public NEATProgressPrinter1D(NEAT neat, IProblem problem, ParameterCombination parameters) {
-        this(neat, new NEATBasicProgressPrinter(neat), problem, parameters);
+    public NEATProgressPrinter1D(NEAT neat, IProblem problem, ReportStorage reportStorage, ParameterCombination parameters) {
+        this(neat, new NEATBasicProgressPrinter(neat), problem, reportStorage, parameters);
     }
 
     @Override
@@ -38,6 +38,6 @@ public class NEATProgressPrinter1D extends CommonProgressPrinter1D {
 
     @Override
     protected void storeBSFCPPN(String fileName) {
-        NetStorage.save(pop.getBestSoFarNet(), fileName);
+        NetStorage.save(pop.getBestSoFarNet(), reportStorage.getCompleteFilename(fileName, ".xml"));
     }
 }

@@ -8,7 +8,7 @@ import common.pmatrix.ParameterCombination;
 import common.stats.Stats;
 import hyper.builder.IEvaluableSubstrateBuilder;
 import hyper.builder.SubstrateBuilderFactory;
-import hyper.experiments.reco.ReportStorage;
+import hyper.evaluate.printer.ReportStorage;
 
 import java.util.ArrayList;
 import java.util.List;

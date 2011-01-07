@@ -1,4 +1,4 @@
-package hyper.experiments.reco;
+package hyper.evaluate.printer;
 
 import common.stats.Stats;
 import org.apache.commons.io.FileUtils;
@@ -136,5 +136,12 @@ public class ReportStorage implements Serializable {
         } catch (IOException e) {
             System.err.println("Cannot save single run auxiliary file: " + file);
         }
+    }
+
+    public String getCompleteFilename(String prefix, String suffix) {
+        //TODO this code is copy-pasted through this class
+        return (new File(baseDir, prefix +
+                String.format("%03d", parameterCombinationId) + "_" +
+                String.format("%03d", experimentId) + suffix)).toString();
     }
 }

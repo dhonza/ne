@@ -9,9 +9,9 @@ import common.net.linked.Neuron;
 import common.pmatrix.ParameterCombination;
 import common.pmatrix.Utils;
 import common.stats.Stats;
+import hyper.evaluate.printer.FileProgressPrinter;
 import hyper.evaluate.printer.NEATProgressPrinter1D;
-import hyper.experiments.reco.FileProgressPrinter;
-import hyper.experiments.reco.ReportStorage;
+import hyper.evaluate.printer.ReportStorage;
 import neat.*;
 
 /**
@@ -45,7 +45,7 @@ public class NEATSolver extends AbstractSolver {
         neat.setPopulation(population);
 
         solver = new EvolutionaryAlgorithmSolver(neat, stats, problem instanceof IProblemGeneralization);
-        solver.addProgressPrinter(new NEATProgressPrinter1D(neat, problem, parameters));
+        solver.addProgressPrinter(new NEATProgressPrinter1D(neat, problem, reportStorage, parameters));
         solver.addProgressPrinter(new FileProgressPrinter(neat, problem, reportStorage, parameters));
         solver.addStopCondition(new MaxGenerationsStopCondition(neat));
         solver.addStopCondition(new MaxEvaluationsStopCondition(neat));

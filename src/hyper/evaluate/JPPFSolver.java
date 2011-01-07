@@ -3,7 +3,7 @@ package hyper.evaluate;
 import common.RND;
 import common.pmatrix.ParameterCombination;
 import common.stats.Stats;
-import hyper.experiments.reco.ReportStorage;
+import hyper.evaluate.printer.ReportStorage;
 import org.jppf.server.protocol.JPPFTask;
 
 /**

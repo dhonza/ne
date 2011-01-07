@@ -24,13 +24,13 @@ import java.io.File;
 public class SNEATProgressPrinter1D extends CommonProgressPrinter1D {
     final private SNEAT sneat;
 
-    public SNEATProgressPrinter1D(SNEAT sneat, IProgressPrinter progressPrinter, IProblem problem, ParameterCombination parameters) {
-        super(progressPrinter, problem, parameters);
+    public SNEATProgressPrinter1D(SNEAT sneat, IProgressPrinter progressPrinter, IProblem problem, ReportStorage reportStorage, ParameterCombination parameters) {
+        super(progressPrinter, problem, reportStorage,parameters);
         this.sneat = sneat;
     }
 
-    public SNEATProgressPrinter1D(SNEAT sneat, IProblem problem, ParameterCombination parameters) {
-        this(sneat, new SNEATBasicProgressPrinter(sneat), problem, parameters);
+    public SNEATProgressPrinter1D(SNEAT sneat, IProblem problem, ReportStorage reportStorage, ParameterCombination parameters) {
+        this(sneat, new SNEATBasicProgressPrinter(sneat), problem, reportStorage, parameters);
     }
 
     @Override
@@ -41,6 +41,8 @@ public class SNEATProgressPrinter1D extends CommonProgressPrinter1D {
 
     @Override
     protected void storeBSFCPPN(String fileName) {
-        XmlGenomeWriterStatic.Write(new File(fileName), (NeatGenome) sneat.getEA().getBestGenome(), ActivationFunctionFactory.getActivationFunction("NullFn"));
+        XmlGenomeWriterStatic.Write(new File(reportStorage.getCompleteFilename(fileName, ".xml")),
+                (NeatGenome) sneat.getEA().getBestGenome(),
+                ActivationFunctionFactory.getActivationFunction("NullFn"));
     }
 }

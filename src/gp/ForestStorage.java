@@ -10,6 +10,10 @@ import common.xml.XMLSerialization;
  * To change this template use File | Settings | File Templates.
  */
 public class ForestStorage {
+    public static Forest load(String fileName) {
+        return (Forest) XMLSerialization.load(fileName);
+    }
+
     public static void save(Forest forest, String fileName) {
         XMLSerialization.save(forest, fileName);
     }

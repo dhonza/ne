@@ -8,9 +8,9 @@ import common.stats.Stats;
 import gep.GEP;
 import gp.*;
 import gpaac.GPAAC;
+import hyper.evaluate.printer.FileProgressPrinter;
 import hyper.evaluate.printer.GPProgressPrinter1D;
-import hyper.experiments.reco.FileProgressPrinter;
-import hyper.experiments.reco.ReportStorage;
+import hyper.evaluate.printer.ReportStorage;
 
 /**
  * Created by IntelliJ IDEA.
@@ -48,7 +48,7 @@ public class GPSolver extends AbstractSolver {
         gp = GPFactory.createByName(parameters.getString("GP.TYPE"), populationManager, functions, terminals);
 
         solver = new EvolutionaryAlgorithmSolver(gp, stats, problem instanceof IProblemGeneralization);
-        solver.addProgressPrinter(new GPProgressPrinter1D(gp, problem, parameters));
+        solver.addProgressPrinter(new GPProgressPrinter1D(gp, problem, reportStorage, parameters));
         solver.addProgressPrinter(new FileProgressPrinter(gp, problem, reportStorage, parameters));
         solver.addStopCondition(new MaxGenerationsStopCondition(gp, GP.MAX_GENERATIONS));
         solver.addStopCondition(new MaxEvaluationsStopCondition(gp, GP.MAX_EVALUATIONS));

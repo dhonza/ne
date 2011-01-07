@@ -5,7 +5,7 @@ import common.mathematica.MathematicaUtils;
 import common.net.INet;
 import common.pmatrix.ParameterCombination;
 import hyper.evaluate.IProblem;
-import hyper.experiments.reco.ReportStorage;
+import hyper.evaluate.printer.ReportStorage;
 import hyper.substrate.ISubstrate;
 
 import java.awt.*;

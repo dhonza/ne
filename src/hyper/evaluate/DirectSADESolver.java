@@ -6,8 +6,8 @@ import common.pmatrix.ParameterCombination;
 import common.pmatrix.Utils;
 import common.stats.Stats;
 import hyper.evaluate.printer.SADEProgressPrinter1D;
-import hyper.experiments.reco.FileProgressPrinter;
-import hyper.experiments.reco.ReportStorage;
+import hyper.evaluate.printer.FileProgressPrinter;
+import hyper.evaluate.printer.ReportStorage;
 import opt.sade.MaxEvaluationsStopCondition;
 import opt.sade.MaxGenerationsStopCondition;
 import opt.sade.SADE;
@@ -34,7 +34,7 @@ public class DirectSADESolver extends AbstractSolver {
         sade.dimensions = populationManager.getPhenotypeDimension();
 
         solver = new EvolutionaryAlgorithmSolver(sade, stats, problem instanceof IProblemGeneralization);
-        solver.addProgressPrinter(new SADEProgressPrinter1D(sade, problem, parameters));
+        solver.addProgressPrinter(new SADEProgressPrinter1D(sade, problem, reportStorage, parameters));
         solver.addProgressPrinter(new FileProgressPrinter(sade, problem, reportStorage, parameters));
         solver.addStopCondition(new MaxGenerationsStopCondition(sade));
         solver.addStopCondition(new MaxEvaluationsStopCondition(sade));

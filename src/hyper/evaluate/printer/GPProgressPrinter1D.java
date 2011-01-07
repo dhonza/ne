@@ -17,13 +17,13 @@ import hyper.evaluate.IProblem;
 public class GPProgressPrinter1D extends CommonProgressPrinter1D {
     final private GPBase gp;
 
-    public GPProgressPrinter1D(GPBase gp, IProgressPrinter progressPrinter, IProblem problem, ParameterCombination parameters) {
-        super(progressPrinter, problem, parameters);
+    public GPProgressPrinter1D(GPBase gp, IProgressPrinter progressPrinter, IProblem problem, ReportStorage reportStorage, ParameterCombination parameters) {
+        super(progressPrinter, problem, reportStorage, parameters);
         this.gp = gp;
     }
 
-    public GPProgressPrinter1D(GPBase gp, IProblem problem, ParameterCombination parameters) {
-        this(gp, new GPBasicProgressPrinter(gp), problem, parameters);
+    public GPProgressPrinter1D(GPBase gp, IProblem problem, ReportStorage reportStorage, ParameterCombination parameters) {
+        this(gp, new GPBasicProgressPrinter(gp), problem, reportStorage, parameters);
     }
 
     @Override
@@ -37,7 +37,7 @@ public class GPProgressPrinter1D extends CommonProgressPrinter1D {
         //TODO storage
         System.out.println("Now storing only Forest (GP) implement for GEP!!!");
         if (forestBSF instanceof Forest) {
-            ForestStorage.save((Forest) forestBSF, fileName);
+            ForestStorage.save((Forest) forestBSF, reportStorage.getCompleteFilename(fileName, ".xml"));
         }
 //        ForestStorage.save(forestBSF, fileName);
     }
