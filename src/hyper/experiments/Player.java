@@ -28,7 +28,7 @@ import java.io.File;
 public class Player {
     public static void main(String[] args) {
         String cfgFile = "cfg/robots/experiment.properties";
-        String aCPPNFile = "../exp/110107225229_1/bestCPPN_001_001.xml";
+        String aCPPNFile = "../exp/110109123434_1/bestCPPN_001_001.xml";
 
         Forest aCPPN = ForestStorage.load(aCPPNFile);
         ParameterMatrixManager manager = ParameterMatrixStorage.load(new File(cfgFile));

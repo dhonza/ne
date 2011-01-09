@@ -34,7 +34,7 @@ public class Robots implements IProblem<INet> {
     private VivaeControllerAdapter vivaeControllerAdapter;
 
     private int inputs = 5;
-    private int hiddenOutputs = 3;
+    private int hiddenOutputs = 2;
 
     public Robots(ParameterCombination parameters, ReportStorage reportStorage) {
     }
@@ -49,6 +49,7 @@ public class Robots implements IProblem<INet> {
 
         setupExperiment();
         arena.run();
+        System.out.println("Fitness reached: " + avg.getFitness());
 
         return new EvaluationInfo(avg.getFitness());
     }
@@ -90,7 +91,7 @@ public class Robots implements IProblem<INet> {
         if (visible) {
             JFrame f = new JFrame("Hyper Experiment");
             arena = new Arena(f);
-            arena.totalStepsPerSimulation = 1500;
+            arena.totalStepsPerSimulation = 2000;
             arena.loadScenario(svgFilename);
             arena.setAllArenaPartsAntialiased(true);
             f.setBounds(50, 0, arena.screenWidth, arena.screenHeight + 30);
@@ -101,6 +102,7 @@ public class Robots implements IProblem<INet> {
             arena.isVisible = visible;
         } else {
             arena = new Arena(null);
+            arena.totalStepsPerSimulation = 2000;
             arena.loadScenario(svgFilename);
             //TODO: otestovat, jestli je toto volani nutne..
 //            arena.setAllArenaPartsAntialiased(true);

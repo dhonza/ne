@@ -39,17 +39,19 @@
      inkscape:pageshadow="2"
      inkscape:zoom="0.8671875"
      inkscape:cx="186.37295"
-     inkscape:cy="371.00385"
+     inkscape:cy="229.08033"
      inkscape:document-units="px"
      inkscape:current-layer="layer1"
      showgrid="true"
-     inkscape:window-width="1680"
-     inkscape:window-height="976"
+     inkscape:window-width="1024"
+     inkscape:window-height="672"
      inkscape:window-x="0"
-     inkscape:window-y="25"
+     inkscape:window-y="0"
      showguides="true"
      inkscape:guide-bbox="true"
-     inkscape:window-maximized="1">
+     inkscape:window-maximized="0"
+     inkscape:snap-global="true"
+     inkscape:snap-bbox="true">
     <inkscape:grid
        type="xygrid"
        id="grid2395"
@@ -64,7 +66,7 @@
         <dc:format>image/svg+xml</dc:format>
         <dc:type
            rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
-        <dc:title></dc:title>
+        <dc:title />
       </cc:Work>
     </rdf:RDF>
   </metadata>
@@ -97,5 +99,37 @@
        x="570"
        y="260"
        inkscape:label="hyper.experiments.robots.NetControlledRobot" />
+    <rect
+       style="fill:#ff0000;fill-rule:evenodd;stroke:#000000;stroke-width:0.7001583px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+       id="rect3200"
+       width="640.29987"
+       height="9.7998419"
+       x="-0.14992085"
+       y="-0.14992085"
+       inkscape:label="FixedObstacle" />
+    <rect
+       style="fill:#ff0000;fill-rule:evenodd;stroke:#000000;stroke-width:0.7001583px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+       id="rect3202"
+       width="640.29987"
+       height="9.7998419"
+       x="-0.14992085"
+       y="470.35007"
+       inkscape:label="FixedObstacle" />
+    <rect
+       style="fill:#ff0000;fill-rule:evenodd;stroke:#000000;stroke-width:1.02139139px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+       id="rect3204"
+       width="9.98979"
+       height="459.4949"
+       x="630.00513"
+       y="10.505105"
+       inkscape:label="FixedObstacle" />
+    <rect
+       style="fill:#ff0000;fill-rule:evenodd;stroke:#000000;stroke-width:1.02030277px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+       id="rect3206"
+       width="9.9796972"
+       height="458.97968"
+       x="0.010151404"
+       y="10.510151"
+       inkscape:label="FixedObstacle" />
   </g>
 </svg>
