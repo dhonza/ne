@@ -42,6 +42,10 @@ public class BiasLayer2D implements ISubstrateLayer, IBias {
         return false;
     }
 
+    public int getNumberOfIntraLayerConnections() {
+        return 0;
+    }
+
     public SubstrateIntraLayerConnection[] getIntraLayerConnections() {
         return new SubstrateIntraLayerConnection[0];
     }

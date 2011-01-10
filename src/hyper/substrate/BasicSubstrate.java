@@ -106,7 +106,7 @@ public class BasicSubstrate implements ISubstrate {
 
         for (ISubstrateLayer layer : layers) {
             if (layer.hasIntraLayerConnections()) {
-                throw new IllegalStateException("Not yet IMPLEMENTED!");
+                sum += layer.getNumberOfIntraLayerConnections();
             }
         }
 

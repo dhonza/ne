@@ -87,4 +87,8 @@ public class MeshLayer2D implements ISubstrateLayer {
     public boolean hasIntraLayerConnections() {
         return false;
     }
+
+    public int getNumberOfIntraLayerConnections() {
+        return 0;
+    }
 }

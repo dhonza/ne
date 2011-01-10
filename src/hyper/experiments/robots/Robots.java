@@ -33,14 +33,22 @@ public class Robots implements IProblem<INet> {
     private Vector<Active> agents = null;
     private VivaeControllerAdapter vivaeControllerAdapter;
 
-    private int inputs = 5;
-    private int hiddenOutputs = 2;
+    private int inputs;
+    private int hiddenOutputs;
+    private String scenarioFileName;
+    private boolean showGraphics;
+    private int steps;
 
     public Robots(ParameterCombination parameters, ReportStorage reportStorage) {
+        inputs = parameters.getInteger("ROBOTS.FRICTION_SENSORS");
+        hiddenOutputs = parameters.getInteger("ROBOTS.NEURONS");
+        scenarioFileName = parameters.getString("ROBOTS.SCENARIO");
+        showGraphics = parameters.getBoolean("ROBOTS.SHOW_GRAPHIC");
+        steps = parameters.getInteger("ROBOTS.STEPS");
     }
 
     public EvaluationInfo evaluate(INet hyperNet) {
-        createArena("cfg/vivae/scenarios/oval1_h.svg", false);
+        createArena(scenarioFileName, false);
         FitnessFunction avg = new AverageSpeed(arena);
 
         IRobotInterface robot = new VivaeRobot((NetControlledRobot) agents.get(0));
@@ -62,7 +70,7 @@ public class Robots implements IProblem<INet> {
 //        System.out.println("Press any key");
 //        Scanner s = new Scanner(System.in);
 //        String token = s.next();
-        createArena("cfg/vivae/scenarios/oval1_h.svg", true);
+        createArena(scenarioFileName, showGraphics);
         FitnessFunction avg = new AverageSpeed(arena);
 
         IRobotInterface robot = new VivaeRobot((NetControlledRobot) agents.get(0));
@@ -91,7 +99,7 @@ public class Robots implements IProblem<INet> {
         if (visible) {
             JFrame f = new JFrame("Hyper Experiment");
             arena = new Arena(f);
-            arena.totalStepsPerSimulation = 2000;
+            arena.totalStepsPerSimulation = steps;
             arena.loadScenario(svgFilename);
             arena.setAllArenaPartsAntialiased(true);
             f.setBounds(50, 0, arena.screenWidth, arena.screenHeight + 30);
@@ -102,7 +110,7 @@ public class Robots implements IProblem<INet> {
             arena.isVisible = visible;
         } else {
             arena = new Arena(null);
-            arena.totalStepsPerSimulation = 2000;
+            arena.totalStepsPerSimulation = steps;
             arena.loadScenario(svgFilename);
             //TODO: otestovat, jestli je toto volani nutne..
 //            arena.setAllArenaPartsAntialiased(true);

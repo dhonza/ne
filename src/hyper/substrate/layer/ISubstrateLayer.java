@@ -25,6 +25,8 @@ public interface ISubstrateLayer extends IConnectable, Serializable {
 
     public boolean hasIntraLayerConnections();
 
+    public int getNumberOfIntraLayerConnections();
+
     public SubstrateIntraLayerConnection[] getIntraLayerConnections();
 
     public NodeType getNodeType();

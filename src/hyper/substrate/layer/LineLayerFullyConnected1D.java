@@ -29,4 +29,8 @@ public class LineLayerFullyConnected1D extends LineLayer1D {
     public boolean hasIntraLayerConnections() {
         return true;
     }
+
+    public int getNumberOfIntraLayerConnections() {
+        return xNodes * xNodes;
+    }
 }

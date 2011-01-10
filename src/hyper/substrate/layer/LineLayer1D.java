@@ -70,4 +70,8 @@ public class LineLayer1D implements ISubstrateLayer {
     public boolean hasIntraLayerConnections() {
         return false;
     }
+
+    public int getNumberOfIntraLayerConnections() {
+        return 0;
+    }
 }

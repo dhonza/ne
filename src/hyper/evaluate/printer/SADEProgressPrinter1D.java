@@ -2,6 +2,7 @@ package hyper.evaluate.printer;
 
 import common.evolution.IProgressPrinter;
 import common.pmatrix.ParameterCombination;
+import common.xml.XMLSerialization;
 import hyper.cppn.ICPPN;
 import hyper.cppn.FakeArrayCPPN;
 import hyper.evaluate.IProblem;
@@ -34,6 +35,7 @@ public class SADEProgressPrinter1D extends CommonProgressPrinter1D {
 
     @Override
     protected void storeBSFCPPN(String fileName) {
-        System.out.println("NO storeBSFCPPN for SADE!!!!");
+        FakeArrayCPPN cppn = new FakeArrayCPPN(sade.getBsf(), problem.getSubstrate().getMaxDimension());
+        XMLSerialization.save(cppn, reportStorage.getCompleteFilename(fileName, ".xml"));
     }
 }
