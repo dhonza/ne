@@ -23,6 +23,8 @@ public class ConverterFactory {
         String name = parameters.getString("SOLVER");
         if (name.equalsIgnoreCase("GP")) {
             return new GPForestToINet(substrateBuilder);
+        } else if (name.equalsIgnoreCase("GPAT")) {
+            return new GPForestToINet(substrateBuilder);
         } else if (name.equalsIgnoreCase("NEAT")) {
             return new NEATGenomeToInet(substrateBuilder);
         } else if (name.equalsIgnoreCase("SNEAT")) {

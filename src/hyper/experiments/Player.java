@@ -9,6 +9,7 @@ import common.pmatrix.ParameterMatrixStorage;
 import common.xml.XMLSerialization;
 import gp.Forest;
 import gp.ForestStorage;
+import gpat.ATForest;
 import hyper.builder.IEvaluableSubstrateBuilder;
 import hyper.builder.SubstrateBuilderFactory;
 import hyper.evaluate.ConverterFactory;
@@ -40,6 +41,22 @@ public class Player {
                     SubstrateBuilderFactory.createEvaluableSubstrateBuilder(problem.getSubstrate(), combination);
 
             IGenotypeToPhenotype<Forest, INet> converter = ConverterFactory.getConverter(combination, substrateBuilder, problem);
+
+            INet net = converter.transform(aCPPN);
+
+            problem.show(net);
+        }
+    }
+
+    public static void playGPAT() {
+        ATForest aCPPN = (ATForest) XMLSerialization.load(aCPPNFile);
+        ParameterMatrixManager manager = ParameterMatrixStorage.load(new File(cfgFile));
+        for (ParameterCombination combination : manager) {
+            IProblem<INet> problem = ProblemFactory.getProblem(combination, null);
+            IEvaluableSubstrateBuilder substrateBuilder =
+                    SubstrateBuilderFactory.createEvaluableSubstrateBuilder(problem.getSubstrate(), combination);
+
+            IGenotypeToPhenotype<ATForest, INet> converter = ConverterFactory.getConverter(combination, substrateBuilder, problem);
 
             INet net = converter.transform(aCPPN);
 
@@ -81,8 +98,9 @@ public class Player {
     }
 
     public static void main(String[] args) {
-//        playGP();
-        playNEAT();
+        playGP();
+//        playGPAT();
+//        playNEAT();
 //        playDirect();
     }
 }

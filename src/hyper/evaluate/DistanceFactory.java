@@ -31,10 +31,9 @@ public class DistanceFactory {
             if (parameters.getString("GP.TYPE").equals("gpaac.GPAAC")) {
                 return new AACForestDistance();
             }
-            if (parameters.getString("GP.TYPE").equals("gpat.GPAT")) {
-                return new ATForestDistance();
-            }
             return new ForestDistance();
+        } else if (solver.equals("GPAT")) {
+            return new ATForestDistance();
         } else if (solver.equals("SNEAT")) {
             return new ForestDistance();
         } else if (solver.equals("DIRECT_CMAES")) {

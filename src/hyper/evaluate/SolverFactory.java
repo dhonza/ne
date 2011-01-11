@@ -19,6 +19,8 @@ public class SolverFactory {
         String name = parameters.getString("SOLVER");
         if (name.equalsIgnoreCase("GP")) {
             return new GPSolver(parameters, stats, reportStorage);
+        } else if (name.equalsIgnoreCase("GPAT")) {
+            return new GPATSolver(parameters, stats, reportStorage);
         } else if (name.equalsIgnoreCase("NEAT")) {
             return new NEATSolver(parameters, stats, reportStorage);
         } else if (name.equalsIgnoreCase("SNEAT")) {
@@ -26,7 +28,7 @@ public class SolverFactory {
         } else if (name.equalsIgnoreCase("DIRECT_SADE")) {
             return new DirectSADESolver(parameters, stats, reportStorage);
         } else if (name.equalsIgnoreCase("DIRECT_CMAES")) {
-            return new DirectCMAESSolver(parameters, stats, reportStorage);            
+            return new DirectCMAESSolver(parameters, stats, reportStorage);
         } else {
             throw new IllegalStateException("Unknown solver: \"" + name + "\"");
         }

@@ -2,7 +2,10 @@ package hyper.evaluate.printer;
 
 import common.evolution.IProgressPrinter;
 import common.pmatrix.ParameterCombination;
-import gp.*;
+import common.xml.XMLSerialization;
+import gp.GPBasicProgressPrinter;
+import gp.IGPForest;
+import gpat.GPAT;
 import hyper.cppn.BasicGPCPPN;
 import hyper.cppn.ICPPN;
 import hyper.evaluate.IProblem;
@@ -14,15 +17,15 @@ import hyper.evaluate.IProblem;
  * Time: 2:57:42 PM
  * To change this template use File | Settings | File Templates.
  */
-public class GPProgressPrinter1D extends CommonProgressPrinter1D {
-    final private GPBase gp;
+public class GPATProgressPrinter1D extends CommonProgressPrinter1D {
+    final private GPAT gp;
 
-    public GPProgressPrinter1D(GPBase gp, IProgressPrinter progressPrinter, IProblem problem, ReportStorage reportStorage, ParameterCombination parameters) {
+    public GPATProgressPrinter1D(GPAT gp, IProgressPrinter progressPrinter, IProblem problem, ReportStorage reportStorage, ParameterCombination parameters) {
         super(progressPrinter, problem, reportStorage, parameters);
         this.gp = gp;
     }
 
-    public GPProgressPrinter1D(GPBase gp, IProblem problem, ReportStorage reportStorage, ParameterCombination parameters) {
+    public GPATProgressPrinter1D(GPAT gp, IProblem problem, ReportStorage reportStorage, ParameterCombination parameters) {
         this(gp, new GPBasicProgressPrinter(gp), problem, reportStorage, parameters);
     }
 
@@ -34,11 +37,6 @@ public class GPProgressPrinter1D extends CommonProgressPrinter1D {
     @Override
     protected void storeBSFCPPN(String fileName) {
         IGPForest forestBSF = gp.getBestSoFar();
-        //TODO storage
-        System.out.println("Now storing only Forest (GP) implement for GEP!!!");
-        if (forestBSF instanceof Forest) {
-            ForestStorage.save((Forest) forestBSF, reportStorage.getCompleteFilename(fileName, ".xml"));
-        }
-        //        ForestStorage.save(forestBSF, fileName);
+        XMLSerialization.save(forestBSF, reportStorage.getCompleteFilename(fileName, ".xml"));
     }
 }
