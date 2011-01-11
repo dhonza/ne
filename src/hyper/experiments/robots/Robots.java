@@ -18,7 +18,6 @@ import vivae.util.FrictionBuffer;
 import javax.swing.*;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Scanner;
 import java.util.Vector;
 
 /**
@@ -31,7 +30,7 @@ import java.util.Vector;
 public class Robots implements IProblem<INet> {
     private Arena arena = null;
     private Vector<Active> agents = null;
-    private VivaeControllerAdapter vivaeControllerAdapter;
+    private VivaeControllerAdapter[] vivaeControllerAdapters;
 
     private int inputs;
     private int hiddenOutputs;
@@ -51,9 +50,12 @@ public class Robots implements IProblem<INet> {
         createArena(scenarioFileName, false);
         FitnessFunction avg = new AverageSpeed(arena);
 
-        IRobotInterface robot = new VivaeRobot((NetControlledRobot) agents.get(0));
-        NetController controller = new NetController(robot, hyperNet);
-        vivaeControllerAdapter = new VivaeControllerAdapter(controller);
+        vivaeControllerAdapters = new VivaeControllerAdapter[agents.size()];
+        for (int i = 0; i < agents.size(); i++) {
+            IRobotInterface robot = new VivaeRobot((NetControlledRobot) agents.get(i));
+            NetController controller = new NetController(robot, hyperNet);
+            vivaeControllerAdapters[i] = new VivaeControllerAdapter(controller);
+        }
 
         setupExperiment();
         arena.run();
@@ -73,10 +75,12 @@ public class Robots implements IProblem<INet> {
         createArena(scenarioFileName, showGraphics);
         FitnessFunction avg = new AverageSpeed(arena);
 
-        IRobotInterface robot = new VivaeRobot((NetControlledRobot) agents.get(0));
-        NetController controller = new NetController(robot, hyperNet);
-        vivaeControllerAdapter = new VivaeControllerAdapter(controller);
-
+        vivaeControllerAdapters = new VivaeControllerAdapter[agents.size()];
+        for (int i = 0; i < agents.size(); i++) {
+            IRobotInterface robot = new VivaeRobot((NetControlledRobot) agents.get(i));
+            NetController controller = new NetController(robot, hyperNet);
+            vivaeControllerAdapters[i] = new VivaeControllerAdapter(controller);
+        }
         setupExperiment();
         arena.run();
         System.out.println("Fitness reached: " + avg.getFitness());
@@ -123,7 +127,7 @@ public class Robots implements IProblem<INet> {
 
     public void setupAgent(int number) {
         Active agent = agents.get(number);
-        arena.registerController(agent, vivaeControllerAdapter);
+        arena.registerController(agent, vivaeControllerAdapters[number]);
 
         if (agent instanceof NetControlledRobot) {
             ((NetControlledRobot) agent).setSensors(inputs, -Math.PI / 2, Math.PI / (inputs - 1), 30);
@@ -131,8 +135,7 @@ public class Robots implements IProblem<INet> {
     }
 
     public void setupExperiment() {
-        int agentnum = agents.size();
-        for (int i = 0; i < agentnum; i++) {
+        for (int i = 0; i < agents.size(); i++) {
             setupAgent(i);
         }
         arena.init();

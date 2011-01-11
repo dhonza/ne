@@ -2,6 +2,7 @@ package hyper.evaluate.printer;
 
 import common.evolution.IProgressPrinter;
 import common.pmatrix.ParameterCombination;
+import common.xml.XMLSerialization;
 import hyper.cppn.BasicNetCPPN;
 import hyper.cppn.ICPPN;
 import hyper.evaluate.IProblem;
