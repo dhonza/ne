@@ -927,7 +927,14 @@ public class Net implements INet, Serializable {
         }
     }
     */
-
+    public double[][] toWeightMatrix() {
+        //TODO note, ids must start from 0, no missing!
+        double[][] m = new double[getNumNeurons()][getNumHidOut()];
+        for (Link link : links) {
+            m[link.getIn().getId()][link.getOut().getId() - getNumInputs()] = link.getWeight();
+        }
+        return m;
+    }
 
     public String toString() {
         String tmp = "Network id:" + id + "\n" + " Neurons #" + numNeurons + " in:"

@@ -6,6 +6,7 @@ import common.xml.XMLSerialization;
 import hyper.cppn.ICPPN;
 import hyper.cppn.FakeArrayCPPN;
 import hyper.evaluate.IProblem;
+import hyper.evaluate.storage.GenomeStorage;
 import opt.sade.SADE;
 import opt.sade.SADEBasicProgressPrinter;
 
@@ -36,6 +37,6 @@ public class SADEProgressPrinter1D extends CommonProgressPrinter1D {
     @Override
     protected void storeBSFCPPN(String fileName) {
         FakeArrayCPPN cppn = new FakeArrayCPPN(sade.getBsf(), problem.getSubstrate().getMaxDimension());
-        XMLSerialization.save(cppn, reportStorage.getCompleteFilename(fileName, ".xml"));
+        GenomeStorage.saveGenome(parameters, cppn, reportStorage.getCompleteFilename(fileName, ".xml"));
     }
 }

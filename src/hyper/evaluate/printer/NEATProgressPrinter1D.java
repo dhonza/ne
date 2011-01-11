@@ -6,6 +6,7 @@ import common.xml.XMLSerialization;
 import hyper.cppn.BasicNetCPPN;
 import hyper.cppn.ICPPN;
 import hyper.evaluate.IProblem;
+import hyper.evaluate.storage.GenomeStorage;
 import neat.NEAT;
 import neat.NEATBasicProgressPrinter;
 import common.net.linked.NetStorage;
@@ -39,6 +40,6 @@ public class NEATProgressPrinter1D extends CommonProgressPrinter1D {
 
     @Override
     protected void storeBSFCPPN(String fileName) {
-        NetStorage.save(pop.getBestSoFarNet(), reportStorage.getCompleteFilename(fileName, ".xml"));
+        GenomeStorage.saveGenome(parameters, pop.getBestSoFarNet(), reportStorage.getCompleteFilename(fileName, ".xml"));
     }
 }

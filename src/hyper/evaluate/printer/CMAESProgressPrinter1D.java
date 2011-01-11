@@ -6,6 +6,7 @@ import common.xml.XMLSerialization;
 import hyper.cppn.ICPPN;
 import hyper.cppn.FakeArrayCPPN;
 import hyper.evaluate.IProblem;
+import hyper.evaluate.storage.GenomeStorage;
 import opt.DoubleVectorGenome;
 import opt.cmaes.CMAES;
 import opt.cmaes.CMAESBasicProgressPrinter;
@@ -37,6 +38,6 @@ public class CMAESProgressPrinter1D extends CommonProgressPrinter1D {
     @Override
     protected void storeBSFCPPN(String fileName) {
         DoubleVectorGenome cppn = new DoubleVectorGenome(cmaes.getMaxReached());
-        XMLSerialization.save(cppn, reportStorage.getCompleteFilename(fileName, ".xml"));
+        GenomeStorage.saveGenome(parameters, cppn, reportStorage.getCompleteFilename(fileName, ".xml"));
     }
 }

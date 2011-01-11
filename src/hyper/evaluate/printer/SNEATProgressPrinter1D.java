@@ -5,6 +5,7 @@ import common.pmatrix.ParameterCombination;
 import hyper.cppn.BasicSNEATCPPN;
 import hyper.cppn.ICPPN;
 import hyper.evaluate.IProblem;
+import hyper.evaluate.storage.GenomeStorage;
 import sneat.SNEAT;
 import sneat.SNEATBasicProgressPrinter;
 import sneat.neatgenome.NeatGenome;
@@ -25,7 +26,7 @@ public class SNEATProgressPrinter1D extends CommonProgressPrinter1D {
     final private SNEAT sneat;
 
     public SNEATProgressPrinter1D(SNEAT sneat, IProgressPrinter progressPrinter, IProblem problem, ReportStorage reportStorage, ParameterCombination parameters) {
-        super(progressPrinter, problem, reportStorage,parameters);
+        super(progressPrinter, problem, reportStorage, parameters);
         this.sneat = sneat;
     }
 
@@ -41,8 +42,9 @@ public class SNEATProgressPrinter1D extends CommonProgressPrinter1D {
 
     @Override
     protected void storeBSFCPPN(String fileName) {
-        XmlGenomeWriterStatic.Write(new File(reportStorage.getCompleteFilename(fileName, ".xml")),
-                (NeatGenome) sneat.getEA().getBestGenome(),
-                ActivationFunctionFactory.getActivationFunction("NullFn"));
+        GenomeStorage.saveGenome(parameters,
+                sneat.getEA().getBestGenome(),
+                reportStorage.getCompleteFilename(fileName, ".xml")
+        );
     }
 }

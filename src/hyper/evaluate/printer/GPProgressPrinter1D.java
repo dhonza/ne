@@ -6,6 +6,7 @@ import gp.*;
 import hyper.cppn.BasicGPCPPN;
 import hyper.cppn.ICPPN;
 import hyper.evaluate.IProblem;
+import hyper.evaluate.storage.GenomeStorage;
 
 /**
  * Created by IntelliJ IDEA.
@@ -34,11 +35,6 @@ public class GPProgressPrinter1D extends CommonProgressPrinter1D {
     @Override
     protected void storeBSFCPPN(String fileName) {
         IGPForest forestBSF = gp.getBestSoFar();
-        //TODO storage
-        System.out.println("Now storing only Forest (GP) implement for GEP!!!");
-        if (forestBSF instanceof Forest) {
-            ForestStorage.save((Forest) forestBSF, reportStorage.getCompleteFilename(fileName, ".xml"));
-        }
-        //        ForestStorage.save(forestBSF, fileName);
+        GenomeStorage.saveGenome(parameters, forestBSF, reportStorage.getCompleteFilename(fileName, ".xml"));
     }
 }
