@@ -3,6 +3,7 @@ package gpaac;
 import common.RND;
 import common.evolution.PopulationManager;
 import gp.GPBase;
+import gp.IGPForest;
 import gp.INode;
 import gp.NodeCollection;
 
@@ -23,8 +24,8 @@ public class GPAAC<P> extends GPBase<P, AACForest> {
     public static double MUTATION_SWITCH_CONSTANT_LOCK = 0.01;
     public static double MUTATION_ADD_CHILD = 0.1;
 
-    public GPAAC(PopulationManager<AACForest, P> populationManager, INode[] functions, INode[] terminals) {
-        super(populationManager, functions, terminals);
+    public GPAAC(PopulationManager<AACForest, P> populationManager, INode[] functions, INode[] terminals, String initialGenome) {
+        super(populationManager, functions, terminals, initialGenome);
         bestOfGeneration = bestSoFar = AACForest.createEmpty();
     }
 

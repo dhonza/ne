@@ -121,7 +121,7 @@ public class Robots implements IProblem<INet> {
             arena.isVisible = false;
             arena.setLoopSleepTime(0);
         }
-        arena.frictionBuffer = new FrictionBuffer(arena);
+//        arena.frictionBuffer = new FrictionBuffer(arena);
         agents = arena.getActives();
     }
 

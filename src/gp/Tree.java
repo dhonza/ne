@@ -59,8 +59,7 @@ public class Tree implements Serializable {
     }
 
     public Tree mutateNode(NodeCollection nodeCollection) {
-        nodes.clear();
-        ancestors.clear();
+        clear();
 
         populateNodes(root, null);
         int mutationPoint = RND.getInt(0, nodes.size() - 1);
@@ -83,11 +82,7 @@ public class Tree implements Serializable {
     }
 
     public Tree mutateSubtree(NodeCollection nodeCollection) {
-//        System.out.println("-------------------");
-//        System.out.println(this);
-
-        nodes.clear();
-        ancestors.clear();
+        clear();
 
         populateNodes(root, null);
         int mutationPoint = RND.getInt(0, nodes.size() - 1);
@@ -167,5 +162,18 @@ public class Tree implements Serializable {
 
     public String innovationToString() {
         return root.innovationToString();
+    }
+
+    private void clear() {
+        if (nodes != null) {
+            nodes.clear();
+        } else {
+            nodes = new ArrayList<INode>();
+        }
+        if (ancestors != null) {
+            ancestors.clear();
+        } else {
+            ancestors = new HashMap<INode, INode>();
+        }
     }
 }

@@ -2,6 +2,7 @@ package gp;
 
 import common.RND;
 import common.evolution.PopulationManager;
+import hyper.evaluate.storage.GenomeStorage;
 
 import java.util.Arrays;
 
@@ -17,8 +18,8 @@ public class GP<P> extends GPBase<P, Forest> {
     public static int MAX_DEPTH = 3;
     public static double MUTATION_SUBTREE_PROBABLITY = 0.5;
 
-    public GP(PopulationManager<Forest, P> populationManager, INode[] functions, INode[] terminals) {
-        super(populationManager, functions, terminals);
+    public GP(PopulationManager<Forest, P> populationManager, INode[] functions, INode[] terminals, String initialGenome) {
+        super(populationManager, functions, terminals, initialGenome);
         bestOfGeneration = bestSoFar = Forest.createEmpty();
     }
 
@@ -30,7 +31,11 @@ public class GP<P> extends GPBase<P, Forest> {
         population = new Forest[POPULATION_SIZE];
         newPopulation = new Forest[POPULATION_SIZE];
         for (int i = 0; i < population.length; i++) {
-            population[i] = Forest.createRandom(generation, inputs, outputs, nodeCollection);
+            if (initialGenome == null) {
+                population[i] = Forest.createRandom(generation, inputs, outputs, nodeCollection);
+            } else {
+                population[i] = ForestStorage.load(initialGenome);
+            }
         }
     }
 
@@ -40,7 +45,7 @@ public class GP<P> extends GPBase<P, Forest> {
             Forest p1 = population[RND.getInt(0, population.length - 1)];
             Forest p2 = population[RND.getInt(0, population.length - 1)];
             Forest p = p1.getFitness() > p2.getFitness() ? p1 : p2;
-            newPopulation[i] = p.mutate(nodeCollection, generation);            
+            newPopulation[i] = p.mutate(nodeCollection, generation);
         }
     }
 

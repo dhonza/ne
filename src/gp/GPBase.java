@@ -30,6 +30,8 @@ abstract public class GPBase<P, T extends IGPForest> implements IEvolutionaryAlg
     final protected NodeCollection nodeCollection;
     final protected PopulationManager<T, P> populationManager;
 
+    final protected String initialGenome;
+
     protected T[] population;
     protected T[] newPopulation;
     protected int generation;
@@ -42,8 +44,9 @@ abstract public class GPBase<P, T extends IGPForest> implements IEvolutionaryAlg
 
     protected Map<String, Long> origins;
 
-    public GPBase(PopulationManager<T, P> populationManager, INode[] functions, INode[] terminals) {
+    public GPBase(PopulationManager<T, P> populationManager, INode[] functions, INode[] terminals, String initialGenome) {
         this.populationManager = populationManager;
+        this.initialGenome = initialGenome;
         if (populationManager == null) {//for debuging only
             this.inputs = 0;
             this.outputs = 0;

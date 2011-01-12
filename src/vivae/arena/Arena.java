@@ -586,12 +586,12 @@ public class Arena extends JPanel implements KeyListener, Runnable {
         }
 
         for (Active active : getActives()) {
-            //active.setDamping(getFrictionOfSurface(active));  //speedup
-            active.setDamping((float) frictionBuffer.getFriction((int) active.getX(), (int) active.getY()));
+            active.setDamping(getFrictionOfSurface(active));  //speedup
+//            active.setDamping((float) frictionBuffer.getFriction((int) active.getX(), (int) active.getY()));
         }
         for (Passive passive : getPassives()) {
-            //passive.setDamping(getFrictionOfSurface(passive));  //speedup
-            passive.setDamping((float) frictionBuffer.getFriction((int) passive.getX(), (int) passive.getY()));
+            passive.setDamping(getFrictionOfSurface(passive));  //speedup
+//            passive.setDamping((float) frictionBuffer.getFriction((int) passive.getX(), (int) passive.getY()));
 
         }
         moveVivaes();

@@ -11,6 +11,7 @@ import gpaac.GPAAC;
 import hyper.evaluate.printer.FileProgressPrinter;
 import hyper.evaluate.printer.GPProgressPrinter1D;
 import hyper.evaluate.printer.ReportStorage;
+import hyper.evaluate.storage.GenomeStorage;
 
 /**
  * Created by IntelliJ IDEA.
@@ -36,7 +37,7 @@ public class GPSolver extends AbstractSolver {
         Utils.setStaticParameters(parameters, GPAAC.class, "GPAAC");
 
         String functionPackage = "gp.functions.";
-        if(parameters.getString("GP.TYPE").equals("gpaac.GPAAC")) {
+        if (parameters.getString("GP.TYPE").equals("gpaac.GPAAC")) {
             functionPackage = "gpaac.AACFunctions$";
         }
 
@@ -45,7 +46,12 @@ public class GPSolver extends AbstractSolver {
 
         GP.TARGET_FITNESS = problem.getTargetFitness();
 
-        gp = GPFactory.createByName(parameters.getString("GP.TYPE"), populationManager, functions, terminals);
+        String initialGenome = null;
+        if (parameters.contains("INITIAL_GENOME")) {
+            initialGenome = parameters.getString("INITIAL_GENOME");
+        }
+
+        gp = GPFactory.createByName(parameters.getString("GP.TYPE"), populationManager, functions, terminals, initialGenome);
 
         solver = new EvolutionaryAlgorithmSolver(gp, stats, problem instanceof IProblemGeneralization);
         solver.addProgressPrinter(new GPProgressPrinter1D(gp, problem, reportStorage, parameters));

@@ -35,7 +35,7 @@ public class Grass extends Surface {
     public Grass(float x, float y, Shape shape){
         this(x,y, shape, 1);
     }
-    
+
     public Grass(Shape shape, int layer, Arena arena) {
         this((float) shape.getBounds2D().getMinX(), (float) shape.getBounds2D().getMinY(), shape, layer);
     }
@@ -66,7 +66,7 @@ public class Grass extends Surface {
         Object hint = new Object();
         if(isAntialiased()){
             hint = g2.getRenderingHint(RenderingHints.KEY_ANTIALIASING);
-            g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING,RenderingHints.VALUE_ANTIALIAS_ON);	
+            g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING,RenderingHints.VALUE_ANTIALIAS_ON);
         }
         if(isTextureLoaded && isTextureEnabled) g2.setPaint(texture);
         else g2.setColor(new Color(50,150,50));

@@ -16,8 +16,8 @@ import common.evolution.PopulationManager;
  * TODO create a single common abstract predecessor class (do not use newPopulation from GP)
  */
 public class GPCrowding<P> extends GP<P> {
-    public GPCrowding(PopulationManager<Forest, P> populationManager, Node[] functions, Node[] terminals) {
-        super(populationManager, functions, terminals);
+    public GPCrowding(PopulationManager<Forest, P> populationManager, Node[] functions, Node[] terminals, String initialGenome) {
+        super(populationManager, functions, terminals, initialGenome);
         if (GP.POPULATION_SIZE % 2 != 0) {
             throw new IllegalStateException("Population size must be even.");
         }

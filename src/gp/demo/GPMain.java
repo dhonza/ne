@@ -144,11 +144,11 @@ public class GPMain {
 
     private static GPBase createAlgorithm(String type, ParameterCombination combination, PopulationManager populationManager, INode[] functions, INode[] terminals) {
         if (type.equals("GP")) {
-            return GPFactory.createByName(combination.getString("GP.TYPE"), populationManager, functions, terminals);
+            return GPFactory.createByName(combination.getString("GP.TYPE"), populationManager, functions, terminals, null);
         } else if (type.equals("GEP")) {
-            return new GEP(populationManager, functions, terminals);
+            return new GEP(populationManager, functions, terminals, null);
         } else if (type.equals("GPAAC")) {
-            return new GPAAC(populationManager, functions, terminals);
+            return new GPAAC(populationManager, functions, terminals, null);
         } else {
             throw new IllegalArgumentException("Unsupported algorithm type");
         }

@@ -508,7 +508,7 @@ public class GEPChromosome implements IGPForest, Comparable, Serializable {
     public static void main(String[] args) {
         Node[] functions = new Node[]{new Add(), new Multiply()};
         Node[] terminals = new Node[]{new RNC(), new Constant(1), new Constant(2)};
-        GEP gep = new GEP(null, functions, terminals);
+        GEP gep = new GEP(null, functions, terminals, null);
         NodeCollection nc = new NodeCollection(functions, terminals, 0);
         RND.initializeTime();
 
