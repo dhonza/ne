@@ -98,7 +98,7 @@
        height="20"
        x="570"
        y="260"
-       inkscape:label="hyper.experiments.robots.NetControlledRobot" />
+       inkscape:label="hyper.experiments.robots.friction.NetControlledRobotFriction" />
     <rect
        style="fill:#ff0000;fill-rule:evenodd;stroke:#000000;stroke-width:0.7001583px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
        id="rect3200"

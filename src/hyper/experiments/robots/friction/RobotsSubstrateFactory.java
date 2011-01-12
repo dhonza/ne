@@ -1,4 +1,4 @@
-package hyper.experiments.robots;
+package hyper.experiments.robots.friction;
 
 import hyper.substrate.BasicSubstrate;
 import hyper.substrate.layer.*;

@@ -1,19 +1,20 @@
-package hyper.experiments.robots;
+package hyper.experiments.robots.friction;
 
 import common.evolution.EvaluationInfo;
 import common.net.INet;
 import common.pmatrix.ParameterCombination;
 import hyper.evaluate.IProblem;
 import hyper.evaluate.printer.ReportStorage;
+import hyper.experiments.robots.distance.NetControlledRobotDistance;
 import hyper.substrate.ISubstrate;
 import robot.IRobotInterface;
+import robot.RobotWithSensors;
 import robot.VivaeControllerAdapter;
 import robot.VivaeRobot;
 import vivae.arena.Arena;
 import vivae.arena.parts.Active;
 import vivae.fitness.AverageSpeed;
 import vivae.fitness.FitnessFunction;
-import vivae.util.FrictionBuffer;
 
 import javax.swing.*;
 import java.util.ArrayList;
@@ -52,7 +53,7 @@ public class Robots implements IProblem<INet> {
 
         vivaeControllerAdapters = new VivaeControllerAdapter[agents.size()];
         for (int i = 0; i < agents.size(); i++) {
-            IRobotInterface robot = new VivaeRobot((NetControlledRobot) agents.get(i));
+            IRobotInterface robot = new VivaeRobot((RobotWithSensors) agents.get(i));
             NetController controller = new NetController(robot, hyperNet);
             vivaeControllerAdapters[i] = new VivaeControllerAdapter(controller);
         }
@@ -77,7 +78,7 @@ public class Robots implements IProblem<INet> {
 
         vivaeControllerAdapters = new VivaeControllerAdapter[agents.size()];
         for (int i = 0; i < agents.size(); i++) {
-            IRobotInterface robot = new VivaeRobot((NetControlledRobot) agents.get(i));
+            IRobotInterface robot = new VivaeRobot((RobotWithSensors) agents.get(i));
             NetController controller = new NetController(robot, hyperNet);
             vivaeControllerAdapters[i] = new VivaeControllerAdapter(controller);
         }
@@ -129,8 +130,12 @@ public class Robots implements IProblem<INet> {
         Active agent = agents.get(number);
         arena.registerController(agent, vivaeControllerAdapters[number]);
 
-        if (agent instanceof NetControlledRobot) {
-            ((NetControlledRobot) agent).setSensors(inputs, -Math.PI / 2, Math.PI / (inputs - 1), 30);
+        if (agent instanceof NetControlledRobotFriction) {
+            ((NetControlledRobotFriction) agent).setSensors(inputs, -Math.PI / 2, Math.PI / (inputs - 1), 30);
+        }
+
+        if (agent instanceof NetControlledRobotDistance) {
+            ((NetControlledRobotDistance) agent).setSensors(inputs, -Math.PI / 2, Math.PI / (inputs - 1), 150);
         }
     }
 

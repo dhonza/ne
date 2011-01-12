@@ -126,6 +126,6 @@
        height="20"
        x="570"
        y="250"
-       inkscape:label="hyper.experiments.robots.NetControlledRobot" />
+       inkscape:label="hyper.experiments.robots.friction.NetControlledRobotFriction" />
   </g>
 </svg>

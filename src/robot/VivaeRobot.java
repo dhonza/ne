@@ -1,7 +1,5 @@
 package robot;
 
-import hyper.experiments.robots.NetControlledRobot;
-
 /**
  * Created by IntelliJ IDEA.
  * User: drchaj1
@@ -12,9 +10,9 @@ import hyper.experiments.robots.NetControlledRobot;
 public class VivaeRobot implements IRobotInterface {
     private double left;
     private double right;
-    private NetControlledRobot robot;
+    private RobotWithSensors robot;
 
-    public VivaeRobot(NetControlledRobot robot) {
+    public VivaeRobot(RobotWithSensors robot) {
         this.robot = robot;
     }
 

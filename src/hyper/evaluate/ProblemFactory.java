@@ -5,7 +5,7 @@ import hyper.experiments.findcluster.FindCluster;
 import hyper.experiments.findcluster2.FindCluster2;
 import hyper.evaluate.printer.ReportStorage;
 import hyper.experiments.reco.problem.Recognition1D;
-import hyper.experiments.robots.Robots;
+import hyper.experiments.robots.friction.Robots;
 
 /**
  * Created by IntelliJ IDEA.

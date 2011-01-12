@@ -15,7 +15,7 @@
    sodipodi:version="0.32"
    inkscape:version="0.48.0 r9654"
    version="1.0"
-   sodipodi:docname="oval4_h.svg"
+   sodipodi:docname="distance2_h.svg"
    inkscape:output_extension="org.inkscape.output.svg.inkscape">
   <defs
      id="defs2386">
@@ -116,56 +116,48 @@
        inkscape:label="FixedObstacle" />
     <path
        style="fill:#000000;fill-opacity:1"
-       d="M 170 40 C 97.98 40 40 97.98 40 170 L 40 310 C 40 382.02 97.98 440 170 440 L 470 440 C 542.02 440 600 382.02 600 310 L 600 170 C 600 97.98 542.02 40 470 40 L 170 40 z M 178 70 L 462 70 C 521.832 70 570 118.168 570 178 L 570 302 C 570 361.832 521.832 410 462 410 L 178 410 C 118.168 410 70 361.832 70 302 L 70 178 C 70 118.168 118.168 70 178 70 z "
-       id="rect3796"
+       d="M 160 90 L 160 130 L 160 390 L 200 390 L 200 130 L 340 130 L 340 90 L 160 90 z "
+       id="rect3025"
        inkscape:label="Road" />
     <rect
        style="fill:#ffffff;fill-opacity:1;fill-rule:evenodd;stroke:none"
        id="rect2391"
        width="20"
        height="20"
-       x="580"
-       y="300"
-       inkscape:label="hyper.experiments.robots.friction.NetControlledRobotFriction" />
+       x="170"
+       y="360"
+       inkscape:label="hyper.experiments.robots.distance.NetControlledRobotDistance" />
     <rect
-       style="fill:#ffffff;fill-opacity:1;fill-rule:evenodd;stroke:none"
-       id="rect2391-1"
+       style="fill:#ff0000;fill-opacity:1"
+       id="rect3027"
        width="20"
-       height="20"
-       x="50"
-       y="280"
-       inkscape:label="hyper.experiments.robots.friction.NetControlledRobotFriction" />
+       height="320"
+       x="140"
+       y="70"
+       inkscape:label="FixedObstacle" />
     <rect
-       style="fill:#ffffff;fill-opacity:1;fill-rule:evenodd;stroke:none"
-       id="rect2391-15"
-       width="20"
+       style="fill:#ff0000;fill-opacity:1"
+       id="rect3029"
+       width="180"
        height="20"
-       x="570"
-       y="190"
-       inkscape:label="hyper.experiments.robots.friction.NetControlledRobotFriction" />
+       x="160"
+       y="70"
+       inkscape:label="FixedObstacle" />
     <rect
-       style="fill:#ffffff;fill-opacity:1;fill-rule:evenodd;stroke:none"
-       id="rect2391-1-7"
-       width="20"
+       style="fill:#ff0000;fill-opacity:1"
+       id="rect3031"
+       width="140"
        height="20"
-       x="40"
-       y="190"
-       inkscape:label="hyper.experiments.robots.friction.NetControlledRobotFriction" />
+       x="200"
+       y="130"
+       inkscape:label="FixedObstacle" />
     <rect
-       style="fill:#ffffff;fill-opacity:1;fill-rule:evenodd;stroke:none"
-       id="rect2391-1-0"
+       style="fill:#ff0000;fill-opacity:1"
+       id="rect3033"
        width="20"
-       height="20"
-       x="190"
-       y="100"
-       inkscape:label="hyper.experiments.robots.friction.NetControlledRobotFriction" />
-    <rect
-       style="fill:#ffffff;fill-opacity:1;fill-rule:evenodd;stroke:none"
-       id="rect2391-1-0-9"
-       width="20"
-       height="20"
-       x="410"
-       y="100"
-       inkscape:label="hyper.experiments.robots.friction.NetControlledRobotFriction" />
+       height="240"
+       x="200"
+       y="150"
+       inkscape:label="FixedObstacle" />
   </g>
 </svg>
