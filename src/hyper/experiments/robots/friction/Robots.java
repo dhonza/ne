@@ -135,7 +135,7 @@ public class Robots implements IProblem<INet> {
         }
 
         if (agent instanceof NetControlledRobotDistance) {
-            ((NetControlledRobotDistance) agent).setSensors(inputs, -Math.PI / 2, Math.PI / (inputs - 1), 150);
+            ((NetControlledRobotDistance) agent).setSensors(inputs, -Math.PI / 2, Math.PI / (inputs - 1), 200);
         }
     }
 
