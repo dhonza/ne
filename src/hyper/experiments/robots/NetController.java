@@ -1,4 +1,4 @@
-package hyper.experiments.robots.friction;
+package hyper.experiments.robots;
 
 import common.ArrayHelper;
 import common.net.INet;

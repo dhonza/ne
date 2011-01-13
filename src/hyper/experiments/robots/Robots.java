@@ -1,4 +1,4 @@
-package hyper.experiments.robots.friction;
+package hyper.experiments.robots;
 
 import common.evolution.EvaluationInfo;
 import common.net.INet;
@@ -6,6 +6,7 @@ import common.pmatrix.ParameterCombination;
 import hyper.evaluate.IProblem;
 import hyper.evaluate.printer.ReportStorage;
 import hyper.experiments.robots.distance.NetControlledRobotDistance;
+import hyper.experiments.robots.friction.NetControlledRobotFriction;
 import hyper.substrate.ISubstrate;
 import robot.IRobotInterface;
 import robot.RobotWithSensors;

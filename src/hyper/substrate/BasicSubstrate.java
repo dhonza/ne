@@ -59,7 +59,7 @@ public class BasicSubstrate implements ISubstrate {
 
     /**
      * Complete the substrate. No further modifications are possible.
-     * Protects layers and connections which can now be obtained by getLayers and getConenctions, making them unmodifiable.
+     * Protects layers and connections which can now be obtained by getLayers and getConnections, making them unmodifiable.
      */
     public void complete() {
         completed = true;
