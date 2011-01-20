@@ -105,13 +105,13 @@ public class GPMain {
 
     private static ParameterMatrixManager createManager(String type) {
         if (type.equals("GP")) {
-            return ParameterMatrixStorage.load(new File("cfg/gpdemo.properties"));
+            return ParameterMatrixStorage.load(new File("cfg/demo/gpdemo.properties"));
         } else if (type.equals("GEP")) {
-            return ParameterMatrixStorage.load(new File("cfg/gepdemo.properties"));
+            return ParameterMatrixStorage.load(new File("cfg/demo/gepdemo.properties"));
         } else if (type.equals("GPAAC")) {
-            return ParameterMatrixStorage.load(new File("cfg/gpaacdemo.properties"));
+            return ParameterMatrixStorage.load(new File("cfg/demo/gpaacdemo.properties"));
         } else if (type.equals("GPAT")) {
-            return ParameterMatrixStorage.load(new File("cfg/gpatdemo.properties"));
+            return ParameterMatrixStorage.load(new File("cfg/demo/gpatdemo.properties"));
         } else {
             throw new IllegalArgumentException("Unsupported algorithm type");
         }
