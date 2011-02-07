@@ -115,4 +115,18 @@ public class SimplePopulationStorage<G, P> implements IPopulationStorage<G, P, P
             throw new IllegalStateException("Not converted from genotype, yet!");
         }
     }
+
+    public String genomesToMathematicaString() {
+        checkConverted();
+        StringBuilder s = new StringBuilder();
+        s.append('{');
+        for (int i = 0, genomesSize = genomes.size(); i < genomesSize - 1; i++) {
+            G genome = genomes.get(i);
+            s.append(((IMathematicaPrintable) genome).toMathematicaExpression());
+            s.append(", ");
+        }
+        s.append(((IMathematicaPrintable) genomes.get(genomes.size() - 1)).toMathematicaExpression());
+        s.append('}');
+        return s.toString();
+    }
 }

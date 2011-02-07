@@ -8,6 +8,7 @@ import org.apache.commons.configuration.ConfigurationException;
 import org.apache.commons.configuration.PropertiesConfiguration;
 
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.util.Iterator;
 
 /**
@@ -19,6 +20,14 @@ import java.util.Iterator;
  */
 public class ParameterMatrixStorage {
     public static ParameterMatrixManager load(File file) {
+        if (!file.exists()) {
+            try {
+                throw new FileNotFoundException("File: " + file + " not found!");
+            } catch (FileNotFoundException e) {
+                e.printStackTrace();
+                System.exit(1);
+            }
+        }
         Configuration properties = null;
         try {
             //I use apache commons configurations instead of JDK Properties, mainly because ability to include other property files

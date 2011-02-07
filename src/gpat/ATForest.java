@@ -127,4 +127,8 @@ public class ATForest implements IGPForest, Comparable, Serializable {
         String[] o = originList.toArray(new String[0]);
         return o;
     }
+
+    public String toMathematicaExpression() {
+        return Arrays.asList(trees).toString();
+    }
 }

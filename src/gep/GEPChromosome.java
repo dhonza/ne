@@ -699,4 +699,8 @@ public class GEPChromosome implements IGPForest, Comparable, Serializable {
     public String[] getOrigins() {
         return new String[0];
     }
+
+    public String toMathematicaExpression() {
+        return "GEPChromosome: NOT IMPLEMENTED!";
+    }
 }

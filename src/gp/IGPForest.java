@@ -1,6 +1,7 @@
 package gp;
 
 import common.evolution.EvaluationInfo;
+import common.evolution.IMathematicaPrintable;
 
 /**
  * Created by IntelliJ IDEA.
@@ -9,7 +10,7 @@ import common.evolution.EvaluationInfo;
  * Time: 9:06:13 PM
  * To change this template use File | Settings | File Templates.
  */
-public interface IGPForest {
+public interface IGPForest extends IMathematicaPrintable {
     int getNumOfInputs();
 
     double getFitness();

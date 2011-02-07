@@ -112,6 +112,10 @@ public class AACForest implements IGPForest, Comparable, Serializable {
         return Arrays.asList(trees) + " F: " + fitness + " G: " + generationOfOrigin;
     }
 
+    public String toMathematicaExpression() {
+        return "AACForest: NOT IMPLEMENTED!";
+    }
+
     public String[] getOrigins() {
         List<String> originList = new ArrayList<String>();
         for (int i = 0; i < trees.length; i++) {

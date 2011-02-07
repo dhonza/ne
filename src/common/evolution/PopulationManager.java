@@ -40,6 +40,8 @@ public class PopulationManager<G, P> {
 
     private DefaultDistance defaultDistance = DefaultDistance.GENOTYPE;
 
+    private boolean storeGenotypesMathematica;
+
     public PopulationManager(List<IGenotypeToPhenotype<G, P>> perThreadConverters, List<IEvaluable<P>> perThreadEvaluators) {
         this.perThreadConverters = perThreadConverters;
         this.perThreadEvaluators = perThreadEvaluators;
@@ -61,6 +63,10 @@ public class PopulationManager<G, P> {
         } else if (parameters.contains("DISTANCE") && parameters.getString("DISTANCE").toLowerCase().equals("phenotype")) {
             defaultDistance = DefaultDistance.PHENOTYPE;
         }
+        if (parameters.contains("STORE_GENOTYPES_MATHEMATICA")) {
+            storeGenotypesMathematica = parameters.getBoolean("STORE_GENOTYPES_MATHEMATICA");
+        }
+
     }
 
     private IDistanceStorage getGenomeDistanceStorage() {
@@ -126,6 +132,10 @@ public class PopulationManager<G, P> {
         }
         if (phenomeDistanceStorage != null) {
             infoMap.put("P_DIVERSITY", DistanceUtils.average(phenomeDistanceStorage));
+        }
+        if(storeGenotypesMathematica) {
+            infoMap.put("O_GENOMES_MATH", populationStorage.genomesToMathematicaString());
+
         }
         return new BasicInfo(infoMap);
     }

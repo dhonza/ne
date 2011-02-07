@@ -98,7 +98,7 @@ public class GPATMain {
 
     private static ParameterMatrixManager createManager(String type) {
         if (type.equals("GPAT")) {
-            return ParameterMatrixStorage.load(new File("cfg/gpatdemo.properties"));
+            return ParameterMatrixStorage.load(new File("cfg/demo/gpatdemo.properties"));
         } else {
             throw new IllegalArgumentException("Unsupported algorithm type");
         }
