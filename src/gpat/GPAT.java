@@ -21,6 +21,7 @@ import java.util.*;
 public class GPAT<P> implements IEvolutionaryAlgorithm, IGP<ATForest> {
     public static double MUTATION_ADD_LINK = 0.1;
     public static double MUTATION_ADD_NODE = 0.005;
+    public static double MUTATION_SWITCH_NODE = 0.05;
     public static double MUTATION_SWITCH_CONSTANT_LOCK = 0.05;
     public static double DISTANCE_DELTA = 0.04;
     public static double SPECIES_REPRODUCTION_RATIO = 0.1;

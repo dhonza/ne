@@ -61,6 +61,9 @@ public class ATFunctions {
 
         @Override
         public double evaluate(TreeInputs treeInputs) {
+            if(children.size() == 0) {
+                return 0.0;
+            }
             double result = getChild(0).evaluate(treeInputs);
             for (int i = 1; i < children.size(); i++) {
                 result *= getChild(i).evaluate(treeInputs);

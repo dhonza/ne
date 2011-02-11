@@ -82,7 +82,7 @@ public class ATTree {
 
     public static ATTree createMinimalSubstrate(ATNodeCollection nodeCollection, ATInnovationHistory innovationHistory) {
         ATTree tree = new ATTree(nodeCollection, innovationHistory);
-        tree.root = new ATFunctions.Plus(tree.initialNodeIds, 1);
+        tree.root = new ATFunctions.Times(tree.initialNodeIds, 1);
         tree.addNode(tree.root);
         tree.origin.add("NEW");
         return tree;
@@ -239,6 +239,28 @@ public class ATTree {
         insertLinkGene(toLink);
 
         origin.add("ADD_NODE");
+        checkInnovationSorted(this);
+        checkLinkGenesVsNodes(this);
+    }
+
+    public void mutateSwitchNode() {
+        if(nodeGeneList.size() == 0) {
+            return;
+        }
+
+        //Get random  node.
+        int nodeIdx = RND.getIntZero(nodeGeneList.size());
+        ATNode node = nodeGeneList.get(nodeIdx);
+
+
+        //Get an id (innovation number) for the new node.
+//        ATInnovationHistory.NodeInnovation innovation =
+//                innovationHistory.newNodeInnovation(
+//                        from.getId(),
+//                        to.getId(),
+//                        nodePrototype.getClass());
+
+        origin.add("SWITCH_NODE");
         checkInnovationSorted(this);
         checkLinkGenesVsNodes(this);
     }
@@ -418,6 +440,10 @@ public class ATTree {
         return builder.toString();
         //*/
 //        return root.toMathematicaExpression();
+    }
+
+    public String toMathematicaExpression() {
+        return root.toMathematicaExpression();
     }
 
     public static void main(String[] args) {

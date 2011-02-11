@@ -1,0 +1,4813 @@
+(* Content-type: application/vnd.wolfram.mathematica *)
+
+(*** Wolfram Notebook File ***)
+(* http://www.wolfram.com/nb *)
+
+(* CreatedBy='Mathematica 8.0' *)
+
+(*CacheID: 234*)
+(* Internal cache information:
+NotebookFileLineBreakTest
+NotebookFileLineBreakTest
+NotebookDataPosition[       157,          7]
+NotebookDataLength[    183338,       4804]
+NotebookOptionsPosition[    182934,       4785]
+NotebookOutlinePosition[    183289,       4801]
+CellTagsIndexPosition[    183246,       4798]
+WindowFrame->Normal*)
+
+(* Beginning of Notebook Content *)
+Notebook[{
+Cell[BoxData[
+ RowBox[{
+  RowBox[{"SetDirectory", "[", 
+   RowBox[{"Last", "[", 
+    RowBox[{"Sort", "[", 
+     RowBox[{
+      RowBox[{"SetDirectory", "[", "\"\<~/java/exp\>\"", "]"}], ";", 
+      RowBox[{"FileNames", "[", "]"}]}], "]"}], "]"}], "]"}], ";"}]], "Input",\
+
+ CellChangeTimes->{{3.506332467659465*^9, 3.50633246930552*^9}, {
+  3.506332607343128*^9, 3.506332609259953*^9}, {3.5063327355797253`*^9, 
+  3.5063328313679132`*^9}}],
+
+Cell[BoxData[
+ RowBox[{
+  RowBox[{"data", "=", 
+   RowBox[{"ToExpression", "@", 
+    RowBox[{"StringSplit", "[", 
+     RowBox[{
+      RowBox[{"Import", "[", 
+       RowBox[{"Sequence", "@@", 
+        RowBox[{"FileNames", "[", "\"\<*_O_GENOMES_MATH.txt\>\"", "]"}]}], 
+       "]"}], ",", "\"\<\\n\>\""}], "]"}]}]}], ";"}]], "Input",
+ CellChangeTimes->{{3.506332834983439*^9, 3.506332839942013*^9}, {
+   3.506332904429084*^9, 3.506332940660409*^9}, {3.5063329988563547`*^9, 
+   3.506333078886792*^9}, {3.506333332278693*^9, 3.50633333539594*^9}, {
+   3.506333613290306*^9, 3.5063336272865257`*^9}, {3.506334392419936*^9, 
+   3.506334410899115*^9}, {3.506334940480878*^9, 3.506334973652166*^9}, 
+   3.506335172629711*^9}],
+
+Cell[CellGroupData[{
+
+Cell[BoxData[
+ RowBox[{"TreeForm", "/@", "data"}]], "Input",
+ CellChangeTimes->{{3.5063330805106688`*^9, 3.506333088669948*^9}, {
+  3.5063340436258097`*^9, 3.5063340472661743`*^9}, {3.506334988332356*^9, 
+  3.506334990836897*^9}, {3.506335032480949*^9, 3.506335055057775*^9}, {
+  3.506335095537685*^9, 3.5063351357541447`*^9}}],
+
+Cell[BoxData[
+ RowBox[{"{", 
+  RowBox[{
+   GraphicsBox[
+    TagBox[GraphicsComplexBox[CompressedData["
+1:eJxTTMoPSmViYGAQBWIQPTWJz/np2f/2C8M/TLB1fWPPAAUQ/h04H10cnUaV
+f4MmjzB3p+MWnXfGX+HyMD6q/j9o+v/A5Y+aTatyW83oAJOH8VHNZ3VANZ8V
+Lr/W59K9qXs44PIwPqr9PA6o9vPA5SHhxQ+Xh/Fh8gCOsHbK
+      "], {
+       {RGBColor[0.55, 0.45, 0.45], 
+        LineBox[{{1, 2}, {1, 4}, {1, 6}, {1, 8}, {1, 10}, {1, 12}, {1, 14}, {
+         1, 16}, {1, 18}, {1, 20}, {2, 3}, {4, 5}, {6, 7}, {8, 9}, {10, 11}, {
+         12, 13}, {14, 15}, {16, 17}, {18, 19}, {20, 21}}]}, {
+        TagBox[
+         TooltipBox[InsetBox[
+           FrameBox[
+            StyleBox["List", "StandardForm", "Output",
+             StripOnInput->False,
+             LineColor->GrayLevel[0],
+             FrontFaceColor->GrayLevel[0],
+             BackFaceColor->GrayLevel[0],
+             GraphicsColor->GrayLevel[0],
+             FontSize->Scaled[0.020000000000000004`],
+             FontColor->GrayLevel[0]],
+            Background->RGBColor[1., 1., 0.871],
+            FrameStyle->GrayLevel[0.5],
+            StripOnInput->False], 1],
+          TagBox[
+           RowBox[{"{", 
+             RowBox[{
+               RowBox[{"{", "plus", "}"}], ",", 
+               RowBox[{"{", "plus", "}"}], ",", 
+               RowBox[{"{", "plus", "}"}], ",", 
+               RowBox[{"{", "plus", "}"}], ",", 
+               RowBox[{"{", "plus", "}"}], ",", 
+               RowBox[{"{", "plus", "}"}], ",", 
+               RowBox[{"{", "plus", "}"}], ",", 
+               RowBox[{"{", "plus", "}"}], ",", 
+               RowBox[{"{", "plus", "}"}], ",", 
+               RowBox[{"{", "plus", "}"}]}], "}"}], HoldForm]],
+         Annotation[#, 
+          
+          HoldForm[{{$CellContext`plus}, {$CellContext`plus}, \
+{$CellContext`plus}, {$CellContext`plus}, {$CellContext`plus}, \
+{$CellContext`plus}, {$CellContext`plus}, {$CellContext`plus}, \
+{$CellContext`plus}, {$CellContext`plus}}], "Tooltip"]& ], 
+        TagBox[
+         TooltipBox[InsetBox[
+           FrameBox[
+            StyleBox["List", "StandardForm", "Output",
+             StripOnInput->False,
+             LineColor->GrayLevel[0],
+             FrontFaceColor->GrayLevel[0],
+             BackFaceColor->GrayLevel[0],
+             GraphicsColor->GrayLevel[0],
+             FontSize->Scaled[0.020000000000000004`],
+             FontColor->GrayLevel[0]],
+            Background->RGBColor[1., 1., 0.871],
+            FrameStyle->GrayLevel[0.5],
+            StripOnInput->False], 2],
+          TagBox[
+           RowBox[{"{", "plus", "}"}], HoldForm]],
+         Annotation[#, 
+          HoldForm[{$CellContext`plus}], "Tooltip"]& ], 
+        TagBox[
+         TooltipBox[InsetBox[
+           FrameBox[
+            StyleBox[
+             TagBox["plus",
+              HoldForm], "StandardForm", "Output",
+             StripOnInput->False,
+             LineColor->GrayLevel[0],
+             FrontFaceColor->GrayLevel[0],
+             BackFaceColor->GrayLevel[0],
+             GraphicsColor->GrayLevel[0],
+             FontSize->Scaled[0.020000000000000004`],
+             FontColor->GrayLevel[0]],
+            Background->RGBColor[1., 1., 0.871],
+            FrameStyle->GrayLevel[0.5],
+            StripOnInput->False], 3],
+          TagBox["plus", HoldForm]],
+         Annotation[#, 
+          HoldForm[$CellContext`plus], "Tooltip"]& ], 
+        TagBox[
+         TooltipBox[InsetBox[
+           FrameBox[
+            StyleBox["List", "StandardForm", "Output",
+             StripOnInput->False,
+             LineColor->GrayLevel[0],
+             FrontFaceColor->GrayLevel[0],
+             BackFaceColor->GrayLevel[0],
+             GraphicsColor->GrayLevel[0],
+             FontSize->Scaled[0.020000000000000004`],
+             FontColor->GrayLevel[0]],
+            Background->RGBColor[1., 1., 0.871],
+            FrameStyle->GrayLevel[0.5],
+            StripOnInput->False], 4],
+          TagBox[
+           RowBox[{"{", "plus", "}"}], HoldForm]],
+         Annotation[#, 
+          HoldForm[{$CellContext`plus}], "Tooltip"]& ], 
+        TagBox[
+         TooltipBox[InsetBox[
+           FrameBox[
+            StyleBox[
+             TagBox["plus",
+              HoldForm], "StandardForm", "Output",
+             StripOnInput->False,
+             LineColor->GrayLevel[0],
+             FrontFaceColor->GrayLevel[0],
+             BackFaceColor->GrayLevel[0],
+             GraphicsColor->GrayLevel[0],
+             FontSize->Scaled[0.020000000000000004`],
+             FontColor->GrayLevel[0]],
+            Background->RGBColor[1., 1., 0.871],
+            FrameStyle->GrayLevel[0.5],
+            StripOnInput->False], 5],
+          TagBox["plus", HoldForm]],
+         Annotation[#, 
+          HoldForm[$CellContext`plus], "Tooltip"]& ], 
+        TagBox[
+         TooltipBox[InsetBox[
+           FrameBox[
+            StyleBox["List", "StandardForm", "Output",
+             StripOnInput->False,
+             LineColor->GrayLevel[0],
+             FrontFaceColor->GrayLevel[0],
+             BackFaceColor->GrayLevel[0],
+             GraphicsColor->GrayLevel[0],
+             FontSize->Scaled[0.020000000000000004`],
+             FontColor->GrayLevel[0]],
+            Background->RGBColor[1., 1., 0.871],
+            FrameStyle->GrayLevel[0.5],
+            StripOnInput->False], 6],
+          TagBox[
+           RowBox[{"{", "plus", "}"}], HoldForm]],
+         Annotation[#, 
+          HoldForm[{$CellContext`plus}], "Tooltip"]& ], 
+        TagBox[
+         TooltipBox[InsetBox[
+           FrameBox[
+            StyleBox[
+             TagBox["plus",
+              HoldForm], "StandardForm", "Output",
+             StripOnInput->False,
+             LineColor->GrayLevel[0],
+             FrontFaceColor->GrayLevel[0],
+             BackFaceColor->GrayLevel[0],
+             GraphicsColor->GrayLevel[0],
+             FontSize->Scaled[0.020000000000000004`],
+             FontColor->GrayLevel[0]],
+            Background->RGBColor[1., 1., 0.871],
+            FrameStyle->GrayLevel[0.5],
+            StripOnInput->False], 7],
+          TagBox["plus", HoldForm]],
+         Annotation[#, 
+          HoldForm[$CellContext`plus], "Tooltip"]& ], 
+        TagBox[
+         TooltipBox[InsetBox[
+           FrameBox[
+            StyleBox["List", "StandardForm", "Output",
+             StripOnInput->False,
+             LineColor->GrayLevel[0],
+             FrontFaceColor->GrayLevel[0],
+             BackFaceColor->GrayLevel[0],
+             GraphicsColor->GrayLevel[0],
+             FontSize->Scaled[0.020000000000000004`],
+             FontColor->GrayLevel[0]],
+            Background->RGBColor[1., 1., 0.871],
+            FrameStyle->GrayLevel[0.5],
+            StripOnInput->False], 8],
+          TagBox[
+           RowBox[{"{", "plus", "}"}], HoldForm]],
+         Annotation[#, 
+          HoldForm[{$CellContext`plus}], "Tooltip"]& ], 
+        TagBox[
+         TooltipBox[InsetBox[
+           FrameBox[
+            StyleBox[
+             TagBox["plus",
+              HoldForm], "StandardForm", "Output",
+             StripOnInput->False,
+             LineColor->GrayLevel[0],
+             FrontFaceColor->GrayLevel[0],
+             BackFaceColor->GrayLevel[0],
+             GraphicsColor->GrayLevel[0],
+             FontSize->Scaled[0.020000000000000004`],
+             FontColor->GrayLevel[0]],
+            Background->RGBColor[1., 1., 0.871],
+            FrameStyle->GrayLevel[0.5],
+            StripOnInput->False], 9],
+          TagBox["plus", HoldForm]],
+         Annotation[#, 
+          HoldForm[$CellContext`plus], "Tooltip"]& ], 
+        TagBox[
+         TooltipBox[InsetBox[
+           FrameBox[
+            StyleBox["List", "StandardForm", "Output",
+             StripOnInput->False,
+             LineColor->GrayLevel[0],
+             FrontFaceColor->GrayLevel[0],
+             BackFaceColor->GrayLevel[0],
+             GraphicsColor->GrayLevel[0],
+             FontSize->Scaled[0.020000000000000004`],
+             FontColor->GrayLevel[0]],
+            Background->RGBColor[1., 1., 0.871],
+            FrameStyle->GrayLevel[0.5],
+            StripOnInput->False], 10],
+          TagBox[
+           RowBox[{"{", "plus", "}"}], HoldForm]],
+         Annotation[#, 
+          HoldForm[{$CellContext`plus}], "Tooltip"]& ], 
+        TagBox[
+         TooltipBox[InsetBox[
+           FrameBox[
+            StyleBox[
+             TagBox["plus",
+              HoldForm], "StandardForm", "Output",
+             StripOnInput->False,
+             LineColor->GrayLevel[0],
+             FrontFaceColor->GrayLevel[0],
+             BackFaceColor->GrayLevel[0],
+             GraphicsColor->GrayLevel[0],
+             FontSize->Scaled[0.020000000000000004`],
+             FontColor->GrayLevel[0]],
+            Background->RGBColor[1., 1., 0.871],
+            FrameStyle->GrayLevel[0.5],
+            StripOnInput->False], 11],
+          TagBox["plus", HoldForm]],
+         Annotation[#, 
+          HoldForm[$CellContext`plus], "Tooltip"]& ], 
+        TagBox[
+         TooltipBox[InsetBox[
+           FrameBox[
+            StyleBox["List", "StandardForm", "Output",
+             StripOnInput->False,
+             LineColor->GrayLevel[0],
+             FrontFaceColor->GrayLevel[0],
+             BackFaceColor->GrayLevel[0],
+             GraphicsColor->GrayLevel[0],
+             FontSize->Scaled[0.020000000000000004`],
+             FontColor->GrayLevel[0]],
+            Background->RGBColor[1., 1., 0.871],
+            FrameStyle->GrayLevel[0.5],
+            StripOnInput->False], 12],
+          TagBox[
+           RowBox[{"{", "plus", "}"}], HoldForm]],
+         Annotation[#, 
+          HoldForm[{$CellContext`plus}], "Tooltip"]& ], 
+        TagBox[
+         TooltipBox[InsetBox[
+           FrameBox[
+            StyleBox[
+             TagBox["plus",
+              HoldForm], "StandardForm", "Output",
+             StripOnInput->False,
+             LineColor->GrayLevel[0],
+             FrontFaceColor->GrayLevel[0],
+             BackFaceColor->GrayLevel[0],
+             GraphicsColor->GrayLevel[0],
+             FontSize->Scaled[0.020000000000000004`],
+             FontColor->GrayLevel[0]],
+            Background->RGBColor[1., 1., 0.871],
+            FrameStyle->GrayLevel[0.5],
+            StripOnInput->False], 13],
+          TagBox["plus", HoldForm]],
+         Annotation[#, 
+          HoldForm[$CellContext`plus], "Tooltip"]& ], 
+        TagBox[
+         TooltipBox[InsetBox[
+           FrameBox[
+            StyleBox["List", "StandardForm", "Output",
+             StripOnInput->False,
+             LineColor->GrayLevel[0],
+             FrontFaceColor->GrayLevel[0],
+             BackFaceColor->GrayLevel[0],
+             GraphicsColor->GrayLevel[0],
+             FontSize->Scaled[0.020000000000000004`],
+             FontColor->GrayLevel[0]],
+            Background->RGBColor[1., 1., 0.871],
+            FrameStyle->GrayLevel[0.5],
+            StripOnInput->False], 14],
+          TagBox[
+           RowBox[{"{", "plus", "}"}], HoldForm]],
+         Annotation[#, 
+          HoldForm[{$CellContext`plus}], "Tooltip"]& ], 
+        TagBox[
+         TooltipBox[InsetBox[
+           FrameBox[
+            StyleBox[
+             TagBox["plus",
+              HoldForm], "StandardForm", "Output",
+             StripOnInput->False,
+             LineColor->GrayLevel[0],
+             FrontFaceColor->GrayLevel[0],
+             BackFaceColor->GrayLevel[0],
+             GraphicsColor->GrayLevel[0],
+             FontSize->Scaled[0.020000000000000004`],
+             FontColor->GrayLevel[0]],
+            Background->RGBColor[1., 1., 0.871],
+            FrameStyle->GrayLevel[0.5],
+            StripOnInput->False], 15],
+          TagBox["plus", HoldForm]],
+         Annotation[#, 
+          HoldForm[$CellContext`plus], "Tooltip"]& ], 
+        TagBox[
+         TooltipBox[InsetBox[
+           FrameBox[
+            StyleBox["List", "StandardForm", "Output",
+             StripOnInput->False,
+             LineColor->GrayLevel[0],
+             FrontFaceColor->GrayLevel[0],
+             BackFaceColor->GrayLevel[0],
+             GraphicsColor->GrayLevel[0],
+             FontSize->Scaled[0.020000000000000004`],
+             FontColor->GrayLevel[0]],
+            Background->RGBColor[1., 1., 0.871],
+            FrameStyle->GrayLevel[0.5],
+            StripOnInput->False], 16],
+          TagBox[
+           RowBox[{"{", "plus", "}"}], HoldForm]],
+         Annotation[#, 
+          HoldForm[{$CellContext`plus}], "Tooltip"]& ], 
+        TagBox[
+         TooltipBox[InsetBox[
+           FrameBox[
+            StyleBox[
+             TagBox["plus",
+              HoldForm], "StandardForm", "Output",
+             StripOnInput->False,
+             LineColor->GrayLevel[0],
+             FrontFaceColor->GrayLevel[0],
+             BackFaceColor->GrayLevel[0],
+             GraphicsColor->GrayLevel[0],
+             FontSize->Scaled[0.020000000000000004`],
+             FontColor->GrayLevel[0]],
+            Background->RGBColor[1., 1., 0.871],
+            FrameStyle->GrayLevel[0.5],
+            StripOnInput->False], 17],
+          TagBox["plus", HoldForm]],
+         Annotation[#, 
+          HoldForm[$CellContext`plus], "Tooltip"]& ], 
+        TagBox[
+         TooltipBox[InsetBox[
+           FrameBox[
+            StyleBox["List", "StandardForm", "Output",
+             StripOnInput->False,
+             LineColor->GrayLevel[0],
+             FrontFaceColor->GrayLevel[0],
+             BackFaceColor->GrayLevel[0],
+             GraphicsColor->GrayLevel[0],
+             FontSize->Scaled[0.020000000000000004`],
+             FontColor->GrayLevel[0]],
+            Background->RGBColor[1., 1., 0.871],
+            FrameStyle->GrayLevel[0.5],
+            StripOnInput->False], 18],
+          TagBox[
+           RowBox[{"{", "plus", "}"}], HoldForm]],
+         Annotation[#, 
+          HoldForm[{$CellContext`plus}], "Tooltip"]& ], 
+        TagBox[
+         TooltipBox[InsetBox[
+           FrameBox[
+            StyleBox[
+             TagBox["plus",
+              HoldForm], "StandardForm", "Output",
+             StripOnInput->False,
+             LineColor->GrayLevel[0],
+             FrontFaceColor->GrayLevel[0],
+             BackFaceColor->GrayLevel[0],
+             GraphicsColor->GrayLevel[0],
+             FontSize->Scaled[0.020000000000000004`],
+             FontColor->GrayLevel[0]],
+            Background->RGBColor[1., 1., 0.871],
+            FrameStyle->GrayLevel[0.5],
+            StripOnInput->False], 19],
+          TagBox["plus", HoldForm]],
+         Annotation[#, 
+          HoldForm[$CellContext`plus], "Tooltip"]& ], 
+        TagBox[
+         TooltipBox[InsetBox[
+           FrameBox[
+            StyleBox["List", "StandardForm", "Output",
+             StripOnInput->False,
+             LineColor->GrayLevel[0],
+             FrontFaceColor->GrayLevel[0],
+             BackFaceColor->GrayLevel[0],
+             GraphicsColor->GrayLevel[0],
+             FontSize->Scaled[0.020000000000000004`],
+             FontColor->GrayLevel[0]],
+            Background->RGBColor[1., 1., 0.871],
+            FrameStyle->GrayLevel[0.5],
+            StripOnInput->False], 20],
+          TagBox[
+           RowBox[{"{", "plus", "}"}], HoldForm]],
+         Annotation[#, 
+          HoldForm[{$CellContext`plus}], "Tooltip"]& ], 
+        TagBox[
+         TooltipBox[InsetBox[
+           FrameBox[
+            StyleBox[
+             TagBox["plus",
+              HoldForm], "StandardForm", "Output",
+             StripOnInput->False,
+             LineColor->GrayLevel[0],
+             FrontFaceColor->GrayLevel[0],
+             BackFaceColor->GrayLevel[0],
+             GraphicsColor->GrayLevel[0],
+             FontSize->Scaled[0.020000000000000004`],
+             FontColor->GrayLevel[0]],
+            Background->RGBColor[1., 1., 0.871],
+            FrameStyle->GrayLevel[0.5],
+            StripOnInput->False], 21],
+          TagBox["plus", HoldForm]],
+         Annotation[#, 
+          HoldForm[$CellContext`plus], "Tooltip"]& ]}}],
+     Annotation[#, VertexCoordinateRules -> CompressedData["
+1:eJxTTMoPSmViYGAQBWIQPTWJz/np2f/2C8M/TLB1fWPPAAUQ/h04H10cnUaV
+f4MmjzB3p+MWnXfGX+HyMD6q/j9o+v/A5Y+aTatyW83oAJOH8VHNZ3VANZ8V
+Lr/W59K9qXs44PIwPqr9PA6o9vPA5SHhxQ+Xh/Fh8gCOsHbK
+       "]]& ],
+    AspectRatio->NCache[
+     Rational[1, 2] Rational[3, 5]^Rational[1, 2], 0.3872983346207417],
+    FrameTicks->Automatic,
+    PlotRange->All,
+    PlotRangePadding->Scaled[0.1]], ",", 
+   GraphicsBox[
+    TagBox[GraphicsComplexBox[CompressedData["
+1:eJxTTMoPSmViYGAQBWIQPTWJz/np2f/2C8M/TLB1fWPPAAUQ/h04H10cnUaV
+f4MmjzB3p+MWnXfGX+HyMD6q/j9o+v/A5Y+aTatyW83oAJOH8VHNZ3VANZ8V
+Lr/W59K9qXs44PIwPqr9PA6o9vPA5SHhxQ+Xh/Fh8gCOsHbK
+      "], {
+       {RGBColor[0.55, 0.45, 0.45], 
+        LineBox[{{1, 2}, {1, 4}, {1, 6}, {1, 8}, {1, 10}, {1, 12}, {1, 14}, {
+         1, 16}, {1, 18}, {1, 20}, {2, 3}, {4, 5}, {6, 7}, {8, 9}, {10, 11}, {
+         12, 13}, {14, 15}, {16, 17}, {18, 19}, {20, 21}}]}, {
+        TagBox[
+         TooltipBox[InsetBox[
+           FrameBox[
+            StyleBox["List", "StandardForm", "Output",
+             StripOnInput->False,
+             LineColor->GrayLevel[0],
+             FrontFaceColor->GrayLevel[0],
+             BackFaceColor->GrayLevel[0],
+             GraphicsColor->GrayLevel[0],
+             FontSize->Scaled[0.020000000000000004`],
+             FontColor->GrayLevel[0]],
+            Background->RGBColor[1., 1., 0.871],
+            FrameStyle->GrayLevel[0.5],
+            StripOnInput->False], 1],
+          TagBox[
+           RowBox[{"{", 
+             RowBox[{
+               RowBox[{"{", "plus", "}"}], ",", 
+               RowBox[{"{", "plus", "}"}], ",", 
+               RowBox[{"{", "plus", "}"}], ",", 
+               RowBox[{"{", "plus", "}"}], ",", 
+               RowBox[{"{", "plus", "}"}], ",", 
+               RowBox[{"{", "plus", "}"}], ",", 
+               RowBox[{"{", "plus", "}"}], ",", 
+               RowBox[{"{", "plus", "}"}], ",", 
+               RowBox[{"{", "plus", "}"}], ",", 
+               RowBox[{"{", "plus", "}"}]}], "}"}], HoldForm]],
+         Annotation[#, 
+          
+          HoldForm[{{$CellContext`plus}, {$CellContext`plus}, \
+{$CellContext`plus}, {$CellContext`plus}, {$CellContext`plus}, \
+{$CellContext`plus}, {$CellContext`plus}, {$CellContext`plus}, \
+{$CellContext`plus}, {$CellContext`plus}}], "Tooltip"]& ], 
+        TagBox[
+         TooltipBox[InsetBox[
+           FrameBox[
+            StyleBox["List", "StandardForm", "Output",
+             StripOnInput->False,
+             LineColor->GrayLevel[0],
+             FrontFaceColor->GrayLevel[0],
+             BackFaceColor->GrayLevel[0],
+             GraphicsColor->GrayLevel[0],
+             FontSize->Scaled[0.020000000000000004`],
+             FontColor->GrayLevel[0]],
+            Background->RGBColor[1., 1., 0.871],
+            FrameStyle->GrayLevel[0.5],
+            StripOnInput->False], 2],
+          TagBox[
+           RowBox[{"{", "plus", "}"}], HoldForm]],
+         Annotation[#, 
+          HoldForm[{$CellContext`plus}], "Tooltip"]& ], 
+        TagBox[
+         TooltipBox[InsetBox[
+           FrameBox[
+            StyleBox[
+             TagBox["plus",
+              HoldForm], "StandardForm", "Output",
+             StripOnInput->False,
+             LineColor->GrayLevel[0],
+             FrontFaceColor->GrayLevel[0],
+             BackFaceColor->GrayLevel[0],
+             GraphicsColor->GrayLevel[0],
+             FontSize->Scaled[0.020000000000000004`],
+             FontColor->GrayLevel[0]],
+            Background->RGBColor[1., 1., 0.871],
+            FrameStyle->GrayLevel[0.5],
+            StripOnInput->False], 3],
+          TagBox["plus", HoldForm]],
+         Annotation[#, 
+          HoldForm[$CellContext`plus], "Tooltip"]& ], 
+        TagBox[
+         TooltipBox[InsetBox[
+           FrameBox[
+            StyleBox["List", "StandardForm", "Output",
+             StripOnInput->False,
+             LineColor->GrayLevel[0],
+             FrontFaceColor->GrayLevel[0],
+             BackFaceColor->GrayLevel[0],
+             GraphicsColor->GrayLevel[0],
+             FontSize->Scaled[0.020000000000000004`],
+             FontColor->GrayLevel[0]],
+            Background->RGBColor[1., 1., 0.871],
+            FrameStyle->GrayLevel[0.5],
+            StripOnInput->False], 4],
+          TagBox[
+           RowBox[{"{", "plus", "}"}], HoldForm]],
+         Annotation[#, 
+          HoldForm[{$CellContext`plus}], "Tooltip"]& ], 
+        TagBox[
+         TooltipBox[InsetBox[
+           FrameBox[
+            StyleBox[
+             TagBox["plus",
+              HoldForm], "StandardForm", "Output",
+             StripOnInput->False,
+             LineColor->GrayLevel[0],
+             FrontFaceColor->GrayLevel[0],
+             BackFaceColor->GrayLevel[0],
+             GraphicsColor->GrayLevel[0],
+             FontSize->Scaled[0.020000000000000004`],
+             FontColor->GrayLevel[0]],
+            Background->RGBColor[1., 1., 0.871],
+            FrameStyle->GrayLevel[0.5],
+            StripOnInput->False], 5],
+          TagBox["plus", HoldForm]],
+         Annotation[#, 
+          HoldForm[$CellContext`plus], "Tooltip"]& ], 
+        TagBox[
+         TooltipBox[InsetBox[
+           FrameBox[
+            StyleBox["List", "StandardForm", "Output",
+             StripOnInput->False,
+             LineColor->GrayLevel[0],
+             FrontFaceColor->GrayLevel[0],
+             BackFaceColor->GrayLevel[0],
+             GraphicsColor->GrayLevel[0],
+             FontSize->Scaled[0.020000000000000004`],
+             FontColor->GrayLevel[0]],
+            Background->RGBColor[1., 1., 0.871],
+            FrameStyle->GrayLevel[0.5],
+            StripOnInput->False], 6],
+          TagBox[
+           RowBox[{"{", "plus", "}"}], HoldForm]],
+         Annotation[#, 
+          HoldForm[{$CellContext`plus}], "Tooltip"]& ], 
+        TagBox[
+         TooltipBox[InsetBox[
+           FrameBox[
+            StyleBox[
+             TagBox["plus",
+              HoldForm], "StandardForm", "Output",
+             StripOnInput->False,
+             LineColor->GrayLevel[0],
+             FrontFaceColor->GrayLevel[0],
+             BackFaceColor->GrayLevel[0],
+             GraphicsColor->GrayLevel[0],
+             FontSize->Scaled[0.020000000000000004`],
+             FontColor->GrayLevel[0]],
+            Background->RGBColor[1., 1., 0.871],
+            FrameStyle->GrayLevel[0.5],
+            StripOnInput->False], 7],
+          TagBox["plus", HoldForm]],
+         Annotation[#, 
+          HoldForm[$CellContext`plus], "Tooltip"]& ], 
+        TagBox[
+         TooltipBox[InsetBox[
+           FrameBox[
+            StyleBox["List", "StandardForm", "Output",
+             StripOnInput->False,
+             LineColor->GrayLevel[0],
+             FrontFaceColor->GrayLevel[0],
+             BackFaceColor->GrayLevel[0],
+             GraphicsColor->GrayLevel[0],
+             FontSize->Scaled[0.020000000000000004`],
+             FontColor->GrayLevel[0]],
+            Background->RGBColor[1., 1., 0.871],
+            FrameStyle->GrayLevel[0.5],
+            StripOnInput->False], 8],
+          TagBox[
+           RowBox[{"{", "plus", "}"}], HoldForm]],
+         Annotation[#, 
+          HoldForm[{$CellContext`plus}], "Tooltip"]& ], 
+        TagBox[
+         TooltipBox[InsetBox[
+           FrameBox[
+            StyleBox[
+             TagBox["plus",
+              HoldForm], "StandardForm", "Output",
+             StripOnInput->False,
+             LineColor->GrayLevel[0],
+             FrontFaceColor->GrayLevel[0],
+             BackFaceColor->GrayLevel[0],
+             GraphicsColor->GrayLevel[0],
+             FontSize->Scaled[0.020000000000000004`],
+             FontColor->GrayLevel[0]],
+            Background->RGBColor[1., 1., 0.871],
+            FrameStyle->GrayLevel[0.5],
+            StripOnInput->False], 9],
+          TagBox["plus", HoldForm]],
+         Annotation[#, 
+          HoldForm[$CellContext`plus], "Tooltip"]& ], 
+        TagBox[
+         TooltipBox[InsetBox[
+           FrameBox[
+            StyleBox["List", "StandardForm", "Output",
+             StripOnInput->False,
+             LineColor->GrayLevel[0],
+             FrontFaceColor->GrayLevel[0],
+             BackFaceColor->GrayLevel[0],
+             GraphicsColor->GrayLevel[0],
+             FontSize->Scaled[0.020000000000000004`],
+             FontColor->GrayLevel[0]],
+            Background->RGBColor[1., 1., 0.871],
+            FrameStyle->GrayLevel[0.5],
+            StripOnInput->False], 10],
+          TagBox[
+           RowBox[{"{", "plus", "}"}], HoldForm]],
+         Annotation[#, 
+          HoldForm[{$CellContext`plus}], "Tooltip"]& ], 
+        TagBox[
+         TooltipBox[InsetBox[
+           FrameBox[
+            StyleBox[
+             TagBox["plus",
+              HoldForm], "StandardForm", "Output",
+             StripOnInput->False,
+             LineColor->GrayLevel[0],
+             FrontFaceColor->GrayLevel[0],
+             BackFaceColor->GrayLevel[0],
+             GraphicsColor->GrayLevel[0],
+             FontSize->Scaled[0.020000000000000004`],
+             FontColor->GrayLevel[0]],
+            Background->RGBColor[1., 1., 0.871],
+            FrameStyle->GrayLevel[0.5],
+            StripOnInput->False], 11],
+          TagBox["plus", HoldForm]],
+         Annotation[#, 
+          HoldForm[$CellContext`plus], "Tooltip"]& ], 
+        TagBox[
+         TooltipBox[InsetBox[
+           FrameBox[
+            StyleBox["List", "StandardForm", "Output",
+             StripOnInput->False,
+             LineColor->GrayLevel[0],
+             FrontFaceColor->GrayLevel[0],
+             BackFaceColor->GrayLevel[0],
+             GraphicsColor->GrayLevel[0],
+             FontSize->Scaled[0.020000000000000004`],
+             FontColor->GrayLevel[0]],
+            Background->RGBColor[1., 1., 0.871],
+            FrameStyle->GrayLevel[0.5],
+            StripOnInput->False], 12],
+          TagBox[
+           RowBox[{"{", "plus", "}"}], HoldForm]],
+         Annotation[#, 
+          HoldForm[{$CellContext`plus}], "Tooltip"]& ], 
+        TagBox[
+         TooltipBox[InsetBox[
+           FrameBox[
+            StyleBox[
+             TagBox["plus",
+              HoldForm], "StandardForm", "Output",
+             StripOnInput->False,
+             LineColor->GrayLevel[0],
+             FrontFaceColor->GrayLevel[0],
+             BackFaceColor->GrayLevel[0],
+             GraphicsColor->GrayLevel[0],
+             FontSize->Scaled[0.020000000000000004`],
+             FontColor->GrayLevel[0]],
+            Background->RGBColor[1., 1., 0.871],
+            FrameStyle->GrayLevel[0.5],
+            StripOnInput->False], 13],
+          TagBox["plus", HoldForm]],
+         Annotation[#, 
+          HoldForm[$CellContext`plus], "Tooltip"]& ], 
+        TagBox[
+         TooltipBox[InsetBox[
+           FrameBox[
+            StyleBox["List", "StandardForm", "Output",
+             StripOnInput->False,
+             LineColor->GrayLevel[0],
+             FrontFaceColor->GrayLevel[0],
+             BackFaceColor->GrayLevel[0],
+             GraphicsColor->GrayLevel[0],
+             FontSize->Scaled[0.020000000000000004`],
+             FontColor->GrayLevel[0]],
+            Background->RGBColor[1., 1., 0.871],
+            FrameStyle->GrayLevel[0.5],
+            StripOnInput->False], 14],
+          TagBox[
+           RowBox[{"{", "plus", "}"}], HoldForm]],
+         Annotation[#, 
+          HoldForm[{$CellContext`plus}], "Tooltip"]& ], 
+        TagBox[
+         TooltipBox[InsetBox[
+           FrameBox[
+            StyleBox[
+             TagBox["plus",
+              HoldForm], "StandardForm", "Output",
+             StripOnInput->False,
+             LineColor->GrayLevel[0],
+             FrontFaceColor->GrayLevel[0],
+             BackFaceColor->GrayLevel[0],
+             GraphicsColor->GrayLevel[0],
+             FontSize->Scaled[0.020000000000000004`],
+             FontColor->GrayLevel[0]],
+            Background->RGBColor[1., 1., 0.871],
+            FrameStyle->GrayLevel[0.5],
+            StripOnInput->False], 15],
+          TagBox["plus", HoldForm]],
+         Annotation[#, 
+          HoldForm[$CellContext`plus], "Tooltip"]& ], 
+        TagBox[
+         TooltipBox[InsetBox[
+           FrameBox[
+            StyleBox["List", "StandardForm", "Output",
+             StripOnInput->False,
+             LineColor->GrayLevel[0],
+             FrontFaceColor->GrayLevel[0],
+             BackFaceColor->GrayLevel[0],
+             GraphicsColor->GrayLevel[0],
+             FontSize->Scaled[0.020000000000000004`],
+             FontColor->GrayLevel[0]],
+            Background->RGBColor[1., 1., 0.871],
+            FrameStyle->GrayLevel[0.5],
+            StripOnInput->False], 16],
+          TagBox[
+           RowBox[{"{", "plus", "}"}], HoldForm]],
+         Annotation[#, 
+          HoldForm[{$CellContext`plus}], "Tooltip"]& ], 
+        TagBox[
+         TooltipBox[InsetBox[
+           FrameBox[
+            StyleBox[
+             TagBox["plus",
+              HoldForm], "StandardForm", "Output",
+             StripOnInput->False,
+             LineColor->GrayLevel[0],
+             FrontFaceColor->GrayLevel[0],
+             BackFaceColor->GrayLevel[0],
+             GraphicsColor->GrayLevel[0],
+             FontSize->Scaled[0.020000000000000004`],
+             FontColor->GrayLevel[0]],
+            Background->RGBColor[1., 1., 0.871],
+            FrameStyle->GrayLevel[0.5],
+            StripOnInput->False], 17],
+          TagBox["plus", HoldForm]],
+         Annotation[#, 
+          HoldForm[$CellContext`plus], "Tooltip"]& ], 
+        TagBox[
+         TooltipBox[InsetBox[
+           FrameBox[
+            StyleBox["List", "StandardForm", "Output",
+             StripOnInput->False,
+             LineColor->GrayLevel[0],
+             FrontFaceColor->GrayLevel[0],
+             BackFaceColor->GrayLevel[0],
+             GraphicsColor->GrayLevel[0],
+             FontSize->Scaled[0.020000000000000004`],
+             FontColor->GrayLevel[0]],
+            Background->RGBColor[1., 1., 0.871],
+            FrameStyle->GrayLevel[0.5],
+            StripOnInput->False], 18],
+          TagBox[
+           RowBox[{"{", "plus", "}"}], HoldForm]],
+         Annotation[#, 
+          HoldForm[{$CellContext`plus}], "Tooltip"]& ], 
+        TagBox[
+         TooltipBox[InsetBox[
+           FrameBox[
+            StyleBox[
+             TagBox["plus",
+              HoldForm], "StandardForm", "Output",
+             StripOnInput->False,
+             LineColor->GrayLevel[0],
+             FrontFaceColor->GrayLevel[0],
+             BackFaceColor->GrayLevel[0],
+             GraphicsColor->GrayLevel[0],
+             FontSize->Scaled[0.020000000000000004`],
+             FontColor->GrayLevel[0]],
+            Background->RGBColor[1., 1., 0.871],
+            FrameStyle->GrayLevel[0.5],
+            StripOnInput->False], 19],
+          TagBox["plus", HoldForm]],
+         Annotation[#, 
+          HoldForm[$CellContext`plus], "Tooltip"]& ], 
+        TagBox[
+         TooltipBox[InsetBox[
+           FrameBox[
+            StyleBox["List", "StandardForm", "Output",
+             StripOnInput->False,
+             LineColor->GrayLevel[0],
+             FrontFaceColor->GrayLevel[0],
+             BackFaceColor->GrayLevel[0],
+             GraphicsColor->GrayLevel[0],
+             FontSize->Scaled[0.020000000000000004`],
+             FontColor->GrayLevel[0]],
+            Background->RGBColor[1., 1., 0.871],
+            FrameStyle->GrayLevel[0.5],
+            StripOnInput->False], 20],
+          TagBox[
+           RowBox[{"{", "plus", "}"}], HoldForm]],
+         Annotation[#, 
+          HoldForm[{$CellContext`plus}], "Tooltip"]& ], 
+        TagBox[
+         TooltipBox[InsetBox[
+           FrameBox[
+            StyleBox[
+             TagBox["plus",
+              HoldForm], "StandardForm", "Output",
+             StripOnInput->False,
+             LineColor->GrayLevel[0],
+             FrontFaceColor->GrayLevel[0],
+             BackFaceColor->GrayLevel[0],
+             GraphicsColor->GrayLevel[0],
+             FontSize->Scaled[0.020000000000000004`],
+             FontColor->GrayLevel[0]],
+            Background->RGBColor[1., 1., 0.871],
+            FrameStyle->GrayLevel[0.5],
+            StripOnInput->False], 21],
+          TagBox["plus", HoldForm]],
+         Annotation[#, 
+          HoldForm[$CellContext`plus], "Tooltip"]& ]}}],
+     Annotation[#, VertexCoordinateRules -> CompressedData["
+1:eJxTTMoPSmViYGAQBWIQPTWJz/np2f/2C8M/TLB1fWPPAAUQ/h04H10cnUaV
+f4MmjzB3p+MWnXfGX+HyMD6q/j9o+v/A5Y+aTatyW83oAJOH8VHNZ3VANZ8V
+Lr/W59K9qXs44PIwPqr9PA6o9vPA5SHhxQ+Xh/Fh8gCOsHbK
+       "]]& ],
+    AspectRatio->NCache[
+     Rational[1, 2] Rational[3, 5]^Rational[1, 2], 0.3872983346207417],
+    FrameTicks->Automatic,
+    PlotRange->All,
+    PlotRangePadding->Scaled[0.1]], ",", 
+   GraphicsBox[
+    TagBox[GraphicsComplexBox[CompressedData["
+1:eJxTTMoPSmViYGAQBWIQPTWJz/np2f/2C8M/TLB1fWPPAAUQ/h04H10cnUaV
+f4MmjzB3p+MWnXfGX+HyMD6q/j9o+v/A5Y+aTatyW83oAJOH8VHNZ3VANZ8V
+Lr/W59K9qXs44PIwPqr9PA6o9vPA5SHhxQ+Xh/Fh8gCOsHbK
+      "], {
+       {RGBColor[0.55, 0.45, 0.45], 
+        LineBox[{{1, 2}, {1, 4}, {1, 6}, {1, 8}, {1, 10}, {1, 12}, {1, 14}, {
+         1, 16}, {1, 18}, {1, 20}, {2, 3}, {4, 5}, {6, 7}, {8, 9}, {10, 11}, {
+         12, 13}, {14, 15}, {16, 17}, {18, 19}, {20, 21}}]}, {
+        TagBox[
+         TooltipBox[InsetBox[
+           FrameBox[
+            StyleBox["List", "StandardForm", "Output",
+             StripOnInput->False,
+             LineColor->GrayLevel[0],
+             FrontFaceColor->GrayLevel[0],
+             BackFaceColor->GrayLevel[0],
+             GraphicsColor->GrayLevel[0],
+             FontSize->Scaled[0.020000000000000004`],
+             FontColor->GrayLevel[0]],
+            Background->RGBColor[1., 1., 0.871],
+            FrameStyle->GrayLevel[0.5],
+            StripOnInput->False], 1],
+          TagBox[
+           RowBox[{"{", 
+             RowBox[{
+               RowBox[{"{", "plus", "}"}], ",", 
+               RowBox[{"{", "plus", "}"}], ",", 
+               RowBox[{"{", "plus", "}"}], ",", 
+               RowBox[{"{", "plus", "}"}], ",", 
+               RowBox[{"{", "plus", "}"}], ",", 
+               RowBox[{"{", "plus", "}"}], ",", 
+               RowBox[{"{", "plus", "}"}], ",", 
+               RowBox[{"{", "plus", "}"}], ",", 
+               RowBox[{"{", "plus", "}"}], ",", 
+               RowBox[{"{", "plus", "}"}]}], "}"}], HoldForm]],
+         Annotation[#, 
+          
+          HoldForm[{{$CellContext`plus}, {$CellContext`plus}, \
+{$CellContext`plus}, {$CellContext`plus}, {$CellContext`plus}, \
+{$CellContext`plus}, {$CellContext`plus}, {$CellContext`plus}, \
+{$CellContext`plus}, {$CellContext`plus}}], "Tooltip"]& ], 
+        TagBox[
+         TooltipBox[InsetBox[
+           FrameBox[
+            StyleBox["List", "StandardForm", "Output",
+             StripOnInput->False,
+             LineColor->GrayLevel[0],
+             FrontFaceColor->GrayLevel[0],
+             BackFaceColor->GrayLevel[0],
+             GraphicsColor->GrayLevel[0],
+             FontSize->Scaled[0.020000000000000004`],
+             FontColor->GrayLevel[0]],
+            Background->RGBColor[1., 1., 0.871],
+            FrameStyle->GrayLevel[0.5],
+            StripOnInput->False], 2],
+          TagBox[
+           RowBox[{"{", "plus", "}"}], HoldForm]],
+         Annotation[#, 
+          HoldForm[{$CellContext`plus}], "Tooltip"]& ], 
+        TagBox[
+         TooltipBox[InsetBox[
+           FrameBox[
+            StyleBox[
+             TagBox["plus",
+              HoldForm], "StandardForm", "Output",
+             StripOnInput->False,
+             LineColor->GrayLevel[0],
+             FrontFaceColor->GrayLevel[0],
+             BackFaceColor->GrayLevel[0],
+             GraphicsColor->GrayLevel[0],
+             FontSize->Scaled[0.020000000000000004`],
+             FontColor->GrayLevel[0]],
+            Background->RGBColor[1., 1., 0.871],
+            FrameStyle->GrayLevel[0.5],
+            StripOnInput->False], 3],
+          TagBox["plus", HoldForm]],
+         Annotation[#, 
+          HoldForm[$CellContext`plus], "Tooltip"]& ], 
+        TagBox[
+         TooltipBox[InsetBox[
+           FrameBox[
+            StyleBox["List", "StandardForm", "Output",
+             StripOnInput->False,
+             LineColor->GrayLevel[0],
+             FrontFaceColor->GrayLevel[0],
+             BackFaceColor->GrayLevel[0],
+             GraphicsColor->GrayLevel[0],
+             FontSize->Scaled[0.020000000000000004`],
+             FontColor->GrayLevel[0]],
+            Background->RGBColor[1., 1., 0.871],
+            FrameStyle->GrayLevel[0.5],
+            StripOnInput->False], 4],
+          TagBox[
+           RowBox[{"{", "plus", "}"}], HoldForm]],
+         Annotation[#, 
+          HoldForm[{$CellContext`plus}], "Tooltip"]& ], 
+        TagBox[
+         TooltipBox[InsetBox[
+           FrameBox[
+            StyleBox[
+             TagBox["plus",
+              HoldForm], "StandardForm", "Output",
+             StripOnInput->False,
+             LineColor->GrayLevel[0],
+             FrontFaceColor->GrayLevel[0],
+             BackFaceColor->GrayLevel[0],
+             GraphicsColor->GrayLevel[0],
+             FontSize->Scaled[0.020000000000000004`],
+             FontColor->GrayLevel[0]],
+            Background->RGBColor[1., 1., 0.871],
+            FrameStyle->GrayLevel[0.5],
+            StripOnInput->False], 5],
+          TagBox["plus", HoldForm]],
+         Annotation[#, 
+          HoldForm[$CellContext`plus], "Tooltip"]& ], 
+        TagBox[
+         TooltipBox[InsetBox[
+           FrameBox[
+            StyleBox["List", "StandardForm", "Output",
+             StripOnInput->False,
+             LineColor->GrayLevel[0],
+             FrontFaceColor->GrayLevel[0],
+             BackFaceColor->GrayLevel[0],
+             GraphicsColor->GrayLevel[0],
+             FontSize->Scaled[0.020000000000000004`],
+             FontColor->GrayLevel[0]],
+            Background->RGBColor[1., 1., 0.871],
+            FrameStyle->GrayLevel[0.5],
+            StripOnInput->False], 6],
+          TagBox[
+           RowBox[{"{", "plus", "}"}], HoldForm]],
+         Annotation[#, 
+          HoldForm[{$CellContext`plus}], "Tooltip"]& ], 
+        TagBox[
+         TooltipBox[InsetBox[
+           FrameBox[
+            StyleBox[
+             TagBox["plus",
+              HoldForm], "StandardForm", "Output",
+             StripOnInput->False,
+             LineColor->GrayLevel[0],
+             FrontFaceColor->GrayLevel[0],
+             BackFaceColor->GrayLevel[0],
+             GraphicsColor->GrayLevel[0],
+             FontSize->Scaled[0.020000000000000004`],
+             FontColor->GrayLevel[0]],
+            Background->RGBColor[1., 1., 0.871],
+            FrameStyle->GrayLevel[0.5],
+            StripOnInput->False], 7],
+          TagBox["plus", HoldForm]],
+         Annotation[#, 
+          HoldForm[$CellContext`plus], "Tooltip"]& ], 
+        TagBox[
+         TooltipBox[InsetBox[
+           FrameBox[
+            StyleBox["List", "StandardForm", "Output",
+             StripOnInput->False,
+             LineColor->GrayLevel[0],
+             FrontFaceColor->GrayLevel[0],
+             BackFaceColor->GrayLevel[0],
+             GraphicsColor->GrayLevel[0],
+             FontSize->Scaled[0.020000000000000004`],
+             FontColor->GrayLevel[0]],
+            Background->RGBColor[1., 1., 0.871],
+            FrameStyle->GrayLevel[0.5],
+            StripOnInput->False], 8],
+          TagBox[
+           RowBox[{"{", "plus", "}"}], HoldForm]],
+         Annotation[#, 
+          HoldForm[{$CellContext`plus}], "Tooltip"]& ], 
+        TagBox[
+         TooltipBox[InsetBox[
+           FrameBox[
+            StyleBox[
+             TagBox["plus",
+              HoldForm], "StandardForm", "Output",
+             StripOnInput->False,
+             LineColor->GrayLevel[0],
+             FrontFaceColor->GrayLevel[0],
+             BackFaceColor->GrayLevel[0],
+             GraphicsColor->GrayLevel[0],
+             FontSize->Scaled[0.020000000000000004`],
+             FontColor->GrayLevel[0]],
+            Background->RGBColor[1., 1., 0.871],
+            FrameStyle->GrayLevel[0.5],
+            StripOnInput->False], 9],
+          TagBox["plus", HoldForm]],
+         Annotation[#, 
+          HoldForm[$CellContext`plus], "Tooltip"]& ], 
+        TagBox[
+         TooltipBox[InsetBox[
+           FrameBox[
+            StyleBox["List", "StandardForm", "Output",
+             StripOnInput->False,
+             LineColor->GrayLevel[0],
+             FrontFaceColor->GrayLevel[0],
+             BackFaceColor->GrayLevel[0],
+             GraphicsColor->GrayLevel[0],
+             FontSize->Scaled[0.020000000000000004`],
+             FontColor->GrayLevel[0]],
+            Background->RGBColor[1., 1., 0.871],
+            FrameStyle->GrayLevel[0.5],
+            StripOnInput->False], 10],
+          TagBox[
+           RowBox[{"{", "plus", "}"}], HoldForm]],
+         Annotation[#, 
+          HoldForm[{$CellContext`plus}], "Tooltip"]& ], 
+        TagBox[
+         TooltipBox[InsetBox[
+           FrameBox[
+            StyleBox[
+             TagBox["plus",
+              HoldForm], "StandardForm", "Output",
+             StripOnInput->False,
+             LineColor->GrayLevel[0],
+             FrontFaceColor->GrayLevel[0],
+             BackFaceColor->GrayLevel[0],
+             GraphicsColor->GrayLevel[0],
+             FontSize->Scaled[0.020000000000000004`],
+             FontColor->GrayLevel[0]],
+            Background->RGBColor[1., 1., 0.871],
+            FrameStyle->GrayLevel[0.5],
+            StripOnInput->False], 11],
+          TagBox["plus", HoldForm]],
+         Annotation[#, 
+          HoldForm[$CellContext`plus], "Tooltip"]& ], 
+        TagBox[
+         TooltipBox[InsetBox[
+           FrameBox[
+            StyleBox["List", "StandardForm", "Output",
+             StripOnInput->False,
+             LineColor->GrayLevel[0],
+             FrontFaceColor->GrayLevel[0],
+             BackFaceColor->GrayLevel[0],
+             GraphicsColor->GrayLevel[0],
+             FontSize->Scaled[0.020000000000000004`],
+             FontColor->GrayLevel[0]],
+            Background->RGBColor[1., 1., 0.871],
+            FrameStyle->GrayLevel[0.5],
+            StripOnInput->False], 12],
+          TagBox[
+           RowBox[{"{", "plus", "}"}], HoldForm]],
+         Annotation[#, 
+          HoldForm[{$CellContext`plus}], "Tooltip"]& ], 
+        TagBox[
+         TooltipBox[InsetBox[
+           FrameBox[
+            StyleBox[
+             TagBox["plus",
+              HoldForm], "StandardForm", "Output",
+             StripOnInput->False,
+             LineColor->GrayLevel[0],
+             FrontFaceColor->GrayLevel[0],
+             BackFaceColor->GrayLevel[0],
+             GraphicsColor->GrayLevel[0],
+             FontSize->Scaled[0.020000000000000004`],
+             FontColor->GrayLevel[0]],
+            Background->RGBColor[1., 1., 0.871],
+            FrameStyle->GrayLevel[0.5],
+            StripOnInput->False], 13],
+          TagBox["plus", HoldForm]],
+         Annotation[#, 
+          HoldForm[$CellContext`plus], "Tooltip"]& ], 
+        TagBox[
+         TooltipBox[InsetBox[
+           FrameBox[
+            StyleBox["List", "StandardForm", "Output",
+             StripOnInput->False,
+             LineColor->GrayLevel[0],
+             FrontFaceColor->GrayLevel[0],
+             BackFaceColor->GrayLevel[0],
+             GraphicsColor->GrayLevel[0],
+             FontSize->Scaled[0.020000000000000004`],
+             FontColor->GrayLevel[0]],
+            Background->RGBColor[1., 1., 0.871],
+            FrameStyle->GrayLevel[0.5],
+            StripOnInput->False], 14],
+          TagBox[
+           RowBox[{"{", "plus", "}"}], HoldForm]],
+         Annotation[#, 
+          HoldForm[{$CellContext`plus}], "Tooltip"]& ], 
+        TagBox[
+         TooltipBox[InsetBox[
+           FrameBox[
+            StyleBox[
+             TagBox["plus",
+              HoldForm], "StandardForm", "Output",
+             StripOnInput->False,
+             LineColor->GrayLevel[0],
+             FrontFaceColor->GrayLevel[0],
+             BackFaceColor->GrayLevel[0],
+             GraphicsColor->GrayLevel[0],
+             FontSize->Scaled[0.020000000000000004`],
+             FontColor->GrayLevel[0]],
+            Background->RGBColor[1., 1., 0.871],
+            FrameStyle->GrayLevel[0.5],
+            StripOnInput->False], 15],
+          TagBox["plus", HoldForm]],
+         Annotation[#, 
+          HoldForm[$CellContext`plus], "Tooltip"]& ], 
+        TagBox[
+         TooltipBox[InsetBox[
+           FrameBox[
+            StyleBox["List", "StandardForm", "Output",
+             StripOnInput->False,
+             LineColor->GrayLevel[0],
+             FrontFaceColor->GrayLevel[0],
+             BackFaceColor->GrayLevel[0],
+             GraphicsColor->GrayLevel[0],
+             FontSize->Scaled[0.020000000000000004`],
+             FontColor->GrayLevel[0]],
+            Background->RGBColor[1., 1., 0.871],
+            FrameStyle->GrayLevel[0.5],
+            StripOnInput->False], 16],
+          TagBox[
+           RowBox[{"{", "plus", "}"}], HoldForm]],
+         Annotation[#, 
+          HoldForm[{$CellContext`plus}], "Tooltip"]& ], 
+        TagBox[
+         TooltipBox[InsetBox[
+           FrameBox[
+            StyleBox[
+             TagBox["plus",
+              HoldForm], "StandardForm", "Output",
+             StripOnInput->False,
+             LineColor->GrayLevel[0],
+             FrontFaceColor->GrayLevel[0],
+             BackFaceColor->GrayLevel[0],
+             GraphicsColor->GrayLevel[0],
+             FontSize->Scaled[0.020000000000000004`],
+             FontColor->GrayLevel[0]],
+            Background->RGBColor[1., 1., 0.871],
+            FrameStyle->GrayLevel[0.5],
+            StripOnInput->False], 17],
+          TagBox["plus", HoldForm]],
+         Annotation[#, 
+          HoldForm[$CellContext`plus], "Tooltip"]& ], 
+        TagBox[
+         TooltipBox[InsetBox[
+           FrameBox[
+            StyleBox["List", "StandardForm", "Output",
+             StripOnInput->False,
+             LineColor->GrayLevel[0],
+             FrontFaceColor->GrayLevel[0],
+             BackFaceColor->GrayLevel[0],
+             GraphicsColor->GrayLevel[0],
+             FontSize->Scaled[0.020000000000000004`],
+             FontColor->GrayLevel[0]],
+            Background->RGBColor[1., 1., 0.871],
+            FrameStyle->GrayLevel[0.5],
+            StripOnInput->False], 18],
+          TagBox[
+           RowBox[{"{", "plus", "}"}], HoldForm]],
+         Annotation[#, 
+          HoldForm[{$CellContext`plus}], "Tooltip"]& ], 
+        TagBox[
+         TooltipBox[InsetBox[
+           FrameBox[
+            StyleBox[
+             TagBox["plus",
+              HoldForm], "StandardForm", "Output",
+             StripOnInput->False,
+             LineColor->GrayLevel[0],
+             FrontFaceColor->GrayLevel[0],
+             BackFaceColor->GrayLevel[0],
+             GraphicsColor->GrayLevel[0],
+             FontSize->Scaled[0.020000000000000004`],
+             FontColor->GrayLevel[0]],
+            Background->RGBColor[1., 1., 0.871],
+            FrameStyle->GrayLevel[0.5],
+            StripOnInput->False], 19],
+          TagBox["plus", HoldForm]],
+         Annotation[#, 
+          HoldForm[$CellContext`plus], "Tooltip"]& ], 
+        TagBox[
+         TooltipBox[InsetBox[
+           FrameBox[
+            StyleBox["List", "StandardForm", "Output",
+             StripOnInput->False,
+             LineColor->GrayLevel[0],
+             FrontFaceColor->GrayLevel[0],
+             BackFaceColor->GrayLevel[0],
+             GraphicsColor->GrayLevel[0],
+             FontSize->Scaled[0.020000000000000004`],
+             FontColor->GrayLevel[0]],
+            Background->RGBColor[1., 1., 0.871],
+            FrameStyle->GrayLevel[0.5],
+            StripOnInput->False], 20],
+          TagBox[
+           RowBox[{"{", "plus", "}"}], HoldForm]],
+         Annotation[#, 
+          HoldForm[{$CellContext`plus}], "Tooltip"]& ], 
+        TagBox[
+         TooltipBox[InsetBox[
+           FrameBox[
+            StyleBox[
+             TagBox["plus",
+              HoldForm], "StandardForm", "Output",
+             StripOnInput->False,
+             LineColor->GrayLevel[0],
+             FrontFaceColor->GrayLevel[0],
+             BackFaceColor->GrayLevel[0],
+             GraphicsColor->GrayLevel[0],
+             FontSize->Scaled[0.020000000000000004`],
+             FontColor->GrayLevel[0]],
+            Background->RGBColor[1., 1., 0.871],
+            FrameStyle->GrayLevel[0.5],
+            StripOnInput->False], 21],
+          TagBox["plus", HoldForm]],
+         Annotation[#, 
+          HoldForm[$CellContext`plus], "Tooltip"]& ]}}],
+     Annotation[#, VertexCoordinateRules -> CompressedData["
+1:eJxTTMoPSmViYGAQBWIQPTWJz/np2f/2C8M/TLB1fWPPAAUQ/h04H10cnUaV
+f4MmjzB3p+MWnXfGX+HyMD6q/j9o+v/A5Y+aTatyW83oAJOH8VHNZ3VANZ8V
+Lr/W59K9qXs44PIwPqr9PA6o9vPA5SHhxQ+Xh/Fh8gCOsHbK
+       "]]& ],
+    AspectRatio->NCache[
+     Rational[1, 2] Rational[3, 5]^Rational[1, 2], 0.3872983346207417],
+    FrameTicks->Automatic,
+    PlotRange->All,
+    PlotRangePadding->Scaled[0.1]], ",", 
+   GraphicsBox[
+    TagBox[GraphicsComplexBox[CompressedData["
+1:eJxTTMoPSmViYGAQBWIQPTWJz/np2f/2C8M/TLB1fWPPAAUQ/h04H10cnUaV
+f4MmjzB3p+MWnXfGX+HyMD6q/j9o+v/A5Y+aTatyW83oAJOH8VHNZ3VANZ8V
+Lr/W59K9qXs44PIwPqr9PA6o9vPA5SHhxQ+Xh/Fh8gCOsHbK
+      "], {
+       {RGBColor[0.55, 0.45, 0.45], 
+        LineBox[{{1, 2}, {1, 4}, {1, 6}, {1, 8}, {1, 10}, {1, 12}, {1, 14}, {
+         1, 16}, {1, 18}, {1, 20}, {2, 3}, {4, 5}, {6, 7}, {8, 9}, {10, 11}, {
+         12, 13}, {14, 15}, {16, 17}, {18, 19}, {20, 21}}]}, {
+        TagBox[
+         TooltipBox[InsetBox[
+           FrameBox[
+            StyleBox["List", "StandardForm", "Output",
+             StripOnInput->False,
+             LineColor->GrayLevel[0],
+             FrontFaceColor->GrayLevel[0],
+             BackFaceColor->GrayLevel[0],
+             GraphicsColor->GrayLevel[0],
+             FontSize->Scaled[0.020000000000000004`],
+             FontColor->GrayLevel[0]],
+            Background->RGBColor[1., 1., 0.871],
+            FrameStyle->GrayLevel[0.5],
+            StripOnInput->False], 1],
+          TagBox[
+           RowBox[{"{", 
+             RowBox[{
+               RowBox[{"{", "plus", "}"}], ",", 
+               RowBox[{"{", "plus", "}"}], ",", 
+               RowBox[{"{", "plus", "}"}], ",", 
+               RowBox[{"{", "plus", "}"}], ",", 
+               RowBox[{"{", "plus", "}"}], ",", 
+               RowBox[{"{", "plus", "}"}], ",", 
+               RowBox[{"{", "plus", "}"}], ",", 
+               RowBox[{"{", "plus", "}"}], ",", 
+               RowBox[{"{", "plus", "}"}], ",", 
+               RowBox[{"{", "plus", "}"}]}], "}"}], HoldForm]],
+         Annotation[#, 
+          
+          HoldForm[{{$CellContext`plus}, {$CellContext`plus}, \
+{$CellContext`plus}, {$CellContext`plus}, {$CellContext`plus}, \
+{$CellContext`plus}, {$CellContext`plus}, {$CellContext`plus}, \
+{$CellContext`plus}, {$CellContext`plus}}], "Tooltip"]& ], 
+        TagBox[
+         TooltipBox[InsetBox[
+           FrameBox[
+            StyleBox["List", "StandardForm", "Output",
+             StripOnInput->False,
+             LineColor->GrayLevel[0],
+             FrontFaceColor->GrayLevel[0],
+             BackFaceColor->GrayLevel[0],
+             GraphicsColor->GrayLevel[0],
+             FontSize->Scaled[0.020000000000000004`],
+             FontColor->GrayLevel[0]],
+            Background->RGBColor[1., 1., 0.871],
+            FrameStyle->GrayLevel[0.5],
+            StripOnInput->False], 2],
+          TagBox[
+           RowBox[{"{", "plus", "}"}], HoldForm]],
+         Annotation[#, 
+          HoldForm[{$CellContext`plus}], "Tooltip"]& ], 
+        TagBox[
+         TooltipBox[InsetBox[
+           FrameBox[
+            StyleBox[
+             TagBox["plus",
+              HoldForm], "StandardForm", "Output",
+             StripOnInput->False,
+             LineColor->GrayLevel[0],
+             FrontFaceColor->GrayLevel[0],
+             BackFaceColor->GrayLevel[0],
+             GraphicsColor->GrayLevel[0],
+             FontSize->Scaled[0.020000000000000004`],
+             FontColor->GrayLevel[0]],
+            Background->RGBColor[1., 1., 0.871],
+            FrameStyle->GrayLevel[0.5],
+            StripOnInput->False], 3],
+          TagBox["plus", HoldForm]],
+         Annotation[#, 
+          HoldForm[$CellContext`plus], "Tooltip"]& ], 
+        TagBox[
+         TooltipBox[InsetBox[
+           FrameBox[
+            StyleBox["List", "StandardForm", "Output",
+             StripOnInput->False,
+             LineColor->GrayLevel[0],
+             FrontFaceColor->GrayLevel[0],
+             BackFaceColor->GrayLevel[0],
+             GraphicsColor->GrayLevel[0],
+             FontSize->Scaled[0.020000000000000004`],
+             FontColor->GrayLevel[0]],
+            Background->RGBColor[1., 1., 0.871],
+            FrameStyle->GrayLevel[0.5],
+            StripOnInput->False], 4],
+          TagBox[
+           RowBox[{"{", "plus", "}"}], HoldForm]],
+         Annotation[#, 
+          HoldForm[{$CellContext`plus}], "Tooltip"]& ], 
+        TagBox[
+         TooltipBox[InsetBox[
+           FrameBox[
+            StyleBox[
+             TagBox["plus",
+              HoldForm], "StandardForm", "Output",
+             StripOnInput->False,
+             LineColor->GrayLevel[0],
+             FrontFaceColor->GrayLevel[0],
+             BackFaceColor->GrayLevel[0],
+             GraphicsColor->GrayLevel[0],
+             FontSize->Scaled[0.020000000000000004`],
+             FontColor->GrayLevel[0]],
+            Background->RGBColor[1., 1., 0.871],
+            FrameStyle->GrayLevel[0.5],
+            StripOnInput->False], 5],
+          TagBox["plus", HoldForm]],
+         Annotation[#, 
+          HoldForm[$CellContext`plus], "Tooltip"]& ], 
+        TagBox[
+         TooltipBox[InsetBox[
+           FrameBox[
+            StyleBox["List", "StandardForm", "Output",
+             StripOnInput->False,
+             LineColor->GrayLevel[0],
+             FrontFaceColor->GrayLevel[0],
+             BackFaceColor->GrayLevel[0],
+             GraphicsColor->GrayLevel[0],
+             FontSize->Scaled[0.020000000000000004`],
+             FontColor->GrayLevel[0]],
+            Background->RGBColor[1., 1., 0.871],
+            FrameStyle->GrayLevel[0.5],
+            StripOnInput->False], 6],
+          TagBox[
+           RowBox[{"{", "plus", "}"}], HoldForm]],
+         Annotation[#, 
+          HoldForm[{$CellContext`plus}], "Tooltip"]& ], 
+        TagBox[
+         TooltipBox[InsetBox[
+           FrameBox[
+            StyleBox[
+             TagBox["plus",
+              HoldForm], "StandardForm", "Output",
+             StripOnInput->False,
+             LineColor->GrayLevel[0],
+             FrontFaceColor->GrayLevel[0],
+             BackFaceColor->GrayLevel[0],
+             GraphicsColor->GrayLevel[0],
+             FontSize->Scaled[0.020000000000000004`],
+             FontColor->GrayLevel[0]],
+            Background->RGBColor[1., 1., 0.871],
+            FrameStyle->GrayLevel[0.5],
+            StripOnInput->False], 7],
+          TagBox["plus", HoldForm]],
+         Annotation[#, 
+          HoldForm[$CellContext`plus], "Tooltip"]& ], 
+        TagBox[
+         TooltipBox[InsetBox[
+           FrameBox[
+            StyleBox["List", "StandardForm", "Output",
+             StripOnInput->False,
+             LineColor->GrayLevel[0],
+             FrontFaceColor->GrayLevel[0],
+             BackFaceColor->GrayLevel[0],
+             GraphicsColor->GrayLevel[0],
+             FontSize->Scaled[0.020000000000000004`],
+             FontColor->GrayLevel[0]],
+            Background->RGBColor[1., 1., 0.871],
+            FrameStyle->GrayLevel[0.5],
+            StripOnInput->False], 8],
+          TagBox[
+           RowBox[{"{", "plus", "}"}], HoldForm]],
+         Annotation[#, 
+          HoldForm[{$CellContext`plus}], "Tooltip"]& ], 
+        TagBox[
+         TooltipBox[InsetBox[
+           FrameBox[
+            StyleBox[
+             TagBox["plus",
+              HoldForm], "StandardForm", "Output",
+             StripOnInput->False,
+             LineColor->GrayLevel[0],
+             FrontFaceColor->GrayLevel[0],
+             BackFaceColor->GrayLevel[0],
+             GraphicsColor->GrayLevel[0],
+             FontSize->Scaled[0.020000000000000004`],
+             FontColor->GrayLevel[0]],
+            Background->RGBColor[1., 1., 0.871],
+            FrameStyle->GrayLevel[0.5],
+            StripOnInput->False], 9],
+          TagBox["plus", HoldForm]],
+         Annotation[#, 
+          HoldForm[$CellContext`plus], "Tooltip"]& ], 
+        TagBox[
+         TooltipBox[InsetBox[
+           FrameBox[
+            StyleBox["List", "StandardForm", "Output",
+             StripOnInput->False,
+             LineColor->GrayLevel[0],
+             FrontFaceColor->GrayLevel[0],
+             BackFaceColor->GrayLevel[0],
+             GraphicsColor->GrayLevel[0],
+             FontSize->Scaled[0.020000000000000004`],
+             FontColor->GrayLevel[0]],
+            Background->RGBColor[1., 1., 0.871],
+            FrameStyle->GrayLevel[0.5],
+            StripOnInput->False], 10],
+          TagBox[
+           RowBox[{"{", "plus", "}"}], HoldForm]],
+         Annotation[#, 
+          HoldForm[{$CellContext`plus}], "Tooltip"]& ], 
+        TagBox[
+         TooltipBox[InsetBox[
+           FrameBox[
+            StyleBox[
+             TagBox["plus",
+              HoldForm], "StandardForm", "Output",
+             StripOnInput->False,
+             LineColor->GrayLevel[0],
+             FrontFaceColor->GrayLevel[0],
+             BackFaceColor->GrayLevel[0],
+             GraphicsColor->GrayLevel[0],
+             FontSize->Scaled[0.020000000000000004`],
+             FontColor->GrayLevel[0]],
+            Background->RGBColor[1., 1., 0.871],
+            FrameStyle->GrayLevel[0.5],
+            StripOnInput->False], 11],
+          TagBox["plus", HoldForm]],
+         Annotation[#, 
+          HoldForm[$CellContext`plus], "Tooltip"]& ], 
+        TagBox[
+         TooltipBox[InsetBox[
+           FrameBox[
+            StyleBox["List", "StandardForm", "Output",
+             StripOnInput->False,
+             LineColor->GrayLevel[0],
+             FrontFaceColor->GrayLevel[0],
+             BackFaceColor->GrayLevel[0],
+             GraphicsColor->GrayLevel[0],
+             FontSize->Scaled[0.020000000000000004`],
+             FontColor->GrayLevel[0]],
+            Background->RGBColor[1., 1., 0.871],
+            FrameStyle->GrayLevel[0.5],
+            StripOnInput->False], 12],
+          TagBox[
+           RowBox[{"{", "plus", "}"}], HoldForm]],
+         Annotation[#, 
+          HoldForm[{$CellContext`plus}], "Tooltip"]& ], 
+        TagBox[
+         TooltipBox[InsetBox[
+           FrameBox[
+            StyleBox[
+             TagBox["plus",
+              HoldForm], "StandardForm", "Output",
+             StripOnInput->False,
+             LineColor->GrayLevel[0],
+             FrontFaceColor->GrayLevel[0],
+             BackFaceColor->GrayLevel[0],
+             GraphicsColor->GrayLevel[0],
+             FontSize->Scaled[0.020000000000000004`],
+             FontColor->GrayLevel[0]],
+            Background->RGBColor[1., 1., 0.871],
+            FrameStyle->GrayLevel[0.5],
+            StripOnInput->False], 13],
+          TagBox["plus", HoldForm]],
+         Annotation[#, 
+          HoldForm[$CellContext`plus], "Tooltip"]& ], 
+        TagBox[
+         TooltipBox[InsetBox[
+           FrameBox[
+            StyleBox["List", "StandardForm", "Output",
+             StripOnInput->False,
+             LineColor->GrayLevel[0],
+             FrontFaceColor->GrayLevel[0],
+             BackFaceColor->GrayLevel[0],
+             GraphicsColor->GrayLevel[0],
+             FontSize->Scaled[0.020000000000000004`],
+             FontColor->GrayLevel[0]],
+            Background->RGBColor[1., 1., 0.871],
+            FrameStyle->GrayLevel[0.5],
+            StripOnInput->False], 14],
+          TagBox[
+           RowBox[{"{", "plus", "}"}], HoldForm]],
+         Annotation[#, 
+          HoldForm[{$CellContext`plus}], "Tooltip"]& ], 
+        TagBox[
+         TooltipBox[InsetBox[
+           FrameBox[
+            StyleBox[
+             TagBox["plus",
+              HoldForm], "StandardForm", "Output",
+             StripOnInput->False,
+             LineColor->GrayLevel[0],
+             FrontFaceColor->GrayLevel[0],
+             BackFaceColor->GrayLevel[0],
+             GraphicsColor->GrayLevel[0],
+             FontSize->Scaled[0.020000000000000004`],
+             FontColor->GrayLevel[0]],
+            Background->RGBColor[1., 1., 0.871],
+            FrameStyle->GrayLevel[0.5],
+            StripOnInput->False], 15],
+          TagBox["plus", HoldForm]],
+         Annotation[#, 
+          HoldForm[$CellContext`plus], "Tooltip"]& ], 
+        TagBox[
+         TooltipBox[InsetBox[
+           FrameBox[
+            StyleBox["List", "StandardForm", "Output",
+             StripOnInput->False,
+             LineColor->GrayLevel[0],
+             FrontFaceColor->GrayLevel[0],
+             BackFaceColor->GrayLevel[0],
+             GraphicsColor->GrayLevel[0],
+             FontSize->Scaled[0.020000000000000004`],
+             FontColor->GrayLevel[0]],
+            Background->RGBColor[1., 1., 0.871],
+            FrameStyle->GrayLevel[0.5],
+            StripOnInput->False], 16],
+          TagBox[
+           RowBox[{"{", "plus", "}"}], HoldForm]],
+         Annotation[#, 
+          HoldForm[{$CellContext`plus}], "Tooltip"]& ], 
+        TagBox[
+         TooltipBox[InsetBox[
+           FrameBox[
+            StyleBox[
+             TagBox["plus",
+              HoldForm], "StandardForm", "Output",
+             StripOnInput->False,
+             LineColor->GrayLevel[0],
+             FrontFaceColor->GrayLevel[0],
+             BackFaceColor->GrayLevel[0],
+             GraphicsColor->GrayLevel[0],
+             FontSize->Scaled[0.020000000000000004`],
+             FontColor->GrayLevel[0]],
+            Background->RGBColor[1., 1., 0.871],
+            FrameStyle->GrayLevel[0.5],
+            StripOnInput->False], 17],
+          TagBox["plus", HoldForm]],
+         Annotation[#, 
+          HoldForm[$CellContext`plus], "Tooltip"]& ], 
+        TagBox[
+         TooltipBox[InsetBox[
+           FrameBox[
+            StyleBox["List", "StandardForm", "Output",
+             StripOnInput->False,
+             LineColor->GrayLevel[0],
+             FrontFaceColor->GrayLevel[0],
+             BackFaceColor->GrayLevel[0],
+             GraphicsColor->GrayLevel[0],
+             FontSize->Scaled[0.020000000000000004`],
+             FontColor->GrayLevel[0]],
+            Background->RGBColor[1., 1., 0.871],
+            FrameStyle->GrayLevel[0.5],
+            StripOnInput->False], 18],
+          TagBox[
+           RowBox[{"{", "plus", "}"}], HoldForm]],
+         Annotation[#, 
+          HoldForm[{$CellContext`plus}], "Tooltip"]& ], 
+        TagBox[
+         TooltipBox[InsetBox[
+           FrameBox[
+            StyleBox[
+             TagBox["plus",
+              HoldForm], "StandardForm", "Output",
+             StripOnInput->False,
+             LineColor->GrayLevel[0],
+             FrontFaceColor->GrayLevel[0],
+             BackFaceColor->GrayLevel[0],
+             GraphicsColor->GrayLevel[0],
+             FontSize->Scaled[0.020000000000000004`],
+             FontColor->GrayLevel[0]],
+            Background->RGBColor[1., 1., 0.871],
+            FrameStyle->GrayLevel[0.5],
+            StripOnInput->False], 19],
+          TagBox["plus", HoldForm]],
+         Annotation[#, 
+          HoldForm[$CellContext`plus], "Tooltip"]& ], 
+        TagBox[
+         TooltipBox[InsetBox[
+           FrameBox[
+            StyleBox["List", "StandardForm", "Output",
+             StripOnInput->False,
+             LineColor->GrayLevel[0],
+             FrontFaceColor->GrayLevel[0],
+             BackFaceColor->GrayLevel[0],
+             GraphicsColor->GrayLevel[0],
+             FontSize->Scaled[0.020000000000000004`],
+             FontColor->GrayLevel[0]],
+            Background->RGBColor[1., 1., 0.871],
+            FrameStyle->GrayLevel[0.5],
+            StripOnInput->False], 20],
+          TagBox[
+           RowBox[{"{", "plus", "}"}], HoldForm]],
+         Annotation[#, 
+          HoldForm[{$CellContext`plus}], "Tooltip"]& ], 
+        TagBox[
+         TooltipBox[InsetBox[
+           FrameBox[
+            StyleBox[
+             TagBox["plus",
+              HoldForm], "StandardForm", "Output",
+             StripOnInput->False,
+             LineColor->GrayLevel[0],
+             FrontFaceColor->GrayLevel[0],
+             BackFaceColor->GrayLevel[0],
+             GraphicsColor->GrayLevel[0],
+             FontSize->Scaled[0.020000000000000004`],
+             FontColor->GrayLevel[0]],
+            Background->RGBColor[1., 1., 0.871],
+            FrameStyle->GrayLevel[0.5],
+            StripOnInput->False], 21],
+          TagBox["plus", HoldForm]],
+         Annotation[#, 
+          HoldForm[$CellContext`plus], "Tooltip"]& ]}}],
+     Annotation[#, VertexCoordinateRules -> CompressedData["
+1:eJxTTMoPSmViYGAQBWIQPTWJz/np2f/2C8M/TLB1fWPPAAUQ/h04H10cnUaV
+f4MmjzB3p+MWnXfGX+HyMD6q/j9o+v/A5Y+aTatyW83oAJOH8VHNZ3VANZ8V
+Lr/W59K9qXs44PIwPqr9PA6o9vPA5SHhxQ+Xh/Fh8gCOsHbK
+       "]]& ],
+    AspectRatio->NCache[
+     Rational[1, 2] Rational[3, 5]^Rational[1, 2], 0.3872983346207417],
+    FrameTicks->Automatic,
+    PlotRange->All,
+    PlotRangePadding->Scaled[0.1]], ",", 
+   GraphicsBox[
+    TagBox[GraphicsComplexBox[CompressedData["
+1:eJxTTMoPSmViYGAQBWIQPTWJz/np2f/2C8M/TLB1fWPPAAUQ/h04H10cnUaV
+f4MmjzB3p+MWnXfGX+HyMD6q/j9o+v/A5Y+aTatyW83oAJOH8VHNZ3VANZ8V
+Lr/W59K9qXs44PIwPqr9PA6o9vPA5SHhxQ+Xh/Fh8gCOsHbK
+      "], {
+       {RGBColor[0.55, 0.45, 0.45], 
+        LineBox[{{1, 2}, {1, 4}, {1, 6}, {1, 8}, {1, 10}, {1, 12}, {1, 14}, {
+         1, 16}, {1, 18}, {1, 20}, {2, 3}, {4, 5}, {6, 7}, {8, 9}, {10, 11}, {
+         12, 13}, {14, 15}, {16, 17}, {18, 19}, {20, 21}}]}, {
+        TagBox[
+         TooltipBox[InsetBox[
+           FrameBox[
+            StyleBox["List", "StandardForm", "Output",
+             StripOnInput->False,
+             LineColor->GrayLevel[0],
+             FrontFaceColor->GrayLevel[0],
+             BackFaceColor->GrayLevel[0],
+             GraphicsColor->GrayLevel[0],
+             FontSize->Scaled[0.020000000000000004`],
+             FontColor->GrayLevel[0]],
+            Background->RGBColor[1., 1., 0.871],
+            FrameStyle->GrayLevel[0.5],
+            StripOnInput->False], 1],
+          TagBox[
+           RowBox[{"{", 
+             RowBox[{
+               RowBox[{"{", "plus", "}"}], ",", 
+               RowBox[{"{", "plus", "}"}], ",", 
+               RowBox[{"{", "plus", "}"}], ",", 
+               RowBox[{"{", "plus", "}"}], ",", 
+               RowBox[{"{", "plus", "}"}], ",", 
+               RowBox[{"{", "plus", "}"}], ",", 
+               RowBox[{"{", "plus", "}"}], ",", 
+               RowBox[{"{", "plus", "}"}], ",", 
+               RowBox[{"{", "plus", "}"}], ",", 
+               RowBox[{"{", "plus", "}"}]}], "}"}], HoldForm]],
+         Annotation[#, 
+          
+          HoldForm[{{$CellContext`plus}, {$CellContext`plus}, \
+{$CellContext`plus}, {$CellContext`plus}, {$CellContext`plus}, \
+{$CellContext`plus}, {$CellContext`plus}, {$CellContext`plus}, \
+{$CellContext`plus}, {$CellContext`plus}}], "Tooltip"]& ], 
+        TagBox[
+         TooltipBox[InsetBox[
+           FrameBox[
+            StyleBox["List", "StandardForm", "Output",
+             StripOnInput->False,
+             LineColor->GrayLevel[0],
+             FrontFaceColor->GrayLevel[0],
+             BackFaceColor->GrayLevel[0],
+             GraphicsColor->GrayLevel[0],
+             FontSize->Scaled[0.020000000000000004`],
+             FontColor->GrayLevel[0]],
+            Background->RGBColor[1., 1., 0.871],
+            FrameStyle->GrayLevel[0.5],
+            StripOnInput->False], 2],
+          TagBox[
+           RowBox[{"{", "plus", "}"}], HoldForm]],
+         Annotation[#, 
+          HoldForm[{$CellContext`plus}], "Tooltip"]& ], 
+        TagBox[
+         TooltipBox[InsetBox[
+           FrameBox[
+            StyleBox[
+             TagBox["plus",
+              HoldForm], "StandardForm", "Output",
+             StripOnInput->False,
+             LineColor->GrayLevel[0],
+             FrontFaceColor->GrayLevel[0],
+             BackFaceColor->GrayLevel[0],
+             GraphicsColor->GrayLevel[0],
+             FontSize->Scaled[0.020000000000000004`],
+             FontColor->GrayLevel[0]],
+            Background->RGBColor[1., 1., 0.871],
+            FrameStyle->GrayLevel[0.5],
+            StripOnInput->False], 3],
+          TagBox["plus", HoldForm]],
+         Annotation[#, 
+          HoldForm[$CellContext`plus], "Tooltip"]& ], 
+        TagBox[
+         TooltipBox[InsetBox[
+           FrameBox[
+            StyleBox["List", "StandardForm", "Output",
+             StripOnInput->False,
+             LineColor->GrayLevel[0],
+             FrontFaceColor->GrayLevel[0],
+             BackFaceColor->GrayLevel[0],
+             GraphicsColor->GrayLevel[0],
+             FontSize->Scaled[0.020000000000000004`],
+             FontColor->GrayLevel[0]],
+            Background->RGBColor[1., 1., 0.871],
+            FrameStyle->GrayLevel[0.5],
+            StripOnInput->False], 4],
+          TagBox[
+           RowBox[{"{", "plus", "}"}], HoldForm]],
+         Annotation[#, 
+          HoldForm[{$CellContext`plus}], "Tooltip"]& ], 
+        TagBox[
+         TooltipBox[InsetBox[
+           FrameBox[
+            StyleBox[
+             TagBox["plus",
+              HoldForm], "StandardForm", "Output",
+             StripOnInput->False,
+             LineColor->GrayLevel[0],
+             FrontFaceColor->GrayLevel[0],
+             BackFaceColor->GrayLevel[0],
+             GraphicsColor->GrayLevel[0],
+             FontSize->Scaled[0.020000000000000004`],
+             FontColor->GrayLevel[0]],
+            Background->RGBColor[1., 1., 0.871],
+            FrameStyle->GrayLevel[0.5],
+            StripOnInput->False], 5],
+          TagBox["plus", HoldForm]],
+         Annotation[#, 
+          HoldForm[$CellContext`plus], "Tooltip"]& ], 
+        TagBox[
+         TooltipBox[InsetBox[
+           FrameBox[
+            StyleBox["List", "StandardForm", "Output",
+             StripOnInput->False,
+             LineColor->GrayLevel[0],
+             FrontFaceColor->GrayLevel[0],
+             BackFaceColor->GrayLevel[0],
+             GraphicsColor->GrayLevel[0],
+             FontSize->Scaled[0.020000000000000004`],
+             FontColor->GrayLevel[0]],
+            Background->RGBColor[1., 1., 0.871],
+            FrameStyle->GrayLevel[0.5],
+            StripOnInput->False], 6],
+          TagBox[
+           RowBox[{"{", "plus", "}"}], HoldForm]],
+         Annotation[#, 
+          HoldForm[{$CellContext`plus}], "Tooltip"]& ], 
+        TagBox[
+         TooltipBox[InsetBox[
+           FrameBox[
+            StyleBox[
+             TagBox["plus",
+              HoldForm], "StandardForm", "Output",
+             StripOnInput->False,
+             LineColor->GrayLevel[0],
+             FrontFaceColor->GrayLevel[0],
+             BackFaceColor->GrayLevel[0],
+             GraphicsColor->GrayLevel[0],
+             FontSize->Scaled[0.020000000000000004`],
+             FontColor->GrayLevel[0]],
+            Background->RGBColor[1., 1., 0.871],
+            FrameStyle->GrayLevel[0.5],
+            StripOnInput->False], 7],
+          TagBox["plus", HoldForm]],
+         Annotation[#, 
+          HoldForm[$CellContext`plus], "Tooltip"]& ], 
+        TagBox[
+         TooltipBox[InsetBox[
+           FrameBox[
+            StyleBox["List", "StandardForm", "Output",
+             StripOnInput->False,
+             LineColor->GrayLevel[0],
+             FrontFaceColor->GrayLevel[0],
+             BackFaceColor->GrayLevel[0],
+             GraphicsColor->GrayLevel[0],
+             FontSize->Scaled[0.020000000000000004`],
+             FontColor->GrayLevel[0]],
+            Background->RGBColor[1., 1., 0.871],
+            FrameStyle->GrayLevel[0.5],
+            StripOnInput->False], 8],
+          TagBox[
+           RowBox[{"{", "plus", "}"}], HoldForm]],
+         Annotation[#, 
+          HoldForm[{$CellContext`plus}], "Tooltip"]& ], 
+        TagBox[
+         TooltipBox[InsetBox[
+           FrameBox[
+            StyleBox[
+             TagBox["plus",
+              HoldForm], "StandardForm", "Output",
+             StripOnInput->False,
+             LineColor->GrayLevel[0],
+             FrontFaceColor->GrayLevel[0],
+             BackFaceColor->GrayLevel[0],
+             GraphicsColor->GrayLevel[0],
+             FontSize->Scaled[0.020000000000000004`],
+             FontColor->GrayLevel[0]],
+            Background->RGBColor[1., 1., 0.871],
+            FrameStyle->GrayLevel[0.5],
+            StripOnInput->False], 9],
+          TagBox["plus", HoldForm]],
+         Annotation[#, 
+          HoldForm[$CellContext`plus], "Tooltip"]& ], 
+        TagBox[
+         TooltipBox[InsetBox[
+           FrameBox[
+            StyleBox["List", "StandardForm", "Output",
+             StripOnInput->False,
+             LineColor->GrayLevel[0],
+             FrontFaceColor->GrayLevel[0],
+             BackFaceColor->GrayLevel[0],
+             GraphicsColor->GrayLevel[0],
+             FontSize->Scaled[0.020000000000000004`],
+             FontColor->GrayLevel[0]],
+            Background->RGBColor[1., 1., 0.871],
+            FrameStyle->GrayLevel[0.5],
+            StripOnInput->False], 10],
+          TagBox[
+           RowBox[{"{", "plus", "}"}], HoldForm]],
+         Annotation[#, 
+          HoldForm[{$CellContext`plus}], "Tooltip"]& ], 
+        TagBox[
+         TooltipBox[InsetBox[
+           FrameBox[
+            StyleBox[
+             TagBox["plus",
+              HoldForm], "StandardForm", "Output",
+             StripOnInput->False,
+             LineColor->GrayLevel[0],
+             FrontFaceColor->GrayLevel[0],
+             BackFaceColor->GrayLevel[0],
+             GraphicsColor->GrayLevel[0],
+             FontSize->Scaled[0.020000000000000004`],
+             FontColor->GrayLevel[0]],
+            Background->RGBColor[1., 1., 0.871],
+            FrameStyle->GrayLevel[0.5],
+            StripOnInput->False], 11],
+          TagBox["plus", HoldForm]],
+         Annotation[#, 
+          HoldForm[$CellContext`plus], "Tooltip"]& ], 
+        TagBox[
+         TooltipBox[InsetBox[
+           FrameBox[
+            StyleBox["List", "StandardForm", "Output",
+             StripOnInput->False,
+             LineColor->GrayLevel[0],
+             FrontFaceColor->GrayLevel[0],
+             BackFaceColor->GrayLevel[0],
+             GraphicsColor->GrayLevel[0],
+             FontSize->Scaled[0.020000000000000004`],
+             FontColor->GrayLevel[0]],
+            Background->RGBColor[1., 1., 0.871],
+            FrameStyle->GrayLevel[0.5],
+            StripOnInput->False], 12],
+          TagBox[
+           RowBox[{"{", "plus", "}"}], HoldForm]],
+         Annotation[#, 
+          HoldForm[{$CellContext`plus}], "Tooltip"]& ], 
+        TagBox[
+         TooltipBox[InsetBox[
+           FrameBox[
+            StyleBox[
+             TagBox["plus",
+              HoldForm], "StandardForm", "Output",
+             StripOnInput->False,
+             LineColor->GrayLevel[0],
+             FrontFaceColor->GrayLevel[0],
+             BackFaceColor->GrayLevel[0],
+             GraphicsColor->GrayLevel[0],
+             FontSize->Scaled[0.020000000000000004`],
+             FontColor->GrayLevel[0]],
+            Background->RGBColor[1., 1., 0.871],
+            FrameStyle->GrayLevel[0.5],
+            StripOnInput->False], 13],
+          TagBox["plus", HoldForm]],
+         Annotation[#, 
+          HoldForm[$CellContext`plus], "Tooltip"]& ], 
+        TagBox[
+         TooltipBox[InsetBox[
+           FrameBox[
+            StyleBox["List", "StandardForm", "Output",
+             StripOnInput->False,
+             LineColor->GrayLevel[0],
+             FrontFaceColor->GrayLevel[0],
+             BackFaceColor->GrayLevel[0],
+             GraphicsColor->GrayLevel[0],
+             FontSize->Scaled[0.020000000000000004`],
+             FontColor->GrayLevel[0]],
+            Background->RGBColor[1., 1., 0.871],
+            FrameStyle->GrayLevel[0.5],
+            StripOnInput->False], 14],
+          TagBox[
+           RowBox[{"{", "plus", "}"}], HoldForm]],
+         Annotation[#, 
+          HoldForm[{$CellContext`plus}], "Tooltip"]& ], 
+        TagBox[
+         TooltipBox[InsetBox[
+           FrameBox[
+            StyleBox[
+             TagBox["plus",
+              HoldForm], "StandardForm", "Output",
+             StripOnInput->False,
+             LineColor->GrayLevel[0],
+             FrontFaceColor->GrayLevel[0],
+             BackFaceColor->GrayLevel[0],
+             GraphicsColor->GrayLevel[0],
+             FontSize->Scaled[0.020000000000000004`],
+             FontColor->GrayLevel[0]],
+            Background->RGBColor[1., 1., 0.871],
+            FrameStyle->GrayLevel[0.5],
+            StripOnInput->False], 15],
+          TagBox["plus", HoldForm]],
+         Annotation[#, 
+          HoldForm[$CellContext`plus], "Tooltip"]& ], 
+        TagBox[
+         TooltipBox[InsetBox[
+           FrameBox[
+            StyleBox["List", "StandardForm", "Output",
+             StripOnInput->False,
+             LineColor->GrayLevel[0],
+             FrontFaceColor->GrayLevel[0],
+             BackFaceColor->GrayLevel[0],
+             GraphicsColor->GrayLevel[0],
+             FontSize->Scaled[0.020000000000000004`],
+             FontColor->GrayLevel[0]],
+            Background->RGBColor[1., 1., 0.871],
+            FrameStyle->GrayLevel[0.5],
+            StripOnInput->False], 16],
+          TagBox[
+           RowBox[{"{", "plus", "}"}], HoldForm]],
+         Annotation[#, 
+          HoldForm[{$CellContext`plus}], "Tooltip"]& ], 
+        TagBox[
+         TooltipBox[InsetBox[
+           FrameBox[
+            StyleBox[
+             TagBox["plus",
+              HoldForm], "StandardForm", "Output",
+             StripOnInput->False,
+             LineColor->GrayLevel[0],
+             FrontFaceColor->GrayLevel[0],
+             BackFaceColor->GrayLevel[0],
+             GraphicsColor->GrayLevel[0],
+             FontSize->Scaled[0.020000000000000004`],
+             FontColor->GrayLevel[0]],
+            Background->RGBColor[1., 1., 0.871],
+            FrameStyle->GrayLevel[0.5],
+            StripOnInput->False], 17],
+          TagBox["plus", HoldForm]],
+         Annotation[#, 
+          HoldForm[$CellContext`plus], "Tooltip"]& ], 
+        TagBox[
+         TooltipBox[InsetBox[
+           FrameBox[
+            StyleBox["List", "StandardForm", "Output",
+             StripOnInput->False,
+             LineColor->GrayLevel[0],
+             FrontFaceColor->GrayLevel[0],
+             BackFaceColor->GrayLevel[0],
+             GraphicsColor->GrayLevel[0],
+             FontSize->Scaled[0.020000000000000004`],
+             FontColor->GrayLevel[0]],
+            Background->RGBColor[1., 1., 0.871],
+            FrameStyle->GrayLevel[0.5],
+            StripOnInput->False], 18],
+          TagBox[
+           RowBox[{"{", "plus", "}"}], HoldForm]],
+         Annotation[#, 
+          HoldForm[{$CellContext`plus}], "Tooltip"]& ], 
+        TagBox[
+         TooltipBox[InsetBox[
+           FrameBox[
+            StyleBox[
+             TagBox["plus",
+              HoldForm], "StandardForm", "Output",
+             StripOnInput->False,
+             LineColor->GrayLevel[0],
+             FrontFaceColor->GrayLevel[0],
+             BackFaceColor->GrayLevel[0],
+             GraphicsColor->GrayLevel[0],
+             FontSize->Scaled[0.020000000000000004`],
+             FontColor->GrayLevel[0]],
+            Background->RGBColor[1., 1., 0.871],
+            FrameStyle->GrayLevel[0.5],
+            StripOnInput->False], 19],
+          TagBox["plus", HoldForm]],
+         Annotation[#, 
+          HoldForm[$CellContext`plus], "Tooltip"]& ], 
+        TagBox[
+         TooltipBox[InsetBox[
+           FrameBox[
+            StyleBox["List", "StandardForm", "Output",
+             StripOnInput->False,
+             LineColor->GrayLevel[0],
+             FrontFaceColor->GrayLevel[0],
+             BackFaceColor->GrayLevel[0],
+             GraphicsColor->GrayLevel[0],
+             FontSize->Scaled[0.020000000000000004`],
+             FontColor->GrayLevel[0]],
+            Background->RGBColor[1., 1., 0.871],
+            FrameStyle->GrayLevel[0.5],
+            StripOnInput->False], 20],
+          TagBox[
+           RowBox[{"{", "plus", "}"}], HoldForm]],
+         Annotation[#, 
+          HoldForm[{$CellContext`plus}], "Tooltip"]& ], 
+        TagBox[
+         TooltipBox[InsetBox[
+           FrameBox[
+            StyleBox[
+             TagBox["plus",
+              HoldForm], "StandardForm", "Output",
+             StripOnInput->False,
+             LineColor->GrayLevel[0],
+             FrontFaceColor->GrayLevel[0],
+             BackFaceColor->GrayLevel[0],
+             GraphicsColor->GrayLevel[0],
+             FontSize->Scaled[0.020000000000000004`],
+             FontColor->GrayLevel[0]],
+            Background->RGBColor[1., 1., 0.871],
+            FrameStyle->GrayLevel[0.5],
+            StripOnInput->False], 21],
+          TagBox["plus", HoldForm]],
+         Annotation[#, 
+          HoldForm[$CellContext`plus], "Tooltip"]& ]}}],
+     Annotation[#, VertexCoordinateRules -> CompressedData["
+1:eJxTTMoPSmViYGAQBWIQPTWJz/np2f/2C8M/TLB1fWPPAAUQ/h04H10cnUaV
+f4MmjzB3p+MWnXfGX+HyMD6q/j9o+v/A5Y+aTatyW83oAJOH8VHNZ3VANZ8V
+Lr/W59K9qXs44PIwPqr9PA6o9vPA5SHhxQ+Xh/Fh8gCOsHbK
+       "]]& ],
+    AspectRatio->NCache[
+     Rational[1, 2] Rational[3, 5]^Rational[1, 2], 0.3872983346207417],
+    FrameTicks->Automatic,
+    PlotRange->All,
+    PlotRangePadding->Scaled[0.1]], ",", 
+   GraphicsBox[
+    TagBox[GraphicsComplexBox[CompressedData["
+1:eJxTTMoPSmViYGAQA2IQPTF6epm7OYODeFXJZ875X+0ZoKDEd7YL75U3aPw7
+9qj0G3v84uj0HXuYPTBxVD5CHtXeP2jm/IGrzxR46NXBwuQAk0flw8xjdUC1
+jxUuf+wx+5xuS064PCof5h8eB1T7eeDykPATgMuj8u/YAwDOJ48r
+      "], {
+       {RGBColor[0.55, 0.45, 0.45], 
+        LineBox[{{1, 2}, {1, 4}, {1, 6}, {1, 8}, {1, 11}, {1, 13}, {1, 15}, {
+         1, 17}, {1, 19}, {1, 21}, {2, 3}, {4, 5}, {6, 7}, {8, 9}, {9, 10}, {
+         11, 12}, {13, 14}, {15, 16}, {17, 18}, {19, 20}, {21, 22}}]}, {
+        TagBox[
+         TooltipBox[InsetBox[
+           FrameBox[
+            StyleBox["List", "StandardForm", "Output",
+             StripOnInput->False,
+             LineColor->GrayLevel[0],
+             FrontFaceColor->GrayLevel[0],
+             BackFaceColor->GrayLevel[0],
+             GraphicsColor->GrayLevel[0],
+             FontSize->Scaled[0.020000000000000004`],
+             FontColor->GrayLevel[0]],
+            Background->RGBColor[1., 1., 0.871],
+            FrameStyle->GrayLevel[0.5],
+            StripOnInput->False], 1],
+          TagBox[
+           RowBox[{"{", 
+             RowBox[{
+               RowBox[{"{", "plus", "}"}], ",", 
+               RowBox[{"{", "plus", "}"}], ",", 
+               RowBox[{"{", "plus", "}"}], ",", 
+               RowBox[{"{", 
+                 RowBox[{"plus", "[", "1.`", "]"}], "}"}], ",", 
+               RowBox[{"{", "plus", "}"}], ",", 
+               RowBox[{"{", "plus", "}"}], ",", 
+               RowBox[{"{", "plus", "}"}], ",", 
+               RowBox[{"{", "plus", "}"}], ",", 
+               RowBox[{"{", "plus", "}"}], ",", 
+               RowBox[{"{", "plus", "}"}]}], "}"}], HoldForm]],
+         Annotation[#, 
+          
+          HoldForm[{{$CellContext`plus}, {$CellContext`plus}, \
+{$CellContext`plus}, {
+             $CellContext`plus[
+             1.]}, {$CellContext`plus}, {$CellContext`plus}, \
+{$CellContext`plus}, {$CellContext`plus}, {$CellContext`plus}, \
+{$CellContext`plus}}], "Tooltip"]& ], 
+        TagBox[
+         TooltipBox[InsetBox[
+           FrameBox[
+            StyleBox["List", "StandardForm", "Output",
+             StripOnInput->False,
+             LineColor->GrayLevel[0],
+             FrontFaceColor->GrayLevel[0],
+             BackFaceColor->GrayLevel[0],
+             GraphicsColor->GrayLevel[0],
+             FontSize->Scaled[0.020000000000000004`],
+             FontColor->GrayLevel[0]],
+            Background->RGBColor[1., 1., 0.871],
+            FrameStyle->GrayLevel[0.5],
+            StripOnInput->False], 2],
+          TagBox[
+           RowBox[{"{", "plus", "}"}], HoldForm]],
+         Annotation[#, 
+          HoldForm[{$CellContext`plus}], "Tooltip"]& ], 
+        TagBox[
+         TooltipBox[InsetBox[
+           FrameBox[
+            StyleBox[
+             TagBox["plus",
+              HoldForm], "StandardForm", "Output",
+             StripOnInput->False,
+             LineColor->GrayLevel[0],
+             FrontFaceColor->GrayLevel[0],
+             BackFaceColor->GrayLevel[0],
+             GraphicsColor->GrayLevel[0],
+             FontSize->Scaled[0.020000000000000004`],
+             FontColor->GrayLevel[0]],
+            Background->RGBColor[1., 1., 0.871],
+            FrameStyle->GrayLevel[0.5],
+            StripOnInput->False], 3],
+          TagBox["plus", HoldForm]],
+         Annotation[#, 
+          HoldForm[$CellContext`plus], "Tooltip"]& ], 
+        TagBox[
+         TooltipBox[InsetBox[
+           FrameBox[
+            StyleBox["List", "StandardForm", "Output",
+             StripOnInput->False,
+             LineColor->GrayLevel[0],
+             FrontFaceColor->GrayLevel[0],
+             BackFaceColor->GrayLevel[0],
+             GraphicsColor->GrayLevel[0],
+             FontSize->Scaled[0.020000000000000004`],
+             FontColor->GrayLevel[0]],
+            Background->RGBColor[1., 1., 0.871],
+            FrameStyle->GrayLevel[0.5],
+            StripOnInput->False], 4],
+          TagBox[
+           RowBox[{"{", "plus", "}"}], HoldForm]],
+         Annotation[#, 
+          HoldForm[{$CellContext`plus}], "Tooltip"]& ], 
+        TagBox[
+         TooltipBox[InsetBox[
+           FrameBox[
+            StyleBox[
+             TagBox["plus",
+              HoldForm], "StandardForm", "Output",
+             StripOnInput->False,
+             LineColor->GrayLevel[0],
+             FrontFaceColor->GrayLevel[0],
+             BackFaceColor->GrayLevel[0],
+             GraphicsColor->GrayLevel[0],
+             FontSize->Scaled[0.020000000000000004`],
+             FontColor->GrayLevel[0]],
+            Background->RGBColor[1., 1., 0.871],
+            FrameStyle->GrayLevel[0.5],
+            StripOnInput->False], 5],
+          TagBox["plus", HoldForm]],
+         Annotation[#, 
+          HoldForm[$CellContext`plus], "Tooltip"]& ], 
+        TagBox[
+         TooltipBox[InsetBox[
+           FrameBox[
+            StyleBox["List", "StandardForm", "Output",
+             StripOnInput->False,
+             LineColor->GrayLevel[0],
+             FrontFaceColor->GrayLevel[0],
+             BackFaceColor->GrayLevel[0],
+             GraphicsColor->GrayLevel[0],
+             FontSize->Scaled[0.020000000000000004`],
+             FontColor->GrayLevel[0]],
+            Background->RGBColor[1., 1., 0.871],
+            FrameStyle->GrayLevel[0.5],
+            StripOnInput->False], 6],
+          TagBox[
+           RowBox[{"{", "plus", "}"}], HoldForm]],
+         Annotation[#, 
+          HoldForm[{$CellContext`plus}], "Tooltip"]& ], 
+        TagBox[
+         TooltipBox[InsetBox[
+           FrameBox[
+            StyleBox[
+             TagBox["plus",
+              HoldForm], "StandardForm", "Output",
+             StripOnInput->False,
+             LineColor->GrayLevel[0],
+             FrontFaceColor->GrayLevel[0],
+             BackFaceColor->GrayLevel[0],
+             GraphicsColor->GrayLevel[0],
+             FontSize->Scaled[0.020000000000000004`],
+             FontColor->GrayLevel[0]],
+            Background->RGBColor[1., 1., 0.871],
+            FrameStyle->GrayLevel[0.5],
+            StripOnInput->False], 7],
+          TagBox["plus", HoldForm]],
+         Annotation[#, 
+          HoldForm[$CellContext`plus], "Tooltip"]& ], 
+        TagBox[
+         TooltipBox[InsetBox[
+           FrameBox[
+            StyleBox["List", "StandardForm", "Output",
+             StripOnInput->False,
+             LineColor->GrayLevel[0],
+             FrontFaceColor->GrayLevel[0],
+             BackFaceColor->GrayLevel[0],
+             GraphicsColor->GrayLevel[0],
+             FontSize->Scaled[0.020000000000000004`],
+             FontColor->GrayLevel[0]],
+            Background->RGBColor[1., 1., 0.871],
+            FrameStyle->GrayLevel[0.5],
+            StripOnInput->False], 8],
+          TagBox[
+           RowBox[{"{", 
+             RowBox[{"plus", "[", "1.`", "]"}], "}"}], HoldForm]],
+         Annotation[#, 
+          HoldForm[{
+            $CellContext`plus[1.]}], "Tooltip"]& ], 
+        TagBox[
+         TooltipBox[InsetBox[
+           FrameBox[
+            StyleBox["plus", "StandardForm", "Output",
+             StripOnInput->False,
+             LineColor->GrayLevel[0],
+             FrontFaceColor->GrayLevel[0],
+             BackFaceColor->GrayLevel[0],
+             GraphicsColor->GrayLevel[0],
+             FontSize->Scaled[0.020000000000000004`],
+             FontColor->GrayLevel[0]],
+            Background->RGBColor[1., 1., 0.871],
+            FrameStyle->GrayLevel[0.5],
+            StripOnInput->False], 9],
+          TagBox[
+           RowBox[{"plus", "[", "1.`", "]"}], HoldForm]],
+         Annotation[#, 
+          HoldForm[
+           $CellContext`plus[1.]], "Tooltip"]& ], 
+        TagBox[
+         TooltipBox[InsetBox[
+           FrameBox[
+            StyleBox[
+             TagBox["1.`",
+              HoldForm], "StandardForm", "Output",
+             StripOnInput->False,
+             LineColor->GrayLevel[0],
+             FrontFaceColor->GrayLevel[0],
+             BackFaceColor->GrayLevel[0],
+             GraphicsColor->GrayLevel[0],
+             FontSize->Scaled[0.020000000000000004`],
+             FontColor->GrayLevel[0]],
+            Background->RGBColor[1., 1., 0.871],
+            FrameStyle->GrayLevel[0.5],
+            StripOnInput->False], 10],
+          TagBox["1.`", HoldForm]],
+         Annotation[#, 
+          HoldForm[1.], "Tooltip"]& ], 
+        TagBox[
+         TooltipBox[InsetBox[
+           FrameBox[
+            StyleBox["List", "StandardForm", "Output",
+             StripOnInput->False,
+             LineColor->GrayLevel[0],
+             FrontFaceColor->GrayLevel[0],
+             BackFaceColor->GrayLevel[0],
+             GraphicsColor->GrayLevel[0],
+             FontSize->Scaled[0.020000000000000004`],
+             FontColor->GrayLevel[0]],
+            Background->RGBColor[1., 1., 0.871],
+            FrameStyle->GrayLevel[0.5],
+            StripOnInput->False], 11],
+          TagBox[
+           RowBox[{"{", "plus", "}"}], HoldForm]],
+         Annotation[#, 
+          HoldForm[{$CellContext`plus}], "Tooltip"]& ], 
+        TagBox[
+         TooltipBox[InsetBox[
+           FrameBox[
+            StyleBox[
+             TagBox["plus",
+              HoldForm], "StandardForm", "Output",
+             StripOnInput->False,
+             LineColor->GrayLevel[0],
+             FrontFaceColor->GrayLevel[0],
+             BackFaceColor->GrayLevel[0],
+             GraphicsColor->GrayLevel[0],
+             FontSize->Scaled[0.020000000000000004`],
+             FontColor->GrayLevel[0]],
+            Background->RGBColor[1., 1., 0.871],
+            FrameStyle->GrayLevel[0.5],
+            StripOnInput->False], 12],
+          TagBox["plus", HoldForm]],
+         Annotation[#, 
+          HoldForm[$CellContext`plus], "Tooltip"]& ], 
+        TagBox[
+         TooltipBox[InsetBox[
+           FrameBox[
+            StyleBox["List", "StandardForm", "Output",
+             StripOnInput->False,
+             LineColor->GrayLevel[0],
+             FrontFaceColor->GrayLevel[0],
+             BackFaceColor->GrayLevel[0],
+             GraphicsColor->GrayLevel[0],
+             FontSize->Scaled[0.020000000000000004`],
+             FontColor->GrayLevel[0]],
+            Background->RGBColor[1., 1., 0.871],
+            FrameStyle->GrayLevel[0.5],
+            StripOnInput->False], 13],
+          TagBox[
+           RowBox[{"{", "plus", "}"}], HoldForm]],
+         Annotation[#, 
+          HoldForm[{$CellContext`plus}], "Tooltip"]& ], 
+        TagBox[
+         TooltipBox[InsetBox[
+           FrameBox[
+            StyleBox[
+             TagBox["plus",
+              HoldForm], "StandardForm", "Output",
+             StripOnInput->False,
+             LineColor->GrayLevel[0],
+             FrontFaceColor->GrayLevel[0],
+             BackFaceColor->GrayLevel[0],
+             GraphicsColor->GrayLevel[0],
+             FontSize->Scaled[0.020000000000000004`],
+             FontColor->GrayLevel[0]],
+            Background->RGBColor[1., 1., 0.871],
+            FrameStyle->GrayLevel[0.5],
+            StripOnInput->False], 14],
+          TagBox["plus", HoldForm]],
+         Annotation[#, 
+          HoldForm[$CellContext`plus], "Tooltip"]& ], 
+        TagBox[
+         TooltipBox[InsetBox[
+           FrameBox[
+            StyleBox["List", "StandardForm", "Output",
+             StripOnInput->False,
+             LineColor->GrayLevel[0],
+             FrontFaceColor->GrayLevel[0],
+             BackFaceColor->GrayLevel[0],
+             GraphicsColor->GrayLevel[0],
+             FontSize->Scaled[0.020000000000000004`],
+             FontColor->GrayLevel[0]],
+            Background->RGBColor[1., 1., 0.871],
+            FrameStyle->GrayLevel[0.5],
+            StripOnInput->False], 15],
+          TagBox[
+           RowBox[{"{", "plus", "}"}], HoldForm]],
+         Annotation[#, 
+          HoldForm[{$CellContext`plus}], "Tooltip"]& ], 
+        TagBox[
+         TooltipBox[InsetBox[
+           FrameBox[
+            StyleBox[
+             TagBox["plus",
+              HoldForm], "StandardForm", "Output",
+             StripOnInput->False,
+             LineColor->GrayLevel[0],
+             FrontFaceColor->GrayLevel[0],
+             BackFaceColor->GrayLevel[0],
+             GraphicsColor->GrayLevel[0],
+             FontSize->Scaled[0.020000000000000004`],
+             FontColor->GrayLevel[0]],
+            Background->RGBColor[1., 1., 0.871],
+            FrameStyle->GrayLevel[0.5],
+            StripOnInput->False], 16],
+          TagBox["plus", HoldForm]],
+         Annotation[#, 
+          HoldForm[$CellContext`plus], "Tooltip"]& ], 
+        TagBox[
+         TooltipBox[InsetBox[
+           FrameBox[
+            StyleBox["List", "StandardForm", "Output",
+             StripOnInput->False,
+             LineColor->GrayLevel[0],
+             FrontFaceColor->GrayLevel[0],
+             BackFaceColor->GrayLevel[0],
+             GraphicsColor->GrayLevel[0],
+             FontSize->Scaled[0.020000000000000004`],
+             FontColor->GrayLevel[0]],
+            Background->RGBColor[1., 1., 0.871],
+            FrameStyle->GrayLevel[0.5],
+            StripOnInput->False], 17],
+          TagBox[
+           RowBox[{"{", "plus", "}"}], HoldForm]],
+         Annotation[#, 
+          HoldForm[{$CellContext`plus}], "Tooltip"]& ], 
+        TagBox[
+         TooltipBox[InsetBox[
+           FrameBox[
+            StyleBox[
+             TagBox["plus",
+              HoldForm], "StandardForm", "Output",
+             StripOnInput->False,
+             LineColor->GrayLevel[0],
+             FrontFaceColor->GrayLevel[0],
+             BackFaceColor->GrayLevel[0],
+             GraphicsColor->GrayLevel[0],
+             FontSize->Scaled[0.020000000000000004`],
+             FontColor->GrayLevel[0]],
+            Background->RGBColor[1., 1., 0.871],
+            FrameStyle->GrayLevel[0.5],
+            StripOnInput->False], 18],
+          TagBox["plus", HoldForm]],
+         Annotation[#, 
+          HoldForm[$CellContext`plus], "Tooltip"]& ], 
+        TagBox[
+         TooltipBox[InsetBox[
+           FrameBox[
+            StyleBox["List", "StandardForm", "Output",
+             StripOnInput->False,
+             LineColor->GrayLevel[0],
+             FrontFaceColor->GrayLevel[0],
+             BackFaceColor->GrayLevel[0],
+             GraphicsColor->GrayLevel[0],
+             FontSize->Scaled[0.020000000000000004`],
+             FontColor->GrayLevel[0]],
+            Background->RGBColor[1., 1., 0.871],
+            FrameStyle->GrayLevel[0.5],
+            StripOnInput->False], 19],
+          TagBox[
+           RowBox[{"{", "plus", "}"}], HoldForm]],
+         Annotation[#, 
+          HoldForm[{$CellContext`plus}], "Tooltip"]& ], 
+        TagBox[
+         TooltipBox[InsetBox[
+           FrameBox[
+            StyleBox[
+             TagBox["plus",
+              HoldForm], "StandardForm", "Output",
+             StripOnInput->False,
+             LineColor->GrayLevel[0],
+             FrontFaceColor->GrayLevel[0],
+             BackFaceColor->GrayLevel[0],
+             GraphicsColor->GrayLevel[0],
+             FontSize->Scaled[0.020000000000000004`],
+             FontColor->GrayLevel[0]],
+            Background->RGBColor[1., 1., 0.871],
+            FrameStyle->GrayLevel[0.5],
+            StripOnInput->False], 20],
+          TagBox["plus", HoldForm]],
+         Annotation[#, 
+          HoldForm[$CellContext`plus], "Tooltip"]& ], 
+        TagBox[
+         TooltipBox[InsetBox[
+           FrameBox[
+            StyleBox["List", "StandardForm", "Output",
+             StripOnInput->False,
+             LineColor->GrayLevel[0],
+             FrontFaceColor->GrayLevel[0],
+             BackFaceColor->GrayLevel[0],
+             GraphicsColor->GrayLevel[0],
+             FontSize->Scaled[0.020000000000000004`],
+             FontColor->GrayLevel[0]],
+            Background->RGBColor[1., 1., 0.871],
+            FrameStyle->GrayLevel[0.5],
+            StripOnInput->False], 21],
+          TagBox[
+           RowBox[{"{", "plus", "}"}], HoldForm]],
+         Annotation[#, 
+          HoldForm[{$CellContext`plus}], "Tooltip"]& ], 
+        TagBox[
+         TooltipBox[InsetBox[
+           FrameBox[
+            StyleBox[
+             TagBox["plus",
+              HoldForm], "StandardForm", "Output",
+             StripOnInput->False,
+             LineColor->GrayLevel[0],
+             FrontFaceColor->GrayLevel[0],
+             BackFaceColor->GrayLevel[0],
+             GraphicsColor->GrayLevel[0],
+             FontSize->Scaled[0.020000000000000004`],
+             FontColor->GrayLevel[0]],
+            Background->RGBColor[1., 1., 0.871],
+            FrameStyle->GrayLevel[0.5],
+            StripOnInput->False], 22],
+          TagBox["plus", HoldForm]],
+         Annotation[#, 
+          HoldForm[$CellContext`plus], "Tooltip"]& ]}}],
+     Annotation[#, VertexCoordinateRules -> CompressedData["
+1:eJxTTMoPSmViYGAQA2IQPTF6epm7OYODeFXJZ875X+0ZoKDEd7YL75U3aPw7
+9qj0G3v84uj0HXuYPTBxVD5CHtXeP2jm/IGrzxR46NXBwuQAk0flw8xjdUC1
+jxUuf+wx+5xuS064PCof5h8eB1T7eeDykPATgMuj8u/YAwDOJ48r
+       "]]& ],
+    AspectRatio->NCache[5^Rational[-1, 2], 0.4472135954999579],
+    FrameTicks->Automatic,
+    PlotRange->All,
+    PlotRangePadding->Scaled[0.1]], ",", 
+   GraphicsBox[
+    TagBox[GraphicsComplexBox[CompressedData["
+1:eJxTTMoPSmViYGCQBGIQLX2PfcNnMUYHFY2tr1xOfrNngIJbXR8tNia+Q+Pf
+s78NpWHyqHyY/Ds0+XdweZg9MHlUPkz/PzT9/+DyJ79NO8z3l8kBJo/Kh5nP
+5oBqPhuGPMxfDZGXBauncsHVo/Lvwfkw9RD38Dmguo/PAdX9fHD1kPAVhKtH
+5d+D82HqAQ+Rvhc=
+      "], {
+       {RGBColor[0.55, 0.45, 0.45], 
+        LineBox[{{1, 2}, {1, 4}, {1, 6}, {1, 8}, {1, 10}, {1, 12}, {1, 14}, {
+         1, 17}, {1, 20}, {1, 23}, {2, 3}, {4, 5}, {6, 7}, {8, 9}, {10, 11}, {
+         12, 13}, {14, 15}, {15, 16}, {17, 18}, {18, 19}, {20, 21}, {21, 
+         22}, {23, 24}, {24, 25}}]}, {
+        TagBox[
+         TooltipBox[InsetBox[
+           FrameBox[
+            StyleBox["List", "StandardForm", "Output",
+             StripOnInput->False,
+             LineColor->GrayLevel[0],
+             FrontFaceColor->GrayLevel[0],
+             BackFaceColor->GrayLevel[0],
+             GraphicsColor->GrayLevel[0],
+             FontSize->Scaled[0.020000000000000004`],
+             FontColor->GrayLevel[0]],
+            Background->RGBColor[1., 1., 0.871],
+            FrameStyle->GrayLevel[0.5],
+            StripOnInput->False], 1],
+          TagBox[
+           RowBox[{"{", 
+             RowBox[{
+               RowBox[{"{", "plus", "}"}], ",", 
+               RowBox[{"{", "plus", "}"}], ",", 
+               RowBox[{"{", "plus", "}"}], ",", 
+               RowBox[{"{", "plus", "}"}], ",", 
+               RowBox[{"{", "plus", "}"}], ",", 
+               RowBox[{"{", "plus", "}"}], ",", 
+               RowBox[{"{", 
+                 RowBox[{"plus", "[", "1.`", "]"}], "}"}], ",", 
+               RowBox[{"{", 
+                 RowBox[{"plus", "[", "1.`", "]"}], "}"}], ",", 
+               RowBox[{"{", 
+                 RowBox[{"plus", "[", "1.`", "]"}], "}"}], ",", 
+               RowBox[{"{", 
+                 RowBox[{"plus", "[", "1.`", "]"}], "}"}]}], "}"}], HoldForm]],
+         Annotation[#, 
+          
+          HoldForm[{{$CellContext`plus}, {$CellContext`plus}, \
+{$CellContext`plus}, {$CellContext`plus}, {$CellContext`plus}, \
+{$CellContext`plus}, {
+             $CellContext`plus[1.]}, {
+             $CellContext`plus[1.]}, {
+             $CellContext`plus[1.]}, {
+             $CellContext`plus[1.]}}], "Tooltip"]& ], 
+        TagBox[
+         TooltipBox[InsetBox[
+           FrameBox[
+            StyleBox["List", "StandardForm", "Output",
+             StripOnInput->False,
+             LineColor->GrayLevel[0],
+             FrontFaceColor->GrayLevel[0],
+             BackFaceColor->GrayLevel[0],
+             GraphicsColor->GrayLevel[0],
+             FontSize->Scaled[0.020000000000000004`],
+             FontColor->GrayLevel[0]],
+            Background->RGBColor[1., 1., 0.871],
+            FrameStyle->GrayLevel[0.5],
+            StripOnInput->False], 2],
+          TagBox[
+           RowBox[{"{", "plus", "}"}], HoldForm]],
+         Annotation[#, 
+          HoldForm[{$CellContext`plus}], "Tooltip"]& ], 
+        TagBox[
+         TooltipBox[InsetBox[
+           FrameBox[
+            StyleBox[
+             TagBox["plus",
+              HoldForm], "StandardForm", "Output",
+             StripOnInput->False,
+             LineColor->GrayLevel[0],
+             FrontFaceColor->GrayLevel[0],
+             BackFaceColor->GrayLevel[0],
+             GraphicsColor->GrayLevel[0],
+             FontSize->Scaled[0.020000000000000004`],
+             FontColor->GrayLevel[0]],
+            Background->RGBColor[1., 1., 0.871],
+            FrameStyle->GrayLevel[0.5],
+            StripOnInput->False], 3],
+          TagBox["plus", HoldForm]],
+         Annotation[#, 
+          HoldForm[$CellContext`plus], "Tooltip"]& ], 
+        TagBox[
+         TooltipBox[InsetBox[
+           FrameBox[
+            StyleBox["List", "StandardForm", "Output",
+             StripOnInput->False,
+             LineColor->GrayLevel[0],
+             FrontFaceColor->GrayLevel[0],
+             BackFaceColor->GrayLevel[0],
+             GraphicsColor->GrayLevel[0],
+             FontSize->Scaled[0.020000000000000004`],
+             FontColor->GrayLevel[0]],
+            Background->RGBColor[1., 1., 0.871],
+            FrameStyle->GrayLevel[0.5],
+            StripOnInput->False], 4],
+          TagBox[
+           RowBox[{"{", "plus", "}"}], HoldForm]],
+         Annotation[#, 
+          HoldForm[{$CellContext`plus}], "Tooltip"]& ], 
+        TagBox[
+         TooltipBox[InsetBox[
+           FrameBox[
+            StyleBox[
+             TagBox["plus",
+              HoldForm], "StandardForm", "Output",
+             StripOnInput->False,
+             LineColor->GrayLevel[0],
+             FrontFaceColor->GrayLevel[0],
+             BackFaceColor->GrayLevel[0],
+             GraphicsColor->GrayLevel[0],
+             FontSize->Scaled[0.020000000000000004`],
+             FontColor->GrayLevel[0]],
+            Background->RGBColor[1., 1., 0.871],
+            FrameStyle->GrayLevel[0.5],
+            StripOnInput->False], 5],
+          TagBox["plus", HoldForm]],
+         Annotation[#, 
+          HoldForm[$CellContext`plus], "Tooltip"]& ], 
+        TagBox[
+         TooltipBox[InsetBox[
+           FrameBox[
+            StyleBox["List", "StandardForm", "Output",
+             StripOnInput->False,
+             LineColor->GrayLevel[0],
+             FrontFaceColor->GrayLevel[0],
+             BackFaceColor->GrayLevel[0],
+             GraphicsColor->GrayLevel[0],
+             FontSize->Scaled[0.020000000000000004`],
+             FontColor->GrayLevel[0]],
+            Background->RGBColor[1., 1., 0.871],
+            FrameStyle->GrayLevel[0.5],
+            StripOnInput->False], 6],
+          TagBox[
+           RowBox[{"{", "plus", "}"}], HoldForm]],
+         Annotation[#, 
+          HoldForm[{$CellContext`plus}], "Tooltip"]& ], 
+        TagBox[
+         TooltipBox[InsetBox[
+           FrameBox[
+            StyleBox[
+             TagBox["plus",
+              HoldForm], "StandardForm", "Output",
+             StripOnInput->False,
+             LineColor->GrayLevel[0],
+             FrontFaceColor->GrayLevel[0],
+             BackFaceColor->GrayLevel[0],
+             GraphicsColor->GrayLevel[0],
+             FontSize->Scaled[0.020000000000000004`],
+             FontColor->GrayLevel[0]],
+            Background->RGBColor[1., 1., 0.871],
+            FrameStyle->GrayLevel[0.5],
+            StripOnInput->False], 7],
+          TagBox["plus", HoldForm]],
+         Annotation[#, 
+          HoldForm[$CellContext`plus], "Tooltip"]& ], 
+        TagBox[
+         TooltipBox[InsetBox[
+           FrameBox[
+            StyleBox["List", "StandardForm", "Output",
+             StripOnInput->False,
+             LineColor->GrayLevel[0],
+             FrontFaceColor->GrayLevel[0],
+             BackFaceColor->GrayLevel[0],
+             GraphicsColor->GrayLevel[0],
+             FontSize->Scaled[0.020000000000000004`],
+             FontColor->GrayLevel[0]],
+            Background->RGBColor[1., 1., 0.871],
+            FrameStyle->GrayLevel[0.5],
+            StripOnInput->False], 8],
+          TagBox[
+           RowBox[{"{", "plus", "}"}], HoldForm]],
+         Annotation[#, 
+          HoldForm[{$CellContext`plus}], "Tooltip"]& ], 
+        TagBox[
+         TooltipBox[InsetBox[
+           FrameBox[
+            StyleBox[
+             TagBox["plus",
+              HoldForm], "StandardForm", "Output",
+             StripOnInput->False,
+             LineColor->GrayLevel[0],
+             FrontFaceColor->GrayLevel[0],
+             BackFaceColor->GrayLevel[0],
+             GraphicsColor->GrayLevel[0],
+             FontSize->Scaled[0.020000000000000004`],
+             FontColor->GrayLevel[0]],
+            Background->RGBColor[1., 1., 0.871],
+            FrameStyle->GrayLevel[0.5],
+            StripOnInput->False], 9],
+          TagBox["plus", HoldForm]],
+         Annotation[#, 
+          HoldForm[$CellContext`plus], "Tooltip"]& ], 
+        TagBox[
+         TooltipBox[InsetBox[
+           FrameBox[
+            StyleBox["List", "StandardForm", "Output",
+             StripOnInput->False,
+             LineColor->GrayLevel[0],
+             FrontFaceColor->GrayLevel[0],
+             BackFaceColor->GrayLevel[0],
+             GraphicsColor->GrayLevel[0],
+             FontSize->Scaled[0.020000000000000004`],
+             FontColor->GrayLevel[0]],
+            Background->RGBColor[1., 1., 0.871],
+            FrameStyle->GrayLevel[0.5],
+            StripOnInput->False], 10],
+          TagBox[
+           RowBox[{"{", "plus", "}"}], HoldForm]],
+         Annotation[#, 
+          HoldForm[{$CellContext`plus}], "Tooltip"]& ], 
+        TagBox[
+         TooltipBox[InsetBox[
+           FrameBox[
+            StyleBox[
+             TagBox["plus",
+              HoldForm], "StandardForm", "Output",
+             StripOnInput->False,
+             LineColor->GrayLevel[0],
+             FrontFaceColor->GrayLevel[0],
+             BackFaceColor->GrayLevel[0],
+             GraphicsColor->GrayLevel[0],
+             FontSize->Scaled[0.020000000000000004`],
+             FontColor->GrayLevel[0]],
+            Background->RGBColor[1., 1., 0.871],
+            FrameStyle->GrayLevel[0.5],
+            StripOnInput->False], 11],
+          TagBox["plus", HoldForm]],
+         Annotation[#, 
+          HoldForm[$CellContext`plus], "Tooltip"]& ], 
+        TagBox[
+         TooltipBox[InsetBox[
+           FrameBox[
+            StyleBox["List", "StandardForm", "Output",
+             StripOnInput->False,
+             LineColor->GrayLevel[0],
+             FrontFaceColor->GrayLevel[0],
+             BackFaceColor->GrayLevel[0],
+             GraphicsColor->GrayLevel[0],
+             FontSize->Scaled[0.020000000000000004`],
+             FontColor->GrayLevel[0]],
+            Background->RGBColor[1., 1., 0.871],
+            FrameStyle->GrayLevel[0.5],
+            StripOnInput->False], 12],
+          TagBox[
+           RowBox[{"{", "plus", "}"}], HoldForm]],
+         Annotation[#, 
+          HoldForm[{$CellContext`plus}], "Tooltip"]& ], 
+        TagBox[
+         TooltipBox[InsetBox[
+           FrameBox[
+            StyleBox[
+             TagBox["plus",
+              HoldForm], "StandardForm", "Output",
+             StripOnInput->False,
+             LineColor->GrayLevel[0],
+             FrontFaceColor->GrayLevel[0],
+             BackFaceColor->GrayLevel[0],
+             GraphicsColor->GrayLevel[0],
+             FontSize->Scaled[0.020000000000000004`],
+             FontColor->GrayLevel[0]],
+            Background->RGBColor[1., 1., 0.871],
+            FrameStyle->GrayLevel[0.5],
+            StripOnInput->False], 13],
+          TagBox["plus", HoldForm]],
+         Annotation[#, 
+          HoldForm[$CellContext`plus], "Tooltip"]& ], 
+        TagBox[
+         TooltipBox[InsetBox[
+           FrameBox[
+            StyleBox["List", "StandardForm", "Output",
+             StripOnInput->False,
+             LineColor->GrayLevel[0],
+             FrontFaceColor->GrayLevel[0],
+             BackFaceColor->GrayLevel[0],
+             GraphicsColor->GrayLevel[0],
+             FontSize->Scaled[0.020000000000000004`],
+             FontColor->GrayLevel[0]],
+            Background->RGBColor[1., 1., 0.871],
+            FrameStyle->GrayLevel[0.5],
+            StripOnInput->False], 14],
+          TagBox[
+           RowBox[{"{", 
+             RowBox[{"plus", "[", "1.`", "]"}], "}"}], HoldForm]],
+         Annotation[#, 
+          HoldForm[{
+            $CellContext`plus[1.]}], "Tooltip"]& ], 
+        TagBox[
+         TooltipBox[InsetBox[
+           FrameBox[
+            StyleBox["plus", "StandardForm", "Output",
+             StripOnInput->False,
+             LineColor->GrayLevel[0],
+             FrontFaceColor->GrayLevel[0],
+             BackFaceColor->GrayLevel[0],
+             GraphicsColor->GrayLevel[0],
+             FontSize->Scaled[0.020000000000000004`],
+             FontColor->GrayLevel[0]],
+            Background->RGBColor[1., 1., 0.871],
+            FrameStyle->GrayLevel[0.5],
+            StripOnInput->False], 15],
+          TagBox[
+           RowBox[{"plus", "[", "1.`", "]"}], HoldForm]],
+         Annotation[#, 
+          HoldForm[
+           $CellContext`plus[1.]], "Tooltip"]& ], 
+        TagBox[
+         TooltipBox[InsetBox[
+           FrameBox[
+            StyleBox[
+             TagBox["1.`",
+              HoldForm], "StandardForm", "Output",
+             StripOnInput->False,
+             LineColor->GrayLevel[0],
+             FrontFaceColor->GrayLevel[0],
+             BackFaceColor->GrayLevel[0],
+             GraphicsColor->GrayLevel[0],
+             FontSize->Scaled[0.020000000000000004`],
+             FontColor->GrayLevel[0]],
+            Background->RGBColor[1., 1., 0.871],
+            FrameStyle->GrayLevel[0.5],
+            StripOnInput->False], 16],
+          TagBox["1.`", HoldForm]],
+         Annotation[#, 
+          HoldForm[1.], "Tooltip"]& ], 
+        TagBox[
+         TooltipBox[InsetBox[
+           FrameBox[
+            StyleBox["List", "StandardForm", "Output",
+             StripOnInput->False,
+             LineColor->GrayLevel[0],
+             FrontFaceColor->GrayLevel[0],
+             BackFaceColor->GrayLevel[0],
+             GraphicsColor->GrayLevel[0],
+             FontSize->Scaled[0.020000000000000004`],
+             FontColor->GrayLevel[0]],
+            Background->RGBColor[1., 1., 0.871],
+            FrameStyle->GrayLevel[0.5],
+            StripOnInput->False], 17],
+          TagBox[
+           RowBox[{"{", 
+             RowBox[{"plus", "[", "1.`", "]"}], "}"}], HoldForm]],
+         Annotation[#, 
+          HoldForm[{
+            $CellContext`plus[1.]}], "Tooltip"]& ], 
+        TagBox[
+         TooltipBox[InsetBox[
+           FrameBox[
+            StyleBox["plus", "StandardForm", "Output",
+             StripOnInput->False,
+             LineColor->GrayLevel[0],
+             FrontFaceColor->GrayLevel[0],
+             BackFaceColor->GrayLevel[0],
+             GraphicsColor->GrayLevel[0],
+             FontSize->Scaled[0.020000000000000004`],
+             FontColor->GrayLevel[0]],
+            Background->RGBColor[1., 1., 0.871],
+            FrameStyle->GrayLevel[0.5],
+            StripOnInput->False], 18],
+          TagBox[
+           RowBox[{"plus", "[", "1.`", "]"}], HoldForm]],
+         Annotation[#, 
+          HoldForm[
+           $CellContext`plus[1.]], "Tooltip"]& ], 
+        TagBox[
+         TooltipBox[InsetBox[
+           FrameBox[
+            StyleBox[
+             TagBox["1.`",
+              HoldForm], "StandardForm", "Output",
+             StripOnInput->False,
+             LineColor->GrayLevel[0],
+             FrontFaceColor->GrayLevel[0],
+             BackFaceColor->GrayLevel[0],
+             GraphicsColor->GrayLevel[0],
+             FontSize->Scaled[0.020000000000000004`],
+             FontColor->GrayLevel[0]],
+            Background->RGBColor[1., 1., 0.871],
+            FrameStyle->GrayLevel[0.5],
+            StripOnInput->False], 19],
+          TagBox["1.`", HoldForm]],
+         Annotation[#, 
+          HoldForm[1.], "Tooltip"]& ], 
+        TagBox[
+         TooltipBox[InsetBox[
+           FrameBox[
+            StyleBox["List", "StandardForm", "Output",
+             StripOnInput->False,
+             LineColor->GrayLevel[0],
+             FrontFaceColor->GrayLevel[0],
+             BackFaceColor->GrayLevel[0],
+             GraphicsColor->GrayLevel[0],
+             FontSize->Scaled[0.020000000000000004`],
+             FontColor->GrayLevel[0]],
+            Background->RGBColor[1., 1., 0.871],
+            FrameStyle->GrayLevel[0.5],
+            StripOnInput->False], 20],
+          TagBox[
+           RowBox[{"{", 
+             RowBox[{"plus", "[", "1.`", "]"}], "}"}], HoldForm]],
+         Annotation[#, 
+          HoldForm[{
+            $CellContext`plus[1.]}], "Tooltip"]& ], 
+        TagBox[
+         TooltipBox[InsetBox[
+           FrameBox[
+            StyleBox["plus", "StandardForm", "Output",
+             StripOnInput->False,
+             LineColor->GrayLevel[0],
+             FrontFaceColor->GrayLevel[0],
+             BackFaceColor->GrayLevel[0],
+             GraphicsColor->GrayLevel[0],
+             FontSize->Scaled[0.020000000000000004`],
+             FontColor->GrayLevel[0]],
+            Background->RGBColor[1., 1., 0.871],
+            FrameStyle->GrayLevel[0.5],
+            StripOnInput->False], 21],
+          TagBox[
+           RowBox[{"plus", "[", "1.`", "]"}], HoldForm]],
+         Annotation[#, 
+          HoldForm[
+           $CellContext`plus[1.]], "Tooltip"]& ], 
+        TagBox[
+         TooltipBox[InsetBox[
+           FrameBox[
+            StyleBox[
+             TagBox["1.`",
+              HoldForm], "StandardForm", "Output",
+             StripOnInput->False,
+             LineColor->GrayLevel[0],
+             FrontFaceColor->GrayLevel[0],
+             BackFaceColor->GrayLevel[0],
+             GraphicsColor->GrayLevel[0],
+             FontSize->Scaled[0.020000000000000004`],
+             FontColor->GrayLevel[0]],
+            Background->RGBColor[1., 1., 0.871],
+            FrameStyle->GrayLevel[0.5],
+            StripOnInput->False], 22],
+          TagBox["1.`", HoldForm]],
+         Annotation[#, 
+          HoldForm[1.], "Tooltip"]& ], 
+        TagBox[
+         TooltipBox[InsetBox[
+           FrameBox[
+            StyleBox["List", "StandardForm", "Output",
+             StripOnInput->False,
+             LineColor->GrayLevel[0],
+             FrontFaceColor->GrayLevel[0],
+             BackFaceColor->GrayLevel[0],
+             GraphicsColor->GrayLevel[0],
+             FontSize->Scaled[0.020000000000000004`],
+             FontColor->GrayLevel[0]],
+            Background->RGBColor[1., 1., 0.871],
+            FrameStyle->GrayLevel[0.5],
+            StripOnInput->False], 23],
+          TagBox[
+           RowBox[{"{", 
+             RowBox[{"plus", "[", "1.`", "]"}], "}"}], HoldForm]],
+         Annotation[#, 
+          HoldForm[{
+            $CellContext`plus[1.]}], "Tooltip"]& ], 
+        TagBox[
+         TooltipBox[InsetBox[
+           FrameBox[
+            StyleBox["plus", "StandardForm", "Output",
+             StripOnInput->False,
+             LineColor->GrayLevel[0],
+             FrontFaceColor->GrayLevel[0],
+             BackFaceColor->GrayLevel[0],
+             GraphicsColor->GrayLevel[0],
+             FontSize->Scaled[0.020000000000000004`],
+             FontColor->GrayLevel[0]],
+            Background->RGBColor[1., 1., 0.871],
+            FrameStyle->GrayLevel[0.5],
+            StripOnInput->False], 24],
+          TagBox[
+           RowBox[{"plus", "[", "1.`", "]"}], HoldForm]],
+         Annotation[#, 
+          HoldForm[
+           $CellContext`plus[1.]], "Tooltip"]& ], 
+        TagBox[
+         TooltipBox[InsetBox[
+           FrameBox[
+            StyleBox[
+             TagBox["1.`",
+              HoldForm], "StandardForm", "Output",
+             StripOnInput->False,
+             LineColor->GrayLevel[0],
+             FrontFaceColor->GrayLevel[0],
+             BackFaceColor->GrayLevel[0],
+             GraphicsColor->GrayLevel[0],
+             FontSize->Scaled[0.020000000000000004`],
+             FontColor->GrayLevel[0]],
+            Background->RGBColor[1., 1., 0.871],
+            FrameStyle->GrayLevel[0.5],
+            StripOnInput->False], 25],
+          TagBox["1.`", HoldForm]],
+         Annotation[#, 
+          HoldForm[1.], "Tooltip"]& ]}}],
+     Annotation[#, VertexCoordinateRules -> CompressedData["
+1:eJxTTMoPSmViYGCQBGIQLX2PfcNnMUYHFY2tr1xOfrNngIJbXR8tNia+Q+Pf
+s78NpWHyqHyY/Ds0+XdweZg9MHlUPkz/PzT9/+DyJ79NO8z3l8kBJo/Kh5nP
+5oBqPhuGPMxfDZGXBauncsHVo/Lvwfkw9RD38Dmguo/PAdX9fHD1kPAVhKtH
+5d+D82HqAQ+Rvhc=
+       "]]& ],
+    AspectRatio->NCache[5^Rational[-1, 2], 0.4472135954999579],
+    FrameTicks->Automatic,
+    PlotRange->All,
+    PlotRangePadding->Scaled[0.1]], ",", 
+   GraphicsBox[
+    TagBox[GraphicsComplexBox[CompressedData["
+1:eJxTTMoPSmViYGCQBWIQzXr/zWpteSaHjXXP+vs1f9gzQMGZlTO5tkp/QOM/
+sD8NpWHyqHyY/Ac0+Q8Y8jBzYfbC1KPyH9ijuwuin8EB1XwY/wGcD1NvJ+Lg
+u0iJBa4elf8Azkd1D4cDqns4HFDdwwFXr/Ky51KNAQ9cPSr/AZyP6n4BNPcL
+oLlfAK4eEj9CcPWo/AdwPkw9AIX8s8E=
+      "], {
+       {RGBColor[0.55, 0.45, 0.45], 
+        LineBox[{{1, 2}, {1, 4}, {1, 6}, {1, 9}, {1, 12}, {1, 15}, {1, 18}, {
+         1, 21}, {1, 24}, {1, 27}, {2, 3}, {4, 5}, {6, 7}, {7, 8}, {9, 10}, {
+         10, 11}, {12, 13}, {13, 14}, {15, 16}, {16, 17}, {18, 19}, {19, 
+         20}, {21, 22}, {22, 23}, {24, 25}, {25, 26}, {27, 28}, {28, 29}}]}, {
+        
+        TagBox[
+         TooltipBox[InsetBox[
+           FrameBox[
+            StyleBox["List", "StandardForm", "Output",
+             StripOnInput->False,
+             LineColor->GrayLevel[0],
+             FrontFaceColor->GrayLevel[0],
+             BackFaceColor->GrayLevel[0],
+             GraphicsColor->GrayLevel[0],
+             FontSize->Scaled[0.020000000000000004`],
+             FontColor->GrayLevel[0]],
+            Background->RGBColor[1., 1., 0.871],
+            FrameStyle->GrayLevel[0.5],
+            StripOnInput->False], 1],
+          TagBox[
+           RowBox[{"{", 
+             RowBox[{
+               RowBox[{"{", "plus", "}"}], ",", 
+               RowBox[{"{", "plus", "}"}], ",", 
+               RowBox[{"{", 
+                 RowBox[{"plus", "[", "1.`", "]"}], "}"}], ",", 
+               RowBox[{"{", 
+                 RowBox[{"plus", "[", "1.`", "]"}], "}"}], ",", 
+               RowBox[{"{", 
+                 RowBox[{"plus", "[", "1.`", "]"}], "}"}], ",", 
+               RowBox[{"{", 
+                 RowBox[{"plus", "[", "1.`", "]"}], "}"}], ",", 
+               RowBox[{"{", 
+                 RowBox[{"plus", "[", "1.`", "]"}], "}"}], ",", 
+               RowBox[{"{", 
+                 RowBox[{"plus", "[", "1.`", "]"}], "}"}], ",", 
+               RowBox[{"{", 
+                 RowBox[{"plus", "[", "1.`", "]"}], "}"}], ",", 
+               RowBox[{"{", 
+                 RowBox[{"plus", "[", "1.`", "]"}], "}"}]}], "}"}], HoldForm]],
+         Annotation[#, 
+          HoldForm[{{$CellContext`plus}, {$CellContext`plus}, {
+             $CellContext`plus[1.]}, {
+             $CellContext`plus[1.]}, {
+             $CellContext`plus[1.]}, {
+             $CellContext`plus[1.]}, {
+             $CellContext`plus[1.]}, {
+             $CellContext`plus[1.]}, {
+             $CellContext`plus[1.]}, {
+             $CellContext`plus[1.]}}], "Tooltip"]& ], 
+        TagBox[
+         TooltipBox[InsetBox[
+           FrameBox[
+            StyleBox["List", "StandardForm", "Output",
+             StripOnInput->False,
+             LineColor->GrayLevel[0],
+             FrontFaceColor->GrayLevel[0],
+             BackFaceColor->GrayLevel[0],
+             GraphicsColor->GrayLevel[0],
+             FontSize->Scaled[0.020000000000000004`],
+             FontColor->GrayLevel[0]],
+            Background->RGBColor[1., 1., 0.871],
+            FrameStyle->GrayLevel[0.5],
+            StripOnInput->False], 2],
+          TagBox[
+           RowBox[{"{", "plus", "}"}], HoldForm]],
+         Annotation[#, 
+          HoldForm[{$CellContext`plus}], "Tooltip"]& ], 
+        TagBox[
+         TooltipBox[InsetBox[
+           FrameBox[
+            StyleBox[
+             TagBox["plus",
+              HoldForm], "StandardForm", "Output",
+             StripOnInput->False,
+             LineColor->GrayLevel[0],
+             FrontFaceColor->GrayLevel[0],
+             BackFaceColor->GrayLevel[0],
+             GraphicsColor->GrayLevel[0],
+             FontSize->Scaled[0.020000000000000004`],
+             FontColor->GrayLevel[0]],
+            Background->RGBColor[1., 1., 0.871],
+            FrameStyle->GrayLevel[0.5],
+            StripOnInput->False], 3],
+          TagBox["plus", HoldForm]],
+         Annotation[#, 
+          HoldForm[$CellContext`plus], "Tooltip"]& ], 
+        TagBox[
+         TooltipBox[InsetBox[
+           FrameBox[
+            StyleBox["List", "StandardForm", "Output",
+             StripOnInput->False,
+             LineColor->GrayLevel[0],
+             FrontFaceColor->GrayLevel[0],
+             BackFaceColor->GrayLevel[0],
+             GraphicsColor->GrayLevel[0],
+             FontSize->Scaled[0.020000000000000004`],
+             FontColor->GrayLevel[0]],
+            Background->RGBColor[1., 1., 0.871],
+            FrameStyle->GrayLevel[0.5],
+            StripOnInput->False], 4],
+          TagBox[
+           RowBox[{"{", "plus", "}"}], HoldForm]],
+         Annotation[#, 
+          HoldForm[{$CellContext`plus}], "Tooltip"]& ], 
+        TagBox[
+         TooltipBox[InsetBox[
+           FrameBox[
+            StyleBox[
+             TagBox["plus",
+              HoldForm], "StandardForm", "Output",
+             StripOnInput->False,
+             LineColor->GrayLevel[0],
+             FrontFaceColor->GrayLevel[0],
+             BackFaceColor->GrayLevel[0],
+             GraphicsColor->GrayLevel[0],
+             FontSize->Scaled[0.020000000000000004`],
+             FontColor->GrayLevel[0]],
+            Background->RGBColor[1., 1., 0.871],
+            FrameStyle->GrayLevel[0.5],
+            StripOnInput->False], 5],
+          TagBox["plus", HoldForm]],
+         Annotation[#, 
+          HoldForm[$CellContext`plus], "Tooltip"]& ], 
+        TagBox[
+         TooltipBox[InsetBox[
+           FrameBox[
+            StyleBox["List", "StandardForm", "Output",
+             StripOnInput->False,
+             LineColor->GrayLevel[0],
+             FrontFaceColor->GrayLevel[0],
+             BackFaceColor->GrayLevel[0],
+             GraphicsColor->GrayLevel[0],
+             FontSize->Scaled[0.020000000000000004`],
+             FontColor->GrayLevel[0]],
+            Background->RGBColor[1., 1., 0.871],
+            FrameStyle->GrayLevel[0.5],
+            StripOnInput->False], 6],
+          TagBox[
+           RowBox[{"{", 
+             RowBox[{"plus", "[", "1.`", "]"}], "}"}], HoldForm]],
+         Annotation[#, 
+          HoldForm[{
+            $CellContext`plus[1.]}], "Tooltip"]& ], 
+        TagBox[
+         TooltipBox[InsetBox[
+           FrameBox[
+            StyleBox["plus", "StandardForm", "Output",
+             StripOnInput->False,
+             LineColor->GrayLevel[0],
+             FrontFaceColor->GrayLevel[0],
+             BackFaceColor->GrayLevel[0],
+             GraphicsColor->GrayLevel[0],
+             FontSize->Scaled[0.020000000000000004`],
+             FontColor->GrayLevel[0]],
+            Background->RGBColor[1., 1., 0.871],
+            FrameStyle->GrayLevel[0.5],
+            StripOnInput->False], 7],
+          TagBox[
+           RowBox[{"plus", "[", "1.`", "]"}], HoldForm]],
+         Annotation[#, 
+          HoldForm[
+           $CellContext`plus[1.]], "Tooltip"]& ], 
+        TagBox[
+         TooltipBox[InsetBox[
+           FrameBox[
+            StyleBox[
+             TagBox["1.`",
+              HoldForm], "StandardForm", "Output",
+             StripOnInput->False,
+             LineColor->GrayLevel[0],
+             FrontFaceColor->GrayLevel[0],
+             BackFaceColor->GrayLevel[0],
+             GraphicsColor->GrayLevel[0],
+             FontSize->Scaled[0.020000000000000004`],
+             FontColor->GrayLevel[0]],
+            Background->RGBColor[1., 1., 0.871],
+            FrameStyle->GrayLevel[0.5],
+            StripOnInput->False], 8],
+          TagBox["1.`", HoldForm]],
+         Annotation[#, 
+          HoldForm[1.], "Tooltip"]& ], 
+        TagBox[
+         TooltipBox[InsetBox[
+           FrameBox[
+            StyleBox["List", "StandardForm", "Output",
+             StripOnInput->False,
+             LineColor->GrayLevel[0],
+             FrontFaceColor->GrayLevel[0],
+             BackFaceColor->GrayLevel[0],
+             GraphicsColor->GrayLevel[0],
+             FontSize->Scaled[0.020000000000000004`],
+             FontColor->GrayLevel[0]],
+            Background->RGBColor[1., 1., 0.871],
+            FrameStyle->GrayLevel[0.5],
+            StripOnInput->False], 9],
+          TagBox[
+           RowBox[{"{", 
+             RowBox[{"plus", "[", "1.`", "]"}], "}"}], HoldForm]],
+         Annotation[#, 
+          HoldForm[{
+            $CellContext`plus[1.]}], "Tooltip"]& ], 
+        TagBox[
+         TooltipBox[InsetBox[
+           FrameBox[
+            StyleBox["plus", "StandardForm", "Output",
+             StripOnInput->False,
+             LineColor->GrayLevel[0],
+             FrontFaceColor->GrayLevel[0],
+             BackFaceColor->GrayLevel[0],
+             GraphicsColor->GrayLevel[0],
+             FontSize->Scaled[0.020000000000000004`],
+             FontColor->GrayLevel[0]],
+            Background->RGBColor[1., 1., 0.871],
+            FrameStyle->GrayLevel[0.5],
+            StripOnInput->False], 10],
+          TagBox[
+           RowBox[{"plus", "[", "1.`", "]"}], HoldForm]],
+         Annotation[#, 
+          HoldForm[
+           $CellContext`plus[1.]], "Tooltip"]& ], 
+        TagBox[
+         TooltipBox[InsetBox[
+           FrameBox[
+            StyleBox[
+             TagBox["1.`",
+              HoldForm], "StandardForm", "Output",
+             StripOnInput->False,
+             LineColor->GrayLevel[0],
+             FrontFaceColor->GrayLevel[0],
+             BackFaceColor->GrayLevel[0],
+             GraphicsColor->GrayLevel[0],
+             FontSize->Scaled[0.020000000000000004`],
+             FontColor->GrayLevel[0]],
+            Background->RGBColor[1., 1., 0.871],
+            FrameStyle->GrayLevel[0.5],
+            StripOnInput->False], 11],
+          TagBox["1.`", HoldForm]],
+         Annotation[#, 
+          HoldForm[1.], "Tooltip"]& ], 
+        TagBox[
+         TooltipBox[InsetBox[
+           FrameBox[
+            StyleBox["List", "StandardForm", "Output",
+             StripOnInput->False,
+             LineColor->GrayLevel[0],
+             FrontFaceColor->GrayLevel[0],
+             BackFaceColor->GrayLevel[0],
+             GraphicsColor->GrayLevel[0],
+             FontSize->Scaled[0.020000000000000004`],
+             FontColor->GrayLevel[0]],
+            Background->RGBColor[1., 1., 0.871],
+            FrameStyle->GrayLevel[0.5],
+            StripOnInput->False], 12],
+          TagBox[
+           RowBox[{"{", 
+             RowBox[{"plus", "[", "1.`", "]"}], "}"}], HoldForm]],
+         Annotation[#, 
+          HoldForm[{
+            $CellContext`plus[1.]}], "Tooltip"]& ], 
+        TagBox[
+         TooltipBox[InsetBox[
+           FrameBox[
+            StyleBox["plus", "StandardForm", "Output",
+             StripOnInput->False,
+             LineColor->GrayLevel[0],
+             FrontFaceColor->GrayLevel[0],
+             BackFaceColor->GrayLevel[0],
+             GraphicsColor->GrayLevel[0],
+             FontSize->Scaled[0.020000000000000004`],
+             FontColor->GrayLevel[0]],
+            Background->RGBColor[1., 1., 0.871],
+            FrameStyle->GrayLevel[0.5],
+            StripOnInput->False], 13],
+          TagBox[
+           RowBox[{"plus", "[", "1.`", "]"}], HoldForm]],
+         Annotation[#, 
+          HoldForm[
+           $CellContext`plus[1.]], "Tooltip"]& ], 
+        TagBox[
+         TooltipBox[InsetBox[
+           FrameBox[
+            StyleBox[
+             TagBox["1.`",
+              HoldForm], "StandardForm", "Output",
+             StripOnInput->False,
+             LineColor->GrayLevel[0],
+             FrontFaceColor->GrayLevel[0],
+             BackFaceColor->GrayLevel[0],
+             GraphicsColor->GrayLevel[0],
+             FontSize->Scaled[0.020000000000000004`],
+             FontColor->GrayLevel[0]],
+            Background->RGBColor[1., 1., 0.871],
+            FrameStyle->GrayLevel[0.5],
+            StripOnInput->False], 14],
+          TagBox["1.`", HoldForm]],
+         Annotation[#, 
+          HoldForm[1.], "Tooltip"]& ], 
+        TagBox[
+         TooltipBox[InsetBox[
+           FrameBox[
+            StyleBox["List", "StandardForm", "Output",
+             StripOnInput->False,
+             LineColor->GrayLevel[0],
+             FrontFaceColor->GrayLevel[0],
+             BackFaceColor->GrayLevel[0],
+             GraphicsColor->GrayLevel[0],
+             FontSize->Scaled[0.020000000000000004`],
+             FontColor->GrayLevel[0]],
+            Background->RGBColor[1., 1., 0.871],
+            FrameStyle->GrayLevel[0.5],
+            StripOnInput->False], 15],
+          TagBox[
+           RowBox[{"{", 
+             RowBox[{"plus", "[", "1.`", "]"}], "}"}], HoldForm]],
+         Annotation[#, 
+          HoldForm[{
+            $CellContext`plus[1.]}], "Tooltip"]& ], 
+        TagBox[
+         TooltipBox[InsetBox[
+           FrameBox[
+            StyleBox["plus", "StandardForm", "Output",
+             StripOnInput->False,
+             LineColor->GrayLevel[0],
+             FrontFaceColor->GrayLevel[0],
+             BackFaceColor->GrayLevel[0],
+             GraphicsColor->GrayLevel[0],
+             FontSize->Scaled[0.020000000000000004`],
+             FontColor->GrayLevel[0]],
+            Background->RGBColor[1., 1., 0.871],
+            FrameStyle->GrayLevel[0.5],
+            StripOnInput->False], 16],
+          TagBox[
+           RowBox[{"plus", "[", "1.`", "]"}], HoldForm]],
+         Annotation[#, 
+          HoldForm[
+           $CellContext`plus[1.]], "Tooltip"]& ], 
+        TagBox[
+         TooltipBox[InsetBox[
+           FrameBox[
+            StyleBox[
+             TagBox["1.`",
+              HoldForm], "StandardForm", "Output",
+             StripOnInput->False,
+             LineColor->GrayLevel[0],
+             FrontFaceColor->GrayLevel[0],
+             BackFaceColor->GrayLevel[0],
+             GraphicsColor->GrayLevel[0],
+             FontSize->Scaled[0.020000000000000004`],
+             FontColor->GrayLevel[0]],
+            Background->RGBColor[1., 1., 0.871],
+            FrameStyle->GrayLevel[0.5],
+            StripOnInput->False], 17],
+          TagBox["1.`", HoldForm]],
+         Annotation[#, 
+          HoldForm[1.], "Tooltip"]& ], 
+        TagBox[
+         TooltipBox[InsetBox[
+           FrameBox[
+            StyleBox["List", "StandardForm", "Output",
+             StripOnInput->False,
+             LineColor->GrayLevel[0],
+             FrontFaceColor->GrayLevel[0],
+             BackFaceColor->GrayLevel[0],
+             GraphicsColor->GrayLevel[0],
+             FontSize->Scaled[0.020000000000000004`],
+             FontColor->GrayLevel[0]],
+            Background->RGBColor[1., 1., 0.871],
+            FrameStyle->GrayLevel[0.5],
+            StripOnInput->False], 18],
+          TagBox[
+           RowBox[{"{", 
+             RowBox[{"plus", "[", "1.`", "]"}], "}"}], HoldForm]],
+         Annotation[#, 
+          HoldForm[{
+            $CellContext`plus[1.]}], "Tooltip"]& ], 
+        TagBox[
+         TooltipBox[InsetBox[
+           FrameBox[
+            StyleBox["plus", "StandardForm", "Output",
+             StripOnInput->False,
+             LineColor->GrayLevel[0],
+             FrontFaceColor->GrayLevel[0],
+             BackFaceColor->GrayLevel[0],
+             GraphicsColor->GrayLevel[0],
+             FontSize->Scaled[0.020000000000000004`],
+             FontColor->GrayLevel[0]],
+            Background->RGBColor[1., 1., 0.871],
+            FrameStyle->GrayLevel[0.5],
+            StripOnInput->False], 19],
+          TagBox[
+           RowBox[{"plus", "[", "1.`", "]"}], HoldForm]],
+         Annotation[#, 
+          HoldForm[
+           $CellContext`plus[1.]], "Tooltip"]& ], 
+        TagBox[
+         TooltipBox[InsetBox[
+           FrameBox[
+            StyleBox[
+             TagBox["1.`",
+              HoldForm], "StandardForm", "Output",
+             StripOnInput->False,
+             LineColor->GrayLevel[0],
+             FrontFaceColor->GrayLevel[0],
+             BackFaceColor->GrayLevel[0],
+             GraphicsColor->GrayLevel[0],
+             FontSize->Scaled[0.020000000000000004`],
+             FontColor->GrayLevel[0]],
+            Background->RGBColor[1., 1., 0.871],
+            FrameStyle->GrayLevel[0.5],
+            StripOnInput->False], 20],
+          TagBox["1.`", HoldForm]],
+         Annotation[#, 
+          HoldForm[1.], "Tooltip"]& ], 
+        TagBox[
+         TooltipBox[InsetBox[
+           FrameBox[
+            StyleBox["List", "StandardForm", "Output",
+             StripOnInput->False,
+             LineColor->GrayLevel[0],
+             FrontFaceColor->GrayLevel[0],
+             BackFaceColor->GrayLevel[0],
+             GraphicsColor->GrayLevel[0],
+             FontSize->Scaled[0.020000000000000004`],
+             FontColor->GrayLevel[0]],
+            Background->RGBColor[1., 1., 0.871],
+            FrameStyle->GrayLevel[0.5],
+            StripOnInput->False], 21],
+          TagBox[
+           RowBox[{"{", 
+             RowBox[{"plus", "[", "1.`", "]"}], "}"}], HoldForm]],
+         Annotation[#, 
+          HoldForm[{
+            $CellContext`plus[1.]}], "Tooltip"]& ], 
+        TagBox[
+         TooltipBox[InsetBox[
+           FrameBox[
+            StyleBox["plus", "StandardForm", "Output",
+             StripOnInput->False,
+             LineColor->GrayLevel[0],
+             FrontFaceColor->GrayLevel[0],
+             BackFaceColor->GrayLevel[0],
+             GraphicsColor->GrayLevel[0],
+             FontSize->Scaled[0.020000000000000004`],
+             FontColor->GrayLevel[0]],
+            Background->RGBColor[1., 1., 0.871],
+            FrameStyle->GrayLevel[0.5],
+            StripOnInput->False], 22],
+          TagBox[
+           RowBox[{"plus", "[", "1.`", "]"}], HoldForm]],
+         Annotation[#, 
+          HoldForm[
+           $CellContext`plus[1.]], "Tooltip"]& ], 
+        TagBox[
+         TooltipBox[InsetBox[
+           FrameBox[
+            StyleBox[
+             TagBox["1.`",
+              HoldForm], "StandardForm", "Output",
+             StripOnInput->False,
+             LineColor->GrayLevel[0],
+             FrontFaceColor->GrayLevel[0],
+             BackFaceColor->GrayLevel[0],
+             GraphicsColor->GrayLevel[0],
+             FontSize->Scaled[0.020000000000000004`],
+             FontColor->GrayLevel[0]],
+            Background->RGBColor[1., 1., 0.871],
+            FrameStyle->GrayLevel[0.5],
+            StripOnInput->False], 23],
+          TagBox["1.`", HoldForm]],
+         Annotation[#, 
+          HoldForm[1.], "Tooltip"]& ], 
+        TagBox[
+         TooltipBox[InsetBox[
+           FrameBox[
+            StyleBox["List", "StandardForm", "Output",
+             StripOnInput->False,
+             LineColor->GrayLevel[0],
+             FrontFaceColor->GrayLevel[0],
+             BackFaceColor->GrayLevel[0],
+             GraphicsColor->GrayLevel[0],
+             FontSize->Scaled[0.020000000000000004`],
+             FontColor->GrayLevel[0]],
+            Background->RGBColor[1., 1., 0.871],
+            FrameStyle->GrayLevel[0.5],
+            StripOnInput->False], 24],
+          TagBox[
+           RowBox[{"{", 
+             RowBox[{"plus", "[", "1.`", "]"}], "}"}], HoldForm]],
+         Annotation[#, 
+          HoldForm[{
+            $CellContext`plus[1.]}], "Tooltip"]& ], 
+        TagBox[
+         TooltipBox[InsetBox[
+           FrameBox[
+            StyleBox["plus", "StandardForm", "Output",
+             StripOnInput->False,
+             LineColor->GrayLevel[0],
+             FrontFaceColor->GrayLevel[0],
+             BackFaceColor->GrayLevel[0],
+             GraphicsColor->GrayLevel[0],
+             FontSize->Scaled[0.020000000000000004`],
+             FontColor->GrayLevel[0]],
+            Background->RGBColor[1., 1., 0.871],
+            FrameStyle->GrayLevel[0.5],
+            StripOnInput->False], 25],
+          TagBox[
+           RowBox[{"plus", "[", "1.`", "]"}], HoldForm]],
+         Annotation[#, 
+          HoldForm[
+           $CellContext`plus[1.]], "Tooltip"]& ], 
+        TagBox[
+         TooltipBox[InsetBox[
+           FrameBox[
+            StyleBox[
+             TagBox["1.`",
+              HoldForm], "StandardForm", "Output",
+             StripOnInput->False,
+             LineColor->GrayLevel[0],
+             FrontFaceColor->GrayLevel[0],
+             BackFaceColor->GrayLevel[0],
+             GraphicsColor->GrayLevel[0],
+             FontSize->Scaled[0.020000000000000004`],
+             FontColor->GrayLevel[0]],
+            Background->RGBColor[1., 1., 0.871],
+            FrameStyle->GrayLevel[0.5],
+            StripOnInput->False], 26],
+          TagBox["1.`", HoldForm]],
+         Annotation[#, 
+          HoldForm[1.], "Tooltip"]& ], 
+        TagBox[
+         TooltipBox[InsetBox[
+           FrameBox[
+            StyleBox["List", "StandardForm", "Output",
+             StripOnInput->False,
+             LineColor->GrayLevel[0],
+             FrontFaceColor->GrayLevel[0],
+             BackFaceColor->GrayLevel[0],
+             GraphicsColor->GrayLevel[0],
+             FontSize->Scaled[0.020000000000000004`],
+             FontColor->GrayLevel[0]],
+            Background->RGBColor[1., 1., 0.871],
+            FrameStyle->GrayLevel[0.5],
+            StripOnInput->False], 27],
+          TagBox[
+           RowBox[{"{", 
+             RowBox[{"plus", "[", "1.`", "]"}], "}"}], HoldForm]],
+         Annotation[#, 
+          HoldForm[{
+            $CellContext`plus[1.]}], "Tooltip"]& ], 
+        TagBox[
+         TooltipBox[InsetBox[
+           FrameBox[
+            StyleBox["plus", "StandardForm", "Output",
+             StripOnInput->False,
+             LineColor->GrayLevel[0],
+             FrontFaceColor->GrayLevel[0],
+             BackFaceColor->GrayLevel[0],
+             GraphicsColor->GrayLevel[0],
+             FontSize->Scaled[0.020000000000000004`],
+             FontColor->GrayLevel[0]],
+            Background->RGBColor[1., 1., 0.871],
+            FrameStyle->GrayLevel[0.5],
+            StripOnInput->False], 28],
+          TagBox[
+           RowBox[{"plus", "[", "1.`", "]"}], HoldForm]],
+         Annotation[#, 
+          HoldForm[
+           $CellContext`plus[1.]], "Tooltip"]& ], 
+        TagBox[
+         TooltipBox[InsetBox[
+           FrameBox[
+            StyleBox[
+             TagBox["1.`",
+              HoldForm], "StandardForm", "Output",
+             StripOnInput->False,
+             LineColor->GrayLevel[0],
+             FrontFaceColor->GrayLevel[0],
+             BackFaceColor->GrayLevel[0],
+             GraphicsColor->GrayLevel[0],
+             FontSize->Scaled[0.020000000000000004`],
+             FontColor->GrayLevel[0]],
+            Background->RGBColor[1., 1., 0.871],
+            FrameStyle->GrayLevel[0.5],
+            StripOnInput->False], 29],
+          TagBox["1.`", HoldForm]],
+         Annotation[#, 
+          HoldForm[1.], "Tooltip"]& ]}}],
+     Annotation[#, VertexCoordinateRules -> CompressedData["
+1:eJxTTMoPSmViYGCQBWIQzXr/zWpteSaHjXXP+vs1f9gzQMGZlTO5tkp/QOM/
+sD8NpWHyqHyY/Ac0+Q8Y8jBzYfbC1KPyH9ijuwuin8EB1XwY/wGcD1NvJ+Lg
+u0iJBa4elf8Azkd1D4cDqns4HFDdwwFXr/Ky51KNAQ9cPSr/AZyP6n4BNPcL
+oLlfAK4eEj9CcPWo/AdwPkw9AIX8s8E=
+       "]]& ],
+    AspectRatio->NCache[5^Rational[-1, 2], 0.4472135954999579],
+    FrameTicks->Automatic,
+    PlotRange->All,
+    PlotRangePadding->Scaled[0.1]], ",", 
+   GraphicsBox[
+    TagBox[GraphicsComplexBox[CompressedData["
+1:eJxTTMoPSmViYGCQBGIQLX2PfcNnMUYHFY2tr1xOfrNngIJbXR8tNia+Q+Pf
+s78NpWHyqHyY/Ds0+XdweZg9MHlUPkz/PzT9/+DyJ79NO8z3l8kBJo/Kh5nP
+5oBqPhuGPMxfDZGXBauncsHVo/Lvwfkw9RD38Dmguo/PAdX9fHD1kPAVhKtH
+5d+D82HqAQ+Rvhc=
+      "], {
+       {RGBColor[0.55, 0.45, 0.45], 
+        LineBox[{{1, 2}, {1, 4}, {1, 6}, {1, 8}, {1, 10}, {1, 12}, {1, 14}, {
+         1, 17}, {1, 20}, {1, 23}, {2, 3}, {4, 5}, {6, 7}, {8, 9}, {10, 11}, {
+         12, 13}, {14, 15}, {15, 16}, {17, 18}, {18, 19}, {20, 21}, {21, 
+         22}, {23, 24}, {24, 25}}]}, {
+        TagBox[
+         TooltipBox[InsetBox[
+           FrameBox[
+            StyleBox["List", "StandardForm", "Output",
+             StripOnInput->False,
+             LineColor->GrayLevel[0],
+             FrontFaceColor->GrayLevel[0],
+             BackFaceColor->GrayLevel[0],
+             GraphicsColor->GrayLevel[0],
+             FontSize->Scaled[0.020000000000000004`],
+             FontColor->GrayLevel[0]],
+            Background->RGBColor[1., 1., 0.871],
+            FrameStyle->GrayLevel[0.5],
+            StripOnInput->False], 1],
+          TagBox[
+           RowBox[{"{", 
+             RowBox[{
+               RowBox[{"{", "plus", "}"}], ",", 
+               RowBox[{"{", "plus", "}"}], ",", 
+               RowBox[{"{", "plus", "}"}], ",", 
+               RowBox[{"{", "plus", "}"}], ",", 
+               RowBox[{"{", "plus", "}"}], ",", 
+               RowBox[{"{", "plus", "}"}], ",", 
+               RowBox[{"{", 
+                 RowBox[{"plus", "[", "1.`", "]"}], "}"}], ",", 
+               RowBox[{"{", 
+                 RowBox[{"plus", "[", "1.`", "]"}], "}"}], ",", 
+               RowBox[{"{", 
+                 RowBox[{"plus", "[", "1.`", "]"}], "}"}], ",", 
+               RowBox[{"{", 
+                 RowBox[{"plus", "[", "1.`", "]"}], "}"}]}], "}"}], HoldForm]],
+         Annotation[#, 
+          
+          HoldForm[{{$CellContext`plus}, {$CellContext`plus}, \
+{$CellContext`plus}, {$CellContext`plus}, {$CellContext`plus}, \
+{$CellContext`plus}, {
+             $CellContext`plus[1.]}, {
+             $CellContext`plus[1.]}, {
+             $CellContext`plus[1.]}, {
+             $CellContext`plus[1.]}}], "Tooltip"]& ], 
+        TagBox[
+         TooltipBox[InsetBox[
+           FrameBox[
+            StyleBox["List", "StandardForm", "Output",
+             StripOnInput->False,
+             LineColor->GrayLevel[0],
+             FrontFaceColor->GrayLevel[0],
+             BackFaceColor->GrayLevel[0],
+             GraphicsColor->GrayLevel[0],
+             FontSize->Scaled[0.020000000000000004`],
+             FontColor->GrayLevel[0]],
+            Background->RGBColor[1., 1., 0.871],
+            FrameStyle->GrayLevel[0.5],
+            StripOnInput->False], 2],
+          TagBox[
+           RowBox[{"{", "plus", "}"}], HoldForm]],
+         Annotation[#, 
+          HoldForm[{$CellContext`plus}], "Tooltip"]& ], 
+        TagBox[
+         TooltipBox[InsetBox[
+           FrameBox[
+            StyleBox[
+             TagBox["plus",
+              HoldForm], "StandardForm", "Output",
+             StripOnInput->False,
+             LineColor->GrayLevel[0],
+             FrontFaceColor->GrayLevel[0],
+             BackFaceColor->GrayLevel[0],
+             GraphicsColor->GrayLevel[0],
+             FontSize->Scaled[0.020000000000000004`],
+             FontColor->GrayLevel[0]],
+            Background->RGBColor[1., 1., 0.871],
+            FrameStyle->GrayLevel[0.5],
+            StripOnInput->False], 3],
+          TagBox["plus", HoldForm]],
+         Annotation[#, 
+          HoldForm[$CellContext`plus], "Tooltip"]& ], 
+        TagBox[
+         TooltipBox[InsetBox[
+           FrameBox[
+            StyleBox["List", "StandardForm", "Output",
+             StripOnInput->False,
+             LineColor->GrayLevel[0],
+             FrontFaceColor->GrayLevel[0],
+             BackFaceColor->GrayLevel[0],
+             GraphicsColor->GrayLevel[0],
+             FontSize->Scaled[0.020000000000000004`],
+             FontColor->GrayLevel[0]],
+            Background->RGBColor[1., 1., 0.871],
+            FrameStyle->GrayLevel[0.5],
+            StripOnInput->False], 4],
+          TagBox[
+           RowBox[{"{", "plus", "}"}], HoldForm]],
+         Annotation[#, 
+          HoldForm[{$CellContext`plus}], "Tooltip"]& ], 
+        TagBox[
+         TooltipBox[InsetBox[
+           FrameBox[
+            StyleBox[
+             TagBox["plus",
+              HoldForm], "StandardForm", "Output",
+             StripOnInput->False,
+             LineColor->GrayLevel[0],
+             FrontFaceColor->GrayLevel[0],
+             BackFaceColor->GrayLevel[0],
+             GraphicsColor->GrayLevel[0],
+             FontSize->Scaled[0.020000000000000004`],
+             FontColor->GrayLevel[0]],
+            Background->RGBColor[1., 1., 0.871],
+            FrameStyle->GrayLevel[0.5],
+            StripOnInput->False], 5],
+          TagBox["plus", HoldForm]],
+         Annotation[#, 
+          HoldForm[$CellContext`plus], "Tooltip"]& ], 
+        TagBox[
+         TooltipBox[InsetBox[
+           FrameBox[
+            StyleBox["List", "StandardForm", "Output",
+             StripOnInput->False,
+             LineColor->GrayLevel[0],
+             FrontFaceColor->GrayLevel[0],
+             BackFaceColor->GrayLevel[0],
+             GraphicsColor->GrayLevel[0],
+             FontSize->Scaled[0.020000000000000004`],
+             FontColor->GrayLevel[0]],
+            Background->RGBColor[1., 1., 0.871],
+            FrameStyle->GrayLevel[0.5],
+            StripOnInput->False], 6],
+          TagBox[
+           RowBox[{"{", "plus", "}"}], HoldForm]],
+         Annotation[#, 
+          HoldForm[{$CellContext`plus}], "Tooltip"]& ], 
+        TagBox[
+         TooltipBox[InsetBox[
+           FrameBox[
+            StyleBox[
+             TagBox["plus",
+              HoldForm], "StandardForm", "Output",
+             StripOnInput->False,
+             LineColor->GrayLevel[0],
+             FrontFaceColor->GrayLevel[0],
+             BackFaceColor->GrayLevel[0],
+             GraphicsColor->GrayLevel[0],
+             FontSize->Scaled[0.020000000000000004`],
+             FontColor->GrayLevel[0]],
+            Background->RGBColor[1., 1., 0.871],
+            FrameStyle->GrayLevel[0.5],
+            StripOnInput->False], 7],
+          TagBox["plus", HoldForm]],
+         Annotation[#, 
+          HoldForm[$CellContext`plus], "Tooltip"]& ], 
+        TagBox[
+         TooltipBox[InsetBox[
+           FrameBox[
+            StyleBox["List", "StandardForm", "Output",
+             StripOnInput->False,
+             LineColor->GrayLevel[0],
+             FrontFaceColor->GrayLevel[0],
+             BackFaceColor->GrayLevel[0],
+             GraphicsColor->GrayLevel[0],
+             FontSize->Scaled[0.020000000000000004`],
+             FontColor->GrayLevel[0]],
+            Background->RGBColor[1., 1., 0.871],
+            FrameStyle->GrayLevel[0.5],
+            StripOnInput->False], 8],
+          TagBox[
+           RowBox[{"{", "plus", "}"}], HoldForm]],
+         Annotation[#, 
+          HoldForm[{$CellContext`plus}], "Tooltip"]& ], 
+        TagBox[
+         TooltipBox[InsetBox[
+           FrameBox[
+            StyleBox[
+             TagBox["plus",
+              HoldForm], "StandardForm", "Output",
+             StripOnInput->False,
+             LineColor->GrayLevel[0],
+             FrontFaceColor->GrayLevel[0],
+             BackFaceColor->GrayLevel[0],
+             GraphicsColor->GrayLevel[0],
+             FontSize->Scaled[0.020000000000000004`],
+             FontColor->GrayLevel[0]],
+            Background->RGBColor[1., 1., 0.871],
+            FrameStyle->GrayLevel[0.5],
+            StripOnInput->False], 9],
+          TagBox["plus", HoldForm]],
+         Annotation[#, 
+          HoldForm[$CellContext`plus], "Tooltip"]& ], 
+        TagBox[
+         TooltipBox[InsetBox[
+           FrameBox[
+            StyleBox["List", "StandardForm", "Output",
+             StripOnInput->False,
+             LineColor->GrayLevel[0],
+             FrontFaceColor->GrayLevel[0],
+             BackFaceColor->GrayLevel[0],
+             GraphicsColor->GrayLevel[0],
+             FontSize->Scaled[0.020000000000000004`],
+             FontColor->GrayLevel[0]],
+            Background->RGBColor[1., 1., 0.871],
+            FrameStyle->GrayLevel[0.5],
+            StripOnInput->False], 10],
+          TagBox[
+           RowBox[{"{", "plus", "}"}], HoldForm]],
+         Annotation[#, 
+          HoldForm[{$CellContext`plus}], "Tooltip"]& ], 
+        TagBox[
+         TooltipBox[InsetBox[
+           FrameBox[
+            StyleBox[
+             TagBox["plus",
+              HoldForm], "StandardForm", "Output",
+             StripOnInput->False,
+             LineColor->GrayLevel[0],
+             FrontFaceColor->GrayLevel[0],
+             BackFaceColor->GrayLevel[0],
+             GraphicsColor->GrayLevel[0],
+             FontSize->Scaled[0.020000000000000004`],
+             FontColor->GrayLevel[0]],
+            Background->RGBColor[1., 1., 0.871],
+            FrameStyle->GrayLevel[0.5],
+            StripOnInput->False], 11],
+          TagBox["plus", HoldForm]],
+         Annotation[#, 
+          HoldForm[$CellContext`plus], "Tooltip"]& ], 
+        TagBox[
+         TooltipBox[InsetBox[
+           FrameBox[
+            StyleBox["List", "StandardForm", "Output",
+             StripOnInput->False,
+             LineColor->GrayLevel[0],
+             FrontFaceColor->GrayLevel[0],
+             BackFaceColor->GrayLevel[0],
+             GraphicsColor->GrayLevel[0],
+             FontSize->Scaled[0.020000000000000004`],
+             FontColor->GrayLevel[0]],
+            Background->RGBColor[1., 1., 0.871],
+            FrameStyle->GrayLevel[0.5],
+            StripOnInput->False], 12],
+          TagBox[
+           RowBox[{"{", "plus", "}"}], HoldForm]],
+         Annotation[#, 
+          HoldForm[{$CellContext`plus}], "Tooltip"]& ], 
+        TagBox[
+         TooltipBox[InsetBox[
+           FrameBox[
+            StyleBox[
+             TagBox["plus",
+              HoldForm], "StandardForm", "Output",
+             StripOnInput->False,
+             LineColor->GrayLevel[0],
+             FrontFaceColor->GrayLevel[0],
+             BackFaceColor->GrayLevel[0],
+             GraphicsColor->GrayLevel[0],
+             FontSize->Scaled[0.020000000000000004`],
+             FontColor->GrayLevel[0]],
+            Background->RGBColor[1., 1., 0.871],
+            FrameStyle->GrayLevel[0.5],
+            StripOnInput->False], 13],
+          TagBox["plus", HoldForm]],
+         Annotation[#, 
+          HoldForm[$CellContext`plus], "Tooltip"]& ], 
+        TagBox[
+         TooltipBox[InsetBox[
+           FrameBox[
+            StyleBox["List", "StandardForm", "Output",
+             StripOnInput->False,
+             LineColor->GrayLevel[0],
+             FrontFaceColor->GrayLevel[0],
+             BackFaceColor->GrayLevel[0],
+             GraphicsColor->GrayLevel[0],
+             FontSize->Scaled[0.020000000000000004`],
+             FontColor->GrayLevel[0]],
+            Background->RGBColor[1., 1., 0.871],
+            FrameStyle->GrayLevel[0.5],
+            StripOnInput->False], 14],
+          TagBox[
+           RowBox[{"{", 
+             RowBox[{"plus", "[", "1.`", "]"}], "}"}], HoldForm]],
+         Annotation[#, 
+          HoldForm[{
+            $CellContext`plus[1.]}], "Tooltip"]& ], 
+        TagBox[
+         TooltipBox[InsetBox[
+           FrameBox[
+            StyleBox["plus", "StandardForm", "Output",
+             StripOnInput->False,
+             LineColor->GrayLevel[0],
+             FrontFaceColor->GrayLevel[0],
+             BackFaceColor->GrayLevel[0],
+             GraphicsColor->GrayLevel[0],
+             FontSize->Scaled[0.020000000000000004`],
+             FontColor->GrayLevel[0]],
+            Background->RGBColor[1., 1., 0.871],
+            FrameStyle->GrayLevel[0.5],
+            StripOnInput->False], 15],
+          TagBox[
+           RowBox[{"plus", "[", "1.`", "]"}], HoldForm]],
+         Annotation[#, 
+          HoldForm[
+           $CellContext`plus[1.]], "Tooltip"]& ], 
+        TagBox[
+         TooltipBox[InsetBox[
+           FrameBox[
+            StyleBox[
+             TagBox["1.`",
+              HoldForm], "StandardForm", "Output",
+             StripOnInput->False,
+             LineColor->GrayLevel[0],
+             FrontFaceColor->GrayLevel[0],
+             BackFaceColor->GrayLevel[0],
+             GraphicsColor->GrayLevel[0],
+             FontSize->Scaled[0.020000000000000004`],
+             FontColor->GrayLevel[0]],
+            Background->RGBColor[1., 1., 0.871],
+            FrameStyle->GrayLevel[0.5],
+            StripOnInput->False], 16],
+          TagBox["1.`", HoldForm]],
+         Annotation[#, 
+          HoldForm[1.], "Tooltip"]& ], 
+        TagBox[
+         TooltipBox[InsetBox[
+           FrameBox[
+            StyleBox["List", "StandardForm", "Output",
+             StripOnInput->False,
+             LineColor->GrayLevel[0],
+             FrontFaceColor->GrayLevel[0],
+             BackFaceColor->GrayLevel[0],
+             GraphicsColor->GrayLevel[0],
+             FontSize->Scaled[0.020000000000000004`],
+             FontColor->GrayLevel[0]],
+            Background->RGBColor[1., 1., 0.871],
+            FrameStyle->GrayLevel[0.5],
+            StripOnInput->False], 17],
+          TagBox[
+           RowBox[{"{", 
+             RowBox[{"plus", "[", "1.`", "]"}], "}"}], HoldForm]],
+         Annotation[#, 
+          HoldForm[{
+            $CellContext`plus[1.]}], "Tooltip"]& ], 
+        TagBox[
+         TooltipBox[InsetBox[
+           FrameBox[
+            StyleBox["plus", "StandardForm", "Output",
+             StripOnInput->False,
+             LineColor->GrayLevel[0],
+             FrontFaceColor->GrayLevel[0],
+             BackFaceColor->GrayLevel[0],
+             GraphicsColor->GrayLevel[0],
+             FontSize->Scaled[0.020000000000000004`],
+             FontColor->GrayLevel[0]],
+            Background->RGBColor[1., 1., 0.871],
+            FrameStyle->GrayLevel[0.5],
+            StripOnInput->False], 18],
+          TagBox[
+           RowBox[{"plus", "[", "1.`", "]"}], HoldForm]],
+         Annotation[#, 
+          HoldForm[
+           $CellContext`plus[1.]], "Tooltip"]& ], 
+        TagBox[
+         TooltipBox[InsetBox[
+           FrameBox[
+            StyleBox[
+             TagBox["1.`",
+              HoldForm], "StandardForm", "Output",
+             StripOnInput->False,
+             LineColor->GrayLevel[0],
+             FrontFaceColor->GrayLevel[0],
+             BackFaceColor->GrayLevel[0],
+             GraphicsColor->GrayLevel[0],
+             FontSize->Scaled[0.020000000000000004`],
+             FontColor->GrayLevel[0]],
+            Background->RGBColor[1., 1., 0.871],
+            FrameStyle->GrayLevel[0.5],
+            StripOnInput->False], 19],
+          TagBox["1.`", HoldForm]],
+         Annotation[#, 
+          HoldForm[1.], "Tooltip"]& ], 
+        TagBox[
+         TooltipBox[InsetBox[
+           FrameBox[
+            StyleBox["List", "StandardForm", "Output",
+             StripOnInput->False,
+             LineColor->GrayLevel[0],
+             FrontFaceColor->GrayLevel[0],
+             BackFaceColor->GrayLevel[0],
+             GraphicsColor->GrayLevel[0],
+             FontSize->Scaled[0.020000000000000004`],
+             FontColor->GrayLevel[0]],
+            Background->RGBColor[1., 1., 0.871],
+            FrameStyle->GrayLevel[0.5],
+            StripOnInput->False], 20],
+          TagBox[
+           RowBox[{"{", 
+             RowBox[{"plus", "[", "1.`", "]"}], "}"}], HoldForm]],
+         Annotation[#, 
+          HoldForm[{
+            $CellContext`plus[1.]}], "Tooltip"]& ], 
+        TagBox[
+         TooltipBox[InsetBox[
+           FrameBox[
+            StyleBox["plus", "StandardForm", "Output",
+             StripOnInput->False,
+             LineColor->GrayLevel[0],
+             FrontFaceColor->GrayLevel[0],
+             BackFaceColor->GrayLevel[0],
+             GraphicsColor->GrayLevel[0],
+             FontSize->Scaled[0.020000000000000004`],
+             FontColor->GrayLevel[0]],
+            Background->RGBColor[1., 1., 0.871],
+            FrameStyle->GrayLevel[0.5],
+            StripOnInput->False], 21],
+          TagBox[
+           RowBox[{"plus", "[", "1.`", "]"}], HoldForm]],
+         Annotation[#, 
+          HoldForm[
+           $CellContext`plus[1.]], "Tooltip"]& ], 
+        TagBox[
+         TooltipBox[InsetBox[
+           FrameBox[
+            StyleBox[
+             TagBox["1.`",
+              HoldForm], "StandardForm", "Output",
+             StripOnInput->False,
+             LineColor->GrayLevel[0],
+             FrontFaceColor->GrayLevel[0],
+             BackFaceColor->GrayLevel[0],
+             GraphicsColor->GrayLevel[0],
+             FontSize->Scaled[0.020000000000000004`],
+             FontColor->GrayLevel[0]],
+            Background->RGBColor[1., 1., 0.871],
+            FrameStyle->GrayLevel[0.5],
+            StripOnInput->False], 22],
+          TagBox["1.`", HoldForm]],
+         Annotation[#, 
+          HoldForm[1.], "Tooltip"]& ], 
+        TagBox[
+         TooltipBox[InsetBox[
+           FrameBox[
+            StyleBox["List", "StandardForm", "Output",
+             StripOnInput->False,
+             LineColor->GrayLevel[0],
+             FrontFaceColor->GrayLevel[0],
+             BackFaceColor->GrayLevel[0],
+             GraphicsColor->GrayLevel[0],
+             FontSize->Scaled[0.020000000000000004`],
+             FontColor->GrayLevel[0]],
+            Background->RGBColor[1., 1., 0.871],
+            FrameStyle->GrayLevel[0.5],
+            StripOnInput->False], 23],
+          TagBox[
+           RowBox[{"{", 
+             RowBox[{"plus", "[", "1.`", "]"}], "}"}], HoldForm]],
+         Annotation[#, 
+          HoldForm[{
+            $CellContext`plus[1.]}], "Tooltip"]& ], 
+        TagBox[
+         TooltipBox[InsetBox[
+           FrameBox[
+            StyleBox["plus", "StandardForm", "Output",
+             StripOnInput->False,
+             LineColor->GrayLevel[0],
+             FrontFaceColor->GrayLevel[0],
+             BackFaceColor->GrayLevel[0],
+             GraphicsColor->GrayLevel[0],
+             FontSize->Scaled[0.020000000000000004`],
+             FontColor->GrayLevel[0]],
+            Background->RGBColor[1., 1., 0.871],
+            FrameStyle->GrayLevel[0.5],
+            StripOnInput->False], 24],
+          TagBox[
+           RowBox[{"plus", "[", "1.`", "]"}], HoldForm]],
+         Annotation[#, 
+          HoldForm[
+           $CellContext`plus[1.]], "Tooltip"]& ], 
+        TagBox[
+         TooltipBox[InsetBox[
+           FrameBox[
+            StyleBox[
+             TagBox["1.`",
+              HoldForm], "StandardForm", "Output",
+             StripOnInput->False,
+             LineColor->GrayLevel[0],
+             FrontFaceColor->GrayLevel[0],
+             BackFaceColor->GrayLevel[0],
+             GraphicsColor->GrayLevel[0],
+             FontSize->Scaled[0.020000000000000004`],
+             FontColor->GrayLevel[0]],
+            Background->RGBColor[1., 1., 0.871],
+            FrameStyle->GrayLevel[0.5],
+            StripOnInput->False], 25],
+          TagBox["1.`", HoldForm]],
+         Annotation[#, 
+          HoldForm[1.], "Tooltip"]& ]}}],
+     Annotation[#, VertexCoordinateRules -> CompressedData["
+1:eJxTTMoPSmViYGCQBGIQLX2PfcNnMUYHFY2tr1xOfrNngIJbXR8tNia+Q+Pf
+s78NpWHyqHyY/Ds0+XdweZg9MHlUPkz/PzT9/+DyJ79NO8z3l8kBJo/Kh5nP
+5oBqPhuGPMxfDZGXBauncsHVo/Lvwfkw9RD38Dmguo/PAdX9fHD1kPAVhKtH
+5d+D82HqAQ+Rvhc=
+       "]]& ],
+    AspectRatio->NCache[5^Rational[-1, 2], 0.4472135954999579],
+    FrameTicks->Automatic,
+    PlotRange->All,
+    PlotRangePadding->Scaled[0.1]], ",", 
+   GraphicsBox[
+    TagBox[GraphicsComplexBox[CompressedData["
+1:eJxTTMoPSmViYGCQBGIQLX2PfcNnMUYHFY2tr1xOfrNngIJbXR8tNia+Q+Pf
+s78NpWHyqHyY/Ds0+XdweZg9MHlUPkz/PzT9/+DyJ79NO8z3l8kBJo/Kh5nP
+5oBqPhuGPMxfDZGXBauncsHVo/Lvwfkw9RD38Dmguo/PAdX9fHD1kPAVhKtH
+5d+D82HqAQ+Rvhc=
+      "], {
+       {RGBColor[0.55, 0.45, 0.45], 
+        LineBox[{{1, 2}, {1, 4}, {1, 6}, {1, 8}, {1, 10}, {1, 12}, {1, 14}, {
+         1, 17}, {1, 20}, {1, 23}, {2, 3}, {4, 5}, {6, 7}, {8, 9}, {10, 11}, {
+         12, 13}, {14, 15}, {15, 16}, {17, 18}, {18, 19}, {20, 21}, {21, 
+         22}, {23, 24}, {24, 25}}]}, {
+        TagBox[
+         TooltipBox[InsetBox[
+           FrameBox[
+            StyleBox["List", "StandardForm", "Output",
+             StripOnInput->False,
+             LineColor->GrayLevel[0],
+             FrontFaceColor->GrayLevel[0],
+             BackFaceColor->GrayLevel[0],
+             GraphicsColor->GrayLevel[0],
+             FontSize->Scaled[0.020000000000000004`],
+             FontColor->GrayLevel[0]],
+            Background->RGBColor[1., 1., 0.871],
+            FrameStyle->GrayLevel[0.5],
+            StripOnInput->False], 1],
+          TagBox[
+           RowBox[{"{", 
+             RowBox[{
+               RowBox[{"{", "plus", "}"}], ",", 
+               RowBox[{"{", "plus", "}"}], ",", 
+               RowBox[{"{", "plus", "}"}], ",", 
+               RowBox[{"{", "plus", "}"}], ",", 
+               RowBox[{"{", "plus", "}"}], ",", 
+               RowBox[{"{", "plus", "}"}], ",", 
+               RowBox[{"{", 
+                 RowBox[{"plus", "[", "1.`", "]"}], "}"}], ",", 
+               RowBox[{"{", 
+                 RowBox[{"plus", "[", "1.`", "]"}], "}"}], ",", 
+               RowBox[{"{", 
+                 RowBox[{"plus", "[", "1.`", "]"}], "}"}], ",", 
+               RowBox[{"{", 
+                 RowBox[{"plus", "[", "1.`", "]"}], "}"}]}], "}"}], HoldForm]],
+         Annotation[#, 
+          
+          HoldForm[{{$CellContext`plus}, {$CellContext`plus}, \
+{$CellContext`plus}, {$CellContext`plus}, {$CellContext`plus}, \
+{$CellContext`plus}, {
+             $CellContext`plus[1.]}, {
+             $CellContext`plus[1.]}, {
+             $CellContext`plus[1.]}, {
+             $CellContext`plus[1.]}}], "Tooltip"]& ], 
+        TagBox[
+         TooltipBox[InsetBox[
+           FrameBox[
+            StyleBox["List", "StandardForm", "Output",
+             StripOnInput->False,
+             LineColor->GrayLevel[0],
+             FrontFaceColor->GrayLevel[0],
+             BackFaceColor->GrayLevel[0],
+             GraphicsColor->GrayLevel[0],
+             FontSize->Scaled[0.020000000000000004`],
+             FontColor->GrayLevel[0]],
+            Background->RGBColor[1., 1., 0.871],
+            FrameStyle->GrayLevel[0.5],
+            StripOnInput->False], 2],
+          TagBox[
+           RowBox[{"{", "plus", "}"}], HoldForm]],
+         Annotation[#, 
+          HoldForm[{$CellContext`plus}], "Tooltip"]& ], 
+        TagBox[
+         TooltipBox[InsetBox[
+           FrameBox[
+            StyleBox[
+             TagBox["plus",
+              HoldForm], "StandardForm", "Output",
+             StripOnInput->False,
+             LineColor->GrayLevel[0],
+             FrontFaceColor->GrayLevel[0],
+             BackFaceColor->GrayLevel[0],
+             GraphicsColor->GrayLevel[0],
+             FontSize->Scaled[0.020000000000000004`],
+             FontColor->GrayLevel[0]],
+            Background->RGBColor[1., 1., 0.871],
+            FrameStyle->GrayLevel[0.5],
+            StripOnInput->False], 3],
+          TagBox["plus", HoldForm]],
+         Annotation[#, 
+          HoldForm[$CellContext`plus], "Tooltip"]& ], 
+        TagBox[
+         TooltipBox[InsetBox[
+           FrameBox[
+            StyleBox["List", "StandardForm", "Output",
+             StripOnInput->False,
+             LineColor->GrayLevel[0],
+             FrontFaceColor->GrayLevel[0],
+             BackFaceColor->GrayLevel[0],
+             GraphicsColor->GrayLevel[0],
+             FontSize->Scaled[0.020000000000000004`],
+             FontColor->GrayLevel[0]],
+            Background->RGBColor[1., 1., 0.871],
+            FrameStyle->GrayLevel[0.5],
+            StripOnInput->False], 4],
+          TagBox[
+           RowBox[{"{", "plus", "}"}], HoldForm]],
+         Annotation[#, 
+          HoldForm[{$CellContext`plus}], "Tooltip"]& ], 
+        TagBox[
+         TooltipBox[InsetBox[
+           FrameBox[
+            StyleBox[
+             TagBox["plus",
+              HoldForm], "StandardForm", "Output",
+             StripOnInput->False,
+             LineColor->GrayLevel[0],
+             FrontFaceColor->GrayLevel[0],
+             BackFaceColor->GrayLevel[0],
+             GraphicsColor->GrayLevel[0],
+             FontSize->Scaled[0.020000000000000004`],
+             FontColor->GrayLevel[0]],
+            Background->RGBColor[1., 1., 0.871],
+            FrameStyle->GrayLevel[0.5],
+            StripOnInput->False], 5],
+          TagBox["plus", HoldForm]],
+         Annotation[#, 
+          HoldForm[$CellContext`plus], "Tooltip"]& ], 
+        TagBox[
+         TooltipBox[InsetBox[
+           FrameBox[
+            StyleBox["List", "StandardForm", "Output",
+             StripOnInput->False,
+             LineColor->GrayLevel[0],
+             FrontFaceColor->GrayLevel[0],
+             BackFaceColor->GrayLevel[0],
+             GraphicsColor->GrayLevel[0],
+             FontSize->Scaled[0.020000000000000004`],
+             FontColor->GrayLevel[0]],
+            Background->RGBColor[1., 1., 0.871],
+            FrameStyle->GrayLevel[0.5],
+            StripOnInput->False], 6],
+          TagBox[
+           RowBox[{"{", "plus", "}"}], HoldForm]],
+         Annotation[#, 
+          HoldForm[{$CellContext`plus}], "Tooltip"]& ], 
+        TagBox[
+         TooltipBox[InsetBox[
+           FrameBox[
+            StyleBox[
+             TagBox["plus",
+              HoldForm], "StandardForm", "Output",
+             StripOnInput->False,
+             LineColor->GrayLevel[0],
+             FrontFaceColor->GrayLevel[0],
+             BackFaceColor->GrayLevel[0],
+             GraphicsColor->GrayLevel[0],
+             FontSize->Scaled[0.020000000000000004`],
+             FontColor->GrayLevel[0]],
+            Background->RGBColor[1., 1., 0.871],
+            FrameStyle->GrayLevel[0.5],
+            StripOnInput->False], 7],
+          TagBox["plus", HoldForm]],
+         Annotation[#, 
+          HoldForm[$CellContext`plus], "Tooltip"]& ], 
+        TagBox[
+         TooltipBox[InsetBox[
+           FrameBox[
+            StyleBox["List", "StandardForm", "Output",
+             StripOnInput->False,
+             LineColor->GrayLevel[0],
+             FrontFaceColor->GrayLevel[0],
+             BackFaceColor->GrayLevel[0],
+             GraphicsColor->GrayLevel[0],
+             FontSize->Scaled[0.020000000000000004`],
+             FontColor->GrayLevel[0]],
+            Background->RGBColor[1., 1., 0.871],
+            FrameStyle->GrayLevel[0.5],
+            StripOnInput->False], 8],
+          TagBox[
+           RowBox[{"{", "plus", "}"}], HoldForm]],
+         Annotation[#, 
+          HoldForm[{$CellContext`plus}], "Tooltip"]& ], 
+        TagBox[
+         TooltipBox[InsetBox[
+           FrameBox[
+            StyleBox[
+             TagBox["plus",
+              HoldForm], "StandardForm", "Output",
+             StripOnInput->False,
+             LineColor->GrayLevel[0],
+             FrontFaceColor->GrayLevel[0],
+             BackFaceColor->GrayLevel[0],
+             GraphicsColor->GrayLevel[0],
+             FontSize->Scaled[0.020000000000000004`],
+             FontColor->GrayLevel[0]],
+            Background->RGBColor[1., 1., 0.871],
+            FrameStyle->GrayLevel[0.5],
+            StripOnInput->False], 9],
+          TagBox["plus", HoldForm]],
+         Annotation[#, 
+          HoldForm[$CellContext`plus], "Tooltip"]& ], 
+        TagBox[
+         TooltipBox[InsetBox[
+           FrameBox[
+            StyleBox["List", "StandardForm", "Output",
+             StripOnInput->False,
+             LineColor->GrayLevel[0],
+             FrontFaceColor->GrayLevel[0],
+             BackFaceColor->GrayLevel[0],
+             GraphicsColor->GrayLevel[0],
+             FontSize->Scaled[0.020000000000000004`],
+             FontColor->GrayLevel[0]],
+            Background->RGBColor[1., 1., 0.871],
+            FrameStyle->GrayLevel[0.5],
+            StripOnInput->False], 10],
+          TagBox[
+           RowBox[{"{", "plus", "}"}], HoldForm]],
+         Annotation[#, 
+          HoldForm[{$CellContext`plus}], "Tooltip"]& ], 
+        TagBox[
+         TooltipBox[InsetBox[
+           FrameBox[
+            StyleBox[
+             TagBox["plus",
+              HoldForm], "StandardForm", "Output",
+             StripOnInput->False,
+             LineColor->GrayLevel[0],
+             FrontFaceColor->GrayLevel[0],
+             BackFaceColor->GrayLevel[0],
+             GraphicsColor->GrayLevel[0],
+             FontSize->Scaled[0.020000000000000004`],
+             FontColor->GrayLevel[0]],
+            Background->RGBColor[1., 1., 0.871],
+            FrameStyle->GrayLevel[0.5],
+            StripOnInput->False], 11],
+          TagBox["plus", HoldForm]],
+         Annotation[#, 
+          HoldForm[$CellContext`plus], "Tooltip"]& ], 
+        TagBox[
+         TooltipBox[InsetBox[
+           FrameBox[
+            StyleBox["List", "StandardForm", "Output",
+             StripOnInput->False,
+             LineColor->GrayLevel[0],
+             FrontFaceColor->GrayLevel[0],
+             BackFaceColor->GrayLevel[0],
+             GraphicsColor->GrayLevel[0],
+             FontSize->Scaled[0.020000000000000004`],
+             FontColor->GrayLevel[0]],
+            Background->RGBColor[1., 1., 0.871],
+            FrameStyle->GrayLevel[0.5],
+            StripOnInput->False], 12],
+          TagBox[
+           RowBox[{"{", "plus", "}"}], HoldForm]],
+         Annotation[#, 
+          HoldForm[{$CellContext`plus}], "Tooltip"]& ], 
+        TagBox[
+         TooltipBox[InsetBox[
+           FrameBox[
+            StyleBox[
+             TagBox["plus",
+              HoldForm], "StandardForm", "Output",
+             StripOnInput->False,
+             LineColor->GrayLevel[0],
+             FrontFaceColor->GrayLevel[0],
+             BackFaceColor->GrayLevel[0],
+             GraphicsColor->GrayLevel[0],
+             FontSize->Scaled[0.020000000000000004`],
+             FontColor->GrayLevel[0]],
+            Background->RGBColor[1., 1., 0.871],
+            FrameStyle->GrayLevel[0.5],
+            StripOnInput->False], 13],
+          TagBox["plus", HoldForm]],
+         Annotation[#, 
+          HoldForm[$CellContext`plus], "Tooltip"]& ], 
+        TagBox[
+         TooltipBox[InsetBox[
+           FrameBox[
+            StyleBox["List", "StandardForm", "Output",
+             StripOnInput->False,
+             LineColor->GrayLevel[0],
+             FrontFaceColor->GrayLevel[0],
+             BackFaceColor->GrayLevel[0],
+             GraphicsColor->GrayLevel[0],
+             FontSize->Scaled[0.020000000000000004`],
+             FontColor->GrayLevel[0]],
+            Background->RGBColor[1., 1., 0.871],
+            FrameStyle->GrayLevel[0.5],
+            StripOnInput->False], 14],
+          TagBox[
+           RowBox[{"{", 
+             RowBox[{"plus", "[", "1.`", "]"}], "}"}], HoldForm]],
+         Annotation[#, 
+          HoldForm[{
+            $CellContext`plus[1.]}], "Tooltip"]& ], 
+        TagBox[
+         TooltipBox[InsetBox[
+           FrameBox[
+            StyleBox["plus", "StandardForm", "Output",
+             StripOnInput->False,
+             LineColor->GrayLevel[0],
+             FrontFaceColor->GrayLevel[0],
+             BackFaceColor->GrayLevel[0],
+             GraphicsColor->GrayLevel[0],
+             FontSize->Scaled[0.020000000000000004`],
+             FontColor->GrayLevel[0]],
+            Background->RGBColor[1., 1., 0.871],
+            FrameStyle->GrayLevel[0.5],
+            StripOnInput->False], 15],
+          TagBox[
+           RowBox[{"plus", "[", "1.`", "]"}], HoldForm]],
+         Annotation[#, 
+          HoldForm[
+           $CellContext`plus[1.]], "Tooltip"]& ], 
+        TagBox[
+         TooltipBox[InsetBox[
+           FrameBox[
+            StyleBox[
+             TagBox["1.`",
+              HoldForm], "StandardForm", "Output",
+             StripOnInput->False,
+             LineColor->GrayLevel[0],
+             FrontFaceColor->GrayLevel[0],
+             BackFaceColor->GrayLevel[0],
+             GraphicsColor->GrayLevel[0],
+             FontSize->Scaled[0.020000000000000004`],
+             FontColor->GrayLevel[0]],
+            Background->RGBColor[1., 1., 0.871],
+            FrameStyle->GrayLevel[0.5],
+            StripOnInput->False], 16],
+          TagBox["1.`", HoldForm]],
+         Annotation[#, 
+          HoldForm[1.], "Tooltip"]& ], 
+        TagBox[
+         TooltipBox[InsetBox[
+           FrameBox[
+            StyleBox["List", "StandardForm", "Output",
+             StripOnInput->False,
+             LineColor->GrayLevel[0],
+             FrontFaceColor->GrayLevel[0],
+             BackFaceColor->GrayLevel[0],
+             GraphicsColor->GrayLevel[0],
+             FontSize->Scaled[0.020000000000000004`],
+             FontColor->GrayLevel[0]],
+            Background->RGBColor[1., 1., 0.871],
+            FrameStyle->GrayLevel[0.5],
+            StripOnInput->False], 17],
+          TagBox[
+           RowBox[{"{", 
+             RowBox[{"plus", "[", "1.`", "]"}], "}"}], HoldForm]],
+         Annotation[#, 
+          HoldForm[{
+            $CellContext`plus[1.]}], "Tooltip"]& ], 
+        TagBox[
+         TooltipBox[InsetBox[
+           FrameBox[
+            StyleBox["plus", "StandardForm", "Output",
+             StripOnInput->False,
+             LineColor->GrayLevel[0],
+             FrontFaceColor->GrayLevel[0],
+             BackFaceColor->GrayLevel[0],
+             GraphicsColor->GrayLevel[0],
+             FontSize->Scaled[0.020000000000000004`],
+             FontColor->GrayLevel[0]],
+            Background->RGBColor[1., 1., 0.871],
+            FrameStyle->GrayLevel[0.5],
+            StripOnInput->False], 18],
+          TagBox[
+           RowBox[{"plus", "[", "1.`", "]"}], HoldForm]],
+         Annotation[#, 
+          HoldForm[
+           $CellContext`plus[1.]], "Tooltip"]& ], 
+        TagBox[
+         TooltipBox[InsetBox[
+           FrameBox[
+            StyleBox[
+             TagBox["1.`",
+              HoldForm], "StandardForm", "Output",
+             StripOnInput->False,
+             LineColor->GrayLevel[0],
+             FrontFaceColor->GrayLevel[0],
+             BackFaceColor->GrayLevel[0],
+             GraphicsColor->GrayLevel[0],
+             FontSize->Scaled[0.020000000000000004`],
+             FontColor->GrayLevel[0]],
+            Background->RGBColor[1., 1., 0.871],
+            FrameStyle->GrayLevel[0.5],
+            StripOnInput->False], 19],
+          TagBox["1.`", HoldForm]],
+         Annotation[#, 
+          HoldForm[1.], "Tooltip"]& ], 
+        TagBox[
+         TooltipBox[InsetBox[
+           FrameBox[
+            StyleBox["List", "StandardForm", "Output",
+             StripOnInput->False,
+             LineColor->GrayLevel[0],
+             FrontFaceColor->GrayLevel[0],
+             BackFaceColor->GrayLevel[0],
+             GraphicsColor->GrayLevel[0],
+             FontSize->Scaled[0.020000000000000004`],
+             FontColor->GrayLevel[0]],
+            Background->RGBColor[1., 1., 0.871],
+            FrameStyle->GrayLevel[0.5],
+            StripOnInput->False], 20],
+          TagBox[
+           RowBox[{"{", 
+             RowBox[{"plus", "[", "1.`", "]"}], "}"}], HoldForm]],
+         Annotation[#, 
+          HoldForm[{
+            $CellContext`plus[1.]}], "Tooltip"]& ], 
+        TagBox[
+         TooltipBox[InsetBox[
+           FrameBox[
+            StyleBox["plus", "StandardForm", "Output",
+             StripOnInput->False,
+             LineColor->GrayLevel[0],
+             FrontFaceColor->GrayLevel[0],
+             BackFaceColor->GrayLevel[0],
+             GraphicsColor->GrayLevel[0],
+             FontSize->Scaled[0.020000000000000004`],
+             FontColor->GrayLevel[0]],
+            Background->RGBColor[1., 1., 0.871],
+            FrameStyle->GrayLevel[0.5],
+            StripOnInput->False], 21],
+          TagBox[
+           RowBox[{"plus", "[", "1.`", "]"}], HoldForm]],
+         Annotation[#, 
+          HoldForm[
+           $CellContext`plus[1.]], "Tooltip"]& ], 
+        TagBox[
+         TooltipBox[InsetBox[
+           FrameBox[
+            StyleBox[
+             TagBox["1.`",
+              HoldForm], "StandardForm", "Output",
+             StripOnInput->False,
+             LineColor->GrayLevel[0],
+             FrontFaceColor->GrayLevel[0],
+             BackFaceColor->GrayLevel[0],
+             GraphicsColor->GrayLevel[0],
+             FontSize->Scaled[0.020000000000000004`],
+             FontColor->GrayLevel[0]],
+            Background->RGBColor[1., 1., 0.871],
+            FrameStyle->GrayLevel[0.5],
+            StripOnInput->False], 22],
+          TagBox["1.`", HoldForm]],
+         Annotation[#, 
+          HoldForm[1.], "Tooltip"]& ], 
+        TagBox[
+         TooltipBox[InsetBox[
+           FrameBox[
+            StyleBox["List", "StandardForm", "Output",
+             StripOnInput->False,
+             LineColor->GrayLevel[0],
+             FrontFaceColor->GrayLevel[0],
+             BackFaceColor->GrayLevel[0],
+             GraphicsColor->GrayLevel[0],
+             FontSize->Scaled[0.020000000000000004`],
+             FontColor->GrayLevel[0]],
+            Background->RGBColor[1., 1., 0.871],
+            FrameStyle->GrayLevel[0.5],
+            StripOnInput->False], 23],
+          TagBox[
+           RowBox[{"{", 
+             RowBox[{"plus", "[", "1.`", "]"}], "}"}], HoldForm]],
+         Annotation[#, 
+          HoldForm[{
+            $CellContext`plus[1.]}], "Tooltip"]& ], 
+        TagBox[
+         TooltipBox[InsetBox[
+           FrameBox[
+            StyleBox["plus", "StandardForm", "Output",
+             StripOnInput->False,
+             LineColor->GrayLevel[0],
+             FrontFaceColor->GrayLevel[0],
+             BackFaceColor->GrayLevel[0],
+             GraphicsColor->GrayLevel[0],
+             FontSize->Scaled[0.020000000000000004`],
+             FontColor->GrayLevel[0]],
+            Background->RGBColor[1., 1., 0.871],
+            FrameStyle->GrayLevel[0.5],
+            StripOnInput->False], 24],
+          TagBox[
+           RowBox[{"plus", "[", "1.`", "]"}], HoldForm]],
+         Annotation[#, 
+          HoldForm[
+           $CellContext`plus[1.]], "Tooltip"]& ], 
+        TagBox[
+         TooltipBox[InsetBox[
+           FrameBox[
+            StyleBox[
+             TagBox["1.`",
+              HoldForm], "StandardForm", "Output",
+             StripOnInput->False,
+             LineColor->GrayLevel[0],
+             FrontFaceColor->GrayLevel[0],
+             BackFaceColor->GrayLevel[0],
+             GraphicsColor->GrayLevel[0],
+             FontSize->Scaled[0.020000000000000004`],
+             FontColor->GrayLevel[0]],
+            Background->RGBColor[1., 1., 0.871],
+            FrameStyle->GrayLevel[0.5],
+            StripOnInput->False], 25],
+          TagBox["1.`", HoldForm]],
+         Annotation[#, 
+          HoldForm[1.], "Tooltip"]& ]}}],
+     Annotation[#, VertexCoordinateRules -> CompressedData["
+1:eJxTTMoPSmViYGCQBGIQLX2PfcNnMUYHFY2tr1xOfrNngIJbXR8tNia+Q+Pf
+s78NpWHyqHyY/Ds0+XdweZg9MHlUPkz/PzT9/+DyJ79NO8z3l8kBJo/Kh5nP
+5oBqPhuGPMxfDZGXBauncsHVo/Lvwfkw9RD38Dmguo/PAdX9fHD1kPAVhKtH
+5d+D82HqAQ+Rvhc=
+       "]]& ],
+    AspectRatio->NCache[5^Rational[-1, 2], 0.4472135954999579],
+    FrameTicks->Automatic,
+    ImageSize->{576., Automatic},
+    PlotRange->All,
+    PlotRangePadding->Scaled[0.1]]}], "}"}]], "Output",
+ CellChangeTimes->{
+  3.506333089103705*^9, 3.506333339994977*^9, 3.506333617356822*^9, 
+   3.50633404901609*^9, 3.5063344170378036`*^9, {3.506334984350624*^9, 
+   3.506334991778729*^9}, {3.506335049728627*^9, 3.506335055683187*^9}, {
+   3.506335098401724*^9, 3.506335137089006*^9}, 3.5063351750125504`*^9}]
+}, Open  ]]
+},
+WindowSize->{1496, 923},
+WindowMargins->{{4, Automatic}, {Automatic, 4}},
+FrontEndVersion->"8.0 for Mac OS X x86 (32-bit, 64-bit Kernel) (November 6, \
+2010)",
+StyleDefinitions->"Default.nb"
+]
+(* End of Notebook Content *)
+
+(* Internal cache information *)
+(*CellTagsOutline
+CellTagsIndex->{}
+*)
+(*CellTagsIndex
+CellTagsIndex->{}
+*)
+(*NotebookFileOutline
+Notebook[{
+Cell[557, 20, 438, 11, 27, "Input"],
+Cell[998, 33, 718, 15, 27, "Input"],
+Cell[CellGroupData[{
+Cell[1741, 52, 327, 5, 27, "Input"],
+Cell[2071, 59, 180847, 4723, 382, "Output"]
+}, Open  ]]
+}
+]
+*)
+
+(* End of internal cache information *)
