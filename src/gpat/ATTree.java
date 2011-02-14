@@ -44,8 +44,8 @@ public class ATTree {
     private List<ATNode> terminalList;
 
     //used to count node ids (innovation numbers)
-    //starts with id 0 with terminals,
-    //ends with the single function from minimal substrate
+    //starts with id 0 from terminals,
+    //ends with a single function of a minimal substrate
     private int initialNodeIds = 0;
 
     private ATTree(ATNodeCollection nodeCollection, ATInnovationHistory innovationHistory) {
@@ -122,7 +122,7 @@ public class ATTree {
         ATNode to = RND.randomChoice(nodeGeneList);
 
         //Check (return counter) if we already have such connection.
-        //If such connection does yet not exists -> return 0.
+        //If such connection does not yet exists -> return 0.
         int cnt = getNextConnectionCount(from, to);
 
         //Get new link innovation number.
@@ -181,7 +181,6 @@ public class ATTree {
 
         //If there is already such innovation in the tree, force
         //new innovation numbers
-
 //        boolean notNew = true;//DEBUG
 
         if (nodeGenes.containsKey(innovation.getNodeId())) {
@@ -250,7 +249,12 @@ public class ATTree {
 
         //Get random  node.
         int nodeIdx = RND.getIntZero(nodeGeneList.size());
-        ATNode node = nodeGeneList.get(nodeIdx);
+        ATNode oldNnode = nodeGeneList.get(nodeIdx);
+        ATNode oldParent = oldNnode.parent;
+        List<ATNode> oldChildren = oldNnode.children;
+
+        ATNode nodePrototype = RND.randomChoice(nodeCollection.functions);
+//        ATNode node = nodePrototype.create(innovation.getNodeId(), -1);
 
 
         //Get an id (innovation number) for the new node.
