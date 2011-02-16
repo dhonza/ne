@@ -8,13 +8,13 @@ import common.pmatrix.ParameterMatrixStorage;
 import common.pmatrix.Utils;
 import common.stats.Stats;
 import gp.*;
-import gpat.ATNode;
 import gpat.ATNodeFactory;
 import gpat.ATTerminals;
 import gpat.GPAT;
+import gpat.IATNodeImpl;
+import hyper.evaluate.printer.FileProgressPrinter;
 import hyper.evaluate.printer.ReportStorage;
 import hyper.experiments.DummyProblem;
-import hyper.evaluate.printer.FileProgressPrinter;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -55,8 +55,8 @@ public class GPATMain {
                 GP.POPULATION_SIZE = combination.getInteger("GP.POPULATION_SIZE");
                 GP.TARGET_FITNESS = combination.getDouble("GP.TARGET_FITNESS");
 
-                ATNode[] functions = createFunctions(type, combination);
-                ATNode[] terminals = createTerminals(type);
+                IATNodeImpl[] functions = createFunctions(type, combination);
+                IATNodeImpl[] terminals = createTerminals(type);
                 //--------------------
 
                 List<IGenotypeToPhenotype<Forest, Forest>> converter = new ArrayList<IGenotypeToPhenotype<Forest, Forest>>();
@@ -104,7 +104,7 @@ public class GPATMain {
         }
     }
 
-    private static ATNode[] createFunctions(String type, ParameterCombination combination) {
+    private static IATNodeImpl[] createFunctions(String type, ParameterCombination combination) {
         if (type.equals("GPAT")) {
             return ATNodeFactory.createByNameList("gpat.ATFunctions$", combination.getString("GPAT.FUNCTIONS"));
         } else {
@@ -112,16 +112,16 @@ public class GPATMain {
         }
     }
 
-    private static ATNode[] createTerminals(String type) {
+    private static IATNodeImpl[] createTerminals(String type) {
         if (type.equals("GPAT")) {
-//            return new ATNode[]{};//GPAT
-            return new ATNode[]{new ATTerminals.Constant(1.0)};//GPAT
+//            return new ATNode2[]{};//GPAT
+            return new IATNodeImpl[]{new ATTerminals.Constant(1.0)};//GPAT
         } else {
             throw new IllegalArgumentException("Unsupported algorithm type");
         }
     }
 
-    private static GPAT createAlgorithm(String type, ParameterCombination combination, PopulationManager populationManager, ATNode[] functions, ATNode[] terminals) {
+    private static GPAT createAlgorithm(String type, ParameterCombination combination, PopulationManager populationManager, IATNodeImpl[] functions, IATNodeImpl[] terminals) {
         if (type.equals("GPAT")) {
             return new GPAT(populationManager, functions, terminals);
         } else {

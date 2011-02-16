@@ -1,7 +1,6 @@
 package gpat;
 
 import gp.TreeInputs;
-import gp.terminals.ITerminal;
 
 /**
  * Created by IntelliJ IDEA.
@@ -14,24 +13,14 @@ public class ATTerminals {
     private ATTerminals() {
     }
 
-    public static class Input extends ATNode implements ITerminal {
+    public static class Input implements IATNodeImpl {
         final private int idx;
 
-        public Input(int id, int depth, int idx) {
-            super(id, depth);
-            this.idx = idx;
-        }
-
         public Input(int idx) {
-            super();
             this.idx = idx;
         }
 
-        public ATNode create(int id, int depth) {
-            return new Input(id, depth, idx);
-        }
-
-        public double evaluate(TreeInputs treeInputs) {
+        public double evaluate(IATNode node, TreeInputs treeInputs) {
             return treeInputs.get(idx);
         }
 
@@ -40,25 +29,15 @@ public class ATTerminals {
         }
     }
 
-    public static class Constant extends ATNode implements ITerminal {
+    public static class Constant implements IATNodeImpl {
         final private double value;
 
-        public Constant(int id, int depth, double value) {
-            super(id, depth);
-            this.value = value;
-        }
-
         public Constant(double value) {
-            super();
             this.value = value;
         }
 
-        public double evaluate(TreeInputs treeInputs) {
+        public double evaluate(IATNode node, TreeInputs treeInputs) {
             return value;
-        }
-
-        public ATNode create(int id, int depth) {
-            return new Constant(id, depth, value);
         }
 
         public String getName() {

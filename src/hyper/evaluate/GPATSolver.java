@@ -9,10 +9,10 @@ import gp.GP;
 import gp.MaxEvaluationsStopCondition;
 import gp.MaxGenerationsStopCondition;
 import gp.TargetFitnessStopCondition;
-import gpat.ATNode;
 import gpat.ATNodeFactory;
 import gpat.ATTerminals;
 import gpat.GPAT;
+import gpat.IATNodeImpl;
 import hyper.evaluate.printer.FileProgressPrinter;
 import hyper.evaluate.printer.GPATProgressPrinter1D;
 import hyper.evaluate.printer.ReportStorage;
@@ -39,8 +39,8 @@ public class GPATSolver extends AbstractSolver {
         Utils.setStaticParameters(parameters, GP.class, "GP");
         Utils.setStaticParameters(parameters, GPAT.class, "GPAT");
 
-        ATNode[] functions = ATNodeFactory.createByNameList("gpat.ATFunctions$", parameters.getString("GPAT.FUNCTIONS"));
-        ATNode[] terminals = new ATNode[]{new ATTerminals.Constant(1.0)};
+        IATNodeImpl[] functions = ATNodeFactory.createByNameList("gpat.ATFunctions$", parameters.getString("GPAT.FUNCTIONS"));
+        IATNodeImpl[] terminals = new IATNodeImpl[]{new ATTerminals.Constant(1.0)};
 
         GP.TARGET_FITNESS = problem.getTargetFitness();
 

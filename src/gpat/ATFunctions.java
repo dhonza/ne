@@ -13,85 +13,45 @@ public class ATFunctions {
     private ATFunctions() {
     }
 
-    public static class Plus extends ATNode {
-        public Plus(int id, int depth) {
-            super(id, depth);
-        }
+    public static class Plus implements IATNodeImpl {
 
-        public Plus() {
-            super();
-        }
-
-        @Override
         public String getName() {
             return "plus";
         }
 
-        public ATNode create(int id, int depth) {
-            return new Plus(id, depth);
-        }
-
-        @Override
-        public double evaluate(TreeInputs treeInputs) {
+        public double evaluate(IATNode node, TreeInputs treeInputs) {
             double result = 0.0;
-            for (int i = 0; i < children.size(); i++) {
-                result += constants.get(i) * getChild(i).evaluate(treeInputs);
+            for (int i = 0; i < node.getArity(); i++) {
+                result += node.getConstant(i) * node.getChild(i).evaluate(treeInputs);
             }
             return result;
         }
     }
 
-    public static class Times extends ATNodeIgnoreConstants {
-        public Times(int id, int depth) {
-            super(id, depth);
-        }
-
-        public Times() {
-            super();
-        }
-
-        @Override
+    public static class Times implements IATNodeImpl {
         public String getName() {
             return "times";
         }
 
-        public ATNode create(int id, int depth) {
-            return new Times(id, depth);
-        }
-
-        @Override
-        public double evaluate(TreeInputs treeInputs) {
-            if(children.size() == 0) {
+        public double evaluate(IATNode node, TreeInputs treeInputs) {
+            if (node.getArity() == 0) {
                 return 0.0;
             }
-            double result = getChild(0).evaluate(treeInputs);
-            for (int i = 1; i < children.size(); i++) {
-                result *= getChild(i).evaluate(treeInputs);
+            double result = node.getChild(0).evaluate(treeInputs);
+            for (int i = 1; i < node.getArity(); i++) {
+                result *= node.getChild(i).evaluate(treeInputs);
             }
             return result;
         }
     }
 
-    public static class ATan extends ATNode {
-        public ATan(int id, int depth) {
-            super(id, depth);
-        }
-
-        public ATan() {
-            super();
-        }
-
-        @Override
+/*
+    public static class ATan implements IATNodeImpl {
         public String getName() {
             return "atan";
         }
 
-        public ATNode create(int id, int depth) {
-            return new ATan(id, depth);
-        }
-
-        @Override
-        public double evaluate(TreeInputs treeInputs) {
+        public double evaluate(IATNode node, TreeInputs treeInputs) {
             double result = 0.0;
             for (int i = 0; i < children.size(); i++) {
                 result += constants.get(i) * getChild(i).evaluate(treeInputs);
@@ -100,26 +60,12 @@ public class ATFunctions {
         }
     }
 
-    public static class Sin extends ATNode {
-        public Sin(int id, int depth) {
-            super(id, depth);
-        }
-
-        public Sin() {
-            super();
-        }
-
-        @Override
+    public static class Sin implements IATNodeImpl {
         public String getName() {
             return "sin";
         }
 
-        public ATNode create(int id, int depth) {
-            return new Sin(id, depth);
-        }
-
-        @Override
-        public double evaluate(TreeInputs treeInputs) {
+        public double evaluate(IATNode node, TreeInputs treeInputs) {
             double result = 0.0;
             for (int i = 0; i < children.size(); i++) {
                 result += constants.get(i) * getChild(i).evaluate(treeInputs);
@@ -128,26 +74,12 @@ public class ATFunctions {
         }
     }
 
-    public static class Gauss extends ATNode {
-        public Gauss(int id, int depth) {
-            super(id, depth);
-        }
-
-        public Gauss() {
-            super();
-        }
-
-        @Override
+    public static class Gauss implements IATNodeImpl {
         public String getName() {
             return "gauss";
         }
 
-        public ATNode create(int id, int depth) {
-            return new Gauss(id, depth);
-        }
-
-        @Override
-        public double evaluate(TreeInputs treeInputs) {
+        public double evaluate(IATNode node, TreeInputs treeInputs) {
             double result = 0.0;
             for (int i = 0; i < children.size(); i++) {
                 result += constants.get(i) * getChild(i).evaluate(treeInputs);
@@ -155,4 +87,5 @@ public class ATFunctions {
             return Math.exp(-(result * result));
         }
     }
+*/
 }

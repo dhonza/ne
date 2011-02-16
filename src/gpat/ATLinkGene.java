@@ -7,15 +7,17 @@ package gpat;
  * Time: 6:45:42 PM
  * To change this template use File | Settings | File Templates.
  */
-public class ATLink implements Comparable<ATLink> {
+public class ATLinkGene implements Comparable<ATLinkGene> {
     final private ATNode from;
     final private ATNode to;
     final private long innovation;
+    final private int toChildrenIdx;
 
-    public ATLink(ATNode from, ATNode to, long innovation) {
+    public ATLinkGene(ATNode from, ATNode to, long innovation, int toChildrenIdx) {
         this.from = from;
         this.to = to;
         this.innovation = innovation;
+        this.toChildrenIdx = toChildrenIdx;
     }
 
     public ATNode getFrom() {
@@ -30,26 +32,30 @@ public class ATLink implements Comparable<ATLink> {
         return innovation;
     }
 
+    public int getToChildrenIdx() {
+        return toChildrenIdx;
+    }
 
-    public int compareTo(ATLink other) {
-        if(this.innovation < other.innovation) {
+    public int compareTo(ATLinkGene other) {
+        if (this.innovation < other.innovation) {
             return -1;
         }
-        if(this.innovation > other.innovation) {
+        if (this.innovation > other.innovation) {
             return 1;
         }
         return 0;
     }
 
     @Override
+    // ATLinks are equal when to and from ids are the same
     public boolean equals(Object o) {
         if (this == o) return true;
-        if (!(o instanceof ATLink)) return false;
+        if (!(o instanceof ATLinkGene)) return false;
 
-        ATLink atLink = (ATLink) o;
+        ATLinkGene atLink = (ATLinkGene) o;
 
-        if (!from.equals(atLink.from)) return false;
-        if (!to.equals(atLink.to)) return false;
+        if (!(from.getId() == atLink.from.getId())) return false;
+        if (!(to.getId() == atLink.to.getId())) return false;
 
         return true;
     }
@@ -61,6 +67,6 @@ public class ATLink implements Comparable<ATLink> {
 
     @Override
     public String toString() {
-        return from.getId() + "(" + from.getName() + ") ----> " + to.getId() + "(" + to.getName() + ") IN: " + innovation;
+        return from.getId() + "(" + from.getName() + ") ----> " + to.getId() + "(" + to.getName() + ") IN: " + innovation + " C: " + toChildrenIdx;
     }
 }

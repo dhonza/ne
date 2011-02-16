@@ -59,7 +59,7 @@ public class ATForest implements IGPForest, Comparable, Serializable {
                 toMutate.mutateSwitchNode();
             }
 
-            toMutate.mutateSwitchConstantLocks();
+//          TODO  toMutate.mutateSwitchConstantLocks();
             toMutate.mutateConstants();
             forest.trees[i] = toMutate;
         }
@@ -80,7 +80,7 @@ public class ATForest implements IGPForest, Comparable, Serializable {
         forest.setFitness(Double.NaN);
         forest.setEvaluationInfo(new EvaluationInfo(Double.NaN));
         return forest;
-    }    
+    }
 
     public int getNumOfInputs() {
         return treeInputs.getNumOfInputs();
@@ -134,12 +134,12 @@ public class ATForest implements IGPForest, Comparable, Serializable {
 
     public String toMathematicaExpression() {
         StringBuilder s = new StringBuilder("{");
-        for (int i = 0, treesLength = trees.length-1; i < treesLength; i++) {
+        for (int i = 0, treesLength = trees.length - 1; i < treesLength; i++) {
             ATTree tree = trees[i];
             s.append(tree.toMathematicaExpression());
             s.append(", ");
         }
-        s.append(trees[trees.length-1].toMathematicaExpression());
+        s.append(trees[trees.length - 1].toMathematicaExpression());
         s.append("}");
         return s.toString();
     }

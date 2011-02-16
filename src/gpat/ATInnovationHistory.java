@@ -27,6 +27,7 @@ public class ATInnovationHistory {
             return (fromId + "_" + toId + "_" + toCount).hashCode();
         }
 
+
         @Override
         public boolean equals(Object o) {
             Link other = (Link) o;
@@ -46,32 +47,29 @@ public class ATInnovationHistory {
     }
 
     private static class Node {
-        int fromId;
-        int toId;
+        ATLinkGene replacedLink;
         Class type;
 
-        private Node(int fromId, int toId, Class type) {
-            this.fromId = fromId;
-            this.toId = toId;
+        private Node(ATLinkGene replacedLink, Class type) {
+            this.replacedLink = replacedLink;
             this.type = type;
         }
 
         @Override
         public int hashCode() {
-            return (fromId + "_" + toId).hashCode();
+            return replacedLink.hashCode();
         }
 
         @Override
         public boolean equals(Object o) {
             Node other = (Node) o;
-            return fromId == other.fromId && toId == other.toId && type == other.type;
+            return replacedLink.getInnovation() == other.replacedLink.getInnovation() && type == other.type;
         }
 
         @Override
         public String toString() {
             return "Node{" +
-                    "fromInnovation=" + fromId +
-                    ", toInnovation=" + toId +
+                    "replacedLink=" + replacedLink +
                     ", type=" + type +
                     '}';
         }
@@ -130,40 +128,42 @@ public class ATInnovationHistory {
         }
     }
 
-    public void storeLinkInnovation(int fromId, int toId, int toCount, long innovation) {
-        Link link = new Link(fromId, toId, toCount);
-        links.put(link, innovation);
-    }
-
-
-    public NodeInnovation newNodeInnovation(int fromId, int toId, Class type) {
-        Node node = new Node(fromId, toId, type);
+    public NodeInnovation getNodeInnovation(ATLinkGene linkToReplace, Class type) {
+        Node node = new Node(linkToReplace, type);
         if (nodes.containsKey(node)) {
             return nodes.get(node);
         } else {
-            NodeInnovation innovation = new NodeInnovation(linkInnovation,
-                    linkInnovation + 1, nodeInnovation++);
-            linkInnovation += 2;
+            NodeInnovation innovation = new NodeInnovation(
+                    getLinkInnovation(linkToReplace.getFrom().getId(), nodeInnovation, 1),
+                    getLinkInnovation(nodeInnovation, linkToReplace.getTo().getId(), 1),
+                    nodeInnovation++
+            );
             nodes.put(node, innovation);
             return innovation;
         }
-    }
-
-    public NodeInnovation forceNewNodeInnovation(int fromId, int toId, Class type) {
-        Node node = new Node(fromId, toId, type);
-        NodeInnovation innovation = new NodeInnovation(linkInnovation,
-                linkInnovation + 1, nodeInnovation++);
-        linkInnovation += 2;
-        nodes.put(node, innovation);
-        return innovation;
 
     }
+
+//    public void storeLinkInnovation(int fromId, int toId, int toCount, long innovation) {
+//        Link link = new Link(fromId, toId, toCount);
+//        links.put(link, innovation);
+//    }
+
+//    public NodeInnovation forceNewNodeInnovation(int fromId, int toId, Class type) {
+//        Node node = new Node(fromId, toId, type);
+//        NodeInnovation innovation = new NodeInnovation(linkInnovation,
+//                linkInnovation + 1, nodeInnovation++);
+//        linkInnovation += 2;
+//        nodes.put(node, innovation);
+//        return innovation;
+//
+//    }
 
     @Override
     public String toString() {
-        StringBuilder b = new StringBuilder();
+        StringBuilder b = new StringBuilder("INNOVATIONS:\n");
         for (Link link : links.keySet()) {
-            b.append(link).append('\n');
+            b.append(links.get(link)).append(": ").append(link).append('\n');
         }
         for (Node node : nodes.keySet()) {
             b.append(nodes.get(node)).append('\n');
