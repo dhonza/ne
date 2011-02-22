@@ -51,7 +51,7 @@ public class GPAT<P> implements IEvolutionaryAlgorithm, IGP<ATForest> {
 
     protected Map<String, Long> origins;
 
-    public GPAT(PopulationManager<ATForest, P> populationManager, IATNodeImpl[] functions, IATNodeImpl[] terminals) {
+    public GPAT(PopulationManager<ATForest, P> populationManager, ATNodeImpl[] functions, ATNodeImpl[] terminals) {
         this.populationManager = populationManager;
         if (populationManager == null) {//for debuging only
             this.inputs = 0;
@@ -68,7 +68,7 @@ public class GPAT<P> implements IEvolutionaryAlgorithm, IGP<ATForest> {
         this.species = new ArrayList<ATSpecies>();
     }
 
-    protected ATNodeCollection createNodeCollection(IATNodeImpl[] functions, IATNodeImpl[] terminals, int numOfInputs) {
+    protected ATNodeCollection createNodeCollection(ATNodeImpl[] functions, ATNodeImpl[] terminals, int numOfInputs) {
         return new ATNodeCollection(functions, terminals, numOfInputs);
     }
 

@@ -10,20 +10,20 @@ import common.RND;
  * To change this template use File | Settings | File Templates.
  */
 public class ATNodeCollection {
-    final protected IATNodeImpl[] functions;
-    final protected IATNodeImpl[] terminals;
-    final protected IATNodeImpl[] all;
+    final protected ATNodeImpl[] functions;
+    final protected ATNodeImpl[] terminals;
+    final protected ATNodeImpl[] all;
 
-    public ATNodeCollection(IATNodeImpl[] functions, IATNodeImpl[] terminals, int numOfInputs) {
+    public ATNodeCollection(ATNodeImpl[] functions, ATNodeImpl[] terminals, int numOfInputs) {
         this.functions = functions.clone();
         this.terminals = addInputs(terminals, numOfInputs);
-        this.all = new IATNodeImpl[this.functions.length + this.terminals.length];
+        this.all = new ATNodeImpl[this.functions.length + this.terminals.length];
         System.arraycopy(this.functions, 0, all, 0, this.functions.length);
         System.arraycopy(this.terminals, 0, all, this.functions.length, this.terminals.length);
     }
 
-    protected IATNodeImpl[] addInputs(IATNodeImpl[] terminals, int numOfInputs) {
-        IATNodeImpl[] allTerminals = new IATNodeImpl[terminals.length + numOfInputs];
+    protected ATNodeImpl[] addInputs(ATNodeImpl[] terminals, int numOfInputs) {
+        ATNodeImpl[] allTerminals = new ATNodeImpl[terminals.length + numOfInputs];
 
         System.arraycopy(terminals, 0, allTerminals, 0, terminals.length);
         for (int i = 0; i < numOfInputs; i++) {
@@ -32,7 +32,11 @@ public class ATNodeCollection {
         return allTerminals;
     }
 
-    protected IATNodeImpl randomTerminal() {
+    protected ATNodeImpl randomTerminal() {
         return RND.randomChoice(terminals);
+    }
+
+    protected ATNodeImpl randomFunction() {
+        return RND.randomChoice(functions);
     }
 }

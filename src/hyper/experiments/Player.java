@@ -1,24 +1,18 @@
 package hyper.experiments;
 
-import common.ArrayHelper;
 import common.evolution.IGenotypeToPhenotype;
+import common.mathematica.MathematicaUtils;
 import common.net.INet;
 import common.net.linked.Net;
 import common.pmatrix.ParameterCombination;
 import common.pmatrix.ParameterMatrixManager;
 import common.pmatrix.ParameterMatrixStorage;
-import common.xml.XMLSerialization;
-import gp.Forest;
-import gp.ForestStorage;
-import gpat.ATForest;
 import hyper.builder.IEvaluableSubstrateBuilder;
 import hyper.builder.SubstrateBuilderFactory;
 import hyper.evaluate.ConverterFactory;
 import hyper.evaluate.IProblem;
 import hyper.evaluate.ProblemFactory;
 import hyper.evaluate.storage.GenomeStorage;
-import neat.Genome;
-import opt.DoubleVectorGenome;
 
 import java.io.File;
 
@@ -48,7 +42,7 @@ public class Player {
 
             INet net = converter.transform(genome);
             System.out.println(net);
-            ArrayHelper.printMatrixMathematica(((Net) net).toWeightMatrix());
+            MathematicaUtils.printMatrixMathematica(((Net) net).toWeightMatrix());
 
             problem.show(net);
         }

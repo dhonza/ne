@@ -10,10 +10,10 @@ import common.pmatrix.Utils;
  * To change this template use File | Settings | File Templates.
  */
 public class ATNodeFactory {
-    public static IATNodeImpl createByName(String className) {
-        IATNodeImpl node = null;
+    public static ATNodeImpl createByName(String className) {
+        ATNodeImpl node = null;
         try {
-            node = (IATNodeImpl) Class.forName(className).newInstance();
+            node = (ATNodeImpl) Class.forName(className).newInstance();
         } catch (InstantiationException e) {
             e.printStackTrace();
             System.exit(1);
@@ -31,13 +31,13 @@ public class ATNodeFactory {
      * @param classNameList contains list of class names separated by commas and possibly whitespaces.
      * @return created nodes
      */
-    public static IATNodeImpl[] createByNameList(String classNameList) {
+    public static ATNodeImpl[] createByNameList(String classNameList) {
         return createByNameList("", classNameList);
     }
 
-    public static IATNodeImpl[] createByNameList(String prefix, String classNameList) {
+    public static ATNodeImpl[] createByNameList(String prefix, String classNameList) {
         String[] classNames = Utils.extractIdentificators(classNameList);
-        IATNodeImpl[] nodes = new IATNodeImpl[classNames.length];
+        ATNodeImpl[] nodes = new ATNodeImpl[classNames.length];
         for (int i = 0; i < classNames.length; i++) {
             nodes[i] = createByName(prefix + classNames[i]);
         }

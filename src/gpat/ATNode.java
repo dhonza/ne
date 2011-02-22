@@ -1,5 +1,6 @@
 package gpat;
 
+import common.mathematica.MathematicaUtils;
 import gp.TreeInputs;
 
 import java.util.ArrayList;
@@ -14,16 +15,26 @@ import java.util.List;
  */
 public class ATNode implements IATNode {
     private int id;
-    private IATNodeImpl impl;
+    private ATNodeImpl impl;
 
     protected List<ATNode> children;
     protected List<Double> constants;
 
-    public ATNode(int id, IATNodeImpl impl) {
+    //the number of terminals EVER connected to this node, even when the terminal is disconnected by mutateAddNode it
+    // stays here
+    protected int[] terminalsConnected;
+
+    public ATNode(int id, ATNodeImpl impl, int numOfTerminals) {
         this.id = id;
         this.impl = impl;
         this.children = new ArrayList<ATNode>();
         this.constants = new ArrayList<Double>();
+        this.terminalsConnected = new int[numOfTerminals];
+    }
+
+    public ATNode(ATNode node) {
+        this(node.getId(), node.getImpl(), node.terminalsConnected.length);
+        this.terminalsConnected = node.terminalsConnected.clone();
     }
 
     public int getId() {
@@ -34,11 +45,11 @@ public class ATNode implements IATNode {
         this.id = id;
     }
 
-    public IATNodeImpl getImpl() {
+    public ATNodeImpl getImpl() {
         return impl;
     }
 
-    public void setImpl(IATNodeImpl impl) {
+    public void setImpl(ATNodeImpl impl) {
         this.impl = impl;
     }
 
@@ -54,12 +65,38 @@ public class ATNode implements IATNode {
         return constants.get(idx);
     }
 
+    public double getConstantForLinkGene(ATLinkGene linkGene) {
+        if (linkGene.getTo().getId() != getId()) {
+            throw new IllegalStateException("Not incoming linkGene supplied!");
+        }
+        if (children.size() <= linkGene.getToChildrenIdx()) {
+            throw new IndexOutOfBoundsException();
+        }
+        return getConstant(linkGene.getToChildrenIdx());
+    }
+
     public void setConstant(int idx, double value) {
         constants.set(idx, value);
     }
 
     public String getName() {
         return impl.getName();
+    }
+
+    public boolean hasConstants() {
+        return impl.hasConstants();
+    }
+
+    public boolean isTerminal() {
+        return impl.isTerminal();
+    }
+
+    public int getTerminalsConnected(int idx) {
+        return terminalsConnected[idx];
+    }
+
+    public void incTerminalsConnected(int idx) {
+        terminalsConnected[idx]++;
     }
 
     public void addChild(ATNode child) {
@@ -84,7 +121,10 @@ public class ATNode implements IATNode {
             b.append("[");
             for (int i = 0; i < children.size(); i++) {
                 ATNode child = children.get(i);
-                b.append(constants.get(i)).append("*").append(child.toMathematicaExpression());
+                if (hasConstants()) {
+                    b.append(constants.get(i)).append("*");
+                }
+                b.append(child.toMathematicaExpression());
                 if (i < children.size() - 1) {
                     b.append(",");
                 }
@@ -92,5 +132,9 @@ public class ATNode implements IATNode {
             b.append("]");
             return b.toString();
         }
+    }
+
+    public String listOfConnectedTerminals() {
+        return MathematicaUtils.arrayToMathematica(terminalsConnected);
     }
 }

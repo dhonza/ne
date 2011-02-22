@@ -7,9 +7,9 @@ package gpat;
  * Time: 10:31:00 PM
  * To change this template use File | Settings | File Templates.
  */
-abstract public class ATNode2IgnoreConstants extends ATNode {
-    public ATNode2IgnoreConstants(int id, IATNodeImpl impl) {
-        super(id, impl);
+abstract public class ATNodeIgnoreConstants extends ATNode {
+    public ATNodeIgnoreConstants(int id, ATNodeImpl impl, int numOfTerminals) {
+        super(id, impl, numOfTerminals);
     }
 
     @Override

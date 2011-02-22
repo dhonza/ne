@@ -39,8 +39,8 @@ public class ATInnovationHistory {
         @Override
         public String toString() {
             return "Link{" +
-                    "fromInnovation=" + fromId +
-                    ", toInnovation=" + toId +
+                    "fromId=" + fromId +
+                    ", toId=" + toId +
                     ", toCount=" + toCount +
                     '}';
         }
@@ -124,6 +124,7 @@ public class ATInnovationHistory {
             return links.get(link);
         } else {
             links.put(link, linkInnovation);
+            System.out.println("getLinkInnovation: " + linkInnovation + ": " + link);
             return linkInnovation++;
         }
     }
@@ -166,7 +167,7 @@ public class ATInnovationHistory {
             b.append(links.get(link)).append(": ").append(link).append('\n');
         }
         for (Node node : nodes.keySet()) {
-            b.append(nodes.get(node)).append('\n');
+            b.append(nodes.get(node)).append(": ").append(node).append('\n');
         }
         return b.toString();
     }

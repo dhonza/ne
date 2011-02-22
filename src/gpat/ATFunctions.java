@@ -13,7 +13,7 @@ public class ATFunctions {
     private ATFunctions() {
     }
 
-    public static class Plus implements IATNodeImpl {
+    public static class Plus extends ATNodeImpl {
 
         public String getName() {
             return "plus";
@@ -28,7 +28,7 @@ public class ATFunctions {
         }
     }
 
-    public static class Times implements IATNodeImpl {
+    public static class Times extends ATNodeImpl {
         public String getName() {
             return "times";
         }
@@ -42,6 +42,11 @@ public class ATFunctions {
                 result *= node.getChild(i).evaluate(treeInputs);
             }
             return result;
+        }
+
+        @Override
+        public boolean hasConstants() {
+            return false;
         }
     }
 

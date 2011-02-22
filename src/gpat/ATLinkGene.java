@@ -67,6 +67,6 @@ public class ATLinkGene implements Comparable<ATLinkGene> {
 
     @Override
     public String toString() {
-        return from.getId() + "(" + from.getName() + ") ----> " + to.getId() + "(" + to.getName() + ") IN: " + innovation + " C: " + toChildrenIdx;
+        return from.getId() + "(" + from.getName() + ") ----> " + to.getId() + "(" + to.getName() + ") IN: " + innovation + " CH: " + toChildrenIdx;
     }
 }

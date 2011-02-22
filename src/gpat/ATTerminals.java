@@ -13,7 +13,7 @@ public class ATTerminals {
     private ATTerminals() {
     }
 
-    public static class Input implements IATNodeImpl {
+    public static class Input extends ATNodeImpl {
         final private int idx;
 
         public Input(int idx) {
@@ -27,9 +27,14 @@ public class ATTerminals {
         public String getName() {
             return "x" + idx;
         }
+
+        @Override
+        public boolean isTerminal() {
+            return true;
+        }
     }
 
-    public static class Constant implements IATNodeImpl {
+    public static class Constant extends ATNodeImpl {
         final private double value;
 
         public Constant(double value) {
@@ -45,6 +50,11 @@ public class ATTerminals {
                 return Integer.toString((int) value);
             }
             return Double.toString(value);
+        }
+
+        @Override
+        public boolean isTerminal() {
+            return true;
         }
     }
 }

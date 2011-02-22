@@ -55,9 +55,9 @@ public class ATTree {
         terminalList = new ArrayList<ATNode>();
         origin = new ArrayList<String>();
 
-        //terminals have ids assigned started from zero
-        for (IATNodeImpl terminal : nodeCollection.terminals) {
-            ATNode node = new ATNode(initialNodeIds++, terminal);
+        //terminals have ids assigned starting from zero
+        for (ATNodeImpl terminal : nodeCollection.terminals) {
+            ATNode node = new ATNode(initialNodeIds++, terminal, 0);
             terminals.put(node.getId(), node);
             terminalList.add(node);
         }
@@ -88,7 +88,7 @@ public class ATTree {
     //this function node has 1 + the id of a last terminal
     public static ATTree createMinimalSubstrate(ATNodeCollection nodeCollection, ATInnovationHistory innovationHistory) {
         ATTree tree = new ATTree(nodeCollection, innovationHistory);
-        tree.root = new ATNode(tree.initialNodeIds, new ATFunctions.Times());
+        tree.root = new ATNode(tree.initialNodeIds, nodeCollection.randomFunction(), nodeCollection.terminals.length);
         tree.addNode(tree.root);
         tree.origin.add("NEW");
         return tree;
@@ -96,23 +96,19 @@ public class ATTree {
 
     public void mutateAddLink() {
         //note, that links can start only in terminal (input) nodes
-        ATNode from = RND.randomChoice(terminalList);
+        int terminalIdx = RND.getIntZero(terminalList.size());
+        ATNode from = terminalList.get(terminalIdx);
         ATNode to = RND.randomChoice(nodeGeneList);
 
-        //the number of the same terminals connected to the function node "to"
-        int countSame = 0;
-        for (ATNode child : to.children) {
-            if (child.getId() == from.getId()) {
-                countSame++;
-            }
-        }
-        countSame++;//increment for the link currently being added
+        //increment the number of connection from the very same terminal
+        to.incTerminalsConnected(terminalIdx);
 
         //add the child to its parent node
         to.addChild(from);
 
         //get innovation number
-        long linkInnovationNumber = innovationHistory.getLinkInnovation(from.getId(), to.getId(), countSame);
+//        long linkInnovationNumber = innovationHistory.getLinkInnovation(from.getId(), to.getId(), countSame);
+        long linkInnovationNumber = innovationHistory.getLinkInnovation(from.getId(), to.getId(), to.getTerminalsConnected(terminalIdx));
 
         ATLinkGene link = new ATLinkGene(from, to, linkInnovationNumber, to.getArity() - 1);
 
@@ -140,7 +136,7 @@ public class ATTree {
 
         //A prototype of a node to add. Just to know what type it will be
         //in advance.
-        IATNodeImpl nodePrototype = RND.randomChoice(nodeCollection.functions);
+        ATNodeImpl nodePrototype = nodeCollection.randomFunction();
 
         //Get an id (innovation number) for the new node.
         //Note, that we work with trees: once a link is transformed
@@ -151,7 +147,7 @@ public class ATTree {
                         nodePrototype.getClass());
 
         //Now, create the actual node.
-        ATNode node = new ATNode(innovation.getNodeId(), nodePrototype);
+        ATNode node = new ATNode(innovation.getNodeId(), nodePrototype, nodeCollection.terminals.length);
 
         //Store the node's records.
         addNode(node);
@@ -164,12 +160,16 @@ public class ATTree {
         linkGenesList.remove(linkIdx);
 
         //Store new links: "fromLink" and "toLink".
-        ATLinkGene fromLink = new ATLinkGene(from, node, innovation.getFromInnovation(), link.getToChildrenIdx());
+        ATLinkGene fromLink = new ATLinkGene(from, node, innovation.getFromInnovation(), 0);
         ATLinkGene toLink = new ATLinkGene(node, to, innovation.getToInnovation(), link.getToChildrenIdx());
         //Insert links. Link genes must be sorted for later comparisons
         //using innovation numbers.
         insertLinkGene(fromLink);
         insertLinkGene(toLink);
+
+        if (from.isTerminal()) {
+            node.incTerminalsConnected(from.getId()); //note, id is same as terminal index
+        }
 
         origin.add("ADD_NODE");
         checkTree(this);
@@ -243,7 +243,7 @@ public class ATTree {
     public ATTree copy() {
         ATTree copy = new ATTree(nodeCollection, innovationHistory);
         for (ATNode node : nodeGeneList) {
-            ATNode nodeCopy = new ATNode(node.getId(), node.getImpl());
+            ATNode nodeCopy = new ATNode(node);
             copy.nodeGenes.put(nodeCopy.getId(), nodeCopy);
             copy.nodeGeneList.add(nodeCopy);
         }
@@ -273,8 +273,6 @@ public class ATTree {
     }
 
     public double distance(ATTree other) {
-        throw new IllegalStateException("Not Yet IMPLEMENTED!");
-        /*
         ATTree a = this;
         ATTree b = other;
         int disjoint = 0, excess;
@@ -283,7 +281,7 @@ public class ATTree {
         double actDif = 0.0; // activation function difference
 
         int i = 0, j = 0;
-        ATLink il, jl;
+        ATLinkGene il, jl;
 
         int iLen = a.linkGenesList.size(), jLen = b.linkGenesList.size();
 
@@ -294,13 +292,8 @@ public class ATTree {
                 i++;
                 j++;
                 common++;
-                int iIdx = il.getTo().getIdxForInnovation(il.getInnovation());
-                int jIdx = jl.getTo().getIdxForInnovation(jl.getInnovation());
-                if (jIdx == -1) {
-                    System.out.println("");
-                }
-                double iConstant = il.getTo().getConstant(iIdx);
-                double jConstant = jl.getTo().getConstant(jIdx);
+                double iConstant = il.getTo().getConstantForLinkGene(il);
+                double jConstant = jl.getTo().getConstantForLinkGene(jl);
                 wDif += Math.abs(iConstant - jConstant);
             } else if (il.getInnovation() > jl.getInnovation()) {
                 disjoint++;
@@ -324,7 +317,6 @@ public class ATTree {
         }
         double distance = GPAT.DISTANCE_C1 * excess + GPAT.DISTANCE_C2 * disjoint + weights;
         return distance;
-        */
     }
 
 
@@ -333,7 +325,7 @@ public class ATTree {
         ///*
         StringBuilder builder = new StringBuilder(" NODES:\n");
         for (ATNode nodeGene : nodeGeneList) {
-            builder.append(nodeGene.getId()).append(" ").append(nodeGene.getName()).append('\n');
+            builder.append(nodeGene.getId()).append(" ").append(nodeGene.getName()).append(" CT:").append(nodeGene.listOfConnectedTerminals()).append('\n');
         }
         builder.append(" LINKS:\n");
         for (ATLinkGene linkGene : linkGenesList) {
@@ -350,8 +342,8 @@ public class ATTree {
     }
 
     public static void main(String[] args) {
-        IATNodeImpl[] functions = new IATNodeImpl[]{new ATFunctions.Plus(), new ATFunctions.Times()};
-        IATNodeImpl[] terminals = new IATNodeImpl[]{new ATTerminals.Constant(1.0), new ATTerminals.Constant(-1.0)};
+        ATNodeImpl[] functions = new ATNodeImpl[]{new ATFunctions.Plus(), new ATFunctions.Times()};
+        ATNodeImpl[] terminals = new ATNodeImpl[]{new ATTerminals.Constant(1.0), new ATTerminals.Constant(-1.0)};
         ATNodeCollection nodeCollection = new ATNodeCollection(functions, terminals, 2);
 
         RND.initializeTime();
@@ -385,15 +377,9 @@ public class ATTree {
                 throw new IllegalStateException("Unsorted link lists.\n" + tree);
             }
         }
-
-        //checkLinkGenesVsNodes
-//        for (int i = 0; i < tree.linkGenesList.size(); i++) {
-//            ATLinkGene link = tree.linkGenesList.get(i);
-//            long innovation = link.getInnovation();
-//            int pos = link.getTo().getIdxForInnovation(innovation);
-//            if (pos < 0) {
-//                throw new IllegalStateException("linkGenesList does not match node id : " +
-//                        link.getTo().getId());
+//        for (ATLinkGene link : tree.linkGenesList) {
+//            if (link.getInnovation() == 0 && link.getToChildrenIdx() > 0) {
+//                throw new IllegalStateException("Innovation 0 as child > #0.\n" + tree);
 //            }
 //        }
     }

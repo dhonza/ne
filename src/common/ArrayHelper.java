@@ -27,24 +27,4 @@ public class ArrayHelper {
             System.out.print(v + " ");
         }
     }
-
-    public static void printArrayMathematica(double[] array) {
-        System.out.print("{");
-        for (int i = 0; i < array.length - 1; i++) {
-            System.out.print(array[i] + ", ");
-        }
-        System.out.print(array[array.length - 1]);
-        System.out.print("}");
-    }
-
-    public static void printMatrixMathematica(double[][] array) {
-        System.out.println("{");
-        for (int i = 0; i < array.length - 1; i++) {
-            printArrayMathematica(array[i]);
-            System.out.println(", ");
-        }
-        printArrayMathematica(array[array.length - 1]);
-        System.out.print("}");
-    }
-
 }
