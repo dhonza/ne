@@ -13,8 +13,10 @@ public class ATNodeCollection {
     final protected ATNodeImpl[] functions;
     final protected ATNodeImpl[] terminals;
     final protected ATNodeImpl[] all;
+    final protected int indexOfFirstInput;
 
     public ATNodeCollection(ATNodeImpl[] functions, ATNodeImpl[] terminals, int numOfInputs) {
+        this.indexOfFirstInput = terminals.length;
         this.functions = functions.clone();
         this.terminals = addInputs(terminals, numOfInputs);
         this.all = new ATNodeImpl[this.functions.length + this.terminals.length];
@@ -38,5 +40,10 @@ public class ATNodeCollection {
 
     protected ATNodeImpl randomFunction() {
         return RND.randomChoice(functions);
+    }
+
+    //index of a first input in "terminals"
+    protected int getIndexOfFirstInput() {
+        return indexOfFirstInput;
     }
 }

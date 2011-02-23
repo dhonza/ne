@@ -5,7 +5,6 @@ import common.evolution.EvaluationInfo;
 import gp.IGPForest;
 import gp.NodeCollection;
 import gp.TreeInputs;
-import org.apache.commons.lang.ArrayUtils;
 
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -123,5 +122,13 @@ public class AACForest implements IGPForest, Comparable, Serializable {
         }
         String[] o = originList.toArray(new String[0]);
         return o;
+    }
+
+    public double[] getConstants() {
+        throw new IllegalStateException("Not yet implemented!");
+    }
+
+    public void setConstants(double[] constants) {
+        throw new IllegalStateException("Not yet implemented!");
     }
 }

@@ -48,6 +48,12 @@ public class ATFunctions {
         public boolean hasConstants() {
             return false;
         }
+
+        @Override
+        public int repeatInput() {
+            return Integer.MAX_VALUE;
+//            return 1;
+        }
     }
 
 /*

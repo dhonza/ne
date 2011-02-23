@@ -26,4 +26,8 @@ public interface IGPForest extends IMathematicaPrintable {
     double[] getOutputs();
 
     String[] getOrigins();
+
+    double[] getConstants();
+
+    void setConstants(double[] constants);
 }

@@ -1,5 +1,6 @@
 package gpat;
 
+import common.ArrayHelper;
 import common.RND;
 import common.evolution.EvaluationInfo;
 import gp.IGPForest;
@@ -130,6 +131,33 @@ public class ATForest implements IGPForest, Comparable, Serializable {
         }
         String[] o = originList.toArray(new String[0]);
         return o;
+    }
+
+    public int getNumOfConstants() {
+        int numOfConstants = 0;
+        for (ATTree tree : trees) {
+            numOfConstants += tree.getNumOfConstants();
+        }
+        return numOfConstants;
+    }
+
+    public double[] getConstants() {
+        double[][] constants = new double[trees.length][];
+        for (int i = 0; i < trees.length; i++) {
+            constants[i] = trees[i].getConstants();
+        }
+        return ArrayHelper.flatten(constants);
+    }
+
+    public void setConstants(double[] constants) {
+        int[] parts = new int[trees.length];
+        for (int i = 0; i < trees.length; i++) {
+            parts[i] = trees[i].getNumOfConstants();
+        }
+        double[][] treeConstants = ArrayHelper.partition(constants, parts);
+        for (int i = 0; i < trees.length; i++) {
+            trees[i].setConstants(treeConstants[i]);
+        }
     }
 
     public String toMathematicaExpression() {

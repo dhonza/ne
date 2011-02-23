@@ -13,6 +13,9 @@ public class MathematicaUtils {
     }
 
     public static String arrayToMathematica(int[] array) {
+        if (array.length == 0) {
+            return "{}";
+        }
         StringBuilder b = new StringBuilder("{");
         for (int i = 0; i < array.length - 1; i++) {
             b.append(array[i]).append(", ");
@@ -23,6 +26,9 @@ public class MathematicaUtils {
     }
 
     public static String arrayToMathematica(double[] array) {
+        if (array.length == 0) {
+            return "{}";
+        }
         StringBuilder b = new StringBuilder("{");
         for (int i = 0; i < array.length - 1; i++) {
             b.append(array[i]).append(", ");
@@ -41,12 +47,15 @@ public class MathematicaUtils {
     }
 
     public static void printMatrixMathematica(double[][] array) {
+        if (array.length == 0) {
+            System.out.println("{{}}");
+        }
         System.out.println("{");
         for (int i = 0; i < array.length - 1; i++) {
             printArrayMathematica(array[i]);
             System.out.println(", ");
         }
         printArrayMathematica(array[array.length - 1]);
-        System.out.print("}");
+        System.out.print("\n}");
     }
 }

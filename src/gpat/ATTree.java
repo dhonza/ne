@@ -43,6 +43,7 @@ public class ATTree {
     //starts with id 0 from terminals,
     //ends with a single function of a minimal substrate
     private int initialNodeIds = 0;
+    private int numOfConstants = 0;
 
     private ATTree(ATNodeCollection nodeCollection, ATInnovationHistory innovationHistory) {
         this.nodeCollection = nodeCollection;
@@ -67,6 +68,10 @@ public class ATTree {
         return origin;
     }
 
+    public int getNumOfConstants() {
+        return numOfConstants;
+    }
+
     private void addNode(ATNode node) {
         nodeGeneList.add(node);
         nodeGenes.put(node.getId(), node);
@@ -88,17 +93,27 @@ public class ATTree {
     //this function node has 1 + the id of a last terminal
     public static ATTree createMinimalSubstrate(ATNodeCollection nodeCollection, ATInnovationHistory innovationHistory) {
         ATTree tree = new ATTree(nodeCollection, innovationHistory);
-        tree.root = new ATNode(tree.initialNodeIds, nodeCollection.randomFunction(), nodeCollection.terminals.length);
+//        tree.root = new ATNode(tree.initialNodeIds, nodeCollection.randomFunction(), nodeCollection.terminals.length);
+        tree.root = new ATNode(tree.initialNodeIds, new ATFunctions.Plus(), nodeCollection.terminals.length);
         tree.addNode(tree.root);
         tree.origin.add("NEW");
         return tree;
     }
 
     public void mutateAddLink() {
+        //choose a random link to be created
+        ATRandomLink.FreeLink freeLink = ATRandomLink.getFreeRandomLink(nodeCollection, nodeGeneList);
+        if (freeLink == null) {
+            origin.add("ADD_LINK_FAILED");
+            return;
+        }
+
         //note, that links can start only in terminal (input) nodes
-        int terminalIdx = RND.getIntZero(terminalList.size());
+//        int terminalIdx = RND.getIntZero(terminalList.size());
+        int terminalIdx = freeLink.getTerminalIdx();
         ATNode from = terminalList.get(terminalIdx);
-        ATNode to = RND.randomChoice(nodeGeneList);
+//        ATNode to = RND.randomChoice(nodeGeneList);
+        ATNode to = freeLink.getTo();
 
         //increment the number of connection from the very same terminal
         to.incTerminalsConnected(terminalIdx);
@@ -115,6 +130,9 @@ public class ATTree {
         //Insert link. Link genes must be sorted for later comparisons
         //using innovation numbers.
         insertLinkGene(link);
+
+        //number of constants increased by 1 for new link
+        numOfConstants++;
 
         origin.add("ADD_LINK");
         checkTree(this);
@@ -171,6 +189,9 @@ public class ATTree {
             node.incTerminalsConnected(from.getId()); //note, id is same as terminal index
         }
 
+        //number of constants increased by 1 for the new link connecting to the new node
+        numOfConstants++;
+
         origin.add("ADD_NODE");
         checkTree(this);
     }
@@ -180,8 +201,13 @@ public class ATTree {
             return;
         }
 
-        //Get random  node.
-        int nodeIdx = RND.getIntZero(nodeGeneList.size());
+        //Get random node.
+        ATNode node = RND.randomChoice(nodeGeneList);
+
+        //Choose a new function for he node.
+        ATNodeImpl nodePrototype = nodeCollection.randomFunction();
+
+        node.setImpl(nodePrototype);
 
         origin.add("SWITCH_NODE");
     }
@@ -377,6 +403,16 @@ public class ATTree {
                 throw new IllegalStateException("Unsorted link lists.\n" + tree);
             }
         }
+        //checkNumberOfConstants
+        int cnt = 0;
+        for (ATNode node : tree.nodeGeneList) {
+            cnt += node.getArity();
+        }
+        if (cnt != tree.getNumOfConstants()) {
+            throw new IllegalStateException("The number of constants does not match.\n" + tree);
+        }
+
+
 //        for (ATLinkGene link : tree.linkGenesList) {
 //            if (link.getInnovation() == 0 && link.getToChildrenIdx() > 0) {
 //                throw new IllegalStateException("Innovation 0 as child > #0.\n" + tree);
@@ -384,4 +420,27 @@ public class ATTree {
 //        }
     }
 
+    public double[] getConstants() {
+        double[] constants = new double[getNumOfConstants()];
+        int cnt = 0;
+        for (ATNode node : nodeGeneList) {
+            for (int i = 0; i < node.getArity(); i++) {
+                constants[cnt++] = node.getConstant(i);
+            }
+        }
+        return constants;
+    }
+
+    public void setConstants(double[] constants) {
+        if (constants.length != getNumOfConstants()) {
+            throw new IllegalStateException("The number of constants does not match.");
+        }
+        int cnt = 0;
+        for (ATNode node : nodeGeneList) {
+            for (int i = 0; i < node.getArity(); i++) {
+                node.setConstant(i, constants[cnt++]);
+            }
+        }
+
+    }
 }

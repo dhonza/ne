@@ -91,6 +91,14 @@ public class ATNode implements IATNode {
         return impl.isTerminal();
     }
 
+    public int repeatConstant() {
+        return impl.repeatConstant();
+    }
+
+    public int repeatInput() {
+        return impl.repeatInput();
+    }
+
     public int getTerminalsConnected(int idx) {
         return terminalsConnected[idx];
     }

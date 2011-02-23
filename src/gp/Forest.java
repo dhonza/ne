@@ -136,4 +136,12 @@ public class Forest implements IGPForest, Comparable, Serializable {
         }
         return o;
     }
+
+    public double[] getConstants() {
+        throw new IllegalStateException("Not yet implemented!");
+    }
+
+    public void setConstants(double[] constants) {
+        throw new IllegalStateException("Not yet implemented!");
+    }
 }

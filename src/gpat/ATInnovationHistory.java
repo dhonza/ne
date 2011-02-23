@@ -124,7 +124,6 @@ public class ATInnovationHistory {
             return links.get(link);
         } else {
             links.put(link, linkInnovation);
-            System.out.println("getLinkInnovation: " + linkInnovation + ": " + link);
             return linkInnovation++;
         }
     }

@@ -700,6 +700,14 @@ public class GEPChromosome implements IGPForest, Comparable, Serializable {
         return new String[0];
     }
 
+    public double[] getConstants() {
+        throw new IllegalStateException("Not yet implemented!");
+    }
+
+    public void setConstants(double[] constants) {
+        throw new IllegalStateException("Not yet implemented!");
+    }
+
     public String toMathematicaExpression() {
         return "GEPChromosome: NOT IMPLEMENTED!";
     }

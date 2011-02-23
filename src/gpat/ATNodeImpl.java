@@ -22,4 +22,11 @@ public abstract class ATNodeImpl {
         return false;
     }
 
+    public int repeatConstant() {
+        return 1;
+    }
+
+    public int repeatInput() {
+        return 1;
+    }
 }
