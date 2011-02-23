@@ -46,7 +46,7 @@ public class ATFunctions {
 
         @Override
         public boolean hasConstants() {
-            return false;
+            return true;
         }
 
         @Override

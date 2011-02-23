@@ -56,6 +56,9 @@ public class ATForest implements IGPForest, Comparable, Serializable {
             if (RND.getDouble() < GPAT.MUTATION_ADD_NODE) {
                 toMutate.mutateAddNode();
             }
+            if (RND.getDouble() < GPAT.MUTATION_INSERT_ROOT) {
+                toMutate.mutateInsertRoot();
+            }
             if (RND.getDouble() < GPAT.MUTATION_SWITCH_NODE) {
                 toMutate.mutateSwitchNode();
             }

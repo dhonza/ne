@@ -11,12 +11,12 @@ import java.util.Map;
  * To change this template use File | Settings | File Templates.
  */
 public class ATInnovationHistory {
-    private static class Link {
+    private static class LinkTwoNodes {
         int fromId;
         int toId;
         int toCount;
 
-        private Link(int fromId, int toId, int toCount) {
+        private LinkTwoNodes(int fromId, int toId, int toCount) {
             this.fromId = fromId;
             this.toId = toId;
             this.toCount = toCount;
@@ -30,7 +30,7 @@ public class ATInnovationHistory {
 
         @Override
         public boolean equals(Object o) {
-            Link other = (Link) o;
+            LinkTwoNodes other = (LinkTwoNodes) o;
             return fromId == other.fromId &&
                     toId == other.toId &&
                     toCount == other.toCount;
@@ -38,7 +38,7 @@ public class ATInnovationHistory {
 
         @Override
         public String toString() {
-            return "Link{" +
+            return "LinkTwoNodes{" +
                     "fromId=" + fromId +
                     ", toId=" + toId +
                     ", toCount=" + toCount +
@@ -46,11 +46,11 @@ public class ATInnovationHistory {
         }
     }
 
-    private static class Node {
+    private static class NodeFromLink {
         ATLinkGene replacedLink;
         Class type;
 
-        private Node(ATLinkGene replacedLink, Class type) {
+        private NodeFromLink(ATLinkGene replacedLink, Class type) {
             this.replacedLink = replacedLink;
             this.type = type;
         }
@@ -62,15 +62,53 @@ public class ATInnovationHistory {
 
         @Override
         public boolean equals(Object o) {
-            Node other = (Node) o;
+            NodeFromLink other = (NodeFromLink) o;
             return replacedLink.getInnovation() == other.replacedLink.getInnovation() && type == other.type;
         }
 
         @Override
         public String toString() {
-            return "Node{" +
+            return "NodeFromLink{" +
                     "replacedLink=" + replacedLink +
                     ", type=" + type +
+                    '}';
+        }
+    }
+
+    private static class RootReplacement {
+        int oldRootId;
+        Class newRootType;
+
+        private RootReplacement(int oldRootId, Class newRootType) {
+            this.oldRootId = oldRootId;
+            this.newRootType = newRootType;
+        }
+
+        @Override
+        public boolean equals(Object o) {
+            if (this == o) return true;
+            if (o == null || getClass() != o.getClass()) return false;
+
+            RootReplacement that = (RootReplacement) o;
+
+            if (oldRootId != that.oldRootId) return false;
+            if (newRootType != null ? !newRootType.equals(that.newRootType) : that.newRootType != null) return false;
+
+            return true;
+        }
+
+        @Override
+        public int hashCode() {
+            int result = oldRootId;
+            result = 31 * result + (newRootType != null ? newRootType.hashCode() : 0);
+            return result;
+        }
+
+        @Override
+        public String toString() {
+            return "RootReplacement{" +
+                    "oldRootId=" + oldRootId +
+                    ", newRootType=" + newRootType +
                     '}';
         }
     }
@@ -108,8 +146,27 @@ public class ATInnovationHistory {
         }
     }
 
-    private Map<Link, Long> links = new HashMap<Link, Long>();
-    private Map<Node, NodeInnovation> nodes = new HashMap<Node, NodeInnovation>();
+    public static class RootInnovation {
+        private long fromInnovation;
+        private int rootId;
+
+        public RootInnovation(long fromInnovation, int rootId) {
+            this.fromInnovation = fromInnovation;
+            this.rootId = rootId;
+        }
+
+        public long getFromInnovation() {
+            return fromInnovation;
+        }
+
+        public int getRootId() {
+            return rootId;
+        }
+    }
+
+    private Map<LinkTwoNodes, Long> links = new HashMap<LinkTwoNodes, Long>();
+    private Map<NodeFromLink, NodeInnovation> nodes = new HashMap<NodeFromLink, NodeInnovation>();
+    private Map<RootReplacement, RootInnovation> roots = new HashMap<RootReplacement, RootInnovation>();
 
     private long linkInnovation = 0;
     private int nodeInnovation;
@@ -119,7 +176,7 @@ public class ATInnovationHistory {
     }
 
     public long getLinkInnovation(int fromId, int toId, int toCount) {
-        Link link = new Link(fromId, toId, toCount);
+        LinkTwoNodes link = new LinkTwoNodes(fromId, toId, toCount);
         if (links.containsKey(link)) {
             return links.get(link);
         } else {
@@ -129,7 +186,7 @@ public class ATInnovationHistory {
     }
 
     public NodeInnovation getNodeInnovation(ATLinkGene linkToReplace, Class type) {
-        Node node = new Node(linkToReplace, type);
+        NodeFromLink node = new NodeFromLink(linkToReplace, type);
         if (nodes.containsKey(node)) {
             return nodes.get(node);
         } else {
@@ -141,7 +198,19 @@ public class ATInnovationHistory {
             nodes.put(node, innovation);
             return innovation;
         }
+    }
 
+    public RootInnovation getInsertRootInnovation(int id, Class type) {
+        RootReplacement node = new RootReplacement(id, type);
+        if (roots.containsKey(node)) {
+            return roots.get(node);
+        } else {
+            RootInnovation innovation = new RootInnovation(
+                    linkInnovation++,
+                    nodeInnovation++);
+            roots.put(node, innovation);
+            return innovation;
+        }
     }
 
 //    public void storeLinkInnovation(int fromId, int toId, int toCount, long innovation) {
@@ -149,8 +218,8 @@ public class ATInnovationHistory {
 //        links.put(link, innovation);
 //    }
 
-//    public NodeInnovation forceNewNodeInnovation(int fromId, int toId, Class type) {
-//        Node node = new Node(fromId, toId, type);
+//    public NodeInnovation forceNewNodeInnovation(int fromId, int toId, Class newRootType) {
+//        Node node = new Node(fromId, toId, newRootType);
 //        NodeInnovation innovation = new NodeInnovation(linkInnovation,
 //                linkInnovation + 1, nodeInnovation++);
 //        linkInnovation += 2;
@@ -162,11 +231,14 @@ public class ATInnovationHistory {
     @Override
     public String toString() {
         StringBuilder b = new StringBuilder("INNOVATIONS:\n");
-        for (Link link : links.keySet()) {
+        for (LinkTwoNodes link : links.keySet()) {
             b.append(links.get(link)).append(": ").append(link).append('\n');
         }
-        for (Node node : nodes.keySet()) {
+        for (NodeFromLink node : nodes.keySet()) {
             b.append(nodes.get(node)).append(": ").append(node).append('\n');
+        }
+        for (RootReplacement root : roots.keySet()) {
+            b.append(roots.get(root)).append(": ").append(root).append('\n');
         }
         return b.toString();
     }

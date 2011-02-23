@@ -37,11 +37,14 @@
 
     <target name="compile">
         <mkdir dir="${build.dir}"/>
-        <javac srcdir="${src.dir}"
-               destdir="build"
+        <javac destdir="${build.dir}"
                classpathref="libraries"
-               source="1.6"
-                />
+               source="1.6">
+            <src path="${src.dir}"/>
+            <exclude name="hyper/experiments/robots/*"/>
+            <exclude name="hyper/experiments/robots/distance/*"/>
+            <exclude name="hyper/experiments/robots/friction/*"/>
+        </javac>
     </target>
 
     <!-- ========================================================================= -->

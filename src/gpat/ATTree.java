@@ -152,7 +152,7 @@ public class ATTree {
         ATNode from = link.getFrom();
         ATNode to = link.getTo();
 
-        //A prototype of a node to add. Just to know what type it will be
+        //A prototype of a node to add. Just to know what newRootType it will be
         //in advance.
         ATNodeImpl nodePrototype = nodeCollection.randomFunction();
 
@@ -196,6 +196,37 @@ public class ATTree {
         checkTree(this);
     }
 
+    public void mutateInsertRoot() {
+        //Choose a new function for he node.
+        ATNodeImpl nodePrototype = nodeCollection.randomFunction();
+
+        ATInnovationHistory.RootInnovation innovation =
+                innovationHistory.getInsertRootInnovation(
+                        root.getId(),
+                        nodePrototype.getClass());
+
+        //Now, create the new root.
+        ATNode newRoot = new ATNode(innovation.getRootId(), nodePrototype, nodeCollection.terminals.length);
+
+        //Store the node's records.
+        addNode(newRoot);
+
+        //make connections
+        newRoot.addChild(root);
+
+        ATLinkGene link = new ATLinkGene(root, newRoot, innovation.getFromInnovation(), 0);
+        insertLinkGene(link);
+
+        //number of constants increased by 1 for connection from old root to the new.
+        numOfConstants++;
+
+        //finally point to the newly created root
+        root = newRoot;
+
+        origin.add("INSERT_ROOT");
+        checkTree(this);
+    }
+
     public void mutateSwitchNode() {
         if (nodeGeneList.size() == 0) {
             return;
@@ -218,6 +249,10 @@ public class ATTree {
             for (int i = 0; i < node.getArity(); i++) {
                 if (RND.getDouble() < GP.MUTATION_CAUCHY_PROBABILITY) {
                     node.setConstant(i, node.getConstant(i) + GP.MUTATION_CAUCHY_POWER * RND.getCauchy());
+                    mutation = true;
+                }
+                if (RND.getDouble() < GPAT.MUTATION_REPLACE_CONSTANT) {
+                    node.setConstant(i, RND.getDouble(-GP.CONSTANT_AMPLITUDE, GP.CONSTANT_AMPLITUDE));
                     mutation = true;
                 }
             }
@@ -356,7 +391,7 @@ public class ATTree {
         }
         builder.append(" LINKS:\n");
         for (ATLinkGene linkGene : linkGenesList) {
-            builder.append(linkGene).append('\n');
+            builder.append(linkGene).append(" C:").append(linkGene.getTo().getConstantForLinkGene(linkGene)).append('\n');
         }
         builder.append(" EXPRESSION:\n").append(root.toMathematicaExpression()).append('\n');
         return builder.toString();
