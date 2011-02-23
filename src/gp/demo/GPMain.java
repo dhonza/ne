@@ -14,9 +14,9 @@ import gp.terminals.RNC;
 import gp.terminals.Random;
 import gpaac.AACTerminals;
 import gpaac.GPAAC;
-import hyper.experiments.DummyProblem;
 import hyper.evaluate.printer.FileProgressPrinter;
 import hyper.evaluate.printer.ReportStorage;
+import hyper.experiments.DummyProblem;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -33,9 +33,9 @@ public class GPMain {
     public static void main(String[] args) {
         System.out.println("INITIALIZED SEED: " + RND.initializeTime());
 //        RND.initialize(8725627961384450L); //4
-//        String type = "GP";
+        String type = "GP";
 //        String type = "GEP";
-        String type = "GPAAC";
+//        String type = "GPAAC";
 //        String type = "GPAT";
 
         ParameterMatrixManager manager = createManager(type);

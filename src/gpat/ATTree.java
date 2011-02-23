@@ -268,6 +268,7 @@ public class ATTree {
 
     public ATTree copy() {
         ATTree copy = new ATTree(nodeCollection, innovationHistory);
+        copy.numOfConstants = numOfConstants;
         for (ATNode node : nodeGeneList) {
             ATNode nodeCopy = new ATNode(node);
             copy.nodeGenes.put(nodeCopy.getId(), nodeCopy);
@@ -409,7 +410,7 @@ public class ATTree {
             cnt += node.getArity();
         }
         if (cnt != tree.getNumOfConstants()) {
-            throw new IllegalStateException("The number of constants does not match.\n" + tree);
+            throw new IllegalStateException("The number of constants does not match: " + cnt + " vs. " + tree.getNumOfConstants() + "\n" + tree);
         }
 
 

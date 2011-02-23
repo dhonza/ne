@@ -708,6 +708,10 @@ public class GEPChromosome implements IGPForest, Comparable, Serializable {
         throw new IllegalStateException("Not yet implemented!");
     }
 
+    public IGPForest copy() {
+        throw new IllegalStateException("Not yet implemented!");
+    }
+
     public String toMathematicaExpression() {
         return "GEPChromosome: NOT IMPLEMENTED!";
     }

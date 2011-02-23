@@ -81,6 +81,7 @@ public class GPAT<P> implements IEvolutionaryAlgorithm, IGP<ATForest> {
         evaluate(population);
         recomputeBest();
         assignSpecies();
+//        optimizeConstantsStage();
         estimateOffspring();
         printSpeciesInfo();
     }
@@ -92,6 +93,7 @@ public class GPAT<P> implements IEvolutionaryAlgorithm, IGP<ATForest> {
         reduce();
         recomputeBest();
         assignSpecies();
+//        optimizeConstantsStage();
         estimateOffspring();
         printSpeciesInfo();
     }
@@ -208,6 +210,24 @@ public class GPAT<P> implements IEvolutionaryAlgorithm, IGP<ATForest> {
         } else if (species.size() < 4) {
             GPAT.DISTANCE_DELTA /= 2;
         }
+    }
+
+    private void optimizeConstantsStage() {
+        for (ATSpecies spec : species) {
+            IGPForest bestOfSpecies = spec.getMember(0).eliteCopy(generation);
+            if (bestOfSpecies.getConstants().length == 0) {
+                continue;
+            }
+            ATOptimizeConstantsStage constantsOptimizer = new ATOptimizeConstantsStage(populationManager, bestOfSpecies);
+            IGPForest optimized = constantsOptimizer.optimize();
+            if (spec.getMember(0).getFitness() < optimized.getFitness()) {
+                System.out.println("BETTER!!!!");
+                spec.setMember(0, (ATForest) optimized);
+            } else {
+                System.out.println("WORSE !!!!");
+            }
+        }
+
     }
 
     private void estimateOffspring() {

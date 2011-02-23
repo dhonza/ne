@@ -30,7 +30,7 @@ import java.util.List;
 public class GPATMain {
     public static void main(String[] args) {
         System.out.println("INITIALIZED SEED: " + RND.initializeTime());
-//        RND.initialize(1307066165129825013L); //4
+//        RND.initialize(1307157509603693013L); //4
         String type = "GPAT";
 
         ParameterMatrixManager manager = createManager(type);

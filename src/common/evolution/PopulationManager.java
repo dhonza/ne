@@ -100,6 +100,13 @@ public class PopulationManager<G, P> {
         return populationEvaluator.evaluate();
     }
 
+    public List<EvaluationInfo> evaluateNoDistances() {
+        populationStorage.convert();
+        System.out.println("WARNING: evaluateNoDistances() - distances not properly computed!");
+        return populationEvaluator.evaluate();
+    }
+
+
     public EvaluationInfo evaluateGeneralization(G individual) {
         return perThreadEvaluators.get(0).evaluateGeneralization(perThreadConverters.get(0).transform(individual));
     }
@@ -133,7 +140,7 @@ public class PopulationManager<G, P> {
         if (phenomeDistanceStorage != null) {
             infoMap.put("P_DIVERSITY", DistanceUtils.average(phenomeDistanceStorage));
         }
-        if(storeGenotypesMathematica) {
+        if (storeGenotypesMathematica) {
             infoMap.put("O_GENOMES_MATH", populationStorage.genomesToMathematicaString());
 
         }

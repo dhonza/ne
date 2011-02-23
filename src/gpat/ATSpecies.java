@@ -67,6 +67,10 @@ public class ATSpecies {
         return members.get(idx);
     }
 
+    void setMember(int idx, ATForest forest) {
+        members.set(idx, forest);
+    }
+
     ATForest getRandomMember() {
         return members.get(RND.getInt(0, reproductionThreshold));
     }

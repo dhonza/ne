@@ -160,6 +160,11 @@ public class ATForest implements IGPForest, Comparable, Serializable {
         }
     }
 
+
+    public IGPForest copy() {
+        return eliteCopy(generationOfOrigin);
+    }
+
     public String toMathematicaExpression() {
         StringBuilder s = new StringBuilder("{");
         for (int i = 0, treesLength = trees.length - 1; i < treesLength; i++) {
