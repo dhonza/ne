@@ -1,11 +1,10 @@
 package hyper.evaluate;
 
 import common.pmatrix.ParameterCombination;
+import hyper.evaluate.printer.ReportStorage;
 import hyper.experiments.findcluster.FindCluster;
 import hyper.experiments.findcluster2.FindCluster2;
-import hyper.evaluate.printer.ReportStorage;
 import hyper.experiments.reco.problem.Recognition1D;
-import hyper.experiments.robots.Robots;
 
 /**
  * Created by IntelliJ IDEA.
@@ -27,7 +26,8 @@ public class ProblemFactory {
         } else if (name.equalsIgnoreCase("FIND_CLUSTER2")) {
             return new FindCluster2(parameters, reportStorage);
         } else if (name.equalsIgnoreCase("ROBOTS")) {
-            return new Robots(parameters, reportStorage);
+            throw new IllegalStateException("Temporarily disabled.");
+//            return new Robots(parameters, reportStorage);
         } else {
             throw new IllegalStateException("Unknown problem: \"" + name + "\"");
         }

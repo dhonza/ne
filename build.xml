@@ -41,9 +41,7 @@
                classpathref="libraries"
                source="1.6">
             <src path="${src.dir}"/>
-            <exclude name="hyper/experiments/robots/*"/>
-            <exclude name="hyper/experiments/robots/distance/*"/>
-            <exclude name="hyper/experiments/robots/friction/*"/>
+            <exclude name="hyper/**"/>
         </javac>
     </target>
 
