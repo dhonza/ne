@@ -106,6 +106,7 @@ public class ATSpecies {
         b.append(" BST: ").append(members.get(0).getFitness());
         b.append(" AVG: ").append(averageFitness);
         b.append(" EST: ").append(estimatedOffspring);
+        b.append(" ELI: ").append(elitistSize);
         return b.toString();
     }
 }

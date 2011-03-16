@@ -41,6 +41,9 @@ public class ATForest implements IGPForest, Comparable, Serializable {
         for (int i = 0; i < numOfOutputs; i++) {
             forest.trees[i] = ATTree.createMinimalSubstrate(nodeCollection, innovationHistory);
         }
+        forest.setFitness(Double.NaN);
+        forest.setEvaluationInfo(new EvaluationInfo(Double.NaN));
+        forest.getEvaluationInfo().put("G_CONST_NUM", forest.getNumOfConstants());
         return forest;
     }
 
@@ -69,6 +72,7 @@ public class ATForest implements IGPForest, Comparable, Serializable {
         }
         forest.setFitness(Double.NaN);
         forest.setEvaluationInfo(new EvaluationInfo(Double.NaN));
+        forest.getEvaluationInfo().put("G_CONST_NUM", forest.getNumOfConstants());
         return forest;
 
     }
@@ -83,6 +87,7 @@ public class ATForest implements IGPForest, Comparable, Serializable {
         }
         forest.setFitness(Double.NaN);
         forest.setEvaluationInfo(new EvaluationInfo(Double.NaN));
+        forest.getEvaluationInfo().put("G_CONST_NUM", forest.getNumOfConstants());
         return forest;
     }
 
@@ -120,11 +125,6 @@ public class ATForest implements IGPForest, Comparable, Serializable {
 
     public int compareTo(Object o) {
         return -new Double(fitness).compareTo(((ATForest) o).fitness);
-    }
-
-    @Override
-    public String toString() {
-        return Arrays.asList(trees) + " F: " + fitness + " G: " + generationOfOrigin;
     }
 
     public String[] getOrigins() {
@@ -166,6 +166,11 @@ public class ATForest implements IGPForest, Comparable, Serializable {
 
     public IGPForest copy() {
         return eliteCopy(generationOfOrigin);
+    }
+
+    @Override
+    public String toString() {
+        return Arrays.asList(trees) + " F: " + fitness + " G: " + generationOfOrigin + " #C: " + getNumOfConstants();
     }
 
     public String toMathematicaExpression() {

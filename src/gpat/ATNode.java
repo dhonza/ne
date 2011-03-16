@@ -34,6 +34,7 @@ public class ATNode implements IATNode {
 
     public ATNode(ATNode node) {
         this(node.getId(), node.getImpl(), node.terminalsConnected.length);
+        this.constants = new ArrayList<Double>(node.constants);
         this.terminalsConnected = node.terminalsConnected.clone();
     }
 
