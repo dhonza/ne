@@ -22,7 +22,7 @@ public class ParameterMatrixStorage {
     public static ParameterMatrixManager load(File file) {
         if (!file.exists()) {
             try {
-                throw new FileNotFoundException("File: " + file + " not found!");
+                throw new FileNotFoundException("File: " + file.getAbsoluteFile() + " not found! Current dir: " + System.getProperty("user.dir"));
             } catch (FileNotFoundException e) {
                 e.printStackTrace();
                 System.exit(1);
@@ -33,6 +33,7 @@ public class ParameterMatrixStorage {
             //I use apache commons configurations instead of JDK Properties, mainly because ability to include other property files
             properties = new PropertiesConfiguration(file);
         } catch (ConfigurationException e) {
+            System.err.println("File: " + file.getAbsoluteFile() + " not found!");
             e.printStackTrace();
             System.exit(1);
         }

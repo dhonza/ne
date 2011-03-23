@@ -57,7 +57,7 @@ public class ReportStorage implements Serializable {
             baseDir = new File(baseDirPrefix, suffix + "_" + cnt++);
         } while (baseDir.isDirectory() || baseDir.isFile());
         if (!baseDir.mkdirs()) {
-            throw new IllegalStateException("can not create report directory!");
+            throw new IllegalStateException("Cannot create report directory: " + baseDir + "!");
         }
 
     }

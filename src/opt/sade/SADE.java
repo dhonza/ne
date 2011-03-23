@@ -215,7 +215,7 @@ public class SADE<P> implements IEvolutionaryAlgorithm {
             p = RND.getDouble(0, 1);
             if (p <= radioactivity) {
                 index = RND.getInt(0, selectedSize - 1);
-                mutationRate = RND.getDouble(0, 1);
+//                mutationRate = RND.getDouble(0, 1);
                 x = newPoint();
                 for (int j = 0; j < dimensions; j++) {
                     CH[actualSize][j] = CH[index][j] + mutationRate * (x[j] - CH[index][j]);

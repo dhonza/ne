@@ -33,9 +33,20 @@ public class GPATMain {
 //        RND.initialize(1307157509603693013L); //4
         String type = "GPAT";
 
-        ParameterMatrixManager manager = createManager(type);
+        if (args.length == 0) {
+            throw new IllegalArgumentException("Missing parameters!");
+        }
 
-        ReportStorage reportStorage = new ReportStorage();
+        ParameterMatrixManager manager = createManager(type, args[0]);
+
+        ReportStorage reportStorage;
+
+        if (args.length > 1) {
+            reportStorage = new ReportStorage(args[1]);
+
+        } else {
+            reportStorage = new ReportStorage();
+        }
 
         for (ParameterCombination combination : manager) {
             int experiments = combination.getInteger("EXPERIMENTS");
@@ -96,9 +107,10 @@ public class GPATMain {
         reportStorage.storeExperimentsOverallResults();
     }
 
-    private static ParameterMatrixManager createManager(String type) {
+    private static ParameterMatrixManager createManager(String type, String configFile) {
+        System.out.println("Loading: " + configFile);
         if (type.equals("GPAT")) {
-            return ParameterMatrixStorage.load(new File("cfg/demo/gpatdemo.properties"));
+            return ParameterMatrixStorage.load(new File(configFile));
         } else {
             throw new IllegalArgumentException("Unsupported algorithm type");
         }

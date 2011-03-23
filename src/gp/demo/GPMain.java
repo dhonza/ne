@@ -38,9 +38,17 @@ public class GPMain {
 //        String type = "GPAAC";
 //        String type = "GPAT";
 
-        ParameterMatrixManager manager = createManager(type);
+        String cfgFile = args.length == 0 ? null : args[0];
+        ParameterMatrixManager manager = createManager(type, cfgFile);
 
-        ReportStorage reportStorage = new ReportStorage();
+        ReportStorage reportStorage;
+
+        if (args.length > 1) {
+            reportStorage = new ReportStorage(args[1]);
+
+        } else {
+            reportStorage = new ReportStorage();
+        }
 
         for (ParameterCombination combination : manager) {
             int experiments = combination.getInteger("EXPERIMENTS");
@@ -103,7 +111,11 @@ public class GPMain {
         reportStorage.storeExperimentsOverallResults();
     }
 
-    private static ParameterMatrixManager createManager(String type) {
+    private static ParameterMatrixManager createManager(String type, String configFile) {
+        if (configFile != null) {
+            System.out.println("Loading: " + configFile);
+            return ParameterMatrixStorage.load(new File(configFile));
+        }
         if (type.equals("GP")) {
             return ParameterMatrixStorage.load(new File("cfg/demo/gpdemo.properties"));
         } else if (type.equals("GEP")) {

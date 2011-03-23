@@ -1,0 +1,5 @@
+#!/bin/bash
+rm -f out.log
+rm -f err.log
+#math -run "<<optimizer.m" | tee math.out
+math -run "<<optimizer_SADE.m" | tee math.out
