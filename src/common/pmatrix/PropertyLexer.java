@@ -1,4 +1,4 @@
-// $ANTLR 3.2 Sep 23, 2009 12:02:23 /home/drchaj1/java/ne/src/common/pmatrix/Property.g 2010-05-24 19:22:49
+// $ANTLR 3.2 Sep 23, 2009 12:02:23 /Users/drchaj1/java/ne/ne/src/common/pmatrix/Property.g 2011-03-25 12:54:53
 
 package common.pmatrix;
 
@@ -6,14 +6,15 @@ package common.pmatrix;
 import org.antlr.runtime.*;
 
 public class PropertyLexer extends Lexer {
-    public static final int WS = 8;
+    public static final int WS = 9;
+    public static final int EXP = 8;
     public static final int DBL = 5;
+    public static final int T__12 = 12;
     public static final int T__11 = 11;
     public static final int T__10 = 10;
     public static final int BOOL = 6;
     public static final int INT = 4;
     public static final int EOF = -1;
-    public static final int T__9 = 9;
     public static final int STRING = 7;
 
     // delegates
@@ -33,16 +34,16 @@ public class PropertyLexer extends Lexer {
     }
 
     public String getGrammarFileName() {
-        return "/home/drchaj1/java/ne/src/common/pmatrix/Property.g";
+        return "/Users/drchaj1/java/ne/ne/src/common/pmatrix/Property.g";
     }
 
-    // $ANTLR start "T__9"
-    public final void mT__9() throws RecognitionException {
+    // $ANTLR start "T__10"
+    public final void mT__10() throws RecognitionException {
         try {
-            int _type = T__9;
+            int _type = T__10;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // /home/drchaj1/java/ne/src/common/pmatrix/Property.g:7:6: ( '(' )
-            // /home/drchaj1/java/ne/src/common/pmatrix/Property.g:7:8: '('
+            // /Users/drchaj1/java/ne/ne/src/common/pmatrix/Property.g:7:7: ( '(' )
+            // /Users/drchaj1/java/ne/ne/src/common/pmatrix/Property.g:7:9: '('
             {
                 match('(');
 
@@ -50,28 +51,7 @@ public class PropertyLexer extends Lexer {
 
             state.type = _type;
             state.channel = _channel;
-        }
-        finally {
-        }
-    }
-    // $ANTLR end "T__9"
-
-    // $ANTLR start "T__10"
-    public final void mT__10() throws RecognitionException {
-        try {
-            int _type = T__10;
-            int _channel = DEFAULT_TOKEN_CHANNEL;
-            // /home/drchaj1/java/ne/src/common/pmatrix/Property.g:8:7: ( ';' )
-            // /home/drchaj1/java/ne/src/common/pmatrix/Property.g:8:9: ';'
-            {
-                match(';');
-
-            }
-
-            state.type = _type;
-            state.channel = _channel;
-        }
-        finally {
+        } finally {
         }
     }
     // $ANTLR end "T__10"
@@ -81,8 +61,27 @@ public class PropertyLexer extends Lexer {
         try {
             int _type = T__11;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // /home/drchaj1/java/ne/src/common/pmatrix/Property.g:9:7: ( ')' )
-            // /home/drchaj1/java/ne/src/common/pmatrix/Property.g:9:9: ')'
+            // /Users/drchaj1/java/ne/ne/src/common/pmatrix/Property.g:8:7: ( ';' )
+            // /Users/drchaj1/java/ne/ne/src/common/pmatrix/Property.g:8:9: ';'
+            {
+                match(';');
+
+            }
+
+            state.type = _type;
+            state.channel = _channel;
+        } finally {
+        }
+    }
+    // $ANTLR end "T__11"
+
+    // $ANTLR start "T__12"
+    public final void mT__12() throws RecognitionException {
+        try {
+            int _type = T__12;
+            int _channel = DEFAULT_TOKEN_CHANNEL;
+            // /Users/drchaj1/java/ne/ne/src/common/pmatrix/Property.g:9:7: ( ')' )
+            // /Users/drchaj1/java/ne/ne/src/common/pmatrix/Property.g:9:9: ')'
             {
                 match(')');
 
@@ -90,21 +89,20 @@ public class PropertyLexer extends Lexer {
 
             state.type = _type;
             state.channel = _channel;
-        }
-        finally {
+        } finally {
         }
     }
-    // $ANTLR end "T__11"
+    // $ANTLR end "T__12"
 
     // $ANTLR start "INT"
     public final void mINT() throws RecognitionException {
         try {
             int _type = INT;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // /home/drchaj1/java/ne/src/common/pmatrix/Property.g:44:6: ( ( '-' | '+' )? ( '0' .. '9' )+ )
-            // /home/drchaj1/java/ne/src/common/pmatrix/Property.g:44:10: ( '-' | '+' )? ( '0' .. '9' )+
+            // /Users/drchaj1/java/ne/ne/src/common/pmatrix/Property.g:44:6: ( ( '-' | '+' )? ( '0' .. '9' )+ )
+            // /Users/drchaj1/java/ne/ne/src/common/pmatrix/Property.g:44:10: ( '-' | '+' )? ( '0' .. '9' )+
             {
-                // /home/drchaj1/java/ne/src/common/pmatrix/Property.g:44:10: ( '-' | '+' )?
+                // /Users/drchaj1/java/ne/ne/src/common/pmatrix/Property.g:44:10: ( '-' | '+' )?
                 int alt1 = 2;
                 int LA1_0 = input.LA(1);
 
@@ -113,7 +111,7 @@ public class PropertyLexer extends Lexer {
                 }
                 switch (alt1) {
                     case 1:
-                        // /home/drchaj1/java/ne/src/common/pmatrix/Property.g:
+                        // /Users/drchaj1/java/ne/ne/src/common/pmatrix/Property.g:
                     {
                         if (input.LA(1) == '+' || input.LA(1) == '-') {
                             input.consume();
@@ -130,7 +128,7 @@ public class PropertyLexer extends Lexer {
 
                 }
 
-                // /home/drchaj1/java/ne/src/common/pmatrix/Property.g:44:20: ( '0' .. '9' )+
+                // /Users/drchaj1/java/ne/ne/src/common/pmatrix/Property.g:44:20: ( '0' .. '9' )+
                 int cnt2 = 0;
                 loop2:
                 do {
@@ -144,7 +142,7 @@ public class PropertyLexer extends Lexer {
 
                     switch (alt2) {
                         case 1:
-                            // /home/drchaj1/java/ne/src/common/pmatrix/Property.g:44:20: '0' .. '9'
+                            // /Users/drchaj1/java/ne/ne/src/common/pmatrix/Property.g:44:20: '0' .. '9'
                         {
                             matchRange('0', '9');
 
@@ -165,8 +163,7 @@ public class PropertyLexer extends Lexer {
 
             state.type = _type;
             state.channel = _channel;
-        }
-        finally {
+        } finally {
         }
     }
     // $ANTLR end "INT"
@@ -176,19 +173,218 @@ public class PropertyLexer extends Lexer {
         try {
             int _type = DBL;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // /home/drchaj1/java/ne/src/common/pmatrix/Property.g:45:6: ( ( '-' | '+' )? ( '0' .. '9' )* '.' ( '0' .. '9' )+ ( ( 'e' | 'E' ) ( '-' | '+' )? ( '0' .. '9' )+ )? )
-            // /home/drchaj1/java/ne/src/common/pmatrix/Property.g:45:10: ( '-' | '+' )? ( '0' .. '9' )* '.' ( '0' .. '9' )+ ( ( 'e' | 'E' ) ( '-' | '+' )? ( '0' .. '9' )+ )?
-            {
-                // /home/drchaj1/java/ne/src/common/pmatrix/Property.g:45:10: ( '-' | '+' )?
-                int alt3 = 2;
-                int LA3_0 = input.LA(1);
+            // /Users/drchaj1/java/ne/ne/src/common/pmatrix/Property.g:45:5: ( ( '0' .. '9' )+ '.' ( '0' .. '9' )* ( EXP )? | '.' ( '0' .. '9' )+ ( EXP )? | ( '0' .. '9' )+ EXP )
+            int alt9 = 3;
+            alt9 = dfa9.predict(input);
+            switch (alt9) {
+                case 1:
+                    // /Users/drchaj1/java/ne/ne/src/common/pmatrix/Property.g:45:9: ( '0' .. '9' )+ '.' ( '0' .. '9' )* ( EXP )?
+                {
+                    // /Users/drchaj1/java/ne/ne/src/common/pmatrix/Property.g:45:9: ( '0' .. '9' )+
+                    int cnt3 = 0;
+                    loop3:
+                    do {
+                        int alt3 = 2;
+                        int LA3_0 = input.LA(1);
 
-                if ((LA3_0 == '+' || LA3_0 == '-')) {
-                    alt3 = 1;
+                        if (((LA3_0 >= '0' && LA3_0 <= '9'))) {
+                            alt3 = 1;
+                        }
+
+
+                        switch (alt3) {
+                            case 1:
+                                // /Users/drchaj1/java/ne/ne/src/common/pmatrix/Property.g:45:10: '0' .. '9'
+                            {
+                                matchRange('0', '9');
+
+                            }
+                            break;
+
+                            default:
+                                if (cnt3 >= 1) break loop3;
+                                EarlyExitException eee =
+                                        new EarlyExitException(3, input);
+                                throw eee;
+                        }
+                        cnt3++;
+                    } while (true);
+
+                    match('.');
+                    // /Users/drchaj1/java/ne/ne/src/common/pmatrix/Property.g:45:23: ( '0' .. '9' )*
+                    loop4:
+                    do {
+                        int alt4 = 2;
+                        int LA4_0 = input.LA(1);
+
+                        if (((LA4_0 >= '0' && LA4_0 <= '9'))) {
+                            alt4 = 1;
+                        }
+
+
+                        switch (alt4) {
+                            case 1:
+                                // /Users/drchaj1/java/ne/ne/src/common/pmatrix/Property.g:45:24: '0' .. '9'
+                            {
+                                matchRange('0', '9');
+
+                            }
+                            break;
+
+                            default:
+                                break loop4;
+                        }
+                    } while (true);
+
+                    // /Users/drchaj1/java/ne/ne/src/common/pmatrix/Property.g:45:34: ( EXP )?
+                    int alt5 = 2;
+                    int LA5_0 = input.LA(1);
+
+                    if ((LA5_0 == 'E' || LA5_0 == 'e')) {
+                        alt5 = 1;
+                    }
+                    switch (alt5) {
+                        case 1:
+                            // /Users/drchaj1/java/ne/ne/src/common/pmatrix/Property.g:45:34: EXP
+                        {
+                            mEXP();
+
+                        }
+                        break;
+
+                    }
+
+
                 }
-                switch (alt3) {
+                break;
+                case 2:
+                    // /Users/drchaj1/java/ne/ne/src/common/pmatrix/Property.g:46:6: '.' ( '0' .. '9' )+ ( EXP )?
+                {
+                    match('.');
+                    // /Users/drchaj1/java/ne/ne/src/common/pmatrix/Property.g:46:9: ( '0' .. '9' )+
+                    int cnt6 = 0;
+                    loop6:
+                    do {
+                        int alt6 = 2;
+                        int LA6_0 = input.LA(1);
+
+                        if (((LA6_0 >= '0' && LA6_0 <= '9'))) {
+                            alt6 = 1;
+                        }
+
+
+                        switch (alt6) {
+                            case 1:
+                                // /Users/drchaj1/java/ne/ne/src/common/pmatrix/Property.g:46:10: '0' .. '9'
+                            {
+                                matchRange('0', '9');
+
+                            }
+                            break;
+
+                            default:
+                                if (cnt6 >= 1) break loop6;
+                                EarlyExitException eee =
+                                        new EarlyExitException(6, input);
+                                throw eee;
+                        }
+                        cnt6++;
+                    } while (true);
+
+                    // /Users/drchaj1/java/ne/ne/src/common/pmatrix/Property.g:46:20: ( EXP )?
+                    int alt7 = 2;
+                    int LA7_0 = input.LA(1);
+
+                    if ((LA7_0 == 'E' || LA7_0 == 'e')) {
+                        alt7 = 1;
+                    }
+                    switch (alt7) {
+                        case 1:
+                            // /Users/drchaj1/java/ne/ne/src/common/pmatrix/Property.g:46:20: EXP
+                        {
+                            mEXP();
+
+                        }
+                        break;
+
+                    }
+
+
+                }
+                break;
+                case 3:
+                    // /Users/drchaj1/java/ne/ne/src/common/pmatrix/Property.g:47:6: ( '0' .. '9' )+ EXP
+                {
+                    // /Users/drchaj1/java/ne/ne/src/common/pmatrix/Property.g:47:6: ( '0' .. '9' )+
+                    int cnt8 = 0;
+                    loop8:
+                    do {
+                        int alt8 = 2;
+                        int LA8_0 = input.LA(1);
+
+                        if (((LA8_0 >= '0' && LA8_0 <= '9'))) {
+                            alt8 = 1;
+                        }
+
+
+                        switch (alt8) {
+                            case 1:
+                                // /Users/drchaj1/java/ne/ne/src/common/pmatrix/Property.g:47:7: '0' .. '9'
+                            {
+                                matchRange('0', '9');
+
+                            }
+                            break;
+
+                            default:
+                                if (cnt8 >= 1) break loop8;
+                                EarlyExitException eee =
+                                        new EarlyExitException(8, input);
+                                throw eee;
+                        }
+                        cnt8++;
+                    } while (true);
+
+                    mEXP();
+
+                }
+                break;
+
+            }
+            state.type = _type;
+            state.channel = _channel;
+        } finally {
+        }
+    }
+    // $ANTLR end "DBL"
+
+    // $ANTLR start "EXP"
+    public final void mEXP() throws RecognitionException {
+        try {
+            int _type = EXP;
+            int _channel = DEFAULT_TOKEN_CHANNEL;
+            // /Users/drchaj1/java/ne/ne/src/common/pmatrix/Property.g:48:5: ( ( 'e' | 'E' ) ( '-' | '+' )? ( '0' .. '9' )+ )
+            // /Users/drchaj1/java/ne/ne/src/common/pmatrix/Property.g:48:7: ( 'e' | 'E' ) ( '-' | '+' )? ( '0' .. '9' )+
+            {
+                if (input.LA(1) == 'E' || input.LA(1) == 'e') {
+                    input.consume();
+
+                } else {
+                    MismatchedSetException mse = new MismatchedSetException(null, input);
+                    recover(mse);
+                    throw mse;
+                }
+
+                // /Users/drchaj1/java/ne/ne/src/common/pmatrix/Property.g:48:16: ( '-' | '+' )?
+                int alt10 = 2;
+                int LA10_0 = input.LA(1);
+
+                if ((LA10_0 == '+' || LA10_0 == '-')) {
+                    alt10 = 1;
+                }
+                switch (alt10) {
                     case 1:
-                        // /home/drchaj1/java/ne/src/common/pmatrix/Property.g:
+                        // /Users/drchaj1/java/ne/ne/src/common/pmatrix/Property.g:
                     {
                         if (input.LA(1) == '+' || input.LA(1) == '-') {
                             input.consume();
@@ -205,20 +401,21 @@ public class PropertyLexer extends Lexer {
 
                 }
 
-                // /home/drchaj1/java/ne/src/common/pmatrix/Property.g:45:20: ( '0' .. '9' )*
-                loop4:
+                // /Users/drchaj1/java/ne/ne/src/common/pmatrix/Property.g:48:26: ( '0' .. '9' )+
+                int cnt11 = 0;
+                loop11:
                 do {
-                    int alt4 = 2;
-                    int LA4_0 = input.LA(1);
+                    int alt11 = 2;
+                    int LA11_0 = input.LA(1);
 
-                    if (((LA4_0 >= '0' && LA4_0 <= '9'))) {
-                        alt4 = 1;
+                    if (((LA11_0 >= '0' && LA11_0 <= '9'))) {
+                        alt11 = 1;
                     }
 
 
-                    switch (alt4) {
+                    switch (alt11) {
                         case 1:
-                            // /home/drchaj1/java/ne/src/common/pmatrix/Property.g:45:20: '0' .. '9'
+                            // /Users/drchaj1/java/ne/ne/src/common/pmatrix/Property.g:48:27: '0' .. '9'
                         {
                             matchRange('0', '9');
 
@@ -226,159 +423,49 @@ public class PropertyLexer extends Lexer {
                         break;
 
                         default:
-                            break loop4;
-                    }
-                } while (true);
-
-                match('.');
-                // /home/drchaj1/java/ne/src/common/pmatrix/Property.g:45:32: ( '0' .. '9' )+
-                int cnt5 = 0;
-                loop5:
-                do {
-                    int alt5 = 2;
-                    int LA5_0 = input.LA(1);
-
-                    if (((LA5_0 >= '0' && LA5_0 <= '9'))) {
-                        alt5 = 1;
-                    }
-
-
-                    switch (alt5) {
-                        case 1:
-                            // /home/drchaj1/java/ne/src/common/pmatrix/Property.g:45:32: '0' .. '9'
-                        {
-                            matchRange('0', '9');
-
-                        }
-                        break;
-
-                        default:
-                            if (cnt5 >= 1) break loop5;
+                            if (cnt11 >= 1) break loop11;
                             EarlyExitException eee =
-                                    new EarlyExitException(5, input);
+                                    new EarlyExitException(11, input);
                             throw eee;
                     }
-                    cnt5++;
+                    cnt11++;
                 } while (true);
-
-                // /home/drchaj1/java/ne/src/common/pmatrix/Property.g:45:41: ( ( 'e' | 'E' ) ( '-' | '+' )? ( '0' .. '9' )+ )?
-                int alt8 = 2;
-                int LA8_0 = input.LA(1);
-
-                if ((LA8_0 == 'E' || LA8_0 == 'e')) {
-                    alt8 = 1;
-                }
-                switch (alt8) {
-                    case 1:
-                        // /home/drchaj1/java/ne/src/common/pmatrix/Property.g:45:42: ( 'e' | 'E' ) ( '-' | '+' )? ( '0' .. '9' )+
-                    {
-                        if (input.LA(1) == 'E' || input.LA(1) == 'e') {
-                            input.consume();
-
-                        } else {
-                            MismatchedSetException mse = new MismatchedSetException(null, input);
-                            recover(mse);
-                            throw mse;
-                        }
-
-                        // /home/drchaj1/java/ne/src/common/pmatrix/Property.g:45:51: ( '-' | '+' )?
-                        int alt6 = 2;
-                        int LA6_0 = input.LA(1);
-
-                        if ((LA6_0 == '+' || LA6_0 == '-')) {
-                            alt6 = 1;
-                        }
-                        switch (alt6) {
-                            case 1:
-                                // /home/drchaj1/java/ne/src/common/pmatrix/Property.g:
-                            {
-                                if (input.LA(1) == '+' || input.LA(1) == '-') {
-                                    input.consume();
-
-                                } else {
-                                    MismatchedSetException mse = new MismatchedSetException(null, input);
-                                    recover(mse);
-                                    throw mse;
-                                }
-
-
-                            }
-                            break;
-
-                        }
-
-                        // /home/drchaj1/java/ne/src/common/pmatrix/Property.g:45:61: ( '0' .. '9' )+
-                        int cnt7 = 0;
-                        loop7:
-                        do {
-                            int alt7 = 2;
-                            int LA7_0 = input.LA(1);
-
-                            if (((LA7_0 >= '0' && LA7_0 <= '9'))) {
-                                alt7 = 1;
-                            }
-
-
-                            switch (alt7) {
-                                case 1:
-                                    // /home/drchaj1/java/ne/src/common/pmatrix/Property.g:45:61: '0' .. '9'
-                                {
-                                    matchRange('0', '9');
-
-                                }
-                                break;
-
-                                default:
-                                    if (cnt7 >= 1) break loop7;
-                                    EarlyExitException eee =
-                                            new EarlyExitException(7, input);
-                                    throw eee;
-                            }
-                            cnt7++;
-                        } while (true);
-
-
-                    }
-                    break;
-
-                }
 
 
             }
 
             state.type = _type;
             state.channel = _channel;
-        }
-        finally {
+        } finally {
         }
     }
-    // $ANTLR end "DBL"
+    // $ANTLR end "EXP"
 
     // $ANTLR start "STRING"
     public final void mSTRING() throws RecognitionException {
         try {
             int _type = STRING;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // /home/drchaj1/java/ne/src/common/pmatrix/Property.g:46:8: ( '\"' ( . )* '\"' )
-            // /home/drchaj1/java/ne/src/common/pmatrix/Property.g:46:12: '\"' ( . )* '\"'
+            // /Users/drchaj1/java/ne/ne/src/common/pmatrix/Property.g:49:8: ( '\"' ( . )* '\"' )
+            // /Users/drchaj1/java/ne/ne/src/common/pmatrix/Property.g:49:12: '\"' ( . )* '\"'
             {
                 match('\"');
-                // /home/drchaj1/java/ne/src/common/pmatrix/Property.g:46:15: ( . )*
-                loop9:
+                // /Users/drchaj1/java/ne/ne/src/common/pmatrix/Property.g:49:15: ( . )*
+                loop12:
                 do {
-                    int alt9 = 2;
-                    int LA9_0 = input.LA(1);
+                    int alt12 = 2;
+                    int LA12_0 = input.LA(1);
 
-                    if ((LA9_0 == '\"')) {
-                        alt9 = 2;
-                    } else if (((LA9_0 >= '\u0000' && LA9_0 <= '!') || (LA9_0 >= '#' && LA9_0 <= '\uFFFF'))) {
-                        alt9 = 1;
+                    if ((LA12_0 == '\"')) {
+                        alt12 = 2;
+                    } else if (((LA12_0 >= '\u0000' && LA12_0 <= '!') || (LA12_0 >= '#' && LA12_0 <= '\uFFFF'))) {
+                        alt12 = 1;
                     }
 
 
-                    switch (alt9) {
+                    switch (alt12) {
                         case 1:
-                            // /home/drchaj1/java/ne/src/common/pmatrix/Property.g:46:15: .
+                            // /Users/drchaj1/java/ne/ne/src/common/pmatrix/Property.g:49:15: .
                         {
                             matchAny();
 
@@ -386,7 +473,7 @@ public class PropertyLexer extends Lexer {
                         break;
 
                         default:
-                            break loop9;
+                            break loop12;
                     }
                 } while (true);
 
@@ -396,8 +483,7 @@ public class PropertyLexer extends Lexer {
 
             state.type = _type;
             state.channel = _channel;
-        }
-        finally {
+        } finally {
         }
     }
     // $ANTLR end "STRING"
@@ -407,24 +493,24 @@ public class PropertyLexer extends Lexer {
         try {
             int _type = WS;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // /home/drchaj1/java/ne/src/common/pmatrix/Property.g:47:6: ( ( ' ' | '\\t' )+ )
-            // /home/drchaj1/java/ne/src/common/pmatrix/Property.g:47:10: ( ' ' | '\\t' )+
+            // /Users/drchaj1/java/ne/ne/src/common/pmatrix/Property.g:50:6: ( ( ' ' | '\\t' )+ )
+            // /Users/drchaj1/java/ne/ne/src/common/pmatrix/Property.g:50:10: ( ' ' | '\\t' )+
             {
-                // /home/drchaj1/java/ne/src/common/pmatrix/Property.g:47:10: ( ' ' | '\\t' )+
-                int cnt10 = 0;
-                loop10:
+                // /Users/drchaj1/java/ne/ne/src/common/pmatrix/Property.g:50:10: ( ' ' | '\\t' )+
+                int cnt13 = 0;
+                loop13:
                 do {
-                    int alt10 = 2;
-                    int LA10_0 = input.LA(1);
+                    int alt13 = 2;
+                    int LA13_0 = input.LA(1);
 
-                    if ((LA10_0 == '\t' || LA10_0 == ' ')) {
-                        alt10 = 1;
+                    if ((LA13_0 == '\t' || LA13_0 == ' ')) {
+                        alt13 = 1;
                     }
 
 
-                    switch (alt10) {
+                    switch (alt13) {
                         case 1:
-                            // /home/drchaj1/java/ne/src/common/pmatrix/Property.g:
+                            // /Users/drchaj1/java/ne/ne/src/common/pmatrix/Property.g:
                         {
                             if (input.LA(1) == '\t' || input.LA(1) == ' ') {
                                 input.consume();
@@ -440,12 +526,12 @@ public class PropertyLexer extends Lexer {
                         break;
 
                         default:
-                            if (cnt10 >= 1) break loop10;
+                            if (cnt13 >= 1) break loop13;
                             EarlyExitException eee =
-                                    new EarlyExitException(10, input);
+                                    new EarlyExitException(13, input);
                             throw eee;
                     }
-                    cnt10++;
+                    cnt13++;
                 } while (true);
 
                 skip();
@@ -454,8 +540,7 @@ public class PropertyLexer extends Lexer {
 
             state.type = _type;
             state.channel = _channel;
-        }
-        finally {
+        } finally {
         }
     }
     // $ANTLR end "WS"
@@ -465,35 +550,35 @@ public class PropertyLexer extends Lexer {
         try {
             int _type = BOOL;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // /home/drchaj1/java/ne/src/common/pmatrix/Property.g:47:6: ( 'true' | 'TRUE' | 'false' | 'FALSE' )
-            int alt11 = 4;
+            // /Users/drchaj1/java/ne/ne/src/common/pmatrix/Property.g:50:6: ( 'true' | 'TRUE' | 'false' | 'FALSE' )
+            int alt14 = 4;
             switch (input.LA(1)) {
                 case 't': {
-                    alt11 = 1;
+                    alt14 = 1;
                 }
                 break;
                 case 'T': {
-                    alt11 = 2;
+                    alt14 = 2;
                 }
                 break;
                 case 'f': {
-                    alt11 = 3;
+                    alt14 = 3;
                 }
                 break;
                 case 'F': {
-                    alt11 = 4;
+                    alt14 = 4;
                 }
                 break;
                 default:
                     NoViableAltException nvae =
-                            new NoViableAltException("", 11, 0, input);
+                            new NoViableAltException("", 14, 0, input);
 
                     throw nvae;
             }
 
-            switch (alt11) {
+            switch (alt14) {
                 case 1:
-                    // /home/drchaj1/java/ne/src/common/pmatrix/Property.g:47:10: 'true'
+                    // /Users/drchaj1/java/ne/ne/src/common/pmatrix/Property.g:50:10: 'true'
                 {
                     match("true");
 
@@ -501,7 +586,7 @@ public class PropertyLexer extends Lexer {
                 }
                 break;
                 case 2:
-                    // /home/drchaj1/java/ne/src/common/pmatrix/Property.g:47:17: 'TRUE'
+                    // /Users/drchaj1/java/ne/ne/src/common/pmatrix/Property.g:50:17: 'TRUE'
                 {
                     match("TRUE");
 
@@ -509,7 +594,7 @@ public class PropertyLexer extends Lexer {
                 }
                 break;
                 case 3:
-                    // /home/drchaj1/java/ne/src/common/pmatrix/Property.g:47:24: 'false'
+                    // /Users/drchaj1/java/ne/ne/src/common/pmatrix/Property.g:50:24: 'false'
                 {
                     match("false");
 
@@ -517,7 +602,7 @@ public class PropertyLexer extends Lexer {
                 }
                 break;
                 case 4:
-                    // /home/drchaj1/java/ne/src/common/pmatrix/Property.g:47:32: 'FALSE'
+                    // /Users/drchaj1/java/ne/ne/src/common/pmatrix/Property.g:50:32: 'FALSE'
                 {
                     match("FALSE");
 
@@ -528,68 +613,74 @@ public class PropertyLexer extends Lexer {
             }
             state.type = _type;
             state.channel = _channel;
-        }
-        finally {
+        } finally {
         }
     }
     // $ANTLR end "BOOL"
 
     public void mTokens() throws RecognitionException {
-        // /home/drchaj1/java/ne/src/common/pmatrix/Property.g:1:8: ( T__9 | T__10 | T__11 | INT | DBL | STRING | WS | BOOL )
-        int alt12 = 8;
-        alt12 = dfa12.predict(input);
-        switch (alt12) {
+        // /Users/drchaj1/java/ne/ne/src/common/pmatrix/Property.g:1:8: ( T__10 | T__11 | T__12 | INT | DBL | EXP | STRING | WS | BOOL )
+        int alt15 = 9;
+        alt15 = dfa15.predict(input);
+        switch (alt15) {
             case 1:
-                // /home/drchaj1/java/ne/src/common/pmatrix/Property.g:1:10: T__9
-            {
-                mT__9();
-
-            }
-            break;
-            case 2:
-                // /home/drchaj1/java/ne/src/common/pmatrix/Property.g:1:15: T__10
+                // /Users/drchaj1/java/ne/ne/src/common/pmatrix/Property.g:1:10: T__10
             {
                 mT__10();
 
             }
             break;
-            case 3:
-                // /home/drchaj1/java/ne/src/common/pmatrix/Property.g:1:21: T__11
+            case 2:
+                // /Users/drchaj1/java/ne/ne/src/common/pmatrix/Property.g:1:16: T__11
             {
                 mT__11();
 
             }
             break;
+            case 3:
+                // /Users/drchaj1/java/ne/ne/src/common/pmatrix/Property.g:1:22: T__12
+            {
+                mT__12();
+
+            }
+            break;
             case 4:
-                // /home/drchaj1/java/ne/src/common/pmatrix/Property.g:1:27: INT
+                // /Users/drchaj1/java/ne/ne/src/common/pmatrix/Property.g:1:28: INT
             {
                 mINT();
 
             }
             break;
             case 5:
-                // /home/drchaj1/java/ne/src/common/pmatrix/Property.g:1:31: DBL
+                // /Users/drchaj1/java/ne/ne/src/common/pmatrix/Property.g:1:32: DBL
             {
                 mDBL();
 
             }
             break;
             case 6:
-                // /home/drchaj1/java/ne/src/common/pmatrix/Property.g:1:35: STRING
+                // /Users/drchaj1/java/ne/ne/src/common/pmatrix/Property.g:1:36: EXP
+            {
+                mEXP();
+
+            }
+            break;
+            case 7:
+                // /Users/drchaj1/java/ne/ne/src/common/pmatrix/Property.g:1:40: STRING
             {
                 mSTRING();
 
             }
             break;
-            case 7:
-                // /home/drchaj1/java/ne/src/common/pmatrix/Property.g:1:42: WS
+            case 8:
+                // /Users/drchaj1/java/ne/ne/src/common/pmatrix/Property.g:1:47: WS
             {
                 mWS();
 
             }
             break;
-            case 8:
-                // /home/drchaj1/java/ne/src/common/pmatrix/Property.g:1:45: BOOL
+            case 9:
+                // /Users/drchaj1/java/ne/ne/src/common/pmatrix/Property.g:1:50: BOOL
             {
                 mBOOL();
 
@@ -601,28 +692,84 @@ public class PropertyLexer extends Lexer {
     }
 
 
-    protected DFA12 dfa12 = new DFA12(this);
-    static final String DFA12_eotS =
-            "\5\uffff\1\12\5\uffff";
-    static final String DFA12_eofS =
+    protected DFA9 dfa9 = new DFA9(this);
+    protected DFA15 dfa15 = new DFA15(this);
+    static final String DFA9_eotS =
+            "\5\uffff";
+    static final String DFA9_eofS =
+            "\5\uffff";
+    static final String DFA9_minS =
+            "\2\56\3\uffff";
+    static final String DFA9_maxS =
+            "\1\71\1\145\3\uffff";
+    static final String DFA9_acceptS =
+            "\2\uffff\1\2\1\1\1\3";
+    static final String DFA9_specialS =
+            "\5\uffff}>";
+    static final String[] DFA9_transitionS = {
+            "\1\2\1\uffff\12\1",
+            "\1\3\1\uffff\12\1\13\uffff\1\4\37\uffff\1\4",
+            "",
+            "",
+            ""
+    };
+
+    static final short[] DFA9_eot = DFA.unpackEncodedString(DFA9_eotS);
+    static final short[] DFA9_eof = DFA.unpackEncodedString(DFA9_eofS);
+    static final char[] DFA9_min = DFA.unpackEncodedStringToUnsignedChars(DFA9_minS);
+    static final char[] DFA9_max = DFA.unpackEncodedStringToUnsignedChars(DFA9_maxS);
+    static final short[] DFA9_accept = DFA.unpackEncodedString(DFA9_acceptS);
+    static final short[] DFA9_special = DFA.unpackEncodedString(DFA9_specialS);
+    static final short[][] DFA9_transition;
+
+    static {
+        int numStates = DFA9_transitionS.length;
+        DFA9_transition = new short[numStates][];
+        for (int i = 0; i < numStates; i++) {
+            DFA9_transition[i] = DFA.unpackEncodedString(DFA9_transitionS[i]);
+        }
+    }
+
+    class DFA9 extends DFA {
+
+        public DFA9(BaseRecognizer recognizer) {
+            this.recognizer = recognizer;
+            this.decisionNumber = 9;
+            this.eot = DFA9_eot;
+            this.eof = DFA9_eof;
+            this.min = DFA9_min;
+            this.max = DFA9_max;
+            this.accept = DFA9_accept;
+            this.special = DFA9_special;
+            this.transition = DFA9_transition;
+        }
+
+        public String getDescription() {
+            return "45:1: DBL : ( ( '0' .. '9' )+ '.' ( '0' .. '9' )* ( EXP )? | '.' ( '0' .. '9' )+ ( EXP )? | ( '0' .. '9' )+ EXP );";
+        }
+    }
+
+    static final String DFA15_eotS =
+            "\5\uffff\1\4\5\uffff";
+    static final String DFA15_eofS =
             "\13\uffff";
-    static final String DFA12_minS =
-            "\1\11\3\uffff\2\56\5\uffff";
-    static final String DFA12_maxS =
-            "\1\164\3\uffff\2\71\5\uffff";
-    static final String DFA12_acceptS =
-            "\1\uffff\1\1\1\2\1\3\2\uffff\1\5\1\6\1\7\1\10\1\4";
-    static final String DFA12_specialS =
+    static final String DFA15_minS =
+            "\1\11\4\uffff\1\56\5\uffff";
+    static final String DFA15_maxS =
+            "\1\164\4\uffff\1\145\5\uffff";
+    static final String DFA15_acceptS =
+            "\1\uffff\1\1\1\2\1\3\1\4\1\uffff\1\5\1\6\1\7\1\10\1\11";
+    static final String DFA15_specialS =
             "\13\uffff}>";
-    static final String[] DFA12_transitionS = {
-            "\1\10\26\uffff\1\10\1\uffff\1\7\5\uffff\1\1\1\3\1\uffff\1\4" +
-                    "\1\uffff\1\4\1\6\1\uffff\12\5\1\uffff\1\2\12\uffff\1\11\15\uffff" +
-                    "\1\11\21\uffff\1\11\15\uffff\1\11",
+    static final String[] DFA15_transitionS = {
+            "\1\11\26\uffff\1\11\1\uffff\1\10\5\uffff\1\1\1\3\1\uffff\1\4" +
+                    "\1\uffff\1\4\1\6\1\uffff\12\5\1\uffff\1\2\11\uffff\1\7\1\12" +
+                    "\15\uffff\1\12\20\uffff\1\7\1\12\15\uffff\1\12",
             "",
             "",
             "",
-            "\1\6\1\uffff\12\5",
-            "\1\6\1\uffff\12\5",
+            "",
+            "\1\6\1\uffff\12\5\13\uffff\1\6\37\uffff\1\6",
             "",
             "",
             "",
@@ -630,38 +777,38 @@ public class PropertyLexer extends Lexer {
             ""
     };
 
-    static final short[] DFA12_eot = DFA.unpackEncodedString(DFA12_eotS);
-    static final short[] DFA12_eof = DFA.unpackEncodedString(DFA12_eofS);
-    static final char[] DFA12_min = DFA.unpackEncodedStringToUnsignedChars(DFA12_minS);
-    static final char[] DFA12_max = DFA.unpackEncodedStringToUnsignedChars(DFA12_maxS);
-    static final short[] DFA12_accept = DFA.unpackEncodedString(DFA12_acceptS);
-    static final short[] DFA12_special = DFA.unpackEncodedString(DFA12_specialS);
-    static final short[][] DFA12_transition;
+    static final short[] DFA15_eot = DFA.unpackEncodedString(DFA15_eotS);
+    static final short[] DFA15_eof = DFA.unpackEncodedString(DFA15_eofS);
+    static final char[] DFA15_min = DFA.unpackEncodedStringToUnsignedChars(DFA15_minS);
+    static final char[] DFA15_max = DFA.unpackEncodedStringToUnsignedChars(DFA15_maxS);
+    static final short[] DFA15_accept = DFA.unpackEncodedString(DFA15_acceptS);
+    static final short[] DFA15_special = DFA.unpackEncodedString(DFA15_specialS);
+    static final short[][] DFA15_transition;
 
     static {
-        int numStates = DFA12_transitionS.length;
-        DFA12_transition = new short[numStates][];
+        int numStates = DFA15_transitionS.length;
+        DFA15_transition = new short[numStates][];
         for (int i = 0; i < numStates; i++) {
-            DFA12_transition[i] = DFA.unpackEncodedString(DFA12_transitionS[i]);
+            DFA15_transition[i] = DFA.unpackEncodedString(DFA15_transitionS[i]);
         }
     }
 
-    class DFA12 extends DFA {
+    class DFA15 extends DFA {
 
-        public DFA12(BaseRecognizer recognizer) {
+        public DFA15(BaseRecognizer recognizer) {
             this.recognizer = recognizer;
-            this.decisionNumber = 12;
-            this.eot = DFA12_eot;
-            this.eof = DFA12_eof;
-            this.min = DFA12_min;
-            this.max = DFA12_max;
-            this.accept = DFA12_accept;
-            this.special = DFA12_special;
-            this.transition = DFA12_transition;
+            this.decisionNumber = 15;
+            this.eot = DFA15_eot;
+            this.eof = DFA15_eof;
+            this.min = DFA15_min;
+            this.max = DFA15_max;
+            this.accept = DFA15_accept;
+            this.special = DFA15_special;
+            this.transition = DFA15_transition;
         }
 
         public String getDescription() {
-            return "1:1: Tokens : ( T__9 | T__10 | T__11 | INT | DBL | STRING | WS | BOOL );";
+            return "1:1: Tokens : ( T__10 | T__11 | T__12 | INT | DBL | EXP | STRING | WS | BOOL );";
         }
     }
 
