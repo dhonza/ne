@@ -67,12 +67,13 @@ public class ATNode implements IATNode {
     }
 
     public double getConstantForLinkGene(ATLinkGene linkGene) {
-        if (linkGene.getTo().getId() != getId()) {
-            throw new IllegalStateException("Not incoming linkGene supplied!");
-        }
-        if (children.size() <= linkGene.getToChildrenIdx()) {
-            throw new IndexOutOfBoundsException();
-        }
+        //TODO: these integrity tests were turned of in order to speed execution up. Turn them on again!
+//        if (linkGene.getTo().getId() != getId()) {
+//            throw new IllegalStateException("Not incoming linkGene supplied!");
+//        }
+//        if (children.size() <= linkGene.getToChildrenIdx()) {
+//            throw new IndexOutOfBoundsException();
+//        }
         return getConstant(linkGene.getToChildrenIdx());
     }
 

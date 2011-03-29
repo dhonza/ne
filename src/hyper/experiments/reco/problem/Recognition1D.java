@@ -77,12 +77,12 @@ public class Recognition1D implements IProblem<INet> {
     }
 
     public ISubstrate getSubstrate() {
-//            BasicSubstrate substrate = RecoSubstrateFactory.createInputToOutput(lineSize);
+        BasicSubstrate substrate = RecoSubstrateFactory.createInputToOutput(lineSize);
 //            BasicSubstrate substrate = RecoSubstrateFactory.createInputHiddenOutput(lineSize, 2, lineSize);
 //            BasicSubstrate substrate = RecoSubstrateFactory.createInputHiddenOutput(lineSize, 3, 1);
 
         //XOR
-        BasicSubstrate substrate = RecoSubstrateFactory.createInputHiddenOutput(lineSize, lineSize, 1);
+//        BasicSubstrate substrate = RecoSubstrateFactory.createInputHiddenOutput(lineSize, lineSize, 1);
 
         //AND
 //            BasicSubstrate substrate = RecoSubstrateFactory.createInputToOutput(lineSize, 1);

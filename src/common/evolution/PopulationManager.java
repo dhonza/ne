@@ -37,6 +37,8 @@ public class PopulationManager<G, P> {
 
     private IDistance<G> genomeDistance = null;
     private IDistance<P> phenomeDistance = null;
+    private boolean computeGenomeDistanceMatrix = false;
+    private boolean computePhenomeDistanceMatrix = false;
 
     private DefaultDistance defaultDistance = DefaultDistance.GENOTYPE;
 
@@ -51,12 +53,15 @@ public class PopulationManager<G, P> {
 
     public PopulationManager(ParameterCombination parameters, List<IGenotypeToPhenotype<G, P>> perThreadConverters, List<IEvaluable<P>> perThreadEvaluators) {
         this(perThreadConverters, perThreadEvaluators);
+
+        genomeDistance = DistanceFactory.createGenomeDistance(parameters);
+        phenomeDistance = (IDistance<P>) new PrecompiledFeedForwardNetDistance();
+
         if (parameters.contains("GENOTYPE_DIVERSITY") && parameters.getBoolean("GENOTYPE_DIVERSITY")) {
-            genomeDistance = DistanceFactory.createGenomeDistance(parameters);
+            computeGenomeDistanceMatrix = true;
         }
         if (parameters.contains("PHENOTYPE_DIVERSITY") && parameters.getBoolean("PHENOTYPE_DIVERSITY")) {
-            //TODO move this to the Problem
-            phenomeDistance = (IDistance<P>) new PrecompiledFeedForwardNetDistance();
+            computePhenomeDistanceMatrix = true;
         }
         if (parameters.contains("DISTANCE") && parameters.getString("DISTANCE").toLowerCase().equals("genotype")) {
             defaultDistance = DefaultDistance.GENOTYPE;
@@ -91,10 +96,10 @@ public class PopulationManager<G, P> {
     public List<EvaluationInfo> evaluate() {
         populationStorage.convert();
 //        checkAgainstSequential(evaluationInfo);
-        if (genomeDistance != null) {
+        if (computeGenomeDistanceMatrix && genomeDistance != null) {
             getGenomeDistanceStorage().recompute();
         }
-        if (phenomeDistance != null) {
+        if (computePhenomeDistanceMatrix && phenomeDistance != null) {
             getPhenomeDistanceStorage().recompute();
         }
         return populationEvaluator.evaluate();
