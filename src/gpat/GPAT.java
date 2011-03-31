@@ -26,6 +26,8 @@ public class GPAT<P> implements IEvolutionaryAlgorithm, IGP<ATForest> {
     public static double MUTATION_SWITCH_NODE = 0.05;
     public static double MUTATION_SWITCH_CONSTANT_LOCK = 0.05;
     public static double DISTANCE_DELTA = 0.04;
+    public static double SPECIES_SIZE_MEAN = 5.0;
+    public static double SPECIES_SIZE_RANGE = 3.0;
     public static double SPECIES_REPRODUCTION_RATIO = 0.1;
     public static double DISTANCE_C1 = 1.0;
     public static double DISTANCE_C2 = 1.0;
@@ -207,9 +209,12 @@ public class GPAT<P> implements IEvolutionaryAlgorithm, IGP<ATForest> {
             }
         }
 
-        if (species.size() > 8) {
+        int maxSpecies = (int) Math.round(GPAT.SPECIES_SIZE_MEAN + 0.5 * GPAT.SPECIES_SIZE_RANGE);
+        int minSpecies = (int) Math.round(GPAT.SPECIES_SIZE_MEAN - 0.5 * GPAT.SPECIES_SIZE_RANGE);
+
+        if (species.size() > maxSpecies) {
             GPAT.DISTANCE_DELTA *= 2;
-        } else if (species.size() < 4) {
+        } else if (species.size() < minSpecies) {
             GPAT.DISTANCE_DELTA /= 2;
         }
     }
