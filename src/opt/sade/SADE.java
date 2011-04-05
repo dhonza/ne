@@ -8,6 +8,7 @@ import common.evolution.PopulationManager;
 import opt.DoubleVectorGenome;
 
 import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.List;
 
 /**
@@ -359,5 +360,9 @@ public class SADE<P> implements IEvolutionaryAlgorithm {
 
     public String getConfigString() {
         return "IMPLEMENT SADE.getConfigString()";
+    }
+
+    public List<String> getEvaluationInfoItemNames() {
+        return new LinkedList<String>();
     }
 }

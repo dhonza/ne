@@ -135,9 +135,14 @@ public class GPAT<P> implements IEvolutionaryAlgorithm, IGP<ATForest> {
 
         origins.clear();
         for (ATForest forest : evalPopulation) {
-            forest.setFitness(evaluationInfos.get(cnt).getFitness());
+            EvaluationInfo oldInfo = evalPopulation[cnt].getEvaluationInfo();
+            EvaluationInfo newInfo = evaluationInfos.get(cnt++);
+            EvaluationInfo mixedInfo = EvaluationInfo.mixTwo(oldInfo, newInfo);
+
+            forest.setFitness(mixedInfo.getFitness());
 //            System.out.println(cnt + ": " + forest);
-            forest.setEvaluationInfo(evaluationInfos.get(cnt++));
+
+            forest.setEvaluationInfo(mixedInfo);
             saveOrigin(forest);
         }
 //        System.out.println(innovationHistory);
@@ -358,5 +363,13 @@ public class GPAT<P> implements IEvolutionaryAlgorithm, IGP<ATForest> {
 
     public ATForest getBestOfGeneration() {
         return bestOfGeneration;
+    }
+
+    public List<String> getEvaluationInfoItemNames() {
+        List<String> l = new LinkedList<String>();
+        l.add("G_NODE_NUM");
+        l.add("G_CONST_NUM");
+        l.add("G_MAX_DEPTH");
+        return l;
     }
 }

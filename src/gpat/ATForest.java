@@ -9,6 +9,7 @@ import gp.TreeInputs;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.LinkedList;
 import java.util.List;
 
 /**
@@ -41,9 +42,7 @@ public class ATForest implements IGPForest, Comparable, Serializable {
         for (int i = 0; i < numOfOutputs; i++) {
             forest.trees[i] = ATTree.createMinimalSubstrate(nodeCollection, innovationHistory);
         }
-        forest.setFitness(Double.NaN);
-        forest.setEvaluationInfo(new EvaluationInfo(Double.NaN));
-        forest.getEvaluationInfo().put("G_CONST_NUM", forest.getNumOfConstants());
+        forest.initEvaluationInfo();
         return forest;
     }
 
@@ -52,14 +51,16 @@ public class ATForest implements IGPForest, Comparable, Serializable {
         forest.trees = new ATTree[trees.length];
         for (int i = 0; i < trees.length; i++) {
             ATTree toMutate = this.trees[i].copy();
-            if (RND.getDouble() < GPAT.MUTATION_ADD_LINK) {
+            boolean limitStructure = toMutate.limitStructure();
+            if (RND.getDouble() < GPAT.MUTATION_ADD_LINK && !limitStructure) {
                 toMutate.mutateAddLink();
-
+                limitStructure = toMutate.limitStructure();
             }
-            if (RND.getDouble() < GPAT.MUTATION_ADD_NODE) {
+            if (RND.getDouble() < GPAT.MUTATION_ADD_NODE && !limitStructure) {
                 toMutate.mutateAddNode();
+                limitStructure = toMutate.limitStructure();
             }
-            if (RND.getDouble() < GPAT.MUTATION_INSERT_ROOT) {
+            if (RND.getDouble() < GPAT.MUTATION_INSERT_ROOT && !limitStructure) {
                 toMutate.mutateInsertRoot();
             }
             if (RND.getDouble() < GPAT.MUTATION_SWITCH_NODE) {
@@ -70,11 +71,8 @@ public class ATForest implements IGPForest, Comparable, Serializable {
             toMutate.mutateConstants();
             forest.trees[i] = toMutate;
         }
-        forest.setFitness(Double.NaN);
-        forest.setEvaluationInfo(new EvaluationInfo(Double.NaN));
-        forest.getEvaluationInfo().put("G_CONST_NUM", forest.getNumOfConstants());
+        forest.initEvaluationInfo();
         return forest;
-
     }
 
     public ATForest eliteCopy(int generationOfOrigin) {
@@ -85,10 +83,16 @@ public class ATForest implements IGPForest, Comparable, Serializable {
             eliteCopy.elite();
             forest.trees[i] = eliteCopy;
         }
-        forest.setFitness(Double.NaN);
-        forest.setEvaluationInfo(new EvaluationInfo(Double.NaN));
-        forest.getEvaluationInfo().put("G_CONST_NUM", forest.getNumOfConstants());
+        forest.initEvaluationInfo();
         return forest;
+    }
+
+    private void initEvaluationInfo() {
+        setFitness(Double.NaN);
+        setEvaluationInfo(new EvaluationInfo(Double.NaN));
+        getEvaluationInfo().put("G_NODE_NUM", getNumOfNodes());
+        getEvaluationInfo().put("G_CONST_NUM", getNumOfConstants());
+        getEvaluationInfo().put("G_MAX_DEPTH", getMaxTreeDepth());
     }
 
     public int getNumOfInputs() {
@@ -144,6 +148,31 @@ public class ATForest implements IGPForest, Comparable, Serializable {
         return numOfConstants;
     }
 
+    public List<Integer> getTreeDepths() {
+        List<Integer> l = new LinkedList<Integer>();
+        for (ATTree tree : trees) {
+            l.add(tree.getDepth());
+        }
+        return l;
+    }
+
+    public int getMaxTreeDepth() {
+        int maxDepth = 0;
+        for (ATTree tree : trees) {
+            int d = tree.getDepth();
+            maxDepth = maxDepth < d ? d : maxDepth;
+        }
+        return maxDepth;
+    }
+
+    public int getNumOfNodes() {
+        int numOfNodes = 0;
+        for (ATTree tree : trees) {
+            numOfNodes += tree.getNumOfNodes();
+        }
+        return numOfNodes;
+    }
+
     public double[] getConstants() {
         double[][] constants = new double[trees.length][];
         for (int i = 0; i < trees.length; i++) {
@@ -170,7 +199,8 @@ public class ATForest implements IGPForest, Comparable, Serializable {
 
     @Override
     public String toString() {
-        return Arrays.asList(trees) + " F: " + fitness + " G: " + generationOfOrigin + " #C: " + getNumOfConstants();
+        return Arrays.asList(trees) + " F: " + fitness + " G: " + generationOfOrigin + " #N: " + getNumOfNodes() +
+                " #C: " + getNumOfConstants() + " D:" + getTreeDepths();
     }
 
     public String toMathematicaExpression() {

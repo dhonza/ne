@@ -194,4 +194,8 @@ abstract public class GPBase<P, T extends IGPForest> implements IEvolutionaryAlg
     public T getBestOfGeneration() {
         return bestOfGeneration;
     }
+
+    public List<String> getEvaluationInfoItemNames() {
+        return new LinkedList<String>();
+    }
 }

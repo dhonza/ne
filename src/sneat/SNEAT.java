@@ -9,6 +9,7 @@ import sneat.evolution.IdGenerator;
 import sneat.evolution.NeatParameters;
 import sneat.neatgenome.GenomeFactory;
 
+import java.util.LinkedList;
 import java.util.List;
 
 /**
@@ -65,7 +66,7 @@ public class SNEAT implements IEvolutionaryAlgorithm {
     }
 
     public void finished() {
-    exp.getSinglePopulationEvaluator().shutdown();
+        exp.getSinglePopulationEvaluator().shutdown();
     }
 
     public String getConfigString() {
@@ -126,5 +127,9 @@ public class SNEAT implements IEvolutionaryAlgorithm {
         } else {
             lastInnovation++;
         }
+    }
+
+    public List<String> getEvaluationInfoItemNames() {
+        return new LinkedList<String>();
     }
 }

@@ -68,8 +68,17 @@ public class ATTree {
         return origin;
     }
 
+
     public int getNumOfConstants() {
         return numOfConstants;
+    }
+
+    public int getDepth() {
+        return root.computeDepth();
+    }
+
+    public int getNumOfNodes() {
+        return root.computeNodes();
     }
 
     private void addNode(ATNode node) {
@@ -379,6 +388,10 @@ public class ATTree {
         }
         double distance = GPAT.DISTANCE_C1 * excess + GPAT.DISTANCE_C2 * disjoint + weights;
         return distance;
+    }
+
+    boolean limitStructure() {
+        return getDepth() > 5 || getNumOfConstants() > 4;
     }
 
 

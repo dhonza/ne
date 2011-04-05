@@ -9,6 +9,7 @@ import common.evolution.PopulationManager;
 import opt.DoubleVectorGenome;
 
 import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.List;
 
 /**
@@ -149,5 +150,9 @@ public class CMAES<P> implements IEvolutionaryAlgorithm {
 
     public String getConfigString() {
         return "IMPLEMENT CMAES.getConfigString()";
+    }
+
+    public List<String> getEvaluationInfoItemNames() {
+        return new LinkedList<String>();
     }
 }

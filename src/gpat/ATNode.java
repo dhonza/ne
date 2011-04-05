@@ -67,7 +67,7 @@ public class ATNode implements IATNode {
     }
 
     public double getConstantForLinkGene(ATLinkGene linkGene) {
-        //TODO: these integrity tests were turned of in order to speed execution up. Turn them on again!
+        //TODO: these integrity teste
 //        if (linkGene.getTo().getId() != getId()) {
 //            throw new IllegalStateException("Not incoming linkGene supplied!");
 //        }
@@ -117,6 +117,23 @@ public class ATNode implements IATNode {
 
     public void replaceChild(int idx, ATNode child) {
         children.set(idx, child);
+    }
+
+    public int computeDepth() {
+        int depth = 0;
+        for (ATNode child : children) {
+            int childDepth = child.computeDepth() + 1;
+            depth = depth < childDepth ? childDepth : depth;
+        }
+        return depth;
+    }
+
+    public int computeNodes() {
+        int nodes = 1;
+        for (ATNode child : children) {
+            nodes += child.computeNodes();
+        }
+        return nodes;
     }
 
     public double evaluate(TreeInputs treeInputs) {

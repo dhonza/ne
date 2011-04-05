@@ -1,6 +1,5 @@
 package common.evolution;
 
-import java.util.LinkedHashMap;
 import java.util.Map;
 
 /**
@@ -20,6 +19,12 @@ public class EvaluationInfo extends BasicInfo {
     public EvaluationInfo(double fitness, Map<String, Object> infoMap) {
         super(infoMap);
         this.fitness = fitness;
+    }
+
+    public static EvaluationInfo mixTwo(EvaluationInfo first, EvaluationInfo second) {
+        EvaluationInfo t = new EvaluationInfo(second.getFitness(), first.infoMap);
+        t.infoMap.putAll(second.infoMap);
+        return t;
     }
 
     public double getFitness() {

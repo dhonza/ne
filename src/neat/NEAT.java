@@ -4,6 +4,7 @@ import common.evolution.BasicInfo;
 import common.evolution.EvaluationInfo;
 import common.evolution.IEvolutionaryAlgorithm;
 
+import java.util.LinkedList;
 import java.util.List;
 
 /**
@@ -126,5 +127,9 @@ public class NEAT implements IEvolutionaryAlgorithm {
 
     public boolean isSolved() {
         return population.isSolved();
+    }
+
+    public List<String> getEvaluationInfoItemNames() {
+        return new LinkedList<String>();
     }
 }

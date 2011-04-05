@@ -71,6 +71,13 @@ public class FileProgressPrinter implements IProgressPrinter {
         List<ReportStorage.SingleRunFile> itemList = new ArrayList<ReportStorage.SingleRunFile>();
         StringBuilder builder = extractFitnessInfo();
         itemList.add(new ReportStorage.SingleRunFile("FITNESS", builder.toString()));
+
+        //write EA specific information
+        for (String name : ea.getEvaluationInfoItemNames()) {
+            itemList.add(new ReportStorage.SingleRunFile(name, extractEvaluationInfo(name).toString()));
+        }
+
+        //write PROBLEM specific information
         for (String name : problem.getEvaluationInfoItemNames()) {
             itemList.add(new ReportStorage.SingleRunFile(name, extractEvaluationInfo(name).toString()));
         }
@@ -88,9 +95,9 @@ public class FileProgressPrinter implements IProgressPrinter {
 
         //extract origins
         for (String name : generationsKeys) {
-            if(name.startsWith("O_")) {
+            if (name.startsWith("O_")) {
                 itemList.add(new ReportStorage.SingleRunFile(name, extractPopulationInfo(name, 0L).toString()));
-            }            
+            }
         }
 
         reportStorage.prepareSingleRunResults(itemList);
@@ -162,7 +169,7 @@ public class FileProgressPrinter implements IProgressPrinter {
         StringBuilder builder = new StringBuilder();
         for (InfoContainer generation : generations) {
             Object value = generation.populationInfo.getInfo(name);
-            if(value == null) {
+            if (value == null) {
                 value = defaultValue;
             }
             builder.append(value).append("\n");
