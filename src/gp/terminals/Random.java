@@ -68,4 +68,9 @@ public class Random extends Node implements ITerminal {
     public String getName() {
         return "rnd";
     }
+
+    @Override
+    public int computeConstants() {
+        return 1;
+    }
 }

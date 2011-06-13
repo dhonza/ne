@@ -137,6 +137,47 @@ public class Forest implements IGPForest, Comparable, Serializable {
         return o;
     }
 
+    public double getAverageArity() {
+        double arity = 0.0;
+        for (Tree tree : trees) {
+            arity += tree.getAverageArity();
+        }
+        return arity / trees.length;
+    }
+
+    public int getMaxTreeDepth() {
+        int maxDepth = 0;
+        for (Tree tree : trees) {
+            int d = tree.getDepth();
+            maxDepth = maxDepth < d ? d : maxDepth;
+        }
+        return maxDepth;
+    }
+
+    public int getNumOfConstants() {
+        int numOfConstants = 0;
+        for (Tree tree : trees) {
+            numOfConstants += tree.getNumOfConstants();
+        }
+        return numOfConstants;
+    }
+
+    public int getNumOfLeaves() {
+        int numOfNodes = 0;
+        for (Tree tree : trees) {
+            numOfNodes += tree.getNumOfLeaves();
+        }
+        return numOfNodes;
+    }
+
+    public int getNumOfNodes() {
+        int numOfNodes = 0;
+        for (Tree tree : trees) {
+            numOfNodes += tree.getNumOfNodes();
+        }
+        return numOfNodes;
+    }
+
     public double[] getConstants() {
         throw new IllegalStateException("Not yet implemented!");
     }

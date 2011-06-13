@@ -138,6 +138,11 @@ public abstract class AbstractArbitraryArityNode implements IArbitraryArityNode,
         return depth;
     }
 
+
+    public int computeDepth() {
+        throw new IllegalStateException("Not yet implemented!");
+    }
+
     public long getInnovation() {
         return innovation;
     }
@@ -165,6 +170,22 @@ public abstract class AbstractArbitraryArityNode implements IArbitraryArityNode,
     }
 
     public String toMathematicaExpression() {
+        throw new IllegalStateException("NOT IMPLEMENTED: remove!");
+    }
+
+    public double computeAritySum() {
+        throw new IllegalStateException("NOT IMPLEMENTED: remove!");
+    }
+
+    public int computeConstants() {
+        throw new IllegalStateException("NOT IMPLEMENTED: remove!");
+    }
+
+    public int computeLeaves() {
+        throw new IllegalStateException("NOT IMPLEMENTED: remove!");
+    }
+
+    public int computeNodes() {
         throw new IllegalStateException("NOT IMPLEMENTED: remove!");
     }
 }

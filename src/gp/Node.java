@@ -62,6 +62,50 @@ public abstract class Node implements INode, Serializable {
         return depth;
     }
 
+    public double computeAritySum() {
+        double aritySum = getArity();
+        for (INode child : nodes) {
+            aritySum += child.computeAritySum();
+        }
+        return aritySum;
+    }
+
+    public int computeDepth() {
+        int depth = 0;
+        for (INode child : nodes) {
+            int childDepth = child.computeDepth() + 1;
+            depth = depth < childDepth ? childDepth : depth;
+        }
+        return depth;
+    }
+
+    public int computeConstants() {
+        int num = 0;
+        for (INode child : nodes) {
+            num += child.computeConstants();
+        }
+        return num;
+    }
+
+    public int computeLeaves() {
+        if (nodes.length == 0) {
+            return 1;
+        }
+        int leaves = 0;
+        for (INode child : nodes) {
+            leaves += child.computeLeaves();
+        }
+        return leaves;
+    }
+
+    public int computeNodes() {
+        int num = 1;
+        for (INode child : nodes) {
+            num += child.computeNodes();
+        }
+        return num;
+    }
+
     public String innovationToString() {
         String s = innovation + " ";
         for (INode child : nodes) {

@@ -128,7 +128,7 @@ public class AACTree {
 
     public AACTree mutateAddChild(NodeCollection nodeCollection) {
         AACTree mutated = copy();
-        if(mutated.arbitraryArityNodes.size() == 0) {
+        if (mutated.arbitraryArityNodes.size() == 0) {
             this.origin.add("NO");
             return mutated;
         }
@@ -142,7 +142,7 @@ public class AACTree {
         mutatedNode.setChild(originalArity, newSubtree);
         mutatedNode.setConstant(originalArity, 1.0);
         mutatedNode.setLockedConstants(originalArity, true);
-        
+
         mutated.origin.add("ADDCHILD");
         return mutated;
     }
@@ -234,6 +234,10 @@ public class AACTree {
         copy.origin = new ArrayList<String>(origin);
         copy.populateNodes();
         return copy;
+    }
+
+    public int getDepth() {
+        return root.computeDepth();
     }
 
     @Override

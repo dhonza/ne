@@ -124,6 +124,31 @@ public class AACForest implements IGPForest, Comparable, Serializable {
         return o;
     }
 
+    public int getMaxTreeDepth() {
+        int maxDepth = 0;
+        for (AACTree tree : trees) {
+            int d = tree.getDepth();
+            maxDepth = maxDepth < d ? d : maxDepth;
+        }
+        return maxDepth;
+    }
+
+    public double getAverageArity() {
+        throw new IllegalStateException("Not yet implemented!");
+    }
+
+    public int getNumOfConstants() {
+        throw new IllegalStateException("Not yet implemented!");
+    }
+
+    public int getNumOfLeaves() {
+        throw new IllegalStateException("Not yet implemented!");
+    }
+
+    public int getNumOfNodes() {
+        throw new IllegalStateException("Not yet implemented!");
+    }
+
     public double[] getConstants() {
         throw new IllegalStateException("Not yet implemented!");
     }

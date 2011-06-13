@@ -79,6 +79,10 @@ public abstract class AbstractNode implements INode, Cloneable {
         return depth;
     }
 
+    public int computeDepth() {
+        return getDepth();
+    }
+
     public long getInnovation() {
         return innovation;
     }
@@ -106,6 +110,22 @@ public abstract class AbstractNode implements INode, Cloneable {
     }
 
     public String toMathematicaExpression() {
+        throw new IllegalStateException("NOT IMPLEMENTED: remove!");
+    }
+
+    public double computeAritySum() {
+        throw new IllegalStateException("NOT IMPLEMENTED: remove!");
+    }
+
+    public int computeConstants() {
+        throw new IllegalStateException("NOT IMPLEMENTED: remove!");
+    }
+
+    public int computeLeaves() {
+        throw new IllegalStateException("NOT IMPLEMENTED: remove!");
+    }
+
+    public int computeNodes() {
         throw new IllegalStateException("NOT IMPLEMENTED: remove!");
     }
 }

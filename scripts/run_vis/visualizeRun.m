@@ -45,4 +45,11 @@ enlarge[list_, fill_, stat_]:=list~Join~Array[fill&,Max[Length/@stat]-Length[lis
 enlarge[list_, fill_, stat_, len_]:=list~Join~Array[fill&,len-Length[list]]
 
 
+readFinalStats[names_List,statName_]:=
+Module[{allData},
+allData = ImportString[Import[#],"TSV"]&/@names;
+allData[[#[[1]],2;;,#[[3]]]]&/@Position[allData,statName]
+]
+
+
 

@@ -198,4 +198,8 @@ abstract public class GPBase<P, T extends IGPForest> implements IEvolutionaryAlg
     public List<String> getEvaluationInfoItemNames() {
         return new LinkedList<String>();
     }
+
+    public List<T> getLastGenerationPopulation() {
+        return Arrays.asList(population);
+    }
 }

@@ -35,4 +35,14 @@ public interface INode {
     String innovationToString();
 
     String toMathematicaExpression();
+
+    double computeAritySum();
+
+    int computeDepth();
+
+    int computeConstants();
+
+    int computeLeaves();
+
+    int computeNodes();
 }

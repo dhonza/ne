@@ -176,4 +176,24 @@ public class Tree implements Serializable {
             ancestors = new HashMap<INode, INode>();
         }
     }
+
+    public double getAverageArity() {
+        return root.computeAritySum() / getNumOfNodes();
+    }
+
+    public int getDepth() {
+        return root.computeDepth();
+    }
+
+    public int getNumOfConstants() {
+        return root.computeConstants();
+    }
+
+    public int getNumOfLeaves() {
+        return root.computeLeaves();
+    }
+
+    public int getNumOfNodes() {
+        return root.computeNodes();
+    }
 }

@@ -68,6 +68,9 @@ public class ATTree {
         return origin;
     }
 
+    public double getAverageArity() {
+        return root.computeAritySum() / getNumOfNodes();
+    }
 
     public int getNumOfConstants() {
         return numOfConstants;
@@ -75,6 +78,10 @@ public class ATTree {
 
     public int getDepth() {
         return root.computeDepth();
+    }
+
+    public int getNumOfLeaves() {
+        return root.computeLeaves();
     }
 
     public int getNumOfNodes() {
@@ -386,12 +393,13 @@ public class ATTree {
         if (Double.isNaN(weights)) {
             weights = 0.0;
         }
+        //TODO should be proportional to to length of a longer genome!!!
         double distance = GPAT.DISTANCE_C1 * excess + GPAT.DISTANCE_C2 * disjoint + weights;
         return distance;
     }
 
     boolean limitStructure() {
-        return getDepth() > 5 || getNumOfConstants() > 4;
+        return getDepth() > 5 || getNumOfConstants() > 10;
     }
 
 

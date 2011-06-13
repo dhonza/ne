@@ -365,6 +365,10 @@ public class GPAT<P> implements IEvolutionaryAlgorithm, IGP<ATForest> {
         return bestOfGeneration;
     }
 
+    public List<ATForest> getLastGenerationPopulation() {
+        return Arrays.asList(population);
+    }
+
     public List<String> getEvaluationInfoItemNames() {
         List<String> l = new LinkedList<String>();
         l.add("G_NODE_NUM");

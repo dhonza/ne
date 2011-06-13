@@ -18,7 +18,6 @@ public class Constant extends Node implements ITerminal {
         this(0, value);
     }
 
-
     public Constant(int depth, double value) {
         super(depth, new Node[0]);
         this.value = value;
@@ -62,5 +61,4 @@ public class Constant extends Node implements ITerminal {
     public String getName() {
         return "const";
     }
-
 }

@@ -119,6 +119,14 @@ public class ATNode implements IATNode {
         children.set(idx, child);
     }
 
+    public double computeAritySum() {
+        double aritySum = getArity();
+        for (ATNode child : children) {
+            aritySum += child.computeAritySum();
+        }
+        return aritySum;
+    }
+
     public int computeDepth() {
         int depth = 0;
         for (ATNode child : children) {
@@ -126,6 +134,17 @@ public class ATNode implements IATNode {
             depth = depth < childDepth ? childDepth : depth;
         }
         return depth;
+    }
+
+    public int computeLeaves() {
+        if (children.size() == 0) {
+            return 1;
+        }
+        int leaves = 0;
+        for (ATNode child : children) {
+            leaves += child.computeLeaves();
+        }
+        return leaves;
     }
 
     public int computeNodes() {

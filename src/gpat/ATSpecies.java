@@ -94,6 +94,7 @@ public class ATSpecies {
 
     void markForReproduction() {
         /** TODO Maybe let reproduce at least one */
+        /** TODO why -1???? */
         reproductionThreshold = (int) (GPAT.SPECIES_REPRODUCTION_RATIO * members.size()) - 1;
         if (reproductionThreshold < 0)
             reproductionThreshold = 0;

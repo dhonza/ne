@@ -140,6 +140,14 @@ public class ATForest implements IGPForest, Comparable, Serializable {
         return o;
     }
 
+    public double getAverageArity() {
+        double arity = 0.0;
+        for (ATTree tree : trees) {
+            arity += tree.getAverageArity();
+        }
+        return arity / trees.length;
+    }
+
     public int getNumOfConstants() {
         int numOfConstants = 0;
         for (ATTree tree : trees) {
@@ -163,6 +171,14 @@ public class ATForest implements IGPForest, Comparable, Serializable {
             maxDepth = maxDepth < d ? d : maxDepth;
         }
         return maxDepth;
+    }
+
+    public int getNumOfLeaves() {
+        int numOfNodes = 0;
+        for (ATTree tree : trees) {
+            numOfNodes += tree.getNumOfLeaves();
+        }
+        return numOfNodes;
     }
 
     public int getNumOfNodes() {

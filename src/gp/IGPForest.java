@@ -31,5 +31,15 @@ public interface IGPForest extends IMathematicaPrintable {
 
     void setConstants(double[] constants);
 
+    double getAverageArity();
+
+    int getMaxTreeDepth();
+
+    int getNumOfConstants();
+
+    int getNumOfLeaves();
+
+    int getNumOfNodes();
+
     IGPForest copy();
 }

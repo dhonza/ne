@@ -52,9 +52,7 @@ public class GPMain {
 
         for (ParameterCombination combination : manager) {
             int experiments = combination.getInteger("EXPERIMENTS");
-            Stats stats = new Stats();
-            stats.createDoubleStat("BSF", "EXPERIMENT", "Best So Far Fitness");
-            stats.createLongStat("BSFG", "EXPERIMENT", "Best So Far Fitness Generation");
+            Stats stats = prepareStats();
 
             StringBuilder parameterString = new StringBuilder();
             parameterString.append("FIXED:\n").append("-----\n").append(manager.toStringNewLines());
@@ -97,8 +95,7 @@ public class GPMain {
                 solver.addStopCondition(new SolvedStopCondition(populationManager));
                 solver.run();
 
-                stats.addSample("BSF", gp.getBestSoFar().getFitness());
-                stats.addSample("BSFG", gp.getLastInnovation());
+                extractStats(stats, gp);
 
                 reportStorage.storeSingleRunResults();
                 reportStorage.incrementExperimentId();
@@ -109,6 +106,58 @@ public class GPMain {
             reportStorage.incrementParameterCombinationId();
         }
         reportStorage.storeExperimentsOverallResults();
+    }
+
+
+    private static Stats prepareStats() {
+        Stats stats = new Stats();
+        stats.createDoubleStat("BSF", "EXPERIMENT", "Best So Far Fitness");
+        stats.createLongStat("BSFG", "EXPERIMENT", "Best So Far Fitness Generation");
+        stats.createDoubleStat("ARITY_BSF", "EXPERIMENT", "Best So Far Average Node Arity");
+        stats.createDoubleStat("ARITY_LG", "EXPERIMENT", "Last Generation Average of Average Node Arity");
+        stats.createDoubleStat("CONSTANTS_BSF", "EXPERIMENT", "Best So Far Number of Node Constants");
+        stats.createDoubleStat("CONSTANTS_LG", "EXPERIMENT", "Last Generation Average Number of Node Constants");
+        stats.createDoubleStat("DEPTH_BSF", "EXPERIMENT", "Best So Far Max Tree Depth");
+        stats.createDoubleStat("DEPTH_LG", "EXPERIMENT", "Last Generation Average Max Tree Depth");
+        stats.createDoubleStat("LEAVES_BSF", "EXPERIMENT", "Best So Far Number of Leaves");
+        stats.createDoubleStat("LEAVES_LG", "EXPERIMENT", "Last Generation Average Number of Leaves");
+        stats.createDoubleStat("NODES_BSF", "EXPERIMENT", "Best So Far Number of Nodes");
+        stats.createDoubleStat("NODES_LG", "EXPERIMENT", "Last Generation Average Number of Nodes");
+        return stats;
+    }
+
+    private static void extractStats(Stats stats, GPBase gp) {
+        List<Forest> lastGeneration = gp.getLastGenerationPopulation();
+        double arityLG = 0.0;
+        double constantsLG = 0.0;
+        double depthLG = 0.0;
+        double leavesLG = 0.0;
+        double nodesLG = 0.0;
+        for (Forest forest : lastGeneration) {
+            arityLG += forest.getAverageArity();
+            constantsLG += forest.getNumOfConstants();
+            depthLG += forest.getMaxTreeDepth();
+            leavesLG += forest.getNumOfLeaves();
+            nodesLG += forest.getNumOfNodes();
+        }
+        arityLG /= lastGeneration.size();
+        constantsLG /= lastGeneration.size();
+        depthLG /= lastGeneration.size();
+        leavesLG /= lastGeneration.size();
+        nodesLG /= lastGeneration.size();
+
+        stats.addSample("BSF", gp.getBestSoFar().getFitness());
+        stats.addSample("BSFG", gp.getLastInnovation());
+        stats.addSample("ARITY_BSF", gp.getBestSoFar().getAverageArity());
+        stats.addSample("ARITY_LG", arityLG);
+        stats.addSample("CONSTANTS_BSF", (double) gp.getBestSoFar().getNumOfConstants());
+        stats.addSample("CONSTANTS_LG", constantsLG);
+        stats.addSample("DEPTH_BSF", (double) gp.getBestSoFar().getMaxTreeDepth());
+        stats.addSample("DEPTH_LG", depthLG);
+        stats.addSample("LEAVES_BSF", (double) gp.getBestSoFar().getNumOfLeaves());
+        stats.addSample("LEAVES_LG", leavesLG);
+        stats.addSample("NODES_BSF", (double) gp.getBestSoFar().getNumOfNodes());
+        stats.addSample("NODES_LG", nodesLG);
     }
 
     private static ParameterMatrixManager createManager(String type, String configFile) {

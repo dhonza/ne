@@ -11,7 +11,9 @@ import common.RND;
  */
 public class ATNodeCollection {
     final protected ATNodeImpl[] functions;
+    //terminals, input terminals in this order here
     final protected ATNodeImpl[] terminals;
+    //functions, terminals, input terminals in this order here
     final protected ATNodeImpl[] all;
     final protected int indexOfFirstInput;
 

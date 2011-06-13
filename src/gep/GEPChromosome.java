@@ -694,10 +694,39 @@ public class GEPChromosome implements IGPForest, Comparable, Serializable {
             builder.append("}");
             return builder.toString();
         }
+
+        public int getDepth() {
+            return root.computeDepth();
+        }
     }
 
     public String[] getOrigins() {
         return new String[0];
+    }
+
+    public int getMaxTreeDepth() {
+        int maxDepth = 0;
+        for (Gene tree : genes) {
+            int d = tree.getDepth();
+            maxDepth = maxDepth < d ? d : maxDepth;
+        }
+        return maxDepth;
+    }
+
+    public double getAverageArity() {
+        throw new IllegalStateException("Not yet implemented!");
+    }
+
+    public int getNumOfConstants() {
+        throw new IllegalStateException("Not yet implemented!");
+    }
+
+    public int getNumOfLeaves() {
+        throw new IllegalStateException("Not yet implemented!");
+    }
+
+    public int getNumOfNodes() {
+        throw new IllegalStateException("Not yet implemented!");
     }
 
     public double[] getConstants() {
