@@ -51,7 +51,7 @@ public class Cos extends Node {
     }
 
     public String toMathematicaExpression() {
-        return new StringBuilder("Cos[").append(nodes[0].toMathematicaExpression()).append("]").toString();
+        return new StringBuilder("cos[").append(nodes[0].toMathematicaExpression()).append("]").toString();
     }
 
     public String getName() {

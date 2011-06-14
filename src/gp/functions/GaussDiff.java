@@ -53,7 +53,7 @@ public class GaussDiff extends Node {
     }
 
     public String toMathematicaExpression() {
-        return new StringBuilder("Exp[-(").append(nodes[0].toMathematicaExpression()).append(" - ").append(nodes[1].toMathematicaExpression()).append(")^2]").toString();
+        return new StringBuilder("gaussdif[").append(nodes[0].toMathematicaExpression()).append(",").append(nodes[1].toMathematicaExpression()).append("]").toString();
     }
 
     public String getName() {

@@ -60,7 +60,7 @@ public class Mod extends Node {
     }
 
     public String toMathematicaExpression() {
-        return new StringBuilder("PMod[").append(nodes[0].toMathematicaExpression()).append(",").append(nodes[1].toMathematicaExpression()).append("]").toString();
+        return new StringBuilder("mod[").append(nodes[0].toMathematicaExpression()).append(",").append(nodes[1].toMathematicaExpression()).append("]").toString();
     }
 
 //    public static void main(String[] args) {

@@ -51,7 +51,7 @@ public class Gauss extends Node {
     }
 
     public String toMathematicaExpression() {
-        return new StringBuilder("Exp[- ").append(nodes[0].toMathematicaExpression()).append("^2]").toString();
+        return new StringBuilder("gauss[").append(nodes[0].toMathematicaExpression()).append("]").toString();
     }
 
     public String getName() {

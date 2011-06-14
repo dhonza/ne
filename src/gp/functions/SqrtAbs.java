@@ -50,7 +50,7 @@ public class SqrtAbs extends Node {
     }
 
     public String toMathematicaExpression() {
-        return new StringBuilder("Sqrt[Abs[").append(nodes[0].toMathematicaExpression()).append("]]").toString();
+        return new StringBuilder("sqrtabs[").append(nodes[0].toMathematicaExpression()).append("]").toString();
     }
 
     public String getName() {

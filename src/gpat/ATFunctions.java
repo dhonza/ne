@@ -26,6 +26,11 @@ public class ATFunctions {
             }
             return result;
         }
+
+        @Override
+        public boolean hasConstants() {
+            return true;
+        }
     }
 
     public static class Times extends ATNodeImpl {
@@ -47,6 +52,7 @@ public class ATFunctions {
         @Override
         public boolean hasConstants() {
             return true;
+//            return false;
         }
 
         @Override
@@ -75,8 +81,8 @@ public class ATFunctions {
 
         @Override
         public boolean hasConstants() {
-            return true;
-//            return false;
+//            return true;
+            return false;
         }
 
         @Override
@@ -105,8 +111,8 @@ public class ATFunctions {
 
         @Override
         public boolean hasConstants() {
-            return true;
-//            return false;
+//            return true;
+            return false;
         }
 
         @Override
@@ -135,8 +141,8 @@ public class ATFunctions {
 
         @Override
         public boolean hasConstants() {
-            return true;
-//            return false;
+//            return true;
+            return false;
         }
 
         @Override

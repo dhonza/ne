@@ -178,7 +178,8 @@ public class Tree implements Serializable {
     }
 
     public double getAverageArity() {
-        return root.computeAritySum() / getNumOfNodes();
+        //TODO slow!
+        return root.computeAritySum() / (getNumOfNodes() - getNumOfLeaves());
     }
 
     public int getDepth() {

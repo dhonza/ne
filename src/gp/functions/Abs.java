@@ -50,7 +50,7 @@ public class Abs extends Node {
     }
 
     public String toMathematicaExpression() {
-        return new StringBuilder("Abs[").append(nodes[0].toMathematicaExpression()).append("]").toString();
+        return new StringBuilder("abs[").append(nodes[0].toMathematicaExpression()).append("]").toString();
     }
 
     public String getName() {

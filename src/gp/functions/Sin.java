@@ -50,7 +50,7 @@ public class Sin extends Node {
     }
 
     public String toMathematicaExpression() {
-        return new StringBuilder("Sin[").append(nodes[0].toMathematicaExpression()).append("]").toString();
+        return new StringBuilder("sin[").append(nodes[0].toMathematicaExpression()).append("]").toString();
     }
 
     public String getName() {

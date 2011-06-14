@@ -50,7 +50,7 @@ public class Atan extends Node {
     }
 
     public String toMathematicaExpression() {
-        return new StringBuilder("Atan[").append(nodes[0].toMathematicaExpression()).append("]").toString();
+        return new StringBuilder("atan[").append(nodes[0].toMathematicaExpression()).append("]").toString();
     }
 
     public String getName() {

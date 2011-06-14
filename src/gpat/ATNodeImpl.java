@@ -15,7 +15,8 @@ public abstract class ATNodeImpl {
     abstract public double evaluate(IATNode node, TreeInputs treeInputs);
 
     public boolean hasConstants() {
-        return true;
+//        return true;
+        return false;
     }
 
     public boolean isTerminal() {
