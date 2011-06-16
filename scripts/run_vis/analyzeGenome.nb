@@ -10,14 +10,17 @@
 NotebookFileLineBreakTest
 NotebookFileLineBreakTest
 NotebookDataPosition[       157,          7]
-NotebookDataLength[     27077,        720]
-NotebookOptionsPosition[     26103,        682]
-NotebookOutlinePosition[     26461,        698]
-CellTagsIndexPosition[     26418,        695]
+NotebookDataLength[     29229,        780]
+NotebookOptionsPosition[     27935,        732]
+NotebookOutlinePosition[     28293,        748]
+CellTagsIndexPosition[     28250,        745]
 WindowFrame->Normal*)
 
 (* Beginning of Notebook Content *)
 Notebook[{
+Cell["Nonterminals to search for.", "Text",
+ CellChangeTimes->{{3.517125503527154*^9, 3.517125527411147*^9}}],
+
 Cell[BoxData[{
  RowBox[{
   RowBox[{
@@ -40,6 +43,7 @@ Cell[BoxData[{
     RowBox[{
     "plus", ",", "times", ",", "atan", ",", "sin", ",", " ", "gauss"}], 
     "}"}]}], ";"}]}], "Input",
+ InitializationCell->True,
  CellChangeTimes->{{3.517049904732492*^9, 3.517049942635824*^9}, {
    3.51705009171941*^9, 3.517050102773837*^9}, 3.517050139565146*^9, {
    3.5170531732473173`*^9, 3.5170531869966373`*^9}, {3.517053374502739*^9, 
@@ -48,15 +52,20 @@ Cell[BoxData[{
    3.51705354209134*^9}, {3.517053605973386*^9, 3.517053606770265*^9}, {
    3.5170537561127768`*^9, 3.517053798127245*^9}}],
 
+Cell["Read the best so far genome. Returns expression.", "Text",
+ CellChangeTimes->{{3.517125538704051*^9, 3.517125567914022*^9}}],
+
 Cell[BoxData[
  RowBox[{
   RowBox[{"readBSFGenome", "[", "fileName_", "]"}], ":=", " ", 
   "\[IndentingNewLine]", 
   RowBox[{"Module", "[", 
    RowBox[{
-    RowBox[{"{", "exp", "}"}], ",", "\[IndentingNewLine]", 
-    RowBox[{
-     RowBox[{"exp", "=", 
+    RowBox[{"{", 
+     RowBox[{"str", ",", "line", ",", "prev"}], "}"}], ",", 
+    "\[IndentingNewLine]", 
+    RowBox[{"(*", 
+     RowBox[{
       RowBox[{
        RowBox[{"ToExpression", "[", 
         RowBox[{"StringSplit", "[", 
@@ -64,12 +73,40 @@ Cell[BoxData[
           RowBox[{"Import", "[", "fileName", "]"}], ",", "\"\<\\n\>\""}], 
          "]"}], "]"}], "\[LeftDoubleBracket]", 
        RowBox[{
-        RowBox[{"-", "1"}], ",", "1", ",", "1"}], "\[RightDoubleBracket]"}]}],
-      ";", "\[IndentingNewLine]", "exp"}]}], "\[IndentingNewLine]", 
+        RowBox[{"-", "1"}], ",", "1", ",", "1"}], "\[RightDoubleBracket]"}], 
+      ";"}], "*)"}], "\[IndentingNewLine]", 
+    RowBox[{
+     RowBox[{"str", "=", 
+      RowBox[{"OpenRead", "[", "fileName", "]"}]}], ";", 
+     "\[IndentingNewLine]", 
+     RowBox[{"line", "=", 
+      RowBox[{"Read", "[", 
+       RowBox[{"str", ",", " ", "String"}], "]"}]}], ";", 
+     "\[IndentingNewLine]", 
+     RowBox[{"While", "[", 
+      RowBox[{
+       RowBox[{"line", "=!=", "EndOfFile"}], ",", 
+       RowBox[{
+        RowBox[{"prev", "=", "line"}], ";", 
+        RowBox[{"line", "=", 
+         RowBox[{"Read", "[", 
+          RowBox[{"str", ",", " ", "String"}], "]"}]}]}]}], "]"}], ";", 
+     "\[IndentingNewLine]", 
+     RowBox[{"Sequence", "@@", 
+      RowBox[{
+       RowBox[{"ToExpression", "[", "prev", "]"}], "\[LeftDoubleBracket]", 
+       "1", "\[RightDoubleBracket]"}]}]}]}], "\[IndentingNewLine]", 
    "]"}]}]], "Input",
+ InitializationCell->True,
  CellChangeTimes->{{3.5170501999644747`*^9, 3.517050247903195*^9}, {
   3.517054996717311*^9, 3.517055028049903*^9}, {3.5170554072808857`*^9, 
-  3.517055407537677*^9}}],
+  3.517055407537677*^9}, {3.517125171467124*^9, 3.5171252720432262`*^9}}],
+
+Cell["\<\
+Computes the ratio of the amount of each type of nonterminal.\
+\>", "Text",
+ CellChangeTimes->{{3.5171255778868027`*^9, 3.51712560278841*^9}, {
+  3.5171256425065536`*^9, 3.517125663839457*^9}}],
 
 Cell[BoxData[
  RowBox[{
@@ -95,10 +132,14 @@ Cell[BoxData[
        RowBox[{"total", "\[Equal]", "0"}], ",", "counts", ",", 
        RowBox[{"counts", "/", "total"}]}], "]"}]}]}], "\[IndentingNewLine]", 
    "]"}]}]], "Input",
+ InitializationCell->True,
  CellChangeTimes->{{3.5170503691159687`*^9, 3.517050419179454*^9}, {
   3.517050459947259*^9, 3.517050478049584*^9}, {3.517055123515703*^9, 
   3.5170551277870903`*^9}, {3.517055188020546*^9, 3.517055227474666*^9}, {
   3.5170554014593763`*^9, 3.517055401777433*^9}}],
+
+Cell["Computes average ratio from all experiments in a directory.", "Text",
+ CellChangeTimes->{{3.517125687379624*^9, 3.51712572152677*^9}}],
 
 Cell[BoxData[
  RowBox[{
@@ -117,11 +158,15 @@ Cell[BoxData[
       RowBox[{"FileNames", "[", 
        RowBox[{"\"\<*O_GENOMES_MATH.txt\>\"", ",", "dir"}], "]"}]}], "]"}]}], 
    "\[IndentingNewLine]", "]"}]}]], "Input",
+ InitializationCell->True,
  CellChangeTimes->{{3.5170505579695797`*^9, 3.517050591774064*^9}, {
   3.51705063635562*^9, 3.517050643216586*^9}, {3.5170507746504374`*^9, 
   3.5170508522451887`*^9}, {3.5170509040803747`*^9, 3.517050907286434*^9}, {
   3.51705106671696*^9, 3.517051086888629*^9}, {3.517051295956573*^9, 
   3.517051304436776*^9}}],
+
+Cell["Plot it as a bar chart.", "Text",
+ CellChangeTimes->{{3.517125726421444*^9, 3.517125747094989*^9}}],
 
 Cell[BoxData[
  RowBox[{
@@ -133,6 +178,7 @@ Cell[BoxData[
      RowBox[{"dir", ",", "functions"}], "]"}], ",", 
     RowBox[{"ChartStyle", "\[Rule]", "\"\<Rainbow\>\""}], ",", 
     RowBox[{"ChartLegends", "\[Rule]", "functions"}]}], "]"}]}]], "Input",
+ InitializationCell->True,
  CellChangeTimes->{{3.517052014907928*^9, 3.517052078826483*^9}}],
 
 Cell[CellGroupData[{
@@ -215,7 +261,8 @@ Cell[BoxData[
  RowBox[{"plotAverageFunctionRatios", "[", 
   RowBox[{"\"\<~/java/exp/GPAT/\>\"", ",", "gpatFunctions"}], "]"}]], "Input",\
 
- CellChangeTimes->{{3.517052083565239*^9, 3.517052085705019*^9}}],
+ CellChangeTimes->{{3.517052083565239*^9, 3.517052085705019*^9}, {
+  3.51712529445158*^9, 3.5171253158503857`*^9}}],
 
 Cell[BoxData[
  TemplateBox[{GraphicsBox[{{
@@ -441,7 +488,9 @@ Cell[BoxData[
     BaselinePosition -> {1, 1}]& ),
   InterpretationFunction->(RowBox[{"Labeled", "[", 
      RowBox[{#, ",", #2, ",", "Right"}], "]"}]& )]], "Output",
- CellChangeTimes->{3.5170520928742228`*^9, 3.517052253594975*^9}]
+ CellChangeTimes->{
+  3.5170520928742228`*^9, 3.517052253594975*^9, {3.517125283099485*^9, 
+   3.517125319489259*^9}, 3.5171257780331182`*^9}]
 }, Open  ]],
 
 Cell[CellGroupData[{
@@ -677,7 +726,8 @@ Cell[BoxData[
   InterpretationFunction->(RowBox[{"Labeled", "[", 
      RowBox[{#, ",", #2, ",", "Right"}], "]"}]& )]], "Output",
  CellChangeTimes->{3.5170549374317493`*^9, 3.5170551092569237`*^9, 
-  3.51705517661874*^9, 3.5170553173415337`*^9, 3.5170554927012*^9}]
+  3.51705517661874*^9, 3.5170553173415337`*^9, 3.5170554927012*^9, 
+  3.517125288729707*^9}]
 }, Open  ]]
 },
 WindowSize->{1131, 850},
@@ -697,30 +747,40 @@ CellTagsIndex->{}
 *)
 (*NotebookFileOutline
 Notebook[{
-Cell[557, 20, 1194, 28, 58, "Input"],
-Cell[1754, 50, 834, 21, 88, "Input"],
-Cell[2591, 73, 1117, 27, 103, "Input"],
-Cell[3711, 102, 928, 21, 73, "Input"],
-Cell[4642, 125, 470, 10, 43, "Input"],
+Cell[557, 20, 109, 1, 26, "Text"],
+Cell[669, 23, 1221, 29, 58, "Input",
+ InitializationCell->True],
+Cell[1893, 54, 130, 1, 26, "Text"],
+Cell[2026, 57, 1704, 45, 133, "Input",
+ InitializationCell->True],
+Cell[3733, 104, 203, 4, 26, "Text"],
+Cell[3939, 110, 1144, 28, 103, "Input",
+ InitializationCell->True],
+Cell[5086, 140, 140, 1, 26, "Text"],
+Cell[5229, 143, 955, 22, 73, "Input",
+ InitializationCell->True],
+Cell[6187, 167, 105, 1, 26, "Text"],
+Cell[6295, 170, 497, 11, 43, "Input",
+ InitializationCell->True],
 Cell[CellGroupData[{
-Cell[5137, 139, 619, 9, 27, "Input"],
-Cell[5759, 150, 601, 12, 47, "Output"]
+Cell[6817, 185, 619, 9, 27, "Input"],
+Cell[7439, 196, 601, 12, 47, "Output"]
 }, Open  ]],
 Cell[CellGroupData[{
-Cell[6397, 167, 389, 7, 27, "Input"],
-Cell[6789, 176, 418, 11, 47, "Output"]
+Cell[8077, 213, 389, 7, 27, "Input"],
+Cell[8469, 222, 418, 11, 47, "Output"]
 }, Open  ]],
 Cell[CellGroupData[{
-Cell[7244, 192, 61, 1, 27, "Input"],
-Cell[7308, 195, 393, 13, 47, "Output"]
+Cell[8924, 238, 61, 1, 27, "Input"],
+Cell[8988, 241, 393, 13, 47, "Output"]
 }, Open  ]],
 Cell[CellGroupData[{
-Cell[7738, 213, 204, 4, 27, "Input"],
-Cell[7945, 219, 8814, 224, 240, "Output"]
+Cell[9418, 259, 254, 5, 27, "Input"],
+Cell[9675, 266, 8891, 226, 240, "Output"]
 }, Open  ]],
 Cell[CellGroupData[{
-Cell[16796, 448, 250, 4, 27, "Input"],
-Cell[17049, 454, 9038, 225, 236, "Output"]
+Cell[18603, 497, 250, 4, 27, "Input"],
+Cell[18856, 503, 9063, 226, 236, "Output"]
 }, Open  ]]
 }
 ]
