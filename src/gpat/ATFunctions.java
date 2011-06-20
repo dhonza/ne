@@ -1,5 +1,7 @@
 package gpat;
 
+import common.RND;
+import gp.GP;
 import gp.TreeInputs;
 
 /**
@@ -21,14 +23,21 @@ public class ATFunctions {
 
         public double evaluate(IATNode node, TreeInputs treeInputs) {
             double result = 0.0;
-            for (int i = 0; i < node.getArity(); i++) {
-                result += node.getConstant(i) * node.getChild(i).evaluate(treeInputs);
+            if (hasConstants()) {
+                for (int i = 0; i < node.getArity(); i++) {
+                    result += node.getConstant(i) * node.getChild(i).evaluate(treeInputs);
+                }
+            } else {
+                for (int i = 0; i < node.getArity(); i++) {
+                    result += node.getChild(i).evaluate(treeInputs);
+                }
             }
             return result;
         }
 
         @Override
         public boolean hasConstants() {
+//            return false;
             return true;
         }
     }
@@ -51,8 +60,8 @@ public class ATFunctions {
 
         @Override
         public boolean hasConstants() {
-            return true;
-//            return false;
+//            return true;
+            return false;
         }
 
         @Override
@@ -71,12 +80,7 @@ public class ATFunctions {
             if (node.getArity() == 0) {
                 return 0.0;
             }
-            double result = node.getChild(0).evaluate(treeInputs);
-            for (int i = 1; i < node.getArity(); i++) {
-//                result += node.getChild(i).evaluate(treeInputs);
-                result += node.getConstant(i) * node.getChild(i).evaluate(treeInputs);
-            }
-            return Math.atan(result);
+            return Math.atan(innerPotential(node, treeInputs));
         }
 
         @Override
@@ -101,12 +105,7 @@ public class ATFunctions {
             if (node.getArity() == 0) {
                 return 0.0;
             }
-            double result = node.getChild(0).evaluate(treeInputs);
-            for (int i = 1; i < node.getArity(); i++) {
-//                result += node.getChild(i).evaluate(treeInputs);
-                result += node.getConstant(i) * node.getChild(i).evaluate(treeInputs);
-            }
-            return Math.sin(result);
+            return Math.sin(innerPotential(node, treeInputs));
         }
 
         @Override
@@ -131,11 +130,7 @@ public class ATFunctions {
             if (node.getArity() == 0) {
                 return 0.0;
             }
-            double result = node.getChild(0).evaluate(treeInputs);
-            for (int i = 1; i < node.getArity(); i++) {
-//                result += node.getChild(i).evaluate(treeInputs);
-                result += node.getConstant(i) * node.getChild(i).evaluate(treeInputs);
-            }
+            double result = (innerPotential(node, treeInputs));
             return Math.exp(-(result * result));
         }
 
@@ -149,6 +144,30 @@ public class ATFunctions {
         public int repeatInput() {
             return Integer.MAX_VALUE;
 //            return 1;
+        }
+    }
+
+    public static class Random extends ATNodeImpl {
+        final private double value;
+
+        public Random() {
+            this.value = RND.getDouble(-GP.CONSTANT_AMPLITUDE, GP.CONSTANT_AMPLITUDE);
+        }
+
+        public double evaluate(IATNode node, TreeInputs treeInputs) {
+            return value;
+        }
+
+        public String getName() {
+            if (value == Math.round(value)) {
+                return Integer.toString((int) value);
+            }
+            return Double.toString(value);
+        }
+
+        @Override
+        public boolean hasConstants() {
+            return false;
         }
     }
 }

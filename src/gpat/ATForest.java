@@ -3,6 +3,7 @@ package gpat;
 import common.ArrayHelper;
 import common.RND;
 import common.evolution.EvaluationInfo;
+import common.evolution.GenomeCounter;
 import gp.IGPForest;
 import gp.TreeInputs;
 
@@ -20,6 +21,9 @@ import java.util.List;
  * To change this template use File | Settings | File Templates.
  */
 public class ATForest implements IGPForest, Comparable, Serializable {
+    final private int id;
+    private int parentId = -1;
+
     ATTree[] trees;
     private double fitness = -Double.MAX_VALUE;
     private EvaluationInfo evaluationInfo;
@@ -27,13 +31,27 @@ public class ATForest implements IGPForest, Comparable, Serializable {
     private TreeInputs treeInputs;
     private ATInnovationHistory innovationHistory;
 
-    private ATForest(int generationOfOrigin, int numOfInputs) {
+    private ATForest(int generationOfOrigin, int numOfInputs, int parentId) {
         this.generationOfOrigin = generationOfOrigin;
         this.treeInputs = new TreeInputs(numOfInputs);
+        this.id = GenomeCounter.INSTANCE.getNext();
+        this.parentId = parentId;
+    }
+
+    private ATForest(int generationOfOrigin, int numOfInputs) {
+        this(generationOfOrigin, numOfInputs, -1);
     }
 
     public static ATForest createEmpty() {
         return new ATForest(0, 0);
+    }
+
+    public int getId() {
+        return id;
+    }
+
+    public int getParentId() {
+        return parentId;
     }
 
     public static ATForest createRandom(int generationOfOrigin, int numOfInputs, int numOfOutputs, ATNodeCollection nodeCollection, ATInnovationHistory innovationHistory) {
@@ -47,7 +65,7 @@ public class ATForest implements IGPForest, Comparable, Serializable {
     }
 
     public ATForest mutate(int generationOfOrigin) {
-        ATForest forest = new ATForest(generationOfOrigin, this.getNumOfInputs());
+        ATForest forest = new ATForest(generationOfOrigin, this.getNumOfInputs(), id);
         forest.trees = new ATTree[trees.length];
         for (int i = 0; i < trees.length; i++) {
             ATTree toMutate = this.trees[i].copy();
@@ -76,7 +94,7 @@ public class ATForest implements IGPForest, Comparable, Serializable {
     }
 
     public ATForest eliteCopy(int generationOfOrigin) {
-        ATForest forest = new ATForest(generationOfOrigin, this.getNumOfInputs());
+        ATForest forest = new ATForest(generationOfOrigin, this.getNumOfInputs(), id);
         forest.trees = new ATTree[trees.length];
         for (int i = 0; i < trees.length; i++) {
             ATTree eliteCopy = this.trees[i].copy();

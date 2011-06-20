@@ -30,6 +30,14 @@ public class AACForest implements IGPForest, Comparable, Serializable {
         this.treeInputs = new TreeInputs(numOfInputs);
     }
 
+    public int getId() {
+        throw new IllegalStateException("Not yet implemented!");
+    }
+
+    public int getParentId() {
+        throw new IllegalStateException("Not yet implemented!");
+    }
+
     public static AACForest createEmpty() {
         return new AACForest(0, 0);
     }

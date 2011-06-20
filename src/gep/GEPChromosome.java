@@ -31,6 +31,14 @@ public class GEPChromosome implements IGPForest, Comparable, Serializable {
         this.treeInputs = new TreeInputs(numOfInputs);
     }
 
+    public int getId() {
+        throw new IllegalStateException("Not yet implemented!");
+    }
+
+    public int getParentId() {
+        throw new IllegalStateException("Not yet implemented!");
+    }
+
     public double getFitness() {
         return fitness;
     }

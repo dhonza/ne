@@ -17,4 +17,6 @@ public interface IATNode {
     IATNode getChild(int idx);
 
     double evaluate(TreeInputs treeInputs);
+
+    boolean mutate();
 }

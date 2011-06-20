@@ -30,4 +30,20 @@ public abstract class ATNodeImpl {
     public int repeatInput() {
         return 1;
     }
+
+    protected double innerPotential(IATNode node, TreeInputs treeInputs) {
+        if (hasConstants()) {
+            double result = node.getConstant(0) * node.getChild(0).evaluate(treeInputs);
+            for (int i = 1; i < node.getArity(); i++) {
+                result += node.getConstant(i) * node.getChild(i).evaluate(treeInputs);
+            }
+            return result;
+        } else {
+            double result = node.getChild(0).evaluate(treeInputs);
+            for (int i = 1; i < node.getArity(); i++) {
+                result += node.getChild(i).evaluate(treeInputs);
+            }
+            return result;
+        }
+    }
 }

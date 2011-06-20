@@ -1,7 +1,6 @@
 package gpat;
 
 import common.RND;
-import gp.GP;
 import gp.TreeInputs;
 
 import java.util.ArrayList;
@@ -74,7 +73,10 @@ public class ATTree {
     }
 
     public int getNumOfConstants() {
-        return numOfConstants;
+        //this returns the number of all constants including those not used (hasConstants() -> false).
+//        return numOfConstants;
+        //this returns only used constants
+        return root.computeUsedConstants();
     }
 
     public int getDepth() {
@@ -263,16 +265,7 @@ public class ATTree {
     public void mutateConstants() {
         boolean mutation = false;
         for (ATNode node : nodeGeneList) {
-            for (int i = 0; i < node.getArity(); i++) {
-                if (RND.getDouble() < GP.MUTATION_CAUCHY_PROBABILITY) {
-                    node.setConstant(i, node.getConstant(i) + GP.MUTATION_CAUCHY_POWER * RND.getCauchy());
-                    mutation = true;
-                }
-                if (RND.getDouble() < GPAT.MUTATION_REPLACE_CONSTANT) {
-                    node.setConstant(i, RND.getDouble(-GP.CONSTANT_AMPLITUDE, GP.CONSTANT_AMPLITUDE));
-                    mutation = true;
-                }
-            }
+            mutation = node.mutate();
         }
         if (mutation) {
             origin.add("CONSTANTS");
@@ -466,7 +459,7 @@ public class ATTree {
         for (ATNode node : tree.nodeGeneList) {
             cnt += node.getArity();
         }
-        if (cnt != tree.getNumOfConstants()) {
+        if (cnt != tree.numOfConstants) {
             throw new IllegalStateException("The number of constants does not match: " + cnt + " vs. " + tree.getNumOfConstants() + "\n" + tree);
         }
 

@@ -9,4 +9,10 @@ package common.evolution;
  */
 public interface IMathematicaPrintable {
     String toMathematicaExpression();
+
+    int getId();
+
+    int getParentId();
+
+    double getFitness();
 }

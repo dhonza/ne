@@ -2,6 +2,7 @@ package gp;
 
 import common.RND;
 import common.evolution.EvaluationInfo;
+import common.evolution.GenomeCounter;
 
 import java.io.Serializable;
 import java.util.Arrays;
@@ -14,6 +15,9 @@ import java.util.Arrays;
  * To change this template use File | Settings | File Templates.
  */
 public class Forest implements IGPForest, Comparable, Serializable {
+    final private int id;
+    private int parentId = -1;
+
     Tree[] trees;
     private double fitness = -Double.MAX_VALUE;
     private EvaluationInfo evaluationInfo;
@@ -21,11 +25,22 @@ public class Forest implements IGPForest, Comparable, Serializable {
     private TreeInputs treeInputs;
 
     private Forest(int generationOfOrigin, int numOfInputs) {
-        this.generationOfOrigin = generationOfOrigin;
-        this.treeInputs = new TreeInputs(numOfInputs);
+        this(generationOfOrigin, numOfInputs, -1);
     }
 
-    public Forest() {
+    private Forest(int generationOfOrigin, int numOfInputs, int parentId) {
+        this.generationOfOrigin = generationOfOrigin;
+        this.treeInputs = new TreeInputs(numOfInputs);
+        this.id = GenomeCounter.INSTANCE.getNext();
+        this.parentId = parentId;
+    }
+
+    public int getId() {
+        return id;
+    }
+
+    public int getParentId() {
+        return parentId;
     }
 
     public double getFitness() {
@@ -49,7 +64,7 @@ public class Forest implements IGPForest, Comparable, Serializable {
     }
 
     public static Forest createRandom(int generationOfOrigin, int numOfInputs, int numOfOutputs, NodeCollection nodeCollection) {
-        Forest forest = new Forest(generationOfOrigin, numOfInputs);
+        Forest forest = new Forest(generationOfOrigin, numOfInputs, -1);
         forest.trees = new Tree[numOfOutputs];
         for (int i = 0; i < numOfOutputs; i++) {
             forest.trees[i] = Tree.createRandom(nodeCollection);
@@ -58,7 +73,7 @@ public class Forest implements IGPForest, Comparable, Serializable {
     }
 
     public Forest mutate(NodeCollection nodeCollection, int generationOfOrigin) {
-        Forest forest = new Forest(generationOfOrigin, this.getNumOfInputs());
+        Forest forest = new Forest(generationOfOrigin, this.getNumOfInputs(), id);
         forest.trees = new Tree[trees.length];
         //TODO nebo vybrat jeden?
         for (int i = 0; i < trees.length; i++) {

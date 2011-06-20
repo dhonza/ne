@@ -1,5 +1,6 @@
 package common.evolution;
 
+import common.mathematica.MathematicaUtils;
 import common.parallel.ParallelTransform;
 
 import java.util.ArrayList;
@@ -121,12 +122,24 @@ public class SimplePopulationStorage<G, P> implements IPopulationStorage<G, P, P
         StringBuilder s = new StringBuilder();
         s.append('{');
         for (int i = 0, genomesSize = genomes.size(); i < genomesSize - 1; i++) {
-            G genome = genomes.get(i);
-            s.append(((IMathematicaPrintable) genome).toMathematicaExpression());
+            IMathematicaPrintable genome = (IMathematicaPrintable) genomes.get(i);
+            genomeToMathematica(s, genome);
             s.append(", ");
         }
-        s.append(((IMathematicaPrintable) genomes.get(genomes.size() - 1)).toMathematicaExpression());
+        genomeToMathematica(s, (IMathematicaPrintable) genomes.get(genomes.size() - 1));
         s.append('}');
         return s.toString();
+    }
+
+    private static void genomeToMathematica(StringBuilder s, IMathematicaPrintable genome) {
+        s.append('{');
+        s.append(genome.getId());
+        s.append(',');
+        s.append(genome.getParentId());
+        s.append(',');
+        s.append(genome.toMathematicaExpression());
+        s.append(',');
+        s.append(MathematicaUtils.toMathematica(genome.getFitness()));
+        s.append('}');
     }
 }

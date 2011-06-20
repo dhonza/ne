@@ -1,6 +1,8 @@
 package gpat;
 
+import common.RND;
 import common.mathematica.MathematicaUtils;
+import gp.GP;
 import gp.TreeInputs;
 
 import java.util.ArrayList;
@@ -127,6 +129,17 @@ public class ATNode implements IATNode {
         return aritySum;
     }
 
+    public int computeUsedConstants() {
+        if (impl instanceof ATFunctions.Random) {
+            return 1;
+        }
+        int sum = hasConstants() ? getArity() : 0;
+        for (ATNode child : children) {
+            sum += child.computeUsedConstants();
+        }
+        return sum;
+    }
+
     public int computeDepth() {
         int depth = 0;
         for (ATNode child : children) {
@@ -157,6 +170,21 @@ public class ATNode implements IATNode {
 
     public double evaluate(TreeInputs treeInputs) {
         return impl.evaluate(this, treeInputs);
+    }
+
+    public boolean mutate() {
+        boolean mutation = false;
+        for (int i = 0; i < getArity(); i++) {
+            if (RND.getDouble() < GP.MUTATION_CAUCHY_PROBABILITY) {
+                setConstant(i, getConstant(i) + GP.MUTATION_CAUCHY_POWER * RND.getCauchy());
+                mutation = true;
+            }
+            if (RND.getDouble() < GPAT.MUTATION_REPLACE_CONSTANT) {
+                setConstant(i, RND.getDouble(-GP.CONSTANT_AMPLITUDE, GP.CONSTANT_AMPLITUDE));
+                mutation = true;
+            }
+        }
+        return mutation;
     }
 
     public String toMathematicaExpression() {
