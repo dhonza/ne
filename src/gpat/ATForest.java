@@ -59,6 +59,7 @@ public class ATForest implements IGPForest, Comparable, Serializable {
         forest.trees = new ATTree[numOfOutputs];
         for (int i = 0; i < numOfOutputs; i++) {
             forest.trees[i] = ATTree.createMinimalSubstrate(nodeCollection, innovationHistory);
+//            forest.trees[i] = ATTree.createMinimalSubstrateWithInputs(nodeCollection, innovationHistory);
         }
         forest.initEvaluationInfo();
         return forest;

@@ -16,21 +16,8 @@ import java.util.*;
  * Time: 12:10:31 AM
  * To change this template use File | Settings | File Templates.
  */
-public class GPAT<P> implements IGPAT {
-    public static double MUTATION_ADD_LINK = 0.1;
-    public static double MUTATION_ADD_NODE = 0.005;
-    public static double MUTATION_INSERT_ROOT = 0.05;
-    public static double MUTATION_REPLACE_CONSTANT = 0.5;
-    public static double MUTATION_SWITCH_NODE = 0.05;
-    public static double MUTATION_SWITCH_CONSTANT_LOCK = 0.05;
-    public static double DISTANCE_DELTA = 0.04;
-    public static double SPECIES_SIZE_MEAN = 5.0;
-    public static double SPECIES_SIZE_RANGE = 3.0;
-    public static double SPECIES_REPRODUCTION_RATIO = 0.1;
-    public static double DISTANCE_C1 = 1.0;
-    public static double DISTANCE_C2 = 1.0;
-    public static double DISTANCE_C3 = 2.0;
-    public static double ELITIST_PROPORTION_SIZE = 0.2;
+public class GPATSimple<P> implements IGPAT {
+    public static int ELITE_NUMBER = 1;
 
     final protected int inputs;
     final protected int outputs;
@@ -45,7 +32,6 @@ public class GPAT<P> implements IGPAT {
     private ATInnovationHistory innovationHistory;
     private int lastInnovation;
 
-    final private List<ATSpecies> species;
     private int maxSpecieId = 0;
 
     private int generalizationGeneration;
@@ -53,7 +39,7 @@ public class GPAT<P> implements IGPAT {
 
     protected Map<String, Long> origins;
 
-    public GPAT(PopulationManager<ATForest, P> populationManager, ATNodeImpl[] functions, ATNodeImpl[] terminals) {
+    public GPATSimple(PopulationManager<ATForest, P> populationManager, ATNodeImpl[] functions, ATNodeImpl[] terminals) {
         this.populationManager = populationManager;
         if (populationManager == null) {//for debuging only
             this.inputs = 0;
@@ -67,7 +53,6 @@ public class GPAT<P> implements IGPAT {
         this.origins = new HashMap<String, Long>();
         this.innovationHistory = new ATInnovationHistory(this.inputs + terminals.length + 1);
         bestOfGeneration = bestSoFar = ATForest.createEmpty();
-        this.species = new ArrayList<ATSpecies>();
     }
 
     protected ATNodeCollection createNodeCollection(ATNodeImpl[] functions, ATNodeImpl[] terminals, int numOfInputs) {
@@ -82,10 +67,6 @@ public class GPAT<P> implements IGPAT {
         createInitialGeneration();
         evaluate(population);
         recomputeBest();
-        assignSpecies();
-//        optimizeConstantsStage();
-        estimateOffspring();
-        printSpeciesInfo();
     }
 
     public void nextGeneration() {
@@ -94,10 +75,6 @@ public class GPAT<P> implements IGPAT {
         evaluate(newPopulation);
         reduce();
         recomputeBest();
-        assignSpecies();
-//        optimizeConstantsStage();
-        estimateOffspring();
-        printSpeciesInfo();
     }
 
     protected void createInitialGeneration() {
@@ -109,20 +86,12 @@ public class GPAT<P> implements IGPAT {
     }
 
     protected void selectAndReproduce() {
-        int cnt = 0;
-        for (ATSpecies spec : species) {
-            spec.markForReproduction();
-
-            for (int i = 0; i < spec.getElitistSize(); i++) {
-                newPopulation[cnt++] = spec.getMember(i).eliteCopy(generation);
-            }
-
-            for (int i = spec.getElitistSize(); i < spec.getEstimatedOffspring(); i++) {
-                newPopulation[cnt++] = spec.getRandomMember().mutate(generation);
-            }
-        }
-        if (cnt != population.length) {
-            throw new IllegalStateException("selectAndReproduce() error");
+//        System.arraycopy(population, 0, newPopulation, 0, population.length);
+        for (int i = 0; i < newPopulation.length; i++) {
+            ATForest p1 = population[RND.getInt(0, population.length - 1)];
+            ATForest p2 = population[RND.getInt(0, population.length - 1)];
+            ATForest p = p1.getFitness() > p2.getFitness() ? p1 : p2;
+            newPopulation[i] = p.mutate(generation);
         }
     }
 
@@ -157,7 +126,23 @@ public class GPAT<P> implements IGPAT {
     }
 
     protected void reduce() {
-        System.arraycopy(newPopulation, 0, population, 0, population.length);
+//        reduceGenerational();
+        reduceReplaceOld();
+    }
+
+    private void reduceGenerational() {
+        ATForest[] oldAndNewPopulation = new ATForest[population.length + newPopulation.length];
+        System.arraycopy(population, 0, oldAndNewPopulation, 0, population.length);
+        System.arraycopy(newPopulation, 0, oldAndNewPopulation, population.length, newPopulation.length);
+        Arrays.sort(oldAndNewPopulation);
+        System.arraycopy(oldAndNewPopulation, 0, population, 0, population.length);
+    }
+
+    private void reduceReplaceOld() {
+        int elite = ELITE_NUMBER;
+        //TODO in first generation the population is unsorted.
+
+        System.arraycopy(newPopulation, 0, population, elite, population.length - elite);
         Arrays.sort(population);
     }
 
@@ -173,116 +158,6 @@ public class GPAT<P> implements IGPAT {
             lastInnovation = 0;
         } else {
             lastInnovation++;
-        }
-    }
-
-    private void assignSpecies() {
-        for (Iterator<ATSpecies> iterator = species.iterator(); iterator.hasNext(); ) {
-            ATSpecies spec = iterator.next();
-            if (spec.getSize() > 0) {
-                //CHECK THIS WITH SNEAT
-                spec.resetSpecies();
-            } else {
-                iterator.remove();
-            }
-        }
-        for (ATForest forest : population) {
-            boolean found = false;
-            for (ATSpecies spec : species) {
-                if (populationManager.getGenomeDistance(forest, spec.getRepresentative()) < GPAT.DISTANCE_DELTA) {
-                    spec.addMember(forest);
-                    found = true;
-                    break;
-                }
-            }
-            if (!found) {
-                ATSpecies spec = new ATSpecies(++maxSpecieId);
-                species.add(spec);
-                spec.setRepresentative(forest);
-                spec.addMember(forest);
-            }
-        }
-        for (ATSpecies spec : species) {
-            spec.sort();
-        }
-        for (Iterator<ATSpecies> iterator = species.iterator(); iterator.hasNext(); ) {
-            ATSpecies spec = iterator.next();
-            if (spec.getSize() == 0) {
-                iterator.remove();
-            }
-        }
-
-        int maxSpecies = (int) Math.round(GPAT.SPECIES_SIZE_MEAN + 0.5 * GPAT.SPECIES_SIZE_RANGE);
-        int minSpecies = (int) Math.round(GPAT.SPECIES_SIZE_MEAN - 0.5 * GPAT.SPECIES_SIZE_RANGE);
-
-        if (species.size() > maxSpecies) {
-            GPAT.DISTANCE_DELTA *= 2;
-        } else if (species.size() < minSpecies) {
-            GPAT.DISTANCE_DELTA /= 2;
-        }
-    }
-
-    private void optimizeConstantsStage() {
-        for (ATSpecies spec : species) {
-            IGPForest bestOfSpecies = spec.getMember(0).eliteCopy(generation);
-            if (bestOfSpecies.getConstants().length == 0) {
-                continue;
-            }
-            ATOptimizeConstantsStage constantsOptimizer = new ATOptimizeConstantsStage(populationManager, bestOfSpecies);
-            IGPForest optimized = constantsOptimizer.optimize();
-            if (spec.getMember(0).getFitness() < optimized.getFitness()) {
-                System.out.println("BETTER!!!!");
-                spec.setMember(0, (ATForest) optimized);
-            } else {
-                System.out.println("WORSE !!!!");
-            }
-        }
-
-    }
-
-    private void estimateOffspring() {
-        double total = 0.0;
-        for (ATSpecies spec : species) {
-            spec.computeAverageFitness();
-            total += spec.getAverageFitness();
-        }
-
-        int distribute = newPopulation.length;
-        int assigned = 0;
-        for (ATSpecies spec : species) {
-            int assign = (int) (distribute * (spec.getAverageFitness() / total));
-            spec.setEstimatedOffspring(assign);
-            assigned += assign;
-        }
-
-        int[] toAssign = new int[distribute - assigned];
-        if (toAssign.length <= species.size()) {
-            RND.sampleRangeWithoutReplacement(species.size(), toAssign);
-        } else {
-            RND.sampleRangeWithReplacement(species.size(), toAssign);
-        }
-
-        for (int i : toAssign) {
-            ATSpecies spec = species.get(i);
-            spec.setEstimatedOffspring(spec.getEstimatedOffspring() + 1);
-            assigned++;
-        }
-
-        if (assigned != distribute) {
-            throw new IllegalStateException("ERROR: bad sum of expected offspring: " + assigned);
-        }
-
-        for (ATSpecies spec : species) {
-            spec.setElitistSize((int) Math.min(spec.getSize(), (spec.getEstimatedOffspring() * GPAT.ELITIST_PROPORTION_SIZE)));
-            if (spec.getElitistSize() == 0 && spec.getEstimatedOffspring() > 1) {
-                spec.setElitistSize(1);
-            }
-        }
-    }
-
-    private void printSpeciesInfo() {
-        for (ATSpecies spec : species) {
-            System.out.println(spec);
         }
     }
 

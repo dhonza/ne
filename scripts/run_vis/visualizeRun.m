@@ -52,4 +52,24 @@ allData[[#[[1]],2;;,#[[3]]]]&/@Position[allData,statName]
 ]
 
 
+readFinalStatNames[names_List]:=
+Module[{allData},
+Flatten[Intersection[(ImportString[Import[#],"TSV"]&/@names)[[All,1,All]]]]
+]
+
+
+listAllExperimentFiles[dirs_List]:=
+Flatten[FileNames[RegularExpression["experiments\\_\\d\\d\\d\\.txt"],{"/Users/drchaj1/java/exp/"<>#}]&/@dirs]
+
+
+finalStatsAllBoxPlots[files_,methods_]:=
+Module[{statNames},
+statNames=readFinalStatNames[files];
+Grid[Transpose[{statNames,
+BoxWhiskerChart[#,"Notched",ChartLabels->methods,ChartStyle->"Rainbow",ImageSize->800]&
+/@(readFinalStats[files,#]&/@statNames)
+}]]
+]
+
+
 

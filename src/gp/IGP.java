@@ -1,5 +1,7 @@
 package gp;
 
+import java.util.List;
+
 /**
  * Created by IntelliJ IDEA.
  * User: drchaj1
@@ -17,4 +19,6 @@ public interface IGP<T extends IGPForest> {
     T getBestOfGeneration();
 
     int getLastInnovation();
+
+    List<T> getLastGenerationPopulation();
 }

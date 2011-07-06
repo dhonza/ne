@@ -1,6 +1,7 @@
 package gpat.demo;
 
 import common.RND;
+import common.SoundHelper;
 import common.evolution.*;
 import common.pmatrix.ParameterCombination;
 import common.pmatrix.ParameterMatrixManager;
@@ -77,8 +78,9 @@ public class GPATMain {
                         combination, converter, evaluator);
                 Utils.setStaticParameters(combination, GP.class, "GP");
                 Utils.setStaticParameters(combination, GPAT.class, "GPAT");
+                Utils.setStaticParameters(combination, GPATSimple.class, "GPATS");
 
-                GPAT gp = createAlgorithm(type, combination, populationManager, functions, terminals);
+                IGPAT gp = createAlgorithm(type, combination, populationManager, functions, terminals);
 
                 EvolutionaryAlgorithmSolver solver = new EvolutionaryAlgorithmSolver(gp, stats, false);
                 solver.addProgressPrinter(new GPBasicProgressPrinter(gp));
@@ -100,6 +102,7 @@ public class GPATMain {
             reportStorage.incrementParameterCombinationId();
         }
         reportStorage.storeExperimentsOverallResults();
+        SoundHelper.playSoundFile("/System/Library/Sounds/Glass.aiff");
     }
 
     private static Stats prepareStats() {
@@ -119,7 +122,7 @@ public class GPATMain {
         return stats;
     }
 
-    private static void extractStats(Stats stats, GPAT gp) {
+    private static void extractStats(Stats stats, IGPAT gp) {
         List<ATForest> lastGeneration = gp.getLastGenerationPopulation();
         double arityLG = 0.0;
         double constantsLG = 0.0;
@@ -179,9 +182,10 @@ public class GPATMain {
         }
     }
 
-    private static GPAT createAlgorithm(String type, ParameterCombination combination, PopulationManager populationManager, ATNodeImpl[] functions, ATNodeImpl[] terminals) {
+    private static IGPAT createAlgorithm(String type, ParameterCombination combination, PopulationManager populationManager, ATNodeImpl[] functions, ATNodeImpl[] terminals) {
         if (type.equals("GPAT")) {
-            return new GPAT(populationManager, functions, terminals);
+//            return new GPAT(populationManager, functions, terminals);
+            return new GPATSimple(populationManager, functions, terminals);
         } else {
             throw new IllegalArgumentException("Unsupported algorithm type");
         }

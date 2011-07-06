@@ -69,7 +69,13 @@ public class ATTree {
 
     public double getAverageArity() {
         //TODO slow!
-        return root.computeAritySum() / (getNumOfNodes() - getNumOfLeaves());
+        int numOfInnerNodes = getNumOfNodes() - getNumOfLeaves();
+        double aritySum = root.computeAritySum();
+        if (numOfInnerNodes == 0) {
+            return 0.0;
+        } else {
+            return aritySum / numOfInnerNodes;
+        }
     }
 
     public int getNumOfConstants() {
@@ -115,6 +121,20 @@ public class ATTree {
 //        tree.root = new ATNode(tree.initialNodeIds, nodeCollection.randomFunction(), nodeCollection.terminals.length);
         tree.root = new ATNode(tree.initialNodeIds, new ATFunctions.Plus(), nodeCollection.terminals.length);
         tree.addNode(tree.root);
+        tree.origin.add("NEW");
+        return tree;
+    }
+
+    public static ATTree createMinimalSubstrateWithInputs(ATNodeCollection nodeCollection, ATInnovationHistory innovationHistory) {
+        ATTree tree = new ATTree(nodeCollection, innovationHistory);
+        tree.root = new ATNode(tree.initialNodeIds, nodeCollection.randomFunction(), nodeCollection.terminals.length);
+        tree.addNode(tree.root);
+        tree.mutateAddLink();
+        tree.mutateAddLink();
+        tree.mutateInsertRoot();
+        tree.mutateAddLink();
+        tree.mutateAddLink();
+        tree.mutateConstants();
         tree.origin.add("NEW");
         return tree;
     }
