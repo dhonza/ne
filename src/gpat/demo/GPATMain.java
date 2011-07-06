@@ -184,8 +184,8 @@ public class GPATMain {
 
     private static IGPAT createAlgorithm(String type, ParameterCombination combination, PopulationManager populationManager, ATNodeImpl[] functions, ATNodeImpl[] terminals) {
         if (type.equals("GPAT")) {
-//            return new GPAT(populationManager, functions, terminals);
-            return new GPATSimple(populationManager, functions, terminals);
+            return new GPAT(populationManager, functions, terminals);
+//            return new GPATSimple(populationManager, functions, terminals);
         } else {
             throw new IllegalArgumentException("Unsupported algorithm type");
         }
