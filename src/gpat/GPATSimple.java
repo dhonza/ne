@@ -31,6 +31,7 @@ public class GPATSimple<P> implements IGPAT {
     protected ATForest bestSoFar;
     private ATInnovationHistory innovationHistory;
     private int lastInnovation;
+    private int generationOfBSF;
 
     private int maxSpecieId = 0;
 
@@ -63,6 +64,7 @@ public class GPATSimple<P> implements IGPAT {
         generation = 1;
         generalizationGeneration = -1;
         lastInnovation = 0;
+        generationOfBSF = generation;
 
         createInitialGeneration();
         evaluate(population);
@@ -126,8 +128,8 @@ public class GPATSimple<P> implements IGPAT {
     }
 
     protected void reduce() {
-//        reduceGenerational();
-        reduceReplaceOld();
+        reduceGenerational();
+//        reduceReplaceOld();
     }
 
     private void reduceGenerational() {
@@ -156,6 +158,7 @@ public class GPATSimple<P> implements IGPAT {
         if (bestSoFar.getFitness() < bestOfGeneration.getFitness()) {
             bestSoFar = bestOfGeneration;
             lastInnovation = 0;
+            generationOfBSF = generation;
         } else {
             lastInnovation++;
         }
@@ -236,6 +239,10 @@ public class GPATSimple<P> implements IGPAT {
 
     public ATForest getBestOfGeneration() {
         return bestOfGeneration;
+    }
+
+    public int getGenerationOfBSF() {
+        return generationOfBSF;
     }
 
     public List<ATForest> getLastGenerationPopulation() {

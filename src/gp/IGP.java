@@ -12,6 +12,8 @@ import java.util.List;
 public interface IGP<T extends IGPForest> {
     int getGeneration();
 
+    int getGenerationOfBSF();
+
     int getEvaluations();
 
     T getBestSoFar();

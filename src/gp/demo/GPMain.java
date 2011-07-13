@@ -1,6 +1,7 @@
 package gp.demo;
 
 import common.RND;
+import common.SoundHelper;
 import common.evolution.*;
 import common.pmatrix.ParameterCombination;
 import common.pmatrix.ParameterMatrixManager;
@@ -106,6 +107,7 @@ public class GPMain {
             reportStorage.incrementParameterCombinationId();
         }
         reportStorage.storeExperimentsOverallResults();
+        SoundHelper.playSoundFile("/System/Library/Sounds/Glass.aiff");
     }
 
 
@@ -147,7 +149,7 @@ public class GPMain {
         nodesLG /= lastGeneration.size();
 
         stats.addSample("BSF", gp.getBestSoFar().getFitness());
-        stats.addSample("BSFG", gp.getLastInnovation());
+        stats.addSample("BSFG", gp.getGenerationOfBSF());
         stats.addSample("ARITY_BSF", gp.getBestSoFar().getAverageArity());
         stats.addSample("ARITY_LG", arityLG);
         stats.addSample("CONSTANTS_BSF", (double) gp.getBestSoFar().getNumOfConstants());

@@ -44,6 +44,7 @@ public class GPAT<P> implements IGPAT {
     protected ATForest bestSoFar;
     private ATInnovationHistory innovationHistory;
     private int lastInnovation;
+    private int generationOfBSF;
 
     final private List<ATSpecies> species;
     private int maxSpecieId = 0;
@@ -78,6 +79,7 @@ public class GPAT<P> implements IGPAT {
         generation = 1;
         generalizationGeneration = -1;
         lastInnovation = 0;
+        generationOfBSF = generation;
 
         createInitialGeneration();
         evaluate(population);
@@ -171,6 +173,7 @@ public class GPAT<P> implements IGPAT {
         if (bestSoFar.getFitness() < bestOfGeneration.getFitness()) {
             bestSoFar = bestOfGeneration;
             lastInnovation = 0;
+            generationOfBSF = generation;
         } else {
             lastInnovation++;
         }
@@ -361,6 +364,10 @@ public class GPAT<P> implements IGPAT {
 
     public ATForest getBestOfGeneration() {
         return bestOfGeneration;
+    }
+
+    public int getGenerationOfBSF() {
+        return generationOfBSF;
     }
 
     public List<ATForest> getLastGenerationPopulation() {

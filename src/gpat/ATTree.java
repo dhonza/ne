@@ -129,12 +129,12 @@ public class ATTree {
         ATTree tree = new ATTree(nodeCollection, innovationHistory);
         tree.root = new ATNode(tree.initialNodeIds, nodeCollection.randomFunction(), nodeCollection.terminals.length);
         tree.addNode(tree.root);
-        tree.mutateAddLink();
-        tree.mutateAddLink();
-        tree.mutateInsertRoot();
-        tree.mutateAddLink();
-        tree.mutateAddLink();
-        tree.mutateConstants();
+//        tree.mutateAddLink();
+//        tree.mutateAddLink();
+//        tree.mutateInsertRoot();
+//        tree.mutateAddLink();
+//        tree.mutateAddLink();
+//        tree.mutateConstants();
         tree.origin.add("NEW");
         return tree;
     }

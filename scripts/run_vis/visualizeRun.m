@@ -62,12 +62,23 @@ listAllExperimentFiles[dirs_List]:=
 Flatten[FileNames[RegularExpression["experiments\\_\\d\\d\\d\\.txt"],{"/Users/drchaj1/java/exp/"<>#}]&/@dirs]
 
 
-finalStatsAllBoxPlots[files_,methods_]:=
-Module[{statNames},
+finalStatsAllBoxPlots[files_,methods_,sortBy_:Null]:=
+Module[{statNames,statPosition,data,order},
+(* Names of all stats. *)
 statNames=readFinalStatNames[files];
+(* A position of a stat to sort by. *)
+statPosition=Flatten[Position[statNames,sortBy]];
+data=readFinalStats[files,#]&/@statNames;
+(* No sort-by stat given or not existing one given. *)
+If[Length[statPosition]==1,
+order=Ordering[Median/@data[[statPosition[[1]]]]],
+order=Range[Length[files]]
+];
+(* Sort data. *)
+data=Part[#,order]&/@data;
 Grid[Transpose[{statNames,
-BoxWhiskerChart[#,"Notched",ChartLabels->methods,ChartStyle->"Rainbow",ImageSize->800]&
-/@(readFinalStats[files,#]&/@statNames)
+BoxWhiskerChart[#,"Notched",ChartLabels->(methods[[order]]),ChartStyle->"Rainbow",ImageSize->800]&
+/@data
 }]]
 ]
 

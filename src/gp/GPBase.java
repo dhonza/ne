@@ -38,6 +38,7 @@ abstract public class GPBase<P, T extends IGPForest> implements IEvolutionaryAlg
     protected T bestOfGeneration;
     protected T bestSoFar;
     private int lastInnovation;
+    private int generationOfBSF;
 
     private int generalizationGeneration;
     private EvaluationInfo generalizationEvaluationInfo;
@@ -71,6 +72,7 @@ abstract public class GPBase<P, T extends IGPForest> implements IEvolutionaryAlg
         generation = 1;
         generalizationGeneration = -1;
         lastInnovation = 0;
+        generationOfBSF = generation;
 
         createInitialGeneration();
         evaluate(population);
@@ -124,6 +126,7 @@ abstract public class GPBase<P, T extends IGPForest> implements IEvolutionaryAlg
         if (bestSoFar.getFitness() < bestOfGeneration.getFitness()) {
             bestSoFar = bestOfGeneration;
             lastInnovation = 0;
+            generationOfBSF = generation;
         } else {
             lastInnovation++;
         }
@@ -144,6 +147,10 @@ abstract public class GPBase<P, T extends IGPForest> implements IEvolutionaryAlg
 
     public int getGeneration() {
         return generation;
+    }
+
+    public int getGenerationOfBSF() {
+        return generationOfBSF;
     }
 
     public int getEvaluations() {

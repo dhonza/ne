@@ -143,7 +143,7 @@ public class GPATMain {
         nodesLG /= lastGeneration.size();
 
         stats.addSample("BSF", gp.getBestSoFar().getFitness());
-        stats.addSample("BSFG", gp.getLastInnovation());
+        stats.addSample("BSFG", gp.getGenerationOfBSF());
         stats.addSample("ARITY_BSF", gp.getBestSoFar().getAverageArity());
         stats.addSample("ARITY_LG", arityLG);
         stats.addSample("CONSTANTS_BSF", (double) gp.getBestSoFar().getNumOfConstants());
