@@ -2,6 +2,7 @@ package gp.demo;
 
 import common.evolution.EvaluationInfo;
 import common.evolution.IEvaluable;
+import common.pmatrix.ParameterCombination;
 import gp.IGPForest;
 
 /**
@@ -12,6 +13,9 @@ import gp.IGPForest;
  * To change this template use File | Settings | File Templates.
  */
 public class EvolveConstant implements IEvaluable<IGPForest> {
+    public EvolveConstant(ParameterCombination combination) {
+    }
+
     public EvaluationInfo evaluate(IGPForest forest) {
         double output = forest.getOutputs()[0];
         return new EvaluationInfo(0.0 - Math.abs(2.1 - output));

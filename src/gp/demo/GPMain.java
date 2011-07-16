@@ -2,6 +2,7 @@ package gp.demo;
 
 import common.RND;
 import common.SoundHelper;
+import common.XMPPHelper;
 import common.evolution.*;
 import common.pmatrix.ParameterCombination;
 import common.pmatrix.ParameterMatrixManager;
@@ -74,7 +75,7 @@ public class GPMain {
                 List<IGenotypeToPhenotype<Forest, Forest>> converter = new ArrayList<IGenotypeToPhenotype<Forest, Forest>>();
                 converter.add(new IdentityConversion<Forest>());
 
-                IEvaluable<Forest> evaluable = EvaluableFactory.createByName(combination.getString("PROBLEM"));
+                IEvaluable<Forest> evaluable = EvaluableFactory.createByName(combination);
                 List<IEvaluable<Forest>> evaluator = new ArrayList<IEvaluable<Forest>>();
                 evaluator.add(evaluable);
 
@@ -108,6 +109,7 @@ public class GPMain {
         }
         reportStorage.storeExperimentsOverallResults();
         SoundHelper.playSoundFile("/System/Library/Sounds/Glass.aiff");
+        XMPPHelper.sendViaXMPP("NE run finished.");
     }
 
 

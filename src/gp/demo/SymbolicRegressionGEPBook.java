@@ -2,16 +2,21 @@ package gp.demo;
 
 import common.evolution.EvaluationInfo;
 import common.evolution.IEvaluable;
+import common.pmatrix.ParameterCombination;
 import gp.IGPForest;
 
 /**
  * This is a simple symbolic regression y = (a^2)/2 + 3a task from the GEP book (chapter 3.4)
+ * TODO use 1/(1+MSE)
  * User: drchaj1
  * Date: Jun 18, 2009
  * Time: 5:02:46 PM
  */
 public class SymbolicRegressionGEPBook implements IEvaluable<IGPForest> {
     private boolean solved = false;
+
+    public SymbolicRegressionGEPBook(ParameterCombination combination) {
+    }
 
     //ten randomly sampled points
     double[][] data = new double[][]{

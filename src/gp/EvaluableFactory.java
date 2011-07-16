@@ -1,6 +1,10 @@
 package gp;
 
 import common.evolution.IEvaluable;
+import common.pmatrix.ParameterCombination;
+
+import java.lang.reflect.Constructor;
+import java.lang.reflect.InvocationTargetException;
 
 /**
  * Created by IntelliJ IDEA.
@@ -10,10 +14,12 @@ import common.evolution.IEvaluable;
  * To change this template use File | Settings | File Templates.
  */
 public class EvaluableFactory {
-    public static IEvaluable createByName(String className) {
+    public static IEvaluable createByName(ParameterCombination combination) {
         IEvaluable evaluable = null;
         try {
-            evaluable = (IEvaluable) Class.forName(className).newInstance();
+            String className = combination.getString("PROBLEM");
+            Constructor constructor = Class.forName(className).getConstructor(ParameterCombination.class);
+            evaluable = (IEvaluable) constructor.newInstance(combination);
         } catch (InstantiationException e) {
             e.printStackTrace();
             System.exit(1);
@@ -21,6 +27,12 @@ public class EvaluableFactory {
             e.printStackTrace();
             System.exit(1);
         } catch (ClassNotFoundException e) {
+            e.printStackTrace();
+            System.exit(1);
+        } catch (NoSuchMethodException e) {
+            e.printStackTrace();
+            System.exit(1);
+        } catch (InvocationTargetException e) {
             e.printStackTrace();
             System.exit(1);
         }
