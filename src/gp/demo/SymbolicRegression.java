@@ -14,31 +14,63 @@ import gp.IGPForest;
  * To change this template use File | Settings | File Templates.
  */
 public class SymbolicRegression implements IEvaluable<IGPForest> {
+    private interface F {
+        double f(double x);
+    }
+
+    private final F f;
+    private final int steps;
     private boolean solved = false;
 
     public SymbolicRegression(ParameterCombination combination) {
-    }
-
-    public EvaluationInfo evaluate(IGPForest forest) {
-        int steps = 20;
-        double startX = -10.0;
-        double endX = 10.0;
-        double scaleX = endX - startX;
-        double stepX = scaleX / (steps - 1);
-        double x = startX;
-        double error = 0.0;
-        double diff;
-        for (int i = 0; i < steps; i++) {
-            forest.loadInputs(new double[]{x});
-            double output = forest.getOutputs()[0];
-//            diff = (x) - output;//A
-//            diff = (-x) - output;//B
-//            diff = (1.5 * x) - output;//C
-//            diff = (1.5 * x + 2.3) - output;//D
-//            diff = (1.5 * x * x + 2.3 * x - 1.1) - output;//E
-//            diff = (1.5 * x * x * x + 2.3 * x * x - 1.1 * x + 3.7) - output;//F
-            diff = (1.5 * x * x * x * x + 2.3 * x * x * x - 1.1 * x * x + 3.7 * x - 4.5) - output;//G
-
+        steps = combination.getInteger("SYMBOLIC_REGRESSION_1D.STEPS");
+        String fName = combination.getString("SYMBOLIC_REGRESSION_1D.F");
+        if (fName.equals("A")) {
+            f = new F() {
+                public double f(double x) {
+                    return x;
+                }
+            };
+        } else if (fName.equals("B")) {
+            f = new F() {
+                public double f(double x) {
+                    return -x;
+                }
+            };
+        } else if (fName.equals("C")) {
+            f = new F() {
+                public double f(double x) {
+                    return 1.5 * x;
+                }
+            };
+        } else if (fName.equals("D")) {
+            f = new F() {
+                public double f(double x) {
+                    return 1.5 * x + 2.3;
+                }
+            };
+        } else if (fName.equals("E")) {
+            f = new F() {
+                public double f(double x) {
+                    return 1.5 * x * x + 2.3 * x - 1.1;
+                }
+            };
+        } else if (fName.equals("F")) {
+            f = new F() {
+                public double f(double x) {
+                    return 1.5 * x * x * x + 2.3 * x * x - 1.1 * x + 3.7;
+                }
+            };
+        } else if (fName.equals("G")) {
+            f = new F() {
+                public double f(double x) {
+                    return 1.5 * x * x * x * x + 2.3 * x * x * x - 1.1 * x * x + 3.7 * x - 4.5;
+                }
+            };
+        } else {
+            throw new IllegalStateException("Bad \"SYMBOLIC_REGRESSION_1D.F\" given!");
+        }
+        //other older functions
 //            error -= Math.abs((x * x * x + 1.5) - output);
 //            error -= Math.abs((x * x * x + 2.3 * x + 1.5) - output);
 //            error -= Math.abs((x * x * x + -5 * x * x + 2.3 * x + 1.5) - output);
@@ -46,14 +78,28 @@ public class SymbolicRegression implements IEvaluable<IGPForest> {
 //            error -= Math.abs((x * x) - output);
 //            error -= Math.abs(x - output);
 //            error -= Math.abs(1.5 - output);
+    }
+
+    public EvaluationInfo evaluate(IGPForest forest) {
+        double startX = -10.0;
+        double endX = 10.0;
+        double scaleX = endX - startX;
+        double stepX = scaleX / (steps - 1);
+        double error = 0.0;
+        double diff;
+        for (int i0 = 0; i0 < steps; i0++) {
+            double x = startX + i0 * stepX;
+            forest.loadInputs(new double[]{x});
+            double output = forest.getOutputs()[0];
+            diff = f.f(x) - output;
 
             error += diff * diff;
-            x += stepX;
         }
         //Now it's MSE.
         error /= steps;
         //To <0;1>.
         error = 1 / (1 + error);
+
         if (error >= GP.TARGET_FITNESS) {
             solved = true;
         }
