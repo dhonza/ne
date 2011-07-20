@@ -29,7 +29,7 @@ import java.util.List;
 public class GPATMain {
     public static void main(String[] args) {
         System.out.println("INITIALIZED SEED: " + RND.initializeTime());
-//        RND.initialize(1307157509603693013L); //4
+//        RND.initialize(1307157509603693014L); //4
         String type = "GPAT";
 
         if (args.length == 0) {
@@ -68,15 +68,8 @@ public class GPATMain {
                 ATNodeImpl[] terminals = createTerminals(type);
                 //--------------------
 
-                List<IGenotypeToPhenotype<Forest, Forest>> converter = new ArrayList<IGenotypeToPhenotype<Forest, Forest>>();
-                converter.add(new IdentityConversion<Forest>());
+                PopulationManager<Forest, Forest> populationManager = createPopulationManager(combination);
 
-                IEvaluable<Forest> evaluable = EvaluableFactory.createByName(combination);
-                List<IEvaluable<Forest>> evaluator = new ArrayList<IEvaluable<Forest>>();
-                evaluator.add(evaluable);
-
-                PopulationManager<Forest, Forest> populationManager = new PopulationManager<Forest, Forest>(
-                        combination, converter, evaluator);
                 Utils.setStaticParameters(combination, GP.class, "GP");
                 Utils.setStaticParameters(combination, GPAT.class, "GPAT");
                 Utils.setStaticParameters(combination, GPATSimple.class, "GPATS");
@@ -182,6 +175,31 @@ public class GPATMain {
         } else {
             throw new IllegalArgumentException("Unsupported algorithm type");
         }
+    }
+
+    private static PopulationManager<Forest, Forest> createPopulationManager(ParameterCombination combination) {
+        boolean parallel = combination.getBoolean("PARALLEL");
+        int threads = 1;
+        if (parallel) {
+            if (combination.contains("PARALLEL.FORCE_THREADS")) {
+                threads = combination.getInteger("PARALLEL.FORCE_THREADS");
+            } else {
+                threads = PopulationManager.getNumberOfThreads();
+            }
+        }
+
+        List<IGenotypeToPhenotype<Forest, Forest>> converter = new ArrayList<IGenotypeToPhenotype<Forest, Forest>>(threads);
+        List<IEvaluable<Forest>> evaluator = new ArrayList<IEvaluable<Forest>>(threads);
+
+        for (int i = (threads - 1); i >= 0; i--) {
+            converter.add(new IdentityConversion<Forest>());
+            IEvaluable<Forest> evaluable = EvaluableFactory.createByName(combination);
+            evaluator.add(evaluable);
+        }
+
+        PopulationManager<Forest, Forest> populationManager = new PopulationManager<Forest, Forest>(
+                combination, converter, evaluator);
+        return populationManager;
     }
 
     private static IGPAT createAlgorithm(String type, ParameterCombination combination, PopulationManager populationManager, ATNodeImpl[] functions, ATNodeImpl[] terminals) {
