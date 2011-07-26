@@ -139,6 +139,24 @@ public class ATTree {
         return tree;
     }
 
+    public void mutateStructure() {
+        boolean limitStructure = limitStructure();
+        if (RND.getDouble() < GPAT.MUTATION_ADD_LINK && !limitStructure) {
+            mutateAddLink();
+            limitStructure = limitStructure();
+        }
+        if (RND.getDouble() < GPAT.MUTATION_ADD_NODE && !limitStructure) {
+            mutateAddNode();
+            limitStructure = limitStructure();
+        }
+        if (RND.getDouble() < GPAT.MUTATION_INSERT_ROOT && !limitStructure) {
+            mutateInsertRoot();
+        }
+        if (RND.getDouble() < GPAT.MUTATION_SWITCH_NODE) {
+            mutateSwitchNode();
+        }
+    }
+
     public void mutateAddLink() {
         //choose a random link to be created
         ATRandomLink.FreeLink freeLink = ATRandomLink.getFreeRandomLink(nodeCollection, nodeGeneList);
@@ -146,7 +164,6 @@ public class ATTree {
             origin.add("ADD_LINK_FAILED");
             return;
         }
-
         //note, that links can start only in terminal (input) nodes
 //        int terminalIdx = RND.getIntZero(terminalList.size());
         int terminalIdx = freeLink.getTerminalIdx();
@@ -154,14 +171,13 @@ public class ATTree {
 //        ATNode to = RND.randomChoice(nodeGeneList);
         ATNode to = freeLink.getTo();
 
-        //increment the number of connection from the very same terminal
+        //increment the number of connections from the very same terminal
         to.incTerminalsConnected(terminalIdx);
 
         //add the child to its parent node
         to.addChild(from);
 
         //get innovation number
-//        long linkInnovationNumber = innovationHistory.getLinkInnovation(from.getId(), to.getId(), countSame);
         long linkInnovationNumber = innovationHistory.getLinkInnovation(from.getId(), to.getId(), to.getTerminalsConnected(terminalIdx));
 
         ATLinkGene link = new ATLinkGene(from, to, linkInnovationNumber, to.getArity() - 1);
@@ -226,12 +242,28 @@ public class ATTree {
 
         if (from.isTerminal()) {
             node.incTerminalsConnected(from.getId()); //note, id is same as terminal index
+            //At this place I had to decide whether to also decrease terminal counter for the "to" node.
+            //The decision was NO. The terminal counter should carry information of MAXIMUM connection count of
+            //selected terminal and inner node. For example:
+            //1) We start with the following (only interesting ling genes):
+            //  1(x0) --> 3(plus) IN: 3
+            //  1(x0) --> 3(plus) IN: 4
+            //2) Add node mutation removes the link with innovation no. 3, therefore we have:
+            //  1(x0) --> 3(plus) IN: 4
+            //3) Now add link will add a new innovation no. 23:
+            //  1(x0) --> 3(plus) IN: 4
+            //  1(x0) --> 3(plus) IN: 23
+            //Innovation number 3 can get back by means of crossover (if implemented). The idea is, that the original link
+            //no.3 was REPLACED by a new link-node-link structure.
+//            to.decTerminalsConnected(from.getId()); //decrease the terminal counter for the original parent node
         }
 
         //number of constants increased by 1 for the new link connecting to the new node
         numOfConstants++;
 
         origin.add("ADD_NODE");
+
+//        System.out.println("F: " + from.getId() + " TO: " + to.getId() + " NEW: " + node.getId());
         checkTree(this);
     }
 
@@ -280,6 +312,7 @@ public class ATTree {
         node.setImpl(nodePrototype);
 
         origin.add("SWITCH_NODE");
+        checkTree(this);
     }
 
     public void mutateConstants() {
@@ -336,6 +369,11 @@ public class ATTree {
         copy.numOfConstants = numOfConstants;
         for (ATNode node : nodeGeneList) {
             ATNode nodeCopy = new ATNode(node);
+            //Note, this shallow copy will be immediately replaced by deep copy.
+            //Just to ensure the right size of the ArrayList.
+            for (ATNode children : node.children) {
+                nodeCopy.children.add(children);
+            }
             copy.nodeGenes.put(nodeCopy.getId(), nodeCopy);
             copy.nodeGeneList.add(nodeCopy);
         }
@@ -348,7 +386,7 @@ public class ATTree {
                 fromNode = copy.nodeGenes.get(link.getFrom().getId());
             }
             ATNode toNode = copy.nodeGenes.get(link.getTo().getId());
-            toNode.addChild(fromNode);
+            toNode.replaceChild(link.getToChildrenIdx(), fromNode);
             ATLinkGene linkCopy = new ATLinkGene(
                     fromNode,
                     toNode,
@@ -356,7 +394,11 @@ public class ATTree {
             copy.linkGenesList.add(linkCopy);
         }
 
-
+        if (GPAT.CHECK_INTEGRITY && !this.toString().equals(copy.toString())) {
+            throw new IllegalStateException("Copy does not match original by String: " + copy.toString() +
+                    " vs. " + this.toString() + ".");
+        }
+        checkTree(copy);
         return copy;
     }
 
@@ -462,6 +504,10 @@ public class ATTree {
     }
 
     private static void checkTree(ATTree tree) {
+        if (!GPAT.CHECK_INTEGRITY) {
+            return;
+        }
+
         //DEBUG
         //checkInnovationSorted
         for (int i = 1; i < tree.linkGenesList.size(); i++) {
@@ -482,8 +528,46 @@ public class ATTree {
         if (cnt != tree.numOfConstants) {
             throw new IllegalStateException("The number of constants does not match: " + cnt + " vs. " + tree.getNumOfConstants() + "\n" + tree);
         }
-
-
+        //checkNumberOfChildrenVsConstants
+        for (ATNode node : tree.nodeGeneList) {
+            if (node.children.size() != node.constants.size()) {
+                throw new IllegalStateException("The number of children does not match the number of constants: " +
+                        node.children.size() + " vs. " + node.constants.size() + "\n" + tree);
+            }
+        }
+        //checkTerminalsConnected
+        int numOfTerminals = tree.nodeCollection.terminals.length;
+        for (ATNode node : tree.nodeGeneList) {
+            int[] testArray = new int[numOfTerminals];
+            for (int i = 0; i < numOfTerminals; i++) {
+                testArray[i] = node.getTerminalsConnected(i);//get the actual number of terminalsConnected
+            }
+            for (int i = 0; i < node.getArity(); i++) {
+                ATNode child = node.getChild(i);
+                if (child.isTerminal()) {
+                    testArray[child.getId()]--;//id is the same as terminal index
+                }
+            }
+            for (int i = 0; i < numOfTerminals; i++) {
+                if (testArray[i] < 0) {
+                    throw new IllegalStateException("The expected number of connected terminals is lower than the actual number found in tree. " +
+                            "Expected: " + node.getTerminalsConnected(i) +
+                            ", actual: " + (node.getTerminalsConnected(i) - testArray[i]) +
+                            " terminal at index: " + i + ".");
+                }
+            }
+        }
+        //checkLinkGeneChildrenIdx
+        for (ATLinkGene link : tree.linkGenesList) {
+            ATNode fromNode = link.getFrom();
+            ATNode toNode = link.getTo();
+            ATNode fromNodeInTree = toNode.getChild(link.getToChildrenIdx());
+            if (fromNode.isTerminal() && (!fromNode.getName().equals(fromNodeInTree.getName()))) {
+                throw new IllegalStateException("Not matching ChildrenIdx: " + link.getToChildrenIdx() +
+                        " from node name: " + fromNode.getName() +
+                        " from node in tree name: " + fromNodeInTree.getName() + ".");
+            }
+        }
 //        for (ATLinkGene link : tree.linkGenesList) {
 //            if (link.getInnovation() == 0 && link.getToChildrenIdx() > 0) {
 //                throw new IllegalStateException("Innovation 0 as child > #0.\n" + tree);

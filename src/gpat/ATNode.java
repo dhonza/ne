@@ -107,6 +107,9 @@ public class ATNode implements IATNode {
         return terminalsConnected[idx];
     }
 
+    /**
+     * @param idx
+     */
     public void incTerminalsConnected(int idx) {
         terminalsConnected[idx]++;
     }
@@ -210,5 +213,10 @@ public class ATNode implements IATNode {
 
     public String listOfConnectedTerminals() {
         return MathematicaUtils.arrayToMathematica(terminalsConnected);
+    }
+
+    @Override
+    public String toString() {
+        return getId() + "(" + getName() + ") " + super.toString();
     }
 }

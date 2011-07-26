@@ -33,8 +33,8 @@ import java.util.List;
  */
 public class GPMain {
     public static void main(String[] args) {
-//        System.out.println("INITIALIZED SEED: " + RND.initializeTime());
-        RND.initialize(8725627961384450L); //4
+        System.out.println("INITIALIZED SEED: " + RND.initializeTime());
+//        RND.initialize(8725627961384450L); //4
         String type = "GP";
 //        String type = "GEP";
 //        String type = "GPAAC";

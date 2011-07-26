@@ -14,9 +14,10 @@ import java.util.Map;
  */
 public class XMPPHelper {
     public static void sendViaXMPP(String message) {
+        String hostName = "";
         try {
-            String hostName = InetAddress.getLocalHost().getHostName();
-            if (hostName.equals("mbp.local")) {
+            hostName = InetAddress.getLocalHost().getHostName();
+            if (hostName.equals("mbp.local") || hostName.startsWith("eduroam")) {
                 return;
             }
             ProcessBuilder pb = new ProcessBuilder("sendxmpp", "dhonza@gmail.com");
@@ -31,7 +32,7 @@ public class XMPPHelper {
             stdin.close();
         } catch (IOException e) {
 //            e.printStackTrace();
-            System.err.println("Unable to send jabber message!");
+            System.err.println("Unable to send jabber message from: \"" + hostName + "\"!");
         }
     }
 

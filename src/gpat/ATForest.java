@@ -1,7 +1,6 @@
 package gpat;
 
 import common.ArrayHelper;
-import common.RND;
 import common.evolution.EvaluationInfo;
 import common.evolution.GenomeCounter;
 import gp.IGPForest;
@@ -70,24 +69,26 @@ public class ATForest implements IGPForest, Comparable, Serializable {
         forest.trees = new ATTree[trees.length];
         for (int i = 0; i < trees.length; i++) {
             ATTree toMutate = this.trees[i].copy();
-            boolean limitStructure = toMutate.limitStructure();
-            if (RND.getDouble() < GPAT.MUTATION_ADD_LINK && !limitStructure) {
-                toMutate.mutateAddLink();
-                limitStructure = toMutate.limitStructure();
-            }
-            if (RND.getDouble() < GPAT.MUTATION_ADD_NODE && !limitStructure) {
-                toMutate.mutateAddNode();
-                limitStructure = toMutate.limitStructure();
-            }
-            if (RND.getDouble() < GPAT.MUTATION_INSERT_ROOT && !limitStructure) {
-                toMutate.mutateInsertRoot();
-            }
-            if (RND.getDouble() < GPAT.MUTATION_SWITCH_NODE) {
-                toMutate.mutateSwitchNode();
+
+            toMutate.mutateStructure();
+            toMutate.mutateConstants();
+
+            forest.trees[i] = toMutate;
+        }
+        forest.initEvaluationInfo();
+        return forest;
+    }
+
+    public ATForest mutateHeavyStructure(int generationOfOrigin) {
+        ATForest forest = new ATForest(generationOfOrigin, this.getNumOfInputs(), id);
+        forest.trees = new ATTree[trees.length];
+        for (int i = 0; i < trees.length; i++) {
+            ATTree toMutate = this.trees[i].copy();
+
+            for (int j = 0; j < GPAT.MUTATION_HEAVY_POWER; j++) {
+                toMutate.mutateStructure();
             }
 
-//          TODO  toMutate.mutateSwitchConstantLocks();
-            toMutate.mutateConstants();
             forest.trees[i] = toMutate;
         }
         forest.initEvaluationInfo();

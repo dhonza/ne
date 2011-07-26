@@ -62,7 +62,7 @@ listAllExperimentFiles[dirs_List]:=
 Flatten[FileNames[RegularExpression["experiments\\_\\d\\d\\d\\.txt"],{"/Users/drchaj1/java/exp/"<>#}]&/@dirs]
 
 
-finalStatsAll[files_,methods_,sortBy_:Null]:=
+finalStatsAll[files_,methods_,sortBy_:Null,colors_:"Rainbow"]:=
 Module[{statNames,statPosition,data,order,labels,success},
 (* Names of all stats. *)
 statNames=readFinalStatNames[files];
@@ -84,10 +84,10 @@ success=100*Count[#,"true"]/Length[#]&/@data[[Sequence@@Flatten[Position[statNam
 (* Print them as a table. *)
 Print[Grid[Transpose@{{Style["ID",Bold]}~Join~labels,{Style["SUCCESS %",Bold]}~Join~success},Frame->All]];
 (* And a bar chart. *)
-Print[BarChart[success,ChartLabels->labels,ChartStyle->"Rainbow",LabelingFunction->Center,ImageSize->800]];
+Print[BarChart[success,ChartLabels->labels,ChartStyle->colors,LabelingFunction->Center,ImageSize->1200]];
 (* All other stats as box plots.*)
 Grid[Transpose[{statNames,
-BoxWhiskerChart[#,"Notched",ChartLabels->(labels),ChartStyle->"Rainbow",ImageSize->800]&
+BoxWhiskerChart[#,"Notched",ChartLabels->(labels),ChartStyle->colors,ImageSize->800]&
 /@data
 }]]
 ]
