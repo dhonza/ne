@@ -14,16 +14,16 @@ import java.util.List;
  */
 public class ATRandomLink {
     public static class FreeLink {
-        final private int terminalIdx;
+        final private int terminalId;
         final private ATNode to;
 
-        public FreeLink(int terminalIdx, ATNode to) {
-            this.terminalIdx = terminalIdx;
+        public FreeLink(int terminalId, ATNode to) {
+            this.terminalId = terminalId;
             this.to = to;
         }
 
-        public int getTerminalIdx() {
-            return terminalIdx;
+        public int getTerminalId() {
+            return terminalId;
         }
 
         public ATNode getTo() {
@@ -44,12 +44,12 @@ public class ATRandomLink {
             }
             //now check if it is still possible to connect this terminal again
             for (int i = 0; i < terminalCounters.length; i++) {
-                if (i < nodeCollection.getIndexOfFirstInput()) {//constants, ...
-                    if (terminalCounters[i] < node.repeatConstant()) {
+                if (nodeCollection.isInputById(i)) {//inputs, ...
+                    if (terminalCounters[i] < node.repeatInput()) {
                         freeLinks.add(new FreeLink(i, node));
                     }
-                } else {//inputs
-                    if (terminalCounters[i] < node.repeatInput()) {
+                } else {//constants
+                    if (terminalCounters[i] < node.repeatConstant()) {
                         freeLinks.add(new FreeLink(i, node));
                     }
                 }

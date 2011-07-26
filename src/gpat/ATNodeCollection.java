@@ -26,6 +26,8 @@ public class ATNodeCollection {
         System.arraycopy(this.terminals, 0, all, this.functions.length, this.terminals.length);
     }
 
+    //creates an array of all terminals including inputs. At first it takes user supplied terminals (typically constants),
+    //then appends one terminal for each input.
     protected ATNodeImpl[] addInputs(ATNodeImpl[] terminals, int numOfInputs) {
         ATNodeImpl[] allTerminals = new ATNodeImpl[terminals.length + numOfInputs];
 
@@ -34,6 +36,15 @@ public class ATNodeCollection {
             allTerminals[terminals.length + i] = new ATTerminals.Input(i);
         }
         return allTerminals;
+    }
+
+    //true for input, false for constants
+    protected boolean isInputById(int id) {
+        return id >= getIndexOfFirstInput();
+    }
+
+    protected ATNodeImpl terminalWithId(int id) {
+        return terminals[id];
     }
 
     protected ATNodeImpl randomTerminal() {

@@ -22,8 +22,8 @@ public class ATNode implements IATNode {
     protected List<ATNode> children;
     protected List<Double> constants;
 
-    //the number of terminals EVER connected to this node, even when the terminal is disconnected by mutateAddNode it
-    // stays here
+    //The number of terminals EVER connected to this node, even when the terminal is disconnected by mutateAddNode it
+    //stays here. See incTerminalsConnected for further explanation.
     protected int[] terminalsConnected;
 
     public ATNode(int id, ATNodeImpl impl, int numOfTerminals) {
@@ -108,7 +108,12 @@ public class ATNode implements IATNode {
     }
 
     /**
-     * @param idx
+     * Increases a number of a given terminal connections to this node throughout evolution. Note, that there is
+     * no decrease method as the number in terminalsConnected[] does not carry information of actually connected terminals
+     * but rather the number of connections through the whole evolution of the genome. This should help to track
+     * structural innovations.
+     *
+     * @param idx index of a terminal, ATNodeCollection
      */
     public void incTerminalsConnected(int idx) {
         terminalsConnected[idx]++;

@@ -155,6 +155,9 @@ public class ATTree {
         if (RND.getDouble() < GPAT.MUTATION_SWITCH_NODE) {
             mutateSwitchNode();
         }
+        if (RND.getDouble() < GPAT.MUTATION_SWITCH_LEAF) {
+            mutateSwitchLeaf();
+        }
     }
 
     public void mutateAddLink() {
@@ -165,20 +168,20 @@ public class ATTree {
             return;
         }
         //note, that links can start only in terminal (input) nodes
-//        int terminalIdx = RND.getIntZero(terminalList.size());
-        int terminalIdx = freeLink.getTerminalIdx();
-        ATNode from = terminalList.get(terminalIdx);
+//        int terminalId = RND.getIntZero(terminalList.size());
+        int terminalId = freeLink.getTerminalId();
+        ATNode from = terminalList.get(terminalId);
 //        ATNode to = RND.randomChoice(nodeGeneList);
         ATNode to = freeLink.getTo();
 
         //increment the number of connections from the very same terminal
-        to.incTerminalsConnected(terminalIdx);
+        to.incTerminalsConnected(terminalId);
 
         //add the child to its parent node
         to.addChild(from);
 
         //get innovation number
-        long linkInnovationNumber = innovationHistory.getLinkInnovation(from.getId(), to.getId(), to.getTerminalsConnected(terminalIdx));
+        long linkInnovationNumber = innovationHistory.getLinkInnovation(from.getId(), to.getId(), to.getTerminalsConnected(terminalId));
 
         ATLinkGene link = new ATLinkGene(from, to, linkInnovationNumber, to.getArity() - 1);
 
@@ -306,12 +309,57 @@ public class ATTree {
         //Get random node.
         ATNode node = RND.randomChoice(nodeGeneList);
 
-        //Choose a new function for he node.
+        //Choose a new function for the node.
         ATNodeImpl nodePrototype = nodeCollection.randomFunction();
 
         node.setImpl(nodePrototype);
 
         origin.add("SWITCH_NODE");
+        checkTree(this);
+    }
+
+    public void mutateSwitchLeaf() {
+        if (nodeGeneList.size() == 0) {
+            return;
+        }
+
+        //Get a random node and its leaf.
+        ATRandomLeaf.FreeLeaf freeLeaf = ATRandomLeaf.getFreeRandomLink(nodeCollection, nodeGeneList);
+        if (freeLeaf == null) {
+            origin.add("SWITCH_LEAF_FAILED");
+            return;
+        }
+
+        int terminalIdx = freeLeaf.getTerminalIdx();
+        int targetTerminalId = freeLeaf.getTargetTerminalId();
+        ATNode from = terminalList.get(targetTerminalId);
+        ATNode to = freeLeaf.getTo();
+
+        //increment the number of connections for the new type of the terminal
+        to.incTerminalsConnected(targetTerminalId);
+
+        //replace the original terminal
+        to.replaceChild(terminalIdx, from);
+
+        //now we have to replace "from" in LinkGene
+        //find it first
+        for (int i = 0, linkGenesListSize = linkGenesList.size(); i < linkGenesListSize; i++) {
+            ATLinkGene linkGene = linkGenesList.get(i);
+            if (linkGene.getTo().getId() == to.getId() && linkGene.getToChildrenIdx() == terminalIdx) {
+                //we found it
+                //we have to create a new because it is immutable
+                ATLinkGene newlinkGene = new ATLinkGene(
+                        from, //replace from
+                        linkGene.getTo(), //keep all other unmodified
+                        linkGene.getInnovation(), //no change to innovation (at least for this version of GPAT)
+                        linkGene.getToChildrenIdx());
+                //finally replace the old LinkGene by the new
+                linkGenesList.set(i, newlinkGene);
+                break;
+            }
+        }
+
+        origin.add("SWITCH_LEAF");
         checkTree(this);
     }
 
