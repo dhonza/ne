@@ -99,7 +99,8 @@ public class GPATMain {
         }
         reportStorage.storeExperimentsOverallResults();
         SoundHelper.playSoundFile("/System/Library/Sounds/Glass.aiff");
-        XMPPHelper.sendViaXMPP("NE run finished.");
+        String experimentDirectory = args.length > 1 ? "(" + args[1] + ")" : "";
+        XMPPHelper.sendViaXMPP("NE run (GPATMain) finished " + experimentDirectory + ".");
     }
 
     private static Stats prepareStats() {

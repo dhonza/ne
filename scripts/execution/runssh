@@ -1,10 +1,46 @@
 #!/bin/bash
+
+export JOBLIST=~/java/jobs.txt
+
+if [ $# != 1 ] ; then
+    echo usage: runssh machine[:remote_dir]
+    exit
+fi
+
+MACHINE=`echo ${1} | cut -d ":" -f 1`
+RDIR=`echo ${1} | cut -d ":" -f 2`
+
+if [ ${MACHINE} == ${RDIR} ] ; then
+    RDIR="."
+    TDIR=""
+else
+    TDIR=${RDIR}
+fi
+
 echo Running on ${1} ...
+
+if [ ${RDIR} != "." ] ; then
+    echo " creating remote dir if not exist..."
+    ssh "${MACHINE}" "mkdir -p "${RDIR}
+    if [ $? != 0 ] ; then
+	exit
+    fi
+fi
+
 echo " deleting old ..."
-ssh "${1}" "rm -rf nepack ; rm nepack.tar.gz"
+ssh "${MACHINE}" "cd ${RDIR} ; rm -rf nepack ; rm nepack.tar.gz"
+
 echo " copying ..."
-scp /tmp/nepack.tar.gz "${1}":
+scp /tmp/nepack.tar.gz "${MACHINE}:${TDIR}"
+
 echo " unpacking ..."
-ssh "${1}" "tar xzf nepack.tar.gz"
+ssh "${MACHINE}" "cd ${RDIR} ; tar xzf nepack.tar.gz"
+
 echo " running ..."
-ssh -n -f "${1}" "sh -c \"cd nepack; nohup ./run > /dev/null 2>&1 &\""
+ssh -n -f "${MACHINE}" "sh -c \"cd ${RDIR}; cd nepack; nohup ./run > /dev/null 2>&1 &\""
+
+TFILE="/tmp/$(basename $0).$$.tmp"
+cp ${JOBLIST} ${TFILE}
+echo ${1} >> ${TFILE}
+sort -u ${TFILE} > ${JOBLIST}
+rm ${TFILE}

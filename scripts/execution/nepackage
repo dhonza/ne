@@ -2,13 +2,14 @@
 
 #USAGE:
 #nepackage expdir copyback algorithm
-# alogirhms: GP, GPAT 
+# algorithms: GP, GPAT 
 export NEDIR=~/java/ne
 export NEPACKAGE=nepack
 export ARCHIVE=/tmp/nepack.tar.gz
 export RUNSCRIPT=${NEPACKAGE}/run
 export INFOSCRIPT=${NEPACKAGE}/info
-export CLASS=gpat.demo.GPATMain
+export CLASS="gpat.demo.GPATMain"
+export CFG="cfg/demo/gpatdemo.properties"
 
 if [ $# -eq 0 ] ; then
     export EXPDIR=exp
@@ -38,7 +39,7 @@ mkdir ${NEPACKAGE}
 cp -r ${NEDIR}/out/production/Ne/ ${NEPACKAGE}/
 
 mkdir ${NEPACKAGE}/lib
-mkdir ${NEPACKAGE}/exp
+mkdir ${NEPACKAGE}/${EXPDIR}
 
 find ${NEDIR}/ne/lib -type f -exec cp {} ${NEPACKAGE}/lib/ \;
 
@@ -60,6 +61,10 @@ CP=${CP}'"'
 
 echo ${CP} >> ${RUNSCRIPT}
 
+echo 'hostname > '${EXPDIR}'/_host_.txt'  >> ${RUNSCRIPT}
+echo 'free -m >> '${EXPDIR}'/_host_.txt'  >> ${RUNSCRIPT}
+echo 'cat /proc/cpuinfo >> '${EXPDIR}'/_host_.txt'  >> ${RUNSCRIPT}
+
 echo 'java -Xmx2048M -classpath ${CLASSPATH} ${CLASS} ${CFG} '${EXPDIR}' >>out.log 2>>err.log' >> ${RUNSCRIPT}
 
 if [ -n "${COPYBACK}" ] ; then
@@ -72,7 +77,8 @@ chmod a+x ${INFOSCRIPT}
 echo 'export EXPDIR="'${EXPDIR}'"' >> ${INFOSCRIPT}
 echo 'cd ${EXPDIR}' >> ${INFOSCRIPT}
 echo 'if [ -e "experiments_overall.txt" ] ; then' >> ${INFOSCRIPT}
-echo 'echo "FINISHED"' >> ${INFOSCRIPT}
+echo 'echo "FINISHED "${EXPDIR}' >> ${INFOSCRIPT}
+echo 'exit' >> ${INFOSCRIPT}
 echo 'fi' >> ${INFOSCRIPT}
 echo 'export CONFIG=`ls parameters_???.txt | tr " " "\n" | tail -n1 | sed "s/parameters\_\(.*\)\.txt/\1/"`' >> ${INFOSCRIPT}
 echo 'export EXP=`cat _experiment_id.txt`' >> ${INFOSCRIPT}

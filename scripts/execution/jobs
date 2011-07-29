@@ -12,15 +12,19 @@ echo -e ${BBLUE}"MACHINE  \tCFG\tEXP\tNAME"${NORMAL}
 
 while read line
 do
-    MACHINE=`echo "${line}" | cut -d " " -f 1`
-    DIR=`echo "${line}" | cut -d " " -f 2`
+    MACHINE=`echo "${line}" | cut -d ":" -f 1`
+    DIR=`echo "${line}" | cut -d ":" -f 2`
     echo -en  ${RED}${MACHINE}${NORMAL}": "
     if [ "${MACHINE}" == "${DIR}" ] ; then
 	DIR="."
     fi;
     INFO=`ssh -n ${MACHINE} "cd "${DIR}" ; cd nepack ; ./info"`
-    CFG=`echo "${INFO}" | cut -d " " -f 1`
-    EXP=`echo "${INFO}" | cut -d " " -f 2`
-    EXPDIR=`echo "${INFO}" | cut -d " " -f 3`
-    echo -e "\t"${CFG}"\t"${EXP}"\t"${EXPDIR}
+    C1=`echo "${INFO}" | cut -d " " -f 1`
+    C2=`echo "${INFO}" | cut -d " " -f 2`
+    C3=`echo "${INFO}" | cut -d " " -f 3`
+    if [ ${C1} == "FINISHED" ] ; then
+	echo -e "\t"${GREEN}FINISHED"\t"${NORMAL}${C2}
+    else
+	echo -e "\t"${C1}"\t"${C2}"\t"${C3}
+    fi
 done < ${JOBLIST}
