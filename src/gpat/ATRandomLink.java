@@ -55,8 +55,6 @@ public class ATRandomLink {
                 }
 
             }
-
-
         }
         if (freeLinks.size() == 0) {
             return null;

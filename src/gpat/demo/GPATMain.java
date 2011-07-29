@@ -58,6 +58,8 @@ public class GPATMain {
             reportStorage.storeParameters(parameterString.toString());
 
             for (int i = 1; i <= experiments; i++) {
+                reportStorage.startSingleRun();
+
                 System.out.println("PARAMETER SETTING: " + combination);
                 GP.MAX_GENERATIONS = combination.getInteger("GP.MAX_GENERATIONS");
                 GP.MAX_EVALUATIONS = combination.getInteger("GP.MAX_EVALUATIONS");
@@ -93,7 +95,7 @@ public class GPATMain {
             reportStorage.storeExperimentResults(stats);
             reportStorage.appendExperimentsOverallResults(combination.toStringOnlyChannging(), stats);
             System.out.println(stats.scopeToString("EXPERIMENT"));
-            reportStorage.incrementParameterCombinationId();
+            reportStorage.prepareNewParameterCombination();
         }
         reportStorage.storeExperimentsOverallResults();
         SoundHelper.playSoundFile("/System/Library/Sounds/Glass.aiff");

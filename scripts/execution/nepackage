@@ -1,0 +1,81 @@
+#!/bin/bash
+
+#USAGE:
+#nepackage expdir copyback algorithm
+# alogirhms: GP, GPAT 
+export NEDIR=~/java/ne
+export NEPACKAGE=nepack
+export ARCHIVE=/tmp/nepack.tar.gz
+export RUNSCRIPT=${NEPACKAGE}/run
+export INFOSCRIPT=${NEPACKAGE}/info
+export CLASS=gpat.demo.GPATMain
+
+if [ $# -eq 0 ] ; then
+    export EXPDIR=exp
+fi
+if [ $# -ge 1 ] ; then
+    export EXPDIR="${1}"
+fi
+if [ $# -ge 2 ] ; then
+    export COPYBACK="${2}"
+fi
+if [ $# -eq 3 ] ; then
+    if [ "${3}" == "GP" ] ; then
+        export CLASS="gp.demo.GPMain"
+	export CFG="cfg/demo/gpdemo.properties"
+    fi
+    if [ "${3}" == "GPAT" ] ; then
+        export CLASS="gpat.demo.GPATMain"
+	export CFG="cfg/demo/gpatdemo.properties"
+    fi
+fi
+
+cd /tmp
+
+rm -rf ${NEPACKAGE}
+mkdir ${NEPACKAGE}
+
+cp -r ${NEDIR}/out/production/Ne/ ${NEPACKAGE}/
+
+mkdir ${NEPACKAGE}/lib
+mkdir ${NEPACKAGE}/exp
+
+find ${NEDIR}/ne/lib -type f -exec cp {} ${NEPACKAGE}/lib/ \;
+
+cp -r ${NEDIR}/ne/cfg ${NEPACKAGE}
+
+echo '#!/bin/bash' > ${RUNSCRIPT}
+chmod a+x ${RUNSCRIPT}
+
+echo 'export CLASS="'${CLASS}'"' >> ${RUNSCRIPT}
+echo 'export CFG="'${CFG}'"' >> ${RUNSCRIPT}
+
+export CP='export CLASSPATH=."'
+for f in ${NEPACKAGE}/lib/*
+do
+    CP=${CP}':lib/'`basename ${f}`
+done
+
+CP=${CP}'"'
+
+echo ${CP} >> ${RUNSCRIPT}
+
+echo 'java -Xmx2048M -classpath ${CLASSPATH} ${CLASS} ${CFG} '${EXPDIR}' >>out.log 2>>err.log' >> ${RUNSCRIPT}
+
+if [ -n "${COPYBACK}" ] ; then
+    echo 'scp -r '${EXPDIR}' '${COPYBACK}':' >> ${RUNSCRIPT}
+fi
+
+
+echo '#!/bin/bash' > ${INFOSCRIPT}
+chmod a+x ${INFOSCRIPT}
+echo 'export EXPDIR="'${EXPDIR}'"' >> ${INFOSCRIPT}
+echo 'cd ${EXPDIR}' >> ${INFOSCRIPT}
+echo 'if [ -e "experiments_overall.txt" ] ; then' >> ${INFOSCRIPT}
+echo 'echo "FINISHED"' >> ${INFOSCRIPT}
+echo 'fi' >> ${INFOSCRIPT}
+echo 'export CONFIG=`ls parameters_???.txt | tr " " "\n" | tail -n1 | sed "s/parameters\_\(.*\)\.txt/\1/"`' >> ${INFOSCRIPT}
+echo 'export EXP=`cat _experiment_id.txt`' >> ${INFOSCRIPT}
+echo 'echo ${CONFIG}" "${EXP}" "${EXPDIR}' >> ${INFOSCRIPT}
+
+tar czf ${ARCHIVE} ${NEPACKAGE}

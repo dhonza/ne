@@ -70,7 +70,7 @@ public class Main {
             reportStorage.storeExperimentResults(stats);
             reportStorage.appendExperimentsOverallResults(combination.toStringOnlyChannging(), stats);
             System.out.println(stats.scopeToString("EXPERIMENT"));
-            reportStorage.incrementParameterCombinationId();
+            reportStorage.prepareNewParameterCombination();
         }
         reportStorage.storeExperimentsOverallResults();
     }

@@ -1,0 +1,26 @@
+#!/bin/bash
+
+#http://www.ibm.com/developerworks/linux/library/l-tip-prompt/
+NORMAL="\x1B[0m"
+GREEN="\x1B[32m"
+RED="\x1B[31m"
+BBLUE="\x1B[34;1m"
+
+export JOBLIST=~/java/jobs.txt
+
+echo -e ${BBLUE}"MACHINE  \tCFG\tEXP\tNAME"${NORMAL}
+
+while read line
+do
+    MACHINE=`echo "${line}" | cut -d " " -f 1`
+    DIR=`echo "${line}" | cut -d " " -f 2`
+    echo -en  ${RED}${MACHINE}${NORMAL}": "
+    if [ "${MACHINE}" == "${DIR}" ] ; then
+	DIR="."
+    fi;
+    INFO=`ssh -n ${MACHINE} "cd "${DIR}" ; cd nepack ; ./info"`
+    CFG=`echo "${INFO}" | cut -d " " -f 1`
+    EXP=`echo "${INFO}" | cut -d " " -f 2`
+    EXPDIR=`echo "${INFO}" | cut -d " " -f 3`
+    echo -e "\t"${CFG}"\t"${EXP}"\t"${EXPDIR}
+done < ${JOBLIST}

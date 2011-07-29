@@ -66,8 +66,9 @@ public class ReportStorage implements Serializable {
         experimentId++;
     }
 
-    public void incrementParameterCombinationId() {
+    public void prepareNewParameterCombination() {
         parameterCombinationId++;
+        experimentId = 1;
     }
 
     public void storeParameters(String parameterInfo) {
@@ -111,6 +112,15 @@ public class ReportStorage implements Serializable {
     public void prepareSingleRunResults(List<SingleRunFile> generationInfo) {
         this.generationInfo.clear();
         this.generationInfo.addAll(generationInfo);
+    }
+
+    public void startSingleRun() {
+        File experimentIdFile = new File(baseDir, "_experiment_id.txt");
+        try {
+            FileUtils.writeStringToFile(experimentIdFile, String.valueOf(experimentId));
+        } catch (IOException e) {
+            System.err.println("Cannot save experiment id file: " + experimentIdFile);
+        }
     }
 
     public void storeSingleRunResults() {

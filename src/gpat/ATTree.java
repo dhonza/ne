@@ -1,5 +1,6 @@
 package gpat;
 
+import common.ListHelper;
 import common.RND;
 import gp.TreeInputs;
 
@@ -616,11 +617,85 @@ public class ATTree {
                         " from node in tree name: " + fromNodeInTree.getName() + ".");
             }
         }
-//        for (ATLinkGene link : tree.linkGenesList) {
-//            if (link.getInnovation() == 0 && link.getToChildrenIdx() > 0) {
-//                throw new IllegalStateException("Innovation 0 as child > #0.\n" + tree);
-//            }
-//        }
+        //checkNodesGenesAgainstNodesInTheTree
+        List<ATNode> collectedNodeList = new ArrayList<ATNode>(tree.nodeGeneList.size());
+        collectNodesFromTree(tree.root, collectedNodeList);
+        List<ATNode> nodeGeneListCopy = new ArrayList<ATNode>(tree.nodeGeneList);
+        Collections.sort(collectedNodeList);
+        Collections.sort(nodeGeneListCopy);
+        if (collectedNodeList.size() != nodeGeneListCopy.size()) {
+            throw new IllegalStateException("Number of nodes in the tree does not match the number in nodeGeneList: " +
+                    collectedNodeList.size() + " vs. " + nodeGeneListCopy.size() + ".\n" +
+                    ListHelper.asStringInLines(collectedNodeList) +
+                    "\nvs.\n\n" +
+                    ListHelper.asStringInLines(nodeGeneListCopy));
+        }
+        if (collectedNodeList.size() != tree.nodeGenes.size()) {
+            throw new IllegalStateException("Number of nodes in the tree does not match the number in nodeGenes map: " +
+                    collectedNodeList.size() + " vs. " + tree.nodeGenes.size() + ".");
+        }
+        for (int i = 0, collectedNodeListSize = collectedNodeList.size(); i < collectedNodeListSize; i++) {
+            ATNode collectedNode = collectedNodeList.get(i);
+            ATNode treeNode = nodeGeneListCopy.get(i);
+            if (!collectedNode.equals(treeNode)) {
+                throw new IllegalStateException("Collected node does not match the nodeGeneList node:\n" +
+                        ListHelper.asStringInLines(collectedNodeList) +
+                        "\nvs.\n\n" +
+                        ListHelper.asStringInLines(nodeGeneListCopy));
+            }
+            if (!tree.nodeGenes.containsKey(collectedNode.getId())) {
+                throw new IllegalStateException("Collected node not in nodeGenes map: " + collectedNode + ".");
+            }
+            if (!collectedNode.equals(tree.nodeGenes.get(collectedNode.getId()))) {
+                throw new IllegalStateException("Collected node does not match the node in nodeGenes map: " +
+                        collectedNode + " vs. " + tree.nodeGenes.get(collectedNode.getId()) + ".");
+            }
+        }
+        //checkLinkGenesAgainstLinksInTheTree
+        List<ATLinkGene> collectedLinkGenesList = new ArrayList<ATLinkGene>(tree.linkGenesList.size());
+        collectLinkGenesFromTree(tree.root, collectedLinkGenesList);
+        List<ATLinkGene> linkGeneListCopy = new ArrayList<ATLinkGene>(tree.linkGenesList);
+        Collections.sort(collectedLinkGenesList, ATLinkGene.NoInnovationComparator.getInstance());
+        Collections.sort(linkGeneListCopy, ATLinkGene.NoInnovationComparator.getInstance());
+        if (collectedLinkGenesList.size() != linkGeneListCopy.size()) {
+            throw new IllegalStateException("Number of LikGenes in the tree does not match the number in linkGeneList: " +
+                    collectedLinkGenesList.size() + " vs. " + linkGeneListCopy.size() + ".\n" +
+                    ListHelper.asStringInLines(collectedLinkGenesList) +
+                    "\nvs.\n\n" +
+                    ListHelper.asStringInLines(linkGeneListCopy));
+        }
+        for (int i = 0, collectedLinkGenesListSize = collectedLinkGenesList.size(); i < collectedLinkGenesListSize; i++) {
+            ATLinkGene a = collectedLinkGenesList.get(i);
+            ATLinkGene b = linkGeneListCopy.get(i);
+            if ((a.getFrom().getId() != b.getFrom().getId()) ||
+                    (a.getTo().getId() != b.getTo().getId()) ||
+                    (a.getToChildrenIdx() != b.getToChildrenIdx())) {
+                throw new IllegalStateException("Collected LinkGene does not match the linkGeneList:\n" +
+                        ListHelper.asStringInLines(collectedLinkGenesList) +
+                        "\nvs.\n\n" +
+                        ListHelper.asStringInLines(linkGeneListCopy));
+            }
+
+        }
+    }
+
+    private static void collectNodesFromTree(ATNode start, List<ATNode> nodes) {
+        nodes.add(start);
+        for (ATNode child : start.children) {
+            if (!child.isTerminal()) {
+                collectNodesFromTree(child, nodes);
+            }
+        }
+    }
+
+    private static void collectLinkGenesFromTree(ATNode start, List<ATLinkGene> linkGenes) {
+        List<ATNode> children = start.children;
+        for (int i = 0, childrenSize = children.size(); i < childrenSize; i++) {
+            ATNode child = children.get(i);
+            ATLinkGene treeLinkGene = new ATLinkGene(child, start, -1, i);
+            linkGenes.add(treeLinkGene);
+            collectLinkGenesFromTree(child, linkGenes);
+        }
     }
 
     public double[] getConstants() {

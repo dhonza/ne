@@ -63,7 +63,7 @@ Flatten[FileNames[RegularExpression["experiments\\_\\d\\d\\d\\.txt"],{"/Users/dr
 
 
 finalStatsAll[files_,methods_,sortBy_:Null,colors_:"Rainbow"]:=
-Module[{statNames,statPosition,data,order,labels,success},
+Module[{statNames,statPosition,data,order,labels,labelPlacement,success},
 (* Names of all stats. *)
 statNames=readFinalStatNames[files];
 (* A position of a stat to sort by. *)
@@ -79,15 +79,16 @@ data=Part[#,order]&/@data;
 labels =methods[[order]];
 
 (* Compute % of sucessful runs *) 
-success=100*Count[#,"true"]/Length[#]&/@data[[Sequence@@Flatten[Position[statNames,"SUCCESS"]]]];
+success=N[100*Count[#,"true"]/Length[#]&/@data[[Sequence@@Flatten[Position[statNames,"SUCCESS"]]]]];
 
 (* Print them as a table. *)
 Print[Grid[Transpose@{{Style["ID",Bold]}~Join~labels,{Style["SUCCESS %",Bold]}~Join~success},Frame->All]];
 (* And a bar chart. *)
-Print[BarChart[success,ChartLabels->labels,ChartStyle->colors,LabelingFunction->Center,ImageSize->1200]];
+labelPlacement=Placed[labels,Axis,Rotate[#,Pi/2]&];
+Print[BarChart[success,ChartLabels->labelPlacement,ChartStyle->colors,LabelingFunction->Center,ImageSize->1200]];
 (* All other stats as box plots.*)
 Grid[Transpose[{statNames,
-BoxWhiskerChart[#,"Notched",ChartLabels->(labels),ChartStyle->colors,ImageSize->800]&
+BoxWhiskerChart[#,"Notched",ChartLabels->labelPlacement,ChartStyle->colors,ImageSize->1200]&
 /@data
 }]]
 ]

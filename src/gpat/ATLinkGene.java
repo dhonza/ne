@@ -1,5 +1,7 @@
 package gpat;
 
+import java.util.Comparator;
+
 /**
  * Created by IntelliJ IDEA.
  * User: drchaj1
@@ -8,6 +10,36 @@ package gpat;
  * To change this template use File | Settings | File Templates.
  */
 public class ATLinkGene implements Comparable<ATLinkGene> {
+    public static class NoInnovationComparator implements Comparator<ATLinkGene> {
+        private static NoInnovationComparator instance = new NoInnovationComparator();
+
+        private NoInnovationComparator() {
+        }
+
+        public static NoInnovationComparator getInstance() {
+            return instance;
+        }
+
+        public int compare(ATLinkGene left, ATLinkGene right) {
+            if (left.getTo().getId() < right.getTo().getId()) {
+                return -1;
+            } else if (left.getTo().getId() > right.getTo().getId()) {
+                return 1;
+            }
+            if (left.getToChildrenIdx() < right.getToChildrenIdx()) {
+                return -1;
+            } else if (left.getToChildrenIdx() > right.getToChildrenIdx()) {
+                return 1;
+            }
+            if (left.getFrom().getId() < right.getFrom().getId()) {
+                return -1;
+            } else if (left.getFrom().getId() > right.getFrom().getId()) {
+                return 1;
+            }
+            return 0;
+        }
+    }
+
     final private ATNode from;
     final private ATNode to;
     final private long innovation;

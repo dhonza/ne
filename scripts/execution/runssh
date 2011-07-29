@@ -1,0 +1,10 @@
+#!/bin/bash
+echo Running on ${1} ...
+echo " deleting old ..."
+ssh "${1}" "rm -rf nepack ; rm nepack.tar.gz"
+echo " copying ..."
+scp /tmp/nepack.tar.gz "${1}":
+echo " unpacking ..."
+ssh "${1}" "tar xzf nepack.tar.gz"
+echo " running ..."
+ssh -n -f "${1}" "sh -c \"cd nepack; nohup ./run > /dev/null 2>&1 &\""

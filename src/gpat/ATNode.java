@@ -6,6 +6,7 @@ import gp.GP;
 import gp.TreeInputs;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 /**
@@ -15,7 +16,7 @@ import java.util.List;
  * Time: 3:13 PM
  * To change this template use File | Settings | File Templates.
  */
-public class ATNode implements IATNode {
+public class ATNode implements IATNode, Comparable<ATNode> {
     private int id;
     private ATNodeImpl impl;
 
@@ -220,8 +221,44 @@ public class ATNode implements IATNode {
         return MathematicaUtils.arrayToMathematica(terminalsConnected);
     }
 
+    public int compareTo(ATNode other) {
+        if (this.getId() < other.getId()) {
+            return -1;
+        }
+        if (this.getId() > other.getId()) {
+            return 1;
+        }
+        return 0;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        ATNode atNode = (ATNode) o;
+
+        if (id != atNode.id) return false;
+        if (children != null ? !children.equals(atNode.children) : atNode.children != null) return false;
+        if (constants != null ? !constants.equals(atNode.constants) : atNode.constants != null) return false;
+        if (impl != null ? !impl.equals(atNode.impl) : atNode.impl != null) return false;
+        if (!Arrays.equals(terminalsConnected, atNode.terminalsConnected)) return false;
+
+        return true;
+    }
+
+    @Override
+    public int hashCode() {
+        int result = id;
+        result = 31 * result + (impl != null ? impl.hashCode() : 0);
+        result = 31 * result + (children != null ? children.hashCode() : 0);
+        result = 31 * result + (constants != null ? constants.hashCode() : 0);
+        result = 31 * result + (terminalsConnected != null ? Arrays.hashCode(terminalsConnected) : 0);
+        return result;
+    }
+
     @Override
     public String toString() {
-        return getId() + "(" + getName() + ") " + super.toString();
+        return getId() + "(" + getName() + ") #CH: " + children.size() + " TC: " + MathematicaUtils.arrayToMathematica(terminalsConnected);
     }
 }

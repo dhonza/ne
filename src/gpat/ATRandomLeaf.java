@@ -83,9 +83,6 @@ public class ATRandomLeaf {
             return null;
         }
 
-        if (freeLeaves.size() > 5) {
-            System.out.println("HEEERE");
-        }
         return RND.randomChoice(freeLeaves);
     }
 }

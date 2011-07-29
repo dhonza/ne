@@ -1,9 +1,12 @@
 package common;
 
-import java.io.IOException;
-import java.io.OutputStream;
+import org.jivesoftware.smack.Chat;
+import org.jivesoftware.smack.ChatManager;
+import org.jivesoftware.smack.XMPPConnection;
+import org.jivesoftware.smack.XMPPException;
+
 import java.net.InetAddress;
-import java.util.Map;
+import java.net.UnknownHostException;
 
 /**
  * Created by IntelliJ IDEA.
@@ -14,25 +17,24 @@ import java.util.Map;
  */
 public class XMPPHelper {
     public static void sendViaXMPP(String message) {
-        String hostName = "";
         try {
-            hostName = InetAddress.getLocalHost().getHostName();
-            if (hostName.equals("mbp.local") || hostName.startsWith("eduroam")) {
+            String hostName = InetAddress.getLocalHost().getHostName();
+            if (hostName.equals("mbp.local")) {
                 return;
             }
-            ProcessBuilder pb = new ProcessBuilder("sendxmpp", "dhonza@gmail.com");
-            Map<String, String> m = System.getenv();
-            Process p = pb.start();
-
             message = hostName + ": " + message;
 
-            OutputStream stdin = p.getOutputStream();
-            stdin.write(message.getBytes());
-            stdin.flush();
-            stdin.close();
-        } catch (IOException e) {
-//            e.printStackTrace();
-            System.err.println("Unable to send jabber message from: \"" + hostName + "\"!");
+            XMPPConnection connection = new XMPPConnection("jabber.iitsp.com");
+            connection.connect();
+            connection.login("hdadmin", "jabberpokusny");
+            ChatManager chatmanager = connection.getChatManager();
+            Chat chat = chatmanager.createChat("dhonza@gmail.com", null);
+            chat.sendMessage(message);
+            connection.disconnect();
+        } catch (XMPPException e) {
+            e.printStackTrace();
+        } catch (UnknownHostException e) {
+            e.printStackTrace();
         }
     }
 
