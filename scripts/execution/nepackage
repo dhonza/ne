@@ -1,34 +1,33 @@
 #!/bin/bash
 
 #USAGE:
-#nepackage expdir copyback algorithm
+#nepackage algorithm expdir copyback
 # algorithms: GP, GPAT 
 export NEDIR=~/java/ne
 export NEPACKAGE=nepack
 export ARCHIVE=/tmp/nepack.tar.gz
 export RUNSCRIPT=${NEPACKAGE}/run
 export INFOSCRIPT=${NEPACKAGE}/info
+
+export EXPDIR=exp
 export CLASS="gpat.demo.GPATMain"
 export CFG="cfg/demo/gpatdemo.properties"
 
-if [ $# -eq 0 ] ; then
-    export EXPDIR=exp
-fi
 if [ $# -ge 1 ] ; then
-    export EXPDIR="${1}"
-fi
-if [ $# -ge 2 ] ; then
-    export COPYBACK="${2}"
-fi
-if [ $# -eq 3 ] ; then
-    if [ "${3}" == "GP" ] ; then
+    if [ "${1}" == "GP" ] ; then
         export CLASS="gp.demo.GPMain"
 	export CFG="cfg/demo/gpdemo.properties"
     fi
-    if [ "${3}" == "GPAT" ] ; then
+    if [ "${1}" == "GPAT" ] ; then
         export CLASS="gpat.demo.GPATMain"
 	export CFG="cfg/demo/gpatdemo.properties"
     fi
+fi
+if [ $# -ge 2 ] ; then
+    export EXPDIR="${2}"
+fi
+if [ $# -ge 3 ] ; then
+    export COPYBACK="${3}"
 fi
 
 cd /tmp

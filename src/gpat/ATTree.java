@@ -4,10 +4,7 @@ import common.ListHelper;
 import common.RND;
 import gp.TreeInputs;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.LinkedHashMap;
-import java.util.List;
+import java.util.*;
 
 /**
  * Created by IntelliJ IDEA.
@@ -153,6 +150,9 @@ public class ATTree {
         if (RND.getDouble() < GPAT.MUTATION_INSERT_ROOT && !limitStructure) {
             mutateInsertRoot();
         }
+        if (RND.getDouble() < GPAT.MUTATION_PRUNE_SUBTREE) {
+            mutatePruneSubtree();
+        }
         if (RND.getDouble() < GPAT.MUTATION_SWITCH_NODE) {
             mutateSwitchNode();
         }
@@ -162,10 +162,17 @@ public class ATTree {
     }
 
     public void mutateAddLink() {
+        mutateAddLink(nodeGeneList);
+
+        origin.add("ADD_LINK");
+        checkTree(this);
+    }
+
+    private void mutateAddLink(List<ATNode> nodeGeneList) {
         //choose a random link to be created
         ATRandomLink.FreeLink freeLink = ATRandomLink.getFreeRandomLink(nodeCollection, nodeGeneList);
         if (freeLink == null) {
-            origin.add("ADD_LINK_FAILED");
+            origin.add("GET_FREE_LINK_FAILED");
             return;
         }
         //note, that links can start only in terminal (input) nodes
@@ -192,9 +199,6 @@ public class ATTree {
 
         //number of constants increased by 1 for new link
         numOfConstants++;
-
-        origin.add("ADD_LINK");
-        checkTree(this);
     }
 
     public void mutateAddNode() {
@@ -303,11 +307,7 @@ public class ATTree {
     }
 
     public void mutateSwitchNode() {
-        if (nodeGeneList.size() == 0) {
-            return;
-        }
-
-        //Get random node.
+        //Get a random node.
         ATNode node = RND.randomChoice(nodeGeneList);
 
         //Choose a new function for the node.
@@ -320,10 +320,6 @@ public class ATTree {
     }
 
     public void mutateSwitchLeaf() {
-        if (nodeGeneList.size() == 0) {
-            return;
-        }
-
         //Get a random node and its leaf.
         ATRandomLeaf.FreeLeaf freeLeaf = ATRandomLeaf.getFreeRandomLink(nodeCollection, nodeGeneList);
         if (freeLeaf == null) {
@@ -361,6 +357,58 @@ public class ATTree {
         }
 
         origin.add("SWITCH_LEAF");
+        checkTree(this);
+    }
+
+    public void mutatePruneSubtree() {
+        //Get a random node. All it's children with their subtrees will be removed.
+        List<ATNode> nodesToChooseFrom = new ArrayList<ATNode>(nodeGeneList);
+//        nodesToChooseFrom.remove(root);
+        if (nodesToChooseFrom.isEmpty()) {
+            return;
+        }
+        ATNode parentNode = RND.randomChoice(nodesToChooseFrom);
+
+        //Find all non-terminal children of the parent node.
+        List<ATNode> nodesToRemove = new ArrayList<ATNode>(nodeGeneList.size());
+        for (ATNode child : parentNode.children) {
+            if (!child.isTerminal()) {
+                collectNodesFromTree(child, nodesToRemove);
+            }
+        }
+
+        //Remove them from nodeGeneList.
+        nodeGeneList.removeAll(nodesToRemove);
+
+        //From nodeGene map.
+        for (ATNode node : nodesToRemove) {
+            nodeGenes.remove(node.getId());
+            numOfConstants -= node.getArity();
+        }
+
+        //Add also the parent node to the temporary list as whe will remove all LinkGenes with "to" ATNode
+        //in this list
+        nodesToRemove.add(parentNode);
+
+        for (Iterator<ATLinkGene> iterator = linkGenesList.iterator(); iterator.hasNext(); ) {
+            ATLinkGene linkGene = iterator.next();
+            if (nodesToRemove.contains(linkGene.getTo())) {
+                iterator.remove();
+            }
+        }
+
+        //Finally, let's remove all parent node's children and constants.
+        //TODO co terminalsConnected????
+        numOfConstants -= parentNode.getArity();
+        parentNode.removeAllChildren();
+
+        //Add a single connection to a terminal.
+//        List<ATNode> parentNodeList = new ArrayList<ATNode>();
+//        parentNodeList.add(parentNode);
+//        mutateAddLink(parentNodeList);
+
+        origin.add("PRUNE_SUBTREE");
+
         checkTree(this);
     }
 
@@ -575,7 +623,7 @@ public class ATTree {
             cnt += node.getArity();
         }
         if (cnt != tree.numOfConstants) {
-            throw new IllegalStateException("The number of constants does not match: " + cnt + " vs. " + tree.getNumOfConstants() + "\n" + tree);
+            throw new IllegalStateException("The number of constants does not match: " + cnt + " vs. " + tree.numOfConstants + "\n" + tree);
         }
         //checkNumberOfChildrenVsConstants
         for (ATNode node : tree.nodeGeneList) {

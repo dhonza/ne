@@ -23,6 +23,7 @@ public class GPAT<P> implements IGPAT {
     public static double MUTATION_ADD_NODE = 0.005;
     public static double MUTATION_INSERT_ROOT = 0.05;
     public static double MUTATION_REPLACE_CONSTANT = 0.5;
+    public static double MUTATION_PRUNE_SUBTREE = 0.5;
     public static double MUTATION_SWITCH_NODE = 0.05;
     public static double MUTATION_SWITCH_LEAF = 0.05;
 

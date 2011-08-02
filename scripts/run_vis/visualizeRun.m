@@ -84,7 +84,7 @@ success=N[100*Count[#,"true"]/Length[#]&/@data[[Sequence@@Flatten[Position[statN
 (* Print them as a table. *)
 Print[Grid[Transpose@{{Style["ID",Bold]}~Join~labels,{Style["SUCCESS %",Bold]}~Join~success},Frame->All]];
 (* And a bar chart. *)
-labelPlacement=Placed[labels,Axis,Rotate[#,Pi/2]&];
+labelPlacement=Placed[Style[#,FontSize->15]&/@labels,Axis,Rotate[#,Pi/2]&];
 Print[BarChart[success,ChartLabels->labelPlacement,ChartStyle->colors,LabelingFunction->Center,ImageSize->1200]];
 (* All other stats as box plots.*)
 Grid[Transpose[{statNames,

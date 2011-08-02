@@ -130,6 +130,13 @@ public class ATNode implements IATNode, Comparable<ATNode> {
         children.set(idx, child);
     }
 
+    public void removeAllChildren() {
+        children.clear();
+        constants.clear();
+        Arrays.fill(terminalsConnected, 0);
+        //TODO co terminalsConnected
+    }
+
     public double computeAritySum() {
         double aritySum = getArity();
         for (ATNode child : children) {
