@@ -398,7 +398,6 @@ public class ATTree {
         }
 
         //Finally, let's remove all parent node's children and constants.
-        //TODO co terminalsConnected????
         numOfConstants -= parentNode.getArity();
         parentNode.removeAllChildren();
 

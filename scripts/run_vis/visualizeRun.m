@@ -62,14 +62,22 @@ listAllExperimentFiles[dirs_List]:=
 Flatten[FileNames[RegularExpression["experiments\\_\\d\\d\\d\\.txt"],{"/Users/drchaj1/java/exp/"<>#}]&/@dirs]
 
 
-finalStatsAll[files_,methods_,sortBy_:Null,colors_:"Rainbow"]:=
-Module[{statNames,statPosition,data,order,labels,labelPlacement,success},
+listAllParameterFiles[dirs_List]:=
+Flatten[FileNames[RegularExpression["parameters\\_\\d\\d\\d\\.txt"],{"/Users/drchaj1/java/exp/"<>#}]&/@dirs]
+
+
+finalStatsAll[listOfFiles_,methodNames_,sortBy_:Null,numOfConfs_:1]:=
+Module[{files,methods,statNames,statPosition,data,order,labels,labelPlacement,success,colors},
+(* Permutate files and labels *)
+files=Flatten[Transpose[Partition[listOfFiles,Length[listOfFiles]/numOfConfs]]];
+methods=Flatten[Transpose[Partition[methodNames,Length[methodNames]/numOfConfs]]];
+
 (* Names of all stats. *)
 statNames=readFinalStatNames[files];
 (* A position of a stat to sort by. *)
 statPosition=Flatten[Position[statNames,sortBy]];
 data=readFinalStats[files,#]&/@statNames;
-(* No sort-by stat given or not existing one given. *)
+(* Now sort-by stat given or not existing one given. *)
 If[Length[statPosition]==1,
 order=Ordering[Median/@data[[statPosition[[1]]]]],
 order=Range[Length[files]]
@@ -81,8 +89,15 @@ labels =methods[[order]];
 (* Compute % of sucessful runs *) 
 success=N[100*Count[#,"true"]/Length[#]&/@data[[Sequence@@Flatten[Position[statNames,"SUCCESS"]]]]];
 
+(* Prepare colors *)
+If[numOfConfs==1,
+colors="Rainbow",
+colors=Take[ColorData[10,"ColorList"],numOfConfs]
+(*colors=Take[{LightRed,LightGreen,LightBlue,LightOrange,LightBrown,LightCyan,LightMagenta},numOfConfs]*)
+];
+
 (* Print them as a table. *)
-Print[Grid[Transpose@{{Style["ID",Bold]}~Join~labels,{Style["SUCCESS %",Bold]}~Join~success},Frame->All]];
+Print[Grid[Transpose@{{Style["ID",Bold]}~Join~labels,{Style["SUCCESS %",Bold]}~Join~success,{Style["DIR",Bold]}~Join~(StringReplace[#,"/Users/drchaj1/java/exp/"->""]&/@files)},Frame->All]];
 (* And a bar chart. *)
 labelPlacement=Placed[Style[#,FontSize->15]&/@labels,Axis,Rotate[#,Pi/2]&];
 Print[BarChart[success,ChartLabels->labelPlacement,ChartStyle->colors,LabelingFunction->Center,ImageSize->1200]];

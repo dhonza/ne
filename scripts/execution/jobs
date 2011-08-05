@@ -6,7 +6,7 @@ GREEN="\x1B[32m"
 RED="\x1B[31m"
 BBLUE="\x1B[34;1m"
 
-export JOBLIST=~/java/jobs.txt
+export JOBLIST=~/java/exp/jobs.txt
 
 echo -e ${BBLUE}"MACHINE  \tCFG\tEXP\tNAME"${NORMAL}
 
