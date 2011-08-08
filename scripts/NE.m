@@ -13,13 +13,21 @@ readAllFiles::usage = "readAllFiles[{dir1, dir2, ...},{labelForConfig1, ...}] re
     {statName1\[Rule]{valueExp1, valueExp2, ...}, ...},
     {paramName1\[Rule]paramValue1, paramName2\[Rule]paramValue2, ...}}.
      If labels are not given assigns numbers."
+saveData::usage = "saveData"
+
 changingParameters::usage = "changingParameters"
 sortDataByParams::usage = "sortDataByParams[data,paramOrder] sorts configuration in data by given parameters, paramOrder is a 
 	list of parameter names."
+sortConfigurationResults::usage = "sortConfigurationResults"
+
 printAsTable::usage = "printAsTable"
 plotBooleanAsBarChart::usage = "plotBooleanAsBarChart"
 plotAsBoxWhiskerChart::usage = "plotAsBoxWhiskerChart"
-testMannWhitney::usage = "testMannWhitney"
+testMannWhitney::usage = "testMannWhitney[data,label1,label2,statName] computes Mann-Whitney U test on a single stat (given by name) 
+of two configurations (given by labels)). This non-parametric test compares whether two independent samples of observations have 
+equally large values. Test homoscedasticity, see "
+
+testFisherExact::usage = "testFisherExact"
 
 readExperimentFile::usage = "readExperimentFile[fileName]"
 readParameterFile::usage = "readParameterFile[fileName]"
@@ -69,9 +77,9 @@ configurationForLabel[data_,label_]:=
 labelsForData[data_]:=
 	data[[All,idxLABEL]]
 
-(* Returns a list of values of parameters given by a name for a single configuration. *)
+(* Returns a list of values of parameters given by a name for a single configuration. Nonexisting values are replaced by "NONE" string. *)
 paramValuesForConfiguration[cfg_,paramNames_List]:=
-	(Cases[cfg[[idxPARAMS]],(#->x_)->x][[1]])&/@paramNames
+	((Cases[cfg[[idxPARAMS]],(#->x_)->x]~Join~{"NONE"})[[1]])&/@paramNames
 
 (* Returns a list of values of a single parameter given by a name for a all configurations. *)
 paramValuesForData[data_,paramName_]:=
@@ -87,17 +95,45 @@ listOfColors[numOfColors_]:=
 		(*colors = Take[{LightRed,LightGreen,LightBlue,LightOrange,LightBrown,LightCyan,LightMagenta},numOfColors]*)
 	];
 
+(* -------------------------------------------------------------------------------------------------------- *)
+(* DATA IMPORT/EXPORT ------------------------------------------------------------------------------------ *)
+(* -------------------------------------------------------------------------------------------------------- *)
+
 listAllFiles[dirs_List]:=
 	Transpose[{
 		Flatten[FileNames[RegularExpression["experiments\\_\\d\\d\\d\\.txt"],{PREFIX<>#}]&/@dirs],
 		Flatten[FileNames[RegularExpression["parameters\\_\\d\\d\\d\\.txt"],{PREFIX<>#}]&/@dirs]
 	}]
 
-readAllFiles[dirs_List,labels_:Null]:=
+Options[readAllFiles]={ReplaceParamValues -> {}};
+readAllFiles[dirs_List,labels_:Null,OptionsPattern[]]:=
 	Module[{data,tlabels},
-		data = #~Join~{readExperimentFile[#[[1]]],readParameterFile[#[[2]]]}&/@ listAllFiles[dirs];
-		If[labels===Null,tlabels=Range[Length[data]],tlabels=labels];
+		data = #~Join~{readExperimentFile[#[[1]]],(readParameterFile[#[[2]]]/.OptionValue[ReplaceParamValues])}&/@ listAllFiles[dirs];
+		If[labels===Null,tlabels=ToString /@ Range[Length[data]],tlabels=labels];
 		MapThread[{#1}~Join~#2&,{tlabels,data}]
+	]
+
+saveData[data_,targetDir_]:=
+	Module[{fullTargetDir},
+		(* Create target directory. *)
+		fullTargetDir = PREFIX<>targetDir;
+		If[DirectoryQ[fullTargetDir],(Print["Directory exists!"];Return[$Failed])];
+		CreateDirectory[fullTargetDir,CreateIntermediateDirectories->True];
+		(* Copy parameter files. *)
+		MapIndexed[
+			CopyFile[
+				#1,
+				FileNameJoin[{fullTargetDir,"parameters_"<>ToString[PaddedForm[#2[[1]],2,NumberPadding->{"0","0"}]]<>".txt"}]
+			]&,
+			data[[All,idxPFILE]]
+		];
+		MapIndexed[
+			CopyFile[
+				#1,
+				FileNameJoin[{fullTargetDir,"experiments_"<>ToString[PaddedForm[#2[[1]],2,NumberPadding->{"0","0"}]]<>".txt"}]
+			]&,
+			data[[All,idxEFILE]]
+		];
 	]
 
 changingParameters[data_]:=
@@ -106,10 +142,24 @@ changingParameters[data_]:=
 		Select[Tally[allParams],#[[2]]>1&][[All,1]]
 	]
 
-sortDataByParams[data_,paramOrder_List]:=
+(* -------------------------------------------------------------------------------------------------------- *)
+(* SORT DATA ---------------------------------------------------------------------------------------------- *)
+(* -------------------------------------------------------------------------------------------------------- *)
+Options[sortDataByParams]={ReplaceParamValues -> {}};
+sortDataByParams[data_,paramOrder_List,OptionsPattern[]]:=
 	Sort[data,
-		OrderedQ[{paramValuesForConfiguration[#1,paramOrder],paramValuesForConfiguration[#2,paramOrder]}]&]
+		OrderedQ[{paramValuesForConfiguration[#1,paramOrder],paramValuesForConfiguration[#2,paramOrder]}]&
+	]/.OptionValue[ReplaceParamValues]
 
+sortConfigurationResults[data_,label_,statName_,number_:All]:=
+	Module[{res},
+		res = resultsForConfiguration[configurationForLabel[data,label],statName];
+		Grid[Take[Sort[Transpose[{Range[Length[res]],res}],#1[[2]]>#2[[2]]&],number],Frame->All]
+	]
+
+(* -------------------------------------------------------------------------------------------------------- *)
+(* TABLES ------------------------------------------------------------------------------------------------- *)
+(* -------------------------------------------------------------------------------------------------------- *)
 printAsTable[data_,paramNames_List]:=
 	Grid[
 		Transpose@{
@@ -118,12 +168,18 @@ printAsTable[data_,paramNames_List]:=
 			Sequence@@(({Style[#,Bold]}~Join~paramValuesForData[data,#])& /@ paramNames)
 		},Frame->All]
 
-plotBooleanAsBarChart[data_,paramName_,numOfColors_:1]:=
+(* -------------------------------------------------------------------------------------------------------- *)
+(* PLOTS -------------------------------------------------------------------------------------------------- *)
+(* -------------------------------------------------------------------------------------------------------- *)
+
+(* Other possibility is two set Operation -> Total *)
+Options[plotBooleanAsBarChart]={Operation -> (100*Mean[#]&)};
+plotBooleanAsBarChart[data_,paramName_,numOfColors_:1,OptionsPattern[]]:=
 	Module[{colors,labelPlacement,sum},
 		(* Prepare colors *)
 		colors = listOfColors[numOfColors];
 		labelPlacement = Placed[Style[#,FontSize->15]&/@labelsForData[data],Axis,Rotate[#,Pi/2]&];
-		sum = Total[resultsForConfiguration[#,paramName]]&/@data;
+		sum = OptionValue[Operation][resultsForConfiguration[#,paramName]]&/@data;
 		BarChart[sum,ChartLabels->labelPlacement,ChartStyle->colors,LabelingFunction->Center,ImageSize->1200]
 	]
 
@@ -136,6 +192,9 @@ plotAsBoxWhiskerChart[data_,paramName_,numOfColors_:1]:=
 		BoxWhiskerChart[values,"Notched",ChartLabels->labelPlacement,ChartStyle->colors,ImageSize->1200]
 	]
 
+(* -------------------------------------------------------------------------------------------------------- *)
+(* STATISTIC TESTS ---------------------------------------------------------------------------------------- *)
+(* -------------------------------------------------------------------------------------------------------- *)
 testMannWhitney[data_,label1_,label2_,statName_]:=
 	Module[{data1,data2,vars,res},
 		data1 = resultsForConfiguration[configurationForLabel[data,label1],statName];
@@ -156,9 +215,50 @@ testMannWhitney[data_,label1_,label2_,statName_]:=
 		Print[res["TestConclusion"]];
 	]
 
+(* Computes marginals for a 2x2 table *)
+testFisherComputeMarginals[{{a_,b_},{c_,d_}}]:=
+	{
+		{a,   b,   a+b},
+		{c,   d,   c+d},
+		{a+c, b+d, a+b+c+d}
+	}
+
+(* Computes P for a contingency table *)
+testFisherComputeP[{{a_, b_, R1_},{c_, d_, R2_},{C1_,C2_,N_}}]:=
+		(R1!R2!C1!C2!)/(N!Times[Sequence@@(#!&/@{a, b, c, d})])
+
+(* Generates 2x2 tables for one direction. *)
+testFisherCreateOutcomeSet[{{a_,b_},{c_,d_}}]:=
+	Drop[NestWhileList[{{#[[1,1]]-1,#[[1,2]]+1},{#[[2,1]]+1,#[[2,2]]-1}}&,
+		{{a,b},{c,d}},
+		MatrixQ[#,NonNegative]&
+	],-1]
+
+(* Generates 2x2 tables in opposite direction. *)
+testFisherCreateOutcomeSet2[{{a_,b_},{c_,d_}}]:=
+	Take[NestWhileList[{{#[[1,1]]+1,#[[1,2]]-1},{#[[2,1]]-1,#[[2,2]]+1}}&,
+		{{a,b},{c,d}},
+		MatrixQ[#,NonNegative]&
+	],{2,-2}]
+
+Options[testFisherExact]={TwoSided -> True};
+testFisherExact[{{a_,b_},{c_,d_}},OptionsPattern[]]:=
+	Module[{res,table = {{a,b},{c,d}}},		
+		res = If[OptionValue[TwoSided],
+			{#,testFisherComputeP[#]}&/@(testFisherComputeMarginals/@(testFisherCreateOutcomeSet[table]~Join~testFisherCreateOutcomeSet2[table])),
+			{#,testFisherComputeP[#]}&/@(testFisherComputeMarginals/@(testFisherCreateOutcomeSet[table]))];
+		Total[Select[res,#[[2]]<=res[[1,2]]&][[All,2]]]//N
+	]
+
 End[]
 Protect @@ Names["NE`*"];
 EndPackage[]
+
+
+
+
+
+
 
 
 

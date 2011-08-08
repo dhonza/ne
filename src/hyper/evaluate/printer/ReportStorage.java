@@ -114,6 +114,15 @@ public class ReportStorage implements Serializable {
         this.generationInfo.addAll(generationInfo);
     }
 
+    public void startAll(long seed) {
+        File experimentIdFile = new File(baseDir, "_seed.txt");
+        try {
+            FileUtils.writeStringToFile(experimentIdFile, String.valueOf(seed));
+        } catch (IOException e) {
+            System.err.println("Cannot save experiment id file: " + experimentIdFile);
+        }
+    }
+
     public void startSingleRun() {
         File experimentIdFile = new File(baseDir, "_experiment_id.txt");
         try {

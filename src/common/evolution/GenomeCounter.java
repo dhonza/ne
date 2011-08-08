@@ -15,4 +15,8 @@ public enum GenomeCounter {
     public int getNext() {
         return cnt++;
     }
+
+    public void reset() {
+        cnt = 1;
+    }
 }

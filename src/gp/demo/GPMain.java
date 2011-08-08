@@ -33,8 +33,10 @@ import java.util.List;
  */
 public class GPMain {
     public static void main(String[] args) {
-        System.out.println("INITIALIZED SEED: " + RND.initializeTime());
-//        RND.initialize(8725627961384450L); //4
+        long seed = RND.initializeTime();
+//        long seed = 1307157509603693014L;
+        System.out.println("INITIALIZED SEED: " + seed);
+//        RND.initialize(seed);
         String type = "GP";
 //        String type = "GEP";
 //        String type = "GPAAC";
@@ -52,6 +54,7 @@ public class GPMain {
             reportStorage = new ReportStorage();
         }
 
+        reportStorage.startAll(seed);
         for (ParameterCombination combination : manager) {
             int experiments = combination.getInteger("EXPERIMENTS");
             Stats stats = prepareStats();

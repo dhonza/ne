@@ -46,7 +46,7 @@ public class MathematicaHyperGraphSubstrateBuilder2D implements ISubstrateBuilde
 
         double layerLevel = 0.0;
         coords.append("coords := {");
-        for (Iterator<ISubstrateLayer> itLayer = substrate.getLayers().iterator(); itLayer.hasNext();) {
+        for (Iterator<ISubstrateLayer> itLayer = substrate.getLayers().iterator(); itLayer.hasNext(); ) {
             ISubstrateLayer layer = itLayer.next();
             Node[] nodes = layer.getNodes();
             for (int i = 0; i < nodes.length; i++) {
@@ -65,7 +65,7 @@ public class MathematicaHyperGraphSubstrateBuilder2D implements ISubstrateBuilde
 
         // inter-layer connections
         boolean printComma = false;
-        for (Iterator<SubstrateInterLayerConnection> itConnection = substrate.getConnections().iterator(); itConnection.hasNext();) {
+        for (Iterator<SubstrateInterLayerConnection> itConnection = substrate.getConnections().iterator(); itConnection.hasNext(); ) {
             SubstrateInterLayerConnection connection = itConnection.next();
             int aCPPNOutput = substrate.getConnectionCPPNOutput(connection);
             Node[] fromNodes = connection.getFrom().getNodes();
@@ -73,6 +73,7 @@ public class MathematicaHyperGraphSubstrateBuilder2D implements ISubstrateBuilde
             for (int i = 0; i < fromNodes.length; i++) {
                 for (int j = 0; j < toNodes.length; j++) {
                     double weight = 1.0 * aCPPN.evaluate(aCPPNOutput, fromNodes[i].getCoordinate(), toNodes[j].getCoordinate());
+                    if (weight > 10000000.0) throw new IllegalStateException("POZOR!!! spravny WeightEvaluator");
                     vertices.append("{" + indexMap.get(fromNodes[i]) + "->" + indexMap.get(toNodes[j]) + ", " + MathematicaUtils.toMathematica(weight) + "}");
                     printComma = true;
                     if (i != (fromNodes.length - 1) || j != (toNodes.length - 1) || itConnection.hasNext()) {

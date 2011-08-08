@@ -211,7 +211,7 @@ public class ATNode implements IATNode, Comparable<ATNode> {
             for (int i = 0; i < children.size(); i++) {
                 ATNode child = children.get(i);
                 if (hasConstants()) {
-                    b.append(constants.get(i)).append("*");
+                    b.append(MathematicaUtils.toMathematica(constants.get(i))).append("*");
                 }
                 b.append(child.toMathematicaExpression());
                 if (i < children.size() - 1) {

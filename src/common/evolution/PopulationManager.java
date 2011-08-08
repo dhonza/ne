@@ -146,7 +146,7 @@ public class PopulationManager<G, P> {
             infoMap.put("P_DIVERSITY", DistanceUtils.average(phenomeDistanceStorage));
         }
         if (storeGenotypesMathematica) {
-            infoMap.put("O_GENOMES_MATH", populationStorage.genomesToMathematicaString());
+            infoMap.put("GENOMES_MATH", populationStorage.genomesToMathematicaString());
 
         }
         return new BasicInfo(infoMap);

@@ -67,6 +67,12 @@ public class SymbolicRegression implements IEvaluable<IGPForest> {
                     return 1.5 * x * x * x * x + 2.3 * x * x * x - 1.1 * x * x + 3.7 * x - 4.5;
                 }
             };
+        } else if (fName.equals("G2")) {//same as G but normalized to <0;1>
+            f = new F() {
+                public double f(double x) {
+                    return -0.0002612861082885761 + 0.0002148352445928292 * x - 0.00006386993758165193 * x * x + 0.0001335462331252722 * x * x * x + 0.00008709536942952533 * x * x * x * x;
+                }
+            };
         } else {
             throw new IllegalStateException("Bad \"SYMBOLIC_REGRESSION_1D.F\" given!");
         }

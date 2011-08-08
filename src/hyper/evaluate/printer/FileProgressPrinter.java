@@ -9,10 +9,7 @@ import common.pmatrix.ParameterCombination;
 import hyper.evaluate.IProblem;
 import hyper.evaluate.IProblemGeneralization;
 
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
 /**
  * Created by IntelliJ IDEA.
@@ -87,18 +84,20 @@ public class FileProgressPrinter implements IProgressPrinter {
                 itemList.add(new ReportStorage.SingleRunFile("GENERALIZATION_" + name, extractGeneralizationEvaluationInfo(name).toString()));
             }
         }
-        for (String name : new String[]{"G_DIVERSITY", "P_DIVERSITY"}) {
+        for (String name : new String[]{"G_DIVERSITY", "P_DIVERSITY", "GENOMES_MATH"}) {
             if (generationsKeys != null) {
                 itemList.add(new ReportStorage.SingleRunFile(name, extractPopulationInfo(name).toString()));
             }
         }
 
         //extract origins
+        List<String> originNames = new ArrayList<String>();
         for (String name : generationsKeys) {
             if (name.startsWith("O_")) {
-                itemList.add(new ReportStorage.SingleRunFile(name, extractPopulationInfo(name, 0L).toString()));
+                originNames.add(name);
             }
         }
+        itemList.add(new ReportStorage.SingleRunFile("ORIGINS", extractPopulationInfo(originNames, "O_", 0L).toString()));
 
         reportStorage.prepareSingleRunResults(itemList);
     }
@@ -173,6 +172,27 @@ public class FileProgressPrinter implements IProgressPrinter {
                 value = defaultValue;
             }
             builder.append(value).append("\n");
+        }
+        return builder;
+    }
+
+    private StringBuilder extractPopulationInfo(List<String> names, String removePrefix, Object defaultValue) {
+        List<String> sortedNames = new ArrayList<String>(names);
+        Collections.sort(sortedNames);
+        StringBuilder builder = new StringBuilder();
+        for (String name : sortedNames) {
+            builder.append(name.replace(removePrefix, "")).append("\t");
+        }
+        builder.append("\n");
+        for (InfoContainer generation : generations) {
+            for (String name : sortedNames) {
+                Object value = generation.populationInfo.getInfo(name);
+                if (value == null) {
+                    value = defaultValue;
+                }
+                builder.append(value).append("\t");
+            }
+            builder.append("\n");
         }
         return builder;
     }

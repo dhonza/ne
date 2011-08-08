@@ -3,6 +3,7 @@ package gpat;
 import common.RND;
 import common.evolution.BasicInfo;
 import common.evolution.EvaluationInfo;
+import common.evolution.GenomeCounter;
 import common.evolution.PopulationManager;
 import gp.GP;
 import gp.IGPForest;
@@ -90,6 +91,7 @@ public class GPAT<P> implements IGPAT {
         lastInnovation = 0;
         generationOfBSF = generation;
 
+        GenomeCounter.INSTANCE.reset();
         createInitialGeneration();
         evaluate(population);
         recomputeBest();

@@ -1,9 +1,6 @@
 package gp;
 
-import common.evolution.BasicInfo;
-import common.evolution.EvaluationInfo;
-import common.evolution.IEvolutionaryAlgorithm;
-import common.evolution.PopulationManager;
+import common.evolution.*;
 
 import java.io.Serializable;
 import java.util.*;
@@ -74,6 +71,7 @@ abstract public class GPBase<P, T extends IGPForest> implements IEvolutionaryAlg
         lastInnovation = 0;
         generationOfBSF = generation;
 
+        GenomeCounter.INSTANCE.reset();
         createInitialGeneration();
         evaluate(population);
         recomputeBest();

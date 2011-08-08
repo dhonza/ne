@@ -28,8 +28,10 @@ import java.util.List;
  */
 public class GPATMain {
     public static void main(String[] args) {
-        System.out.println("INITIALIZED SEED: " + RND.initializeTime());
-//        RND.initialize(1307157509603693014L); //4
+        long seed = RND.initializeTime();
+//        long seed = 1321410388649375013L;
+        System.out.println("INITIALIZED SEED: " + seed);
+        RND.initialize(seed);
         String type = "GPAT";
 
         if (args.length == 0) {
@@ -47,6 +49,7 @@ public class GPATMain {
             reportStorage = new ReportStorage();
         }
 
+        reportStorage.startAll(seed);
         for (ParameterCombination combination : manager) {
             int experiments = combination.getInteger("EXPERIMENTS");
 

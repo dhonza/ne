@@ -19,7 +19,7 @@ public class XMPPHelper {
     public static void sendViaXMPP(String message) {
         try {
             String hostName = InetAddress.getLocalHost().getHostName();
-            if (hostName.equals("mbp.local")) {
+            if (hostName.equals("mbp.local") || hostName.startsWith("eduroam")) {
                 return;
             }
             message = hostName + ": " + message;
