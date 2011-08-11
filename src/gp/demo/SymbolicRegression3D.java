@@ -71,6 +71,12 @@ public class SymbolicRegression3D implements IEvaluable<IGPForest> {
                     return 1.5 * x * y * y * z + 2.3 * x * y * z - 1.1 * y + 5.3;
                 }
             };
+        } else if (fName.equals("H2")) {//H bez konstant
+            f = new F() {
+                public double f(double x, double y, double z) {
+                    return x * y * y * z + x * y * z - y;
+                }
+            };
         } else if (fName.equals("I")) {
             f = new F() {
                 public double f(double x, double y, double z) {
