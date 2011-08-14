@@ -11,6 +11,7 @@ readAllFiles::usage = "readAllFiles[{dir1, dir2, ...},{labelForConfig1, ...}] re
     {paramName1\[Rule]paramValue1, paramName2\[Rule]paramValue2, ...}}.
      If labels are not given assigns numbers."
 saveData::usage = "saveData"
+keepOnlyBest::usage = "keepOnlyBest"
 
 changingParameters::usage = "changingParameters"
 sortDataByParams::usage = "sortDataByParams[data,paramOrder] sorts configuration in data by given parameters, paramOrder is a 
@@ -154,6 +155,15 @@ saveData[data_,targetDir_] :=
             data[[All,idxEFILE]]
         ];
     ]
+
+keepOnlyBest[dirs_List,statName_,nbest_] :=
+	Module[{data,best,allFiles,bestFiles},
+		data = readAllFiles[dirs];
+		best = {#[[idxPFILE]],sortConfigurationResults[data, #[[idxLABEL]], statName, nbest, Output -> "Raw"]}& /@ data;
+		allFiles = FileNames[StringReplace[#[[1]],{"parameters" -> "run",".txt" -> "_*.txt"}] & /@ best];
+		bestFiles = FileNames[Flatten[Outer[StringReplace[ToString[#1],{"parameters"->"run",".txt"->""}]<>"_"<>toFixedWidth[#2,3]<>"*.txt"&,{#[[1]]},#[[2,All,1]]] & /@ best]];
+		DeleteFile[Complement[allFiles,bestFiles]]
+	]
 
 changingParameters[data_] :=
     Module[ {allParams},

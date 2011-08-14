@@ -104,6 +104,10 @@ public class ATNode implements IATNode, Comparable<ATNode> {
         return impl.repeatInput();
     }
 
+    public int maxArity() {
+        return impl.maxArity();
+    }
+
     public int getTerminalsConnected(int idx) {
         return terminalsConnected[idx];
     }

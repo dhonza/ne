@@ -117,7 +117,7 @@ public class ATTree {
     public static ATTree createMinimalSubstrate(ATNodeCollection nodeCollection, ATInnovationHistory innovationHistory) {
         ATTree tree = new ATTree(nodeCollection, innovationHistory);
 //        tree.root = new ATNode(tree.initialNodeIds, nodeCollection.randomFunction(), nodeCollection.terminals.length);
-        tree.root = new ATNode(tree.initialNodeIds, new ATFunctions.Plus(), nodeCollection.terminals.length);
+        tree.root = new ATNode(tree.initialNodeIds, nodeCollection.newFunctionByName("plus"), nodeCollection.terminals.length);
         tree.addNode(tree.root);
         tree.origin.add("NEW");
         return tree;
@@ -311,7 +311,7 @@ public class ATTree {
         ATNode node = RND.randomChoice(nodeGeneList);
 
         //Choose a new function for the node.
-        ATNodeImpl nodePrototype = nodeCollection.randomFunction();
+        ATNodeImpl nodePrototype = nodeCollection.randomFunction(node.maxArity());
 
         node.setImpl(nodePrototype);
 
@@ -551,7 +551,8 @@ public class ATTree {
     }
 
     boolean limitStructure() {
-        return getDepth() > 5 || getNumOfConstants() > 10;
+        return getDepth() > 5 || getNumOfConstants() > 10 || getNumOfNodes() > 12;
+//        return getDepth() > 6 || getNumOfConstants() > 20;
     }
 
 
@@ -723,6 +724,13 @@ public class ATTree {
                         ListHelper.asStringInLines(linkGeneListCopy));
             }
 
+        }
+        //checkMaxChildren
+        for (ATNode node : tree.nodeGeneList) {
+            if (node.getArity() > node.maxArity()) {
+                throw new IllegalStateException("Node has higher arity than maxArity: " +
+                        node.getArity() + " vs. " + node.maxArity() + ".");
+            }
         }
     }
 

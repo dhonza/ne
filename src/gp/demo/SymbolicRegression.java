@@ -20,10 +20,12 @@ public class SymbolicRegression implements IEvaluable<IGPForest> {
 
     private final F f;
     private final int steps;
+    private final double a; //1st parameter
     private boolean solved = false;
 
     public SymbolicRegression(ParameterCombination combination) {
         steps = combination.getInteger("SYMBOLIC_REGRESSION_1D.STEPS");
+        a = combination.getDouble("SYMBOLIC_REGRESSION_1D.A");
         String fName = combination.getString("SYMBOLIC_REGRESSION_1D.F");
         if (fName.equals("A")) {
             f = new F() {
@@ -71,6 +73,12 @@ public class SymbolicRegression implements IEvaluable<IGPForest> {
             f = new F() {
                 public double f(double x) {
                     return -0.0002612861082885761 + 0.0002148352445928292 * x - 0.00006386993758165193 * x * x + 0.0001335462331252722 * x * x * x + 0.00008709536942952533 * x * x * x * x;
+                }
+            };
+        } else if (fName.equals("H")) {
+            f = new F() {
+                public double f(double x) {
+                    return 0.1 * x * x + a * Math.sin(x);
                 }
             };
         } else {

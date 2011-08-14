@@ -2,6 +2,9 @@ package gpat;
 
 import common.RND;
 
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  * Created by IntelliJ IDEA.
  * User: drchaj1
@@ -53,6 +56,25 @@ public class ATNodeCollection {
 
     protected ATNodeImpl randomFunction() {
         return RND.randomChoice(functions);
+    }
+
+    protected ATNodeImpl randomFunction(int maxArity) {
+        List<ATNodeImpl> functionChoice = new ArrayList<ATNodeImpl>();
+        for (ATNodeImpl node : functions) {
+            if (node.maxArity() == maxArity) {
+                functionChoice.add(node);
+            }
+        }
+        return RND.randomChoice(functionChoice);
+    }
+
+    protected ATNodeImpl newFunctionByName(String name) {
+        for (ATNodeImpl function : functions) {
+            if (function.getName().equals(name)) {
+                return ATNodeFactory.createByName(function.getClass().getName());
+            }
+        }
+        throw new IllegalArgumentException("Function: " + name + " does not exist.");
     }
 
     //index of a first input in "terminals"

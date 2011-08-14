@@ -31,6 +31,10 @@ public abstract class ATNodeImpl {
         return 1;
     }
 
+    public int maxArity() {
+        return Integer.MAX_VALUE;
+    }
+
     protected double innerPotential(IATNode node, TreeInputs treeInputs) {
         if (hasConstants()) {
             double result = node.getConstant(0) * node.getChild(0).evaluate(treeInputs);

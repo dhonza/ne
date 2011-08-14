@@ -35,6 +35,9 @@ public class ATRandomLink {
         List<FreeLink> freeLinks = new ArrayList<FreeLink>();
         //for each function node
         for (ATNode node : nodeGeneList) {
+            if (node.getArity() >= node.maxArity()) {
+                continue;
+            }
             //count how many times it is connected from each kind of terminal
             int[] terminalCounters = new int[nodeCollection.terminals.length];
             for (ATNode child : node.children) {
