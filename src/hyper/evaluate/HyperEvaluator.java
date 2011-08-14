@@ -1,7 +1,7 @@
 package hyper.evaluate;
 
-import common.evolution.IEvaluable;
 import common.evolution.EvaluationInfo;
+import common.evolution.IEvaluable;
 import hyper.builder.IEvaluableSubstrateBuilder;
 
 /**
@@ -25,7 +25,10 @@ public class HyperEvaluator<INet> implements IEvaluable<INet> {
     }
 
     public EvaluationInfo evaluateGeneralization(INet hyperNet) {
-        return ((IProblemGeneralization<INet>)problem).evaluateGeneralization(hyperNet);
+        return ((IProblemGeneralization<INet>) problem).evaluateGeneralization(hyperNet);
+    }
+
+    public void show(INet individual) {
     }
 
     public boolean isSolved() {

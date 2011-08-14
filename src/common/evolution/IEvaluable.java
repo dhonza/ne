@@ -14,6 +14,8 @@ public interface IEvaluable<P> extends Serializable {
 
     public EvaluationInfo evaluateGeneralization(P individual);
 
+    public void show(P individual);
+
     public boolean isSolved();
 
     public int getNumberOfInputs();

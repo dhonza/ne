@@ -1,7 +1,7 @@
 package sneat.experiments;
 
-import common.evolution.IEvaluable;
 import common.evolution.EvaluationInfo;
+import common.evolution.IEvaluable;
 import sneat.neuralnetwork.INetwork;
 
 /**
@@ -33,6 +33,9 @@ public class XORNetworkEvaluator implements IEvaluable<INetwork> {
 
     public EvaluationInfo evaluateGeneralization(INetwork network) {
         return evaluate(network);
+    }
+
+    public void show(INetwork individual) {
     }
 
     public boolean isSolved() {

@@ -207,4 +207,8 @@ abstract public class GPBase<P, T extends IGPForest> implements IEvolutionaryAlg
     public List<T> getLastGenerationPopulation() {
         return Arrays.asList(population);
     }
+
+    public void showBestSoFar() {
+        populationManager.showBSF(getBestSoFar());
+    }
 }

@@ -256,4 +256,8 @@ public class GPATSimple<P> implements IGPAT {
         l.add("G_MAX_DEPTH");
         return l;
     }
+
+    public void showBestSoFar() {
+        throw new IllegalStateException("Not yet implemented!");
+    }
 }

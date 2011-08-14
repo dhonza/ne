@@ -190,6 +190,7 @@ sortConfigurationResults[data_,label_,statName_,number_:All,OptionsPattern[]] :=
             "Table",Grid[chosen,Frame->All],
             "Raw",chosen,
             "GenomeFileList",runFileForConfiguration[cfg,#[[1]],"_GENOMES_MATH.txt"]& /@ chosen,
+            "BSF", listBSF[runFileForConfiguration[cfg,#[[1]],"_GENOMES_MATH.txt"]]& /@ chosen,
             "BSFGenomes", showGenomes[listBSF[runFileForConfiguration[cfg,#[[1]],"_GENOMES_MATH.txt"]]& /@ chosen],
             "Expressions", showAsExpressions[listBSF[runFileForConfiguration[cfg,#[[1]],"_GENOMES_MATH.txt"]]& /@ chosen],
             _,$Failed

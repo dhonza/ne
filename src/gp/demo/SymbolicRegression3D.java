@@ -136,6 +136,9 @@ public class SymbolicRegression3D implements IEvaluable<IGPForest> {
         return evaluate(forest);
     }
 
+    public void show(IGPForest individual) {
+    }
+
     public boolean isSolved() {
         return solved;
     }

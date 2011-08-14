@@ -23,4 +23,6 @@ public interface IGP<T extends IGPForest> {
     int getLastInnovation();
 
     List<T> getLastGenerationPopulation();
+
+    void showBestSoFar();
 }

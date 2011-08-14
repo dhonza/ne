@@ -1,7 +1,7 @@
 package sneat.experiments.skrimish;
 
-import common.evolution.IEvaluable;
 import common.evolution.EvaluationInfo;
+import common.evolution.IEvaluable;
 import sneat.experiments.HyperNEATParameters;
 import sneat.neatgenome.NeatGenome;
 import sneat.neuralnetwork.INetwork;
@@ -26,8 +26,7 @@ public class SkirmishNetworkEvaluator implements IEvaluable<INetwork> {
         try {
             currentShape = Shapes.valueOf(shape);
 //            currentShape = (Shapes) Enum.Parse(typeof(Shapes), shape, true);
-        }
-        catch (IllegalArgumentException ex) {
+        } catch (IllegalArgumentException ex) {
             System.out.println("Invalid Shape Entered, Defaulting to Triangle");
             currentShape = Shapes.Triangle;
         }
@@ -58,6 +57,9 @@ public class SkirmishNetworkEvaluator implements IEvaluable<INetwork> {
 
     public EvaluationInfo evaluateGeneralization(INetwork network) {
         return evaluate(network);
+    }
+
+    public void show(INetwork individual) {
     }
 
     public static void addPredators(World w) {

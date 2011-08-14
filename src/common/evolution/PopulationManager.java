@@ -105,6 +105,10 @@ public class PopulationManager<G, P> {
         return populationEvaluator.evaluate();
     }
 
+    public void showBSF(G bestSoFar) {
+        perThreadEvaluators.get(0).show((P) bestSoFar);
+    }
+
     public List<EvaluationInfo> evaluateNoDistances() {
         populationStorage.convert();
         System.out.println("WARNING: evaluateNoDistances() - distances not properly computed!");

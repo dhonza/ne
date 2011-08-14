@@ -1,5 +1,10 @@
 package gp.demo;
 
+import common.evolution.EvaluationInfo;
+import common.evolution.IEvaluable;
+import common.pmatrix.ParameterCombination;
+import gp.IGPForest;
+
 import java.io.BufferedReader;
 import java.io.DataInputStream;
 import java.io.FileInputStream;
@@ -14,11 +19,12 @@ import java.util.List;
  * Time: 11:49 PM
  * To change this template use File | Settings | File Templates.
  */
-public class Maze {
+public class Maze implements IEvaluable<IGPForest> {
     final public static int EMPTY = 0;
     final public static int WALL = 1;
     final public static int START = 2;
     final public static int TARGET = 3;
+    final public static int VISITED = 4;
 
     final private static int[][] N = {{0, -1}, {-1, -1}, {1, -1}};//N, NW, NE
     final private static int[][] S = {{0, 1}, {1, 1}, {-1, 1}};//S, SE, SW
@@ -31,28 +37,152 @@ public class Maze {
     private int[] pos = new int[2];
     private int[][] dir;
 
-    public Maze() {
+
+    private int maxSteps = 30;
+    private double[] inputs;
+    private boolean solved = false;
+
+    public Maze(ParameterCombination combination) {
         readMap("map1.csv");
         setToStart();
+        inputs = new double[getNumberOfInputs()];
+    }
+
+
+    public EvaluationInfo evaluate(IGPForest forest) {
+        setToStart();
+        int steps = 0;
+        for (int i = 0; i < maxSteps; i++) {
+            if (distanceToTarget() == 0) {
+                break;
+            }
+            readInputs(inputs);
+            forest.loadInputs(inputs);
+            double output = forest.getOutputs()[0];
+            if (output < -0.5) {
+                rotateL();
+                moveF();
+            } else if (output > 0.5) {
+                rotateR();
+                moveF();
+            } else {
+                moveF();
+            }
+            steps++;
+        }
+        double fitness = 30.0 + (maxSteps - steps) - distanceToTarget();
+        return new EvaluationInfo(fitness);
+    }
+
+    public EvaluationInfo evaluateGeneralization(IGPForest forest) {
+        return evaluate(forest);
+    }
+
+    public void show(IGPForest forest) {
+        evaluate(forest);
+        System.out.println(this);
+    }
+
+    public boolean isSolved() {
+        return solved;
+    }
+
+    public int getNumberOfInputs() {
+        return 8;
+    }
+
+    public int getNumberOfOutputs() {
+        return 1;
     }
 
     private void setToStart() {
         pos[0] = start[0];
         pos[1] = start[1];
         dir = S;
+        for (int i = 0; i < map.length; i++) {
+            for (int j = 0; j < map[0].length; j++) {
+                if (map[i][j] == VISITED) {
+                    map[i][j] = EMPTY;
+                }
+            }
+        }
+    }
+
+    private void moveF() {
+        if (map[pos[1]][pos[0]] == EMPTY) {
+            map[pos[1]][pos[0]] = VISITED;
+        }
+        int posX = pos[0] + dir[0][0];
+        int posY = pos[1] + dir[0][1];
+        if (map[posY][posX] != WALL) {
+            pos[0] = posX;
+            pos[1] = posY;
+        }
+    }
+
+    private void rotateR() {
+        if (dir == N) {
+            dir = E;
+        } else if (dir == S) {
+            dir = W;
+        } else if (dir == W) {
+            dir = N;
+        } else if (dir == E) {
+            dir = S;
+        }
+    }
+
+
+    private void rotateL() {
+        if (dir == N) {
+            dir = W;
+        } else if (dir == S) {
+            dir = E;
+        } else if (dir == W) {
+            dir = S;
+        } else if (dir == E) {
+            dir = N;
+        }
     }
 
     private double distanceToTarget() {
         double dx = pos[0] - target[0];
         double dy = pos[1] - target[1];
-        return Math.sqrt(dx * dx + dy + dy);
+        return Math.abs(dx) + Math.abs(dy);
     }
 
     private void readInputs(double[] in) {
+        boolean isF, isB, isL, isR;
+        if (dir == N) {
+            isF = pos[1] >= target[1];
+            isB = pos[1] <= target[1];
+            isL = pos[0] >= target[0];
+            isR = pos[0] <= target[0];
+        } else if (dir == S) {
+            isF = pos[1] <= target[1];
+            isB = pos[1] >= target[1];
+            isL = pos[0] <= target[0];
+            isR = pos[0] >= target[0];
+        } else if (dir == W) {
+            isF = pos[0] >= target[0];
+            isB = pos[0] <= target[0];
+            isL = pos[1] <= target[1];
+            isR = pos[1] >= target[1];
+        } else {
+            isF = pos[0] <= target[0];
+            isB = pos[0] >= target[0];
+            isL = pos[1] >= target[1];
+            isR = pos[1] <= target[1];
+        }
+
         in[0] = distanceToTarget();
         in[1] = map[pos[1] + dir[1][1]][pos[0] + dir[1][0]] == WALL ? 1.0 : 0.0;
         in[2] = map[pos[1] + dir[0][1]][pos[0] + dir[0][0]] == WALL ? 1.0 : 0.0;
         in[3] = map[pos[1] + dir[2][1]][pos[0] + dir[2][0]] == WALL ? 1.0 : 0.0;
+        in[4] = isF ? 1.0 : 0.0;
+        in[5] = isB ? 1.0 : 0.0;
+        in[6] = isL ? 1.0 : 0.0;
+        in[7] = isR ? 1.0 : 0.0;
     }
 
     private void readMap(String mapFile) {
@@ -114,6 +244,8 @@ public class Maze {
                 } else {
                     if (map[i][j] == EMPTY) {
                         b.append('.');
+                    } else if (map[i][j] == VISITED) {
+                        b.append('x');
                     } else {
                         b.append(map[i][j]);
                     }
@@ -122,14 +254,40 @@ public class Maze {
             b.append("\n");
         }
         b.append("inputs: ");
-        double in[] = new double[4];
+        double in[] = new double[getNumberOfInputs()];
         readInputs(in);
         b.append(in[0]).append(" ").append(in[1]).append(" ").append(in[2]).append(" ").append(in[3]);
         return b.toString();
     }
 
     public static void main(String[] args) {
-        Maze m = new Maze();
+        Maze m = new Maze(null);
+        System.out.println(m);
+        m.moveF();
+        m.moveF();
+        m.moveF();
+        m.moveF();
+        m.rotateL();
+        m.moveF();
+        m.moveF();
+        m.moveF();
+        m.moveF();
+        m.moveF();
+        m.moveF();
+        m.moveF();
+        m.moveF();
+        m.moveF();
+        m.moveF();
+        m.moveF();
+        m.moveF();
+        m.moveF();
+        m.rotateR();
+        m.moveF();
+        m.moveF();
+        m.moveF();
+        m.moveF();
+        m.moveF();
+        m.moveF();
         System.out.println(m);
     }
 }

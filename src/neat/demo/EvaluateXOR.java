@@ -1,7 +1,7 @@
 package neat.demo;
 
-import common.evolution.IEvaluable;
 import common.evolution.EvaluationInfo;
+import common.evolution.IEvaluable;
 import common.net.linked.Net;
 
 /**
@@ -29,6 +29,9 @@ public class EvaluateXOR implements IEvaluable<Net> {
 
     public EvaluationInfo evaluateGeneralization(Net individual) {
         return evaluate(individual);
+    }
+
+    public void show(Net individual) {
     }
 
     public boolean isSolved() {

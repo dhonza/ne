@@ -124,6 +124,9 @@ public class SymbolicRegression implements IEvaluable<IGPForest> {
         return evaluate(forest);
     }
 
+    public void show(IGPForest individual) {
+    }
+
     public boolean isSolved() {
         return solved;
     }

@@ -1,8 +1,8 @@
 package neat.demo;
 
 import common.RND;
-import common.evolution.IEvaluable;
 import common.evolution.EvaluationInfo;
+import common.evolution.IEvaluable;
 import common.net.linked.Net;
 import neat.Genome;
 
@@ -120,6 +120,9 @@ public class EvaluateSpirals implements IEvaluable<Net> {
 
     public EvaluationInfo evaluateGeneralization(Net net) {
         return evaluate(net);
+    }
+
+    public void show(Net individual) {
     }
 
     public double evaluate2(Genome og) {
