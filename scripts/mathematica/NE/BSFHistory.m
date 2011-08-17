@@ -2,7 +2,10 @@
 
 BeginPackage["BSFHistory`"]
 listBSFEvolution::usage = "listBSFEvolution"  
-listBSF::usage = "listBSF lists only BSF (searches only in the last generation!) in the sme format as listBSFEvolution"
+Options[listBSFEvolution] = {Choice -> "Structural"}; 
+listBSF::usage = "listBSF lists only BSF (searches only in the last generation!) in the same format as listBSFEvolution"
+listBOGEvolution::usage = "listBOGEvolution lists best of generation in the same format as listBSFEvolution"
+
 Begin["`Private`"] (* Begin Private Context *) 
 
 (* Finds the genome id of the BSF. Warning it searches only the last generation! *)
@@ -78,21 +81,30 @@ listBSFEvolution[fileName_,OptionsPattern[]] :=
         genomes = genomes /. rules;
         bsf = traceBackIds[findBSFId[genomes],genomes];
         Switch[OptionValue[Choice],
-        	"NBiggest",onlyNBiggestChanges[bsf,15],
-        	"Changing",removeDuplicit[bsf],
-        	"Structural",removeDuplicitStructural[bsf],
-        	"All",bsf,
-        	_,$Failed
+            "NBiggest",onlyNBiggestChanges[bsf,15],
+            "Changing",removeDuplicit[bsf],
+            "Structural",removeDuplicitStructural[bsf],
+            "All",bsf,
+            _,$Failed
         ]
-            ]
+    ]
 
 listBSF[fileName_] :=
-	Module[{rules},
-		rules = # -> ToString[#] & /@ {Global`times, Global`plus, Global`sin, Global`cos, Global`atan, Global`gauss};
-		{"last"}~Join~(Sort[
-			ToExpression@
-			(StringSplit[Import[fileName], "\n"][[-1]]), #1[[4]] > #2[[4]] &][[1]]) /. rules
-	]
+    Module[ {rules},
+        rules = # -> ToString[#] & /@ {Global`times, Global`plus, Global`sin, Global`cos, Global`atan, Global`gauss};
+        {"last"}~Join~(Sort[
+            ToExpression@
+            (StringSplit[Import[fileName], "\n"][[-1]]), #1[[4]] > #2[[4]] &][[1]]) /. rules
+    ]
+
+Options[listBSFEvolution] = {Choice -> "All"};    
+listBOGEvolution[fileName_,OptionsPattern[]] :=
+    Module[ {rules,genomes},
+        rules = # -> ToString[#] & /@ {Global`times, Global`plus, Global`sin, Global`cos, Global`atan, Global`gauss};
+        genomes = ToExpression@StringSplit[Import[fileName], "\n"];
+        MapIndexed[#2~Join~Sort[#1,#1[[4]] > #2[[4]] &][[1]]&,genomes /. rules]
+    ]
+        
 End[] (* End Private Context *)
 
 EndPackage[]

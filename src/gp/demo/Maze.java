@@ -26,24 +26,26 @@ public class Maze implements IEvaluable<IGPForest> {
     final public static int TARGET = 3;
     final public static int VISITED = 4;
 
-    final private static int[][] N = {{0, -1}, {-1, -1}, {1, -1}};//N, NW, NE
-    final private static int[][] S = {{0, 1}, {1, 1}, {-1, 1}};//S, SE, SW
-    final private static int[][] W = {{-1, 0}, {-1, 1}, {-1, -1}};
-    final private static int[][] E = {{1, 0}, {1, -1}, {1, 1}};
+    final protected static int[][] N = {{0, -1}, {-1, -1}, {1, -1}};//N, NW, NE
+    final protected static int[][] S = {{0, 1}, {1, 1}, {-1, 1}};//S, SE, SW
+    final protected static int[][] W = {{-1, 0}, {-1, 1}, {-1, -1}};
+    final protected static int[][] E = {{1, 0}, {1, -1}, {1, 1}};
 
-    private int[][] map;
-    private int[] start = new int[2];
-    private int[] target = new int[2];
-    private int[] pos = new int[2];
-    private int[][] dir;
+    protected int[][] map;
+    protected int[] start = new int[2];
+    protected int[] target = new int[2];//X, Y
+    protected int[] pos = new int[2];//X, Y
+    protected int[][] dir;
 
 
-    private int maxSteps = 30;
-    private double[] inputs;
-    private boolean solved = false;
+    protected int maxSteps;
+    protected double[] inputs;
+    protected boolean solved = false;
 
     public Maze(ParameterCombination combination) {
-        readMap("map1.csv");
+        maxSteps = combination.getInteger("MAZE.MAX_STEPS");
+        String mapFile = combination.getString("MAZE.MAP");
+        readMap("cfg/demo/maze/" + mapFile);
         setToStart();
         inputs = new double[getNumberOfInputs()];
     }
@@ -54,6 +56,7 @@ public class Maze implements IEvaluable<IGPForest> {
         int steps = 0;
         for (int i = 0; i < maxSteps; i++) {
             if (distanceToTarget() == 0) {
+                solved = true;
                 break;
             }
             readInputs(inputs);
@@ -70,7 +73,11 @@ public class Maze implements IEvaluable<IGPForest> {
             }
             steps++;
         }
-        double fitness = 30.0 + (maxSteps - steps) - distanceToTarget();
+//        double fitness = map.length + map[0].length + (maxSteps - steps) - distanceToTarget();
+        double fitness = map.length + map[0].length - distanceToTarget();
+        if (fitness < 0.0) {
+            throw new IllegalStateException("Fitness < 0");
+        }
         return new EvaluationInfo(fitness);
     }
 
@@ -88,14 +95,14 @@ public class Maze implements IEvaluable<IGPForest> {
     }
 
     public int getNumberOfInputs() {
-        return 8;
+        return 7;
     }
 
     public int getNumberOfOutputs() {
         return 1;
     }
 
-    private void setToStart() {
+    protected void setToStart() {
         pos[0] = start[0];
         pos[1] = start[1];
         dir = S;
@@ -108,7 +115,7 @@ public class Maze implements IEvaluable<IGPForest> {
         }
     }
 
-    private void moveF() {
+    protected void moveF() {
         if (map[pos[1]][pos[0]] == EMPTY) {
             map[pos[1]][pos[0]] = VISITED;
         }
@@ -120,7 +127,7 @@ public class Maze implements IEvaluable<IGPForest> {
         }
     }
 
-    private void rotateR() {
+    protected void rotateR() {
         if (dir == N) {
             dir = E;
         } else if (dir == S) {
@@ -133,7 +140,7 @@ public class Maze implements IEvaluable<IGPForest> {
     }
 
 
-    private void rotateL() {
+    protected void rotateL() {
         if (dir == N) {
             dir = W;
         } else if (dir == S) {
@@ -145,47 +152,47 @@ public class Maze implements IEvaluable<IGPForest> {
         }
     }
 
-    private double distanceToTarget() {
+    protected double distanceToTarget() {
         double dx = pos[0] - target[0];
         double dy = pos[1] - target[1];
         return Math.abs(dx) + Math.abs(dy);
     }
 
-    private void readInputs(double[] in) {
+    protected void readInputs(double[] in) {
         boolean isF, isB, isL, isR;
         if (dir == N) {
             isF = pos[1] >= target[1];
-            isB = pos[1] <= target[1];
+            isB = pos[1] < target[1];
             isL = pos[0] >= target[0];
-            isR = pos[0] <= target[0];
+            isR = pos[0] < target[0];
         } else if (dir == S) {
             isF = pos[1] <= target[1];
-            isB = pos[1] >= target[1];
+            isB = pos[1] > target[1];
             isL = pos[0] <= target[0];
-            isR = pos[0] >= target[0];
+            isR = pos[0] > target[0];
         } else if (dir == W) {
             isF = pos[0] >= target[0];
-            isB = pos[0] <= target[0];
+            isB = pos[0] < target[0];
             isL = pos[1] <= target[1];
-            isR = pos[1] >= target[1];
+            isR = pos[1] > target[1];
         } else {
             isF = pos[0] <= target[0];
-            isB = pos[0] >= target[0];
+            isB = pos[0] > target[0];
             isL = pos[1] >= target[1];
-            isR = pos[1] <= target[1];
+            isR = pos[1] < target[1];
         }
-
-        in[0] = distanceToTarget();
-        in[1] = map[pos[1] + dir[1][1]][pos[0] + dir[1][0]] == WALL ? 1.0 : 0.0;
-        in[2] = map[pos[1] + dir[0][1]][pos[0] + dir[0][0]] == WALL ? 1.0 : 0.0;
-        in[3] = map[pos[1] + dir[2][1]][pos[0] + dir[2][0]] == WALL ? 1.0 : 0.0;
-        in[4] = isF ? 1.0 : 0.0;
-        in[5] = isB ? 1.0 : 0.0;
-        in[6] = isL ? 1.0 : 0.0;
-        in[7] = isR ? 1.0 : 0.0;
+        int cnt = 0;
+//        in[cnt++] = distanceToTarget();
+        in[cnt++] = map[pos[1] + dir[1][1]][pos[0] + dir[1][0]] == WALL ? 1.0 : 0.0;
+        in[cnt++] = map[pos[1] + dir[0][1]][pos[0] + dir[0][0]] == WALL ? 1.0 : 0.0;
+        in[cnt++] = map[pos[1] + dir[2][1]][pos[0] + dir[2][0]] == WALL ? 1.0 : 0.0;
+        in[cnt++] = isF ? 1.0 : 0.0;
+        in[cnt++] = isB ? 1.0 : 0.0;
+        in[cnt++] = isL ? 1.0 : 0.0;
+        in[cnt++] = isR ? 1.0 : 0.0;
     }
 
-    private void readMap(String mapFile) {
+    protected void readMap(String mapFile) {
         try {
             List<String> lines = new ArrayList<String>();
             FileInputStream fstream = new FileInputStream(mapFile);
@@ -256,7 +263,9 @@ public class Maze implements IEvaluable<IGPForest> {
         b.append("inputs: ");
         double in[] = new double[getNumberOfInputs()];
         readInputs(in);
-        b.append(in[0]).append(" ").append(in[1]).append(" ").append(in[2]).append(" ").append(in[3]);
+        for (int i = 0; i < getNumberOfInputs(); i++) {
+            b.append(in[i]).append(" ");
+        }
         return b.toString();
     }
 

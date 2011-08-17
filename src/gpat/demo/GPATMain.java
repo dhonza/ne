@@ -168,8 +168,7 @@ public class GPATMain {
 
     private static ATNodeImpl[] createFunctions(String type, ParameterCombination combination) {
         if (type.equals("GPAT")) {
-//            return ATNodeFactory.createByNameList("gpat.ATFunctions$", combination.getString("GPAT.FUNCTIONS"));
-            return ATNodeFactory.createByNameList("gpat.ATFunctionsLikeGP$", combination.getString("GPAT.FUNCTIONS"));
+            return ATNodeFactory.createByNameList(combination.getString("GPAT.FUNCTION_IMPL"), combination.getString("GPAT.FUNCTIONS"));
         } else {
             throw new IllegalArgumentException("Unsupported algorithm type");
         }

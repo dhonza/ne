@@ -30,6 +30,7 @@ equally large values. Test homoscedasticity, see "
 testKruskalWallis::usage = "testKruskalWallis"
 
 testFisherExact::usage = "testFisherExact"
+testFisherExactAll::usage = "testFisherExactAll"
 
 readExperimentFile::usage = "readExperimentFile[fileName]"
 readParameterFile::usage = "readParameterFile[fileName]"  
@@ -99,8 +100,8 @@ runFileForConfiguration[cfg_, runNum_, name_] :=
      toFixedWidth[runNum,3] <>
      name
 (* Pads integer by leading zeroes, outputs String. *)
-toFixedWidth[n_Integer, width_Integer] := 
-  StringJoin[PadLeft[Characters[ToString[n]], width, "0"]]
+toFixedWidth[n_Integer, width_Integer] :=
+    StringJoin[PadLeft[Characters[ToString[n]], width, "0"]]
   
 listOfColors[numOfColors_] :=
     If[ numOfColors == 1,
@@ -157,13 +158,13 @@ saveData[data_,targetDir_] :=
     ]
 
 keepOnlyBest[dirs_List,statName_,nbest_] :=
-	Module[{data,best,allFiles,bestFiles},
-		data = readAllFiles[dirs];
-		best = {#[[idxPFILE]],sortConfigurationResults[data, #[[idxLABEL]], statName, nbest, Output -> "Raw"]}& /@ data;
-		allFiles = FileNames[StringReplace[#[[1]],{"parameters" -> "run",".txt" -> "_*.txt"}] & /@ best];
-		bestFiles = FileNames[Flatten[Outer[StringReplace[ToString[#1],{"parameters"->"run",".txt"->""}]<>"_"<>toFixedWidth[#2,3]<>"*.txt"&,{#[[1]]},#[[2,All,1]]] & /@ best]];
-		DeleteFile[Complement[allFiles,bestFiles]]
-	]
+    Module[ {data,best,allFiles,bestFiles},
+        data = readAllFiles[dirs];
+        best = {#[[idxPFILE]],sortConfigurationResults[data, #[[idxLABEL]], statName, nbest, Output -> "Raw"]}& /@ data;
+        allFiles = FileNames[StringReplace[#[[1]],{"parameters" -> "run",".txt" -> "_*.txt"}] & /@ best];
+        bestFiles = FileNames[Flatten[Outer[StringReplace[ToString[#1],{"parameters"->"run",".txt"->""}]<>"_"<>toFixedWidth[#2,3]<>"*.txt"&,{#[[1]]},#[[2,All,1]]] & /@ best]];
+        DeleteFile[Complement[allFiles,bestFiles]]
+    ]
 
 changingParameters[data_] :=
     Module[ {allParams},
@@ -181,7 +182,7 @@ sortDataByParams[data_,paramOrder_List,OptionsPattern[]] :=
     ]/.OptionValue[ReplaceParamValues]
 
 Options[sortConfigurationResults] = {Output -> "Table"};
-sortConfigurationResults[data_,label_,statName_,number_:All,OptionsPattern[]] :=
+sortConfigurationResults[data_,label_,statName_,number_:All,opts:OptionsPattern[]] :=
     Module[ {cfg,res,chosen},
         cfg = configurationForLabel[data,label];
         res = resultsForConfiguration[cfg,statName];
@@ -311,7 +312,7 @@ testFisherExact[{{a_,b_},{c_,d_}},OptionsPattern[]] :=
         Total[Select[res,#[[2]]<=res[[1,2]]&][[All,2]]]//N
     ]
 
-Options[testFisherExact] = {TwoSided -> True};
+Options[testFisherExact] = {TwoSided -> True,PValueOnly -> False};
 testFisherExact[data_,label1_,label2_,statName_,opt:OptionsPattern[]] :=
     Module[ {data1,data2,outcomeA1,outcomeA2,outcomeB1,outcomeB2},
         data1 = resultsForConfiguration[configurationForLabel[data,label1],statName];
@@ -320,16 +321,35 @@ testFisherExact[data_,label1_,label2_,statName_,opt:OptionsPattern[]] :=
         outcomeA2 = Total[data2];
         outcomeB1 = Length[data1]-outcomeA1;
         outcomeB2 = Length[data2]-outcomeA2;
-        Print[Grid[
-            {
-                {"",Style[label1,Bold],Style[label2,Bold]},
-                {Style["true",Bold],outcomeA1,outcomeA2},
-                {Style["false",Bold],outcomeB1,outcomeB2}
-            }
-        ,Frame->All]];
+        If[ Not[OptionValue[PValueOnly]],
+            Print[Grid[
+                {
+                    {"",Style[label1,Bold],Style[label2,Bold]},
+                    {Style["true",Bold],outcomeA1,outcomeA2},
+                    {Style["false",Bold],outcomeB1,outcomeB2}
+                }
+            ,Frame->All]]
+        ];
         testFisherExact[{{outcomeA1,outcomeA2},{outcomeB1,outcomeB2}},opt]
     ]
 
+Options[testFisherExactAll] = {TwoSided -> True};
+testFisherExactAll[data_,statName_,significanceLevel_,opt:OptionsPattern[]] :=
+    Module[ {labels,items},
+        labels = labelsForData[data];
+        items = {Style[#, Bold] & /@ ({""}~Join~Rest[labels])}~Join~
+    Flatten[Most[
+            MapIndexed[
+             Outer["f", {#1}, 
+               Array["span", Sequence @@ #2]~Join~
+          labels[[Sequence @@ #2 + 1 ;; -1]]] &, labels]], 1];
+        items = items /. "f"[_, "span"[_]] -> "";
+        items[[All, 1]] = Style[#, Bold] & /@ ({""}~Join~Most[labels]);
+        items = items /. ("f"[a_,b_] :> testFisherExact[data,a,b,statName,opt,PValueOnly -> True]);
+        items = items /. (a:_?NumberQ :> If[a < significanceLevel, Item[a,Background->Red], Item[a,Background->Green]]);
+        Grid[items, Frame -> All]
+    ]
+  
 End[] (* End Private Context *)
 
 EndPackage[]
