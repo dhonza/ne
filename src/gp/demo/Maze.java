@@ -162,24 +162,24 @@ public class Maze implements IEvaluable<IGPForest> {
         boolean isF, isB, isL, isR;
         if (dir == N) {
             isF = pos[1] >= target[1];
-            isB = pos[1] < target[1];
+            isB = pos[1] <= target[1];
             isL = pos[0] >= target[0];
-            isR = pos[0] < target[0];
+            isR = pos[0] <= target[0];
         } else if (dir == S) {
             isF = pos[1] <= target[1];
-            isB = pos[1] > target[1];
+            isB = pos[1] >= target[1];
             isL = pos[0] <= target[0];
-            isR = pos[0] > target[0];
+            isR = pos[0] >= target[0];
         } else if (dir == W) {
             isF = pos[0] >= target[0];
-            isB = pos[0] < target[0];
+            isB = pos[0] <= target[0];
             isL = pos[1] <= target[1];
-            isR = pos[1] > target[1];
+            isR = pos[1] >= target[1];
         } else {
             isF = pos[0] <= target[0];
-            isB = pos[0] > target[0];
+            isB = pos[0] >= target[0];
             isL = pos[1] >= target[1];
-            isR = pos[1] < target[1];
+            isR = pos[1] <= target[1];
         }
         int cnt = 0;
 //        in[cnt++] = distanceToTarget();

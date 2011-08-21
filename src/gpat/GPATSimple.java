@@ -93,7 +93,12 @@ public class GPATSimple<P> implements IGPAT {
             ATForest p1 = population[RND.getInt(0, population.length - 1)];
             ATForest p2 = population[RND.getInt(0, population.length - 1)];
             ATForest p = p1.getFitness() > p2.getFitness() ? p1 : p2;
-            newPopulation[i] = p.mutate(generation);
+
+            if (RND.getDouble() < GPAT.MUTATION_HEAVY_PROB) {
+                newPopulation[i] = p.mutateHeavyStructure(generation);
+            } else {
+                newPopulation[i] = p.mutate(generation);
+            }
         }
     }
 
@@ -258,6 +263,6 @@ public class GPATSimple<P> implements IGPAT {
     }
 
     public void showBestSoFar() {
-        throw new IllegalStateException("Not yet implemented!");
+        populationManager.showBSF(getBestSoFar());
     }
 }

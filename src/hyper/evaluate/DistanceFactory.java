@@ -34,6 +34,8 @@ public class DistanceFactory {
             return new ForestDistance();
         } else if (solver.equals("GPAT")) {
             return new ATForestDistance();
+        } else if (solver.equals("GPATS")) {
+            return new ATForestDistance();
         } else if (solver.equals("SNEAT")) {
             return new ForestDistance();
         } else if (solver.equals("DIRECT_CMAES")) {

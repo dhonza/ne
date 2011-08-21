@@ -9,19 +9,19 @@ import common.pmatrix.ParameterCombination;
  * Time: 11:49 PM
  * To change this template use File | Settings | File Templates.
  */
-public class MazeRangeFinders extends Maze {
+public class MazeRangeFinders8 extends Maze {
 
-    public MazeRangeFinders(ParameterCombination combination) {
+    public MazeRangeFinders8(ParameterCombination combination) {
         super(combination);
     }
 
 
     public int getNumberOfInputs() {
-        return 8;
+        return 12;
     }
 
-    protected double[] rangeFinders4() {
-        double[] ranges = new double[4];
+    protected double[] rangeFinders8() {
+        double[] ranges = new double[8];
         int[][][] order;
         if (dir == N) {
             order = new int[][][]{N, E, S, W};
@@ -41,7 +41,17 @@ public class MazeRangeFinders extends Maze {
                 p[1] += dir[1];
                 range++;
             } while (map[p[1]][p[0]] != WALL);
-            ranges[i] = range;
+            ranges[2 * i] = range;
+
+            dir = order[i][1];
+            p = pos.clone();
+            range = 0;
+            do {
+                p[0] += dir[0];
+                p[1] += dir[1];
+                range++;
+            } while (map[p[1]][p[0]] != WALL);
+            ranges[2 * i + 1] = range;
         }
         return ranges;
     }
@@ -70,7 +80,7 @@ public class MazeRangeFinders extends Maze {
             isR = pos[1] <= target[1];
         }
         int cnt = 0;
-        double[] ranges = rangeFinders4();
+        double[] ranges = rangeFinders8();
         for (double range : ranges) {
             in[cnt++] = range;
         }

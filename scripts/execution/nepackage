@@ -22,6 +22,11 @@ if [ $# -ge 1 ] ; then
         export CLASS="gpat.demo.GPATMain"
 	export CFG="cfg/demo/gpatdemo.properties"
     fi
+    if [ "${1}" == "GPATS" ] ; then
+        export CLASS="gpat.demo.GPATMain"
+	export CFG="cfg/demo/gpatsimpledemo.properties"
+    fi
+
 fi
 if [ $# -ge 2 ] ; then
     export EXPDIR="${2}"

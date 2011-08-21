@@ -10,10 +10,10 @@
 NotebookFileLineBreakTest
 NotebookFileLineBreakTest
 NotebookDataPosition[       157,          7]
-NotebookDataLength[    651068,      14855]
-NotebookOptionsPosition[    648277,      14761]
-NotebookOutlinePosition[    648633,      14777]
-CellTagsIndexPosition[    648590,      14774]
+NotebookDataLength[    633161,      14351]
+NotebookOptionsPosition[    630072,      14247]
+NotebookOutlinePosition[    630428,      14263]
+CellTagsIndexPosition[    630385,      14260]
 WindowFrame->Normal*)
 
 (* Beginning of Notebook Content *)
@@ -90,15 +90,60 @@ Cell[BoxData[
    3.521646544856447*^9, 3.521646546687192*^9}}],
 
 Cell[BoxData[
+ RowBox[{"lables", "=", 
+  RowBox[{"{", "\"\<GPATGP_\>\"", "}"}]}]], "Input",
+ CellChangeTimes->{{3.522913749506136*^9, 3.522913759447915*^9}}],
+
+Cell[CellGroupData[{
+
+Cell[BoxData[
+ RowBox[{
+  RowBox[{
+   RowBox[{"StringReplace", "[", 
+    RowBox[{"#", ",", 
+     RowBox[{"\"\<~/java/exp/\>\"", "\[Rule]", "\"\<\>\""}]}], "]"}], "&"}], "/@", 
+  RowBox[{
+  "FileNames", "[", "\"\<~/java/exp/GPAT_MAZE_MAP*\>\"", "]"}]}]], "Input"],
+
+Cell[BoxData[
+ RowBox[{"{", 
+  RowBox[{"\<\"GPAT_MAZE_MAP2_NOVER\"\>", ",", "\<\"GPAT_MAZE_MAP2_ORIG\"\>", 
+   ",", "\<\"GPAT_MAZE_MAP2_RF4\"\>", ",", "\<\"GPAT_MAZE_MAP2_RF8\"\>", 
+   ",", "\<\"GPAT_MAZE_MAP3_NOVER\"\>", ",", "\<\"GPAT_MAZE_MAP3_ORIG\"\>", 
+   ",", "\<\"GPAT_MAZE_MAP3_RF4\"\>", ",", "\<\"GPAT_MAZE_MAP3_RF8\"\>", 
+   ",", "\<\"GPAT_MAZE_MAP4_NOVER\"\>", ",", "\<\"GPAT_MAZE_MAP4_ORIG\"\>", 
+   ",", "\<\"GPAT_MAZE_MAP4_RF4\"\>", ",", "\<\"GPAT_MAZE_MAP4_RF8\"\>"}], 
+  "}"}]], "Output",
+ CellChangeTimes->{3.522913843814168*^9}]
+}, Open  ]],
+
+Cell[BoxData[
  RowBox[{
   RowBox[{"data", "=", 
    RowBox[{"readAllFiles", "[", 
     RowBox[{
-     RowBox[{"{", 
-      RowBox[{
-      "\"\<GP_MAZE_1000\>\"", ",", "\"\<GPAT_MAZE_1000\>\"", ",", 
-       "\"\<GPAT_MAZE_1000_GP\>\""}], "}"}], ",", "labels"}], "]"}]}], 
-  ";"}]], "Input",
+     RowBox[{
+      RowBox[{"(", 
+       RowBox[{
+        RowBox[{
+         RowBox[{"StringReplace", "[", 
+          RowBox[{"#", ",", 
+           RowBox[{"\"\<~/java/exp/\>\"", "\[Rule]", "\"\<\>\""}]}], "]"}], 
+         "&"}], "/@", 
+        RowBox[{"FileNames", "[", "\"\<~/java/exp/GP_MAZE_MAP*\>\"", "]"}]}], 
+       ")"}], "~", "Join", "~", 
+      RowBox[{"(", 
+       RowBox[{
+        RowBox[{
+         RowBox[{"StringReplace", "[", 
+          RowBox[{"#", ",", 
+           RowBox[{"\"\<~/java/exp/\>\"", "\[Rule]", "\"\<\>\""}]}], "]"}], 
+         "&"}], "/@", 
+        RowBox[{
+        "FileNames", "[", "\"\<~/java/exp/GPAT_MAZE_MAP*\>\"", "]"}]}], ")"}],
+       "~", "Join", "~", 
+      RowBox[{"{", "\"\<GPATGP_MAZE_ALL\>\"", "}"}]}], ",", "labels"}], 
+    "]"}]}], ";"}]], "Input",
  CellChangeTimes->{{3.521647797694378*^9, 3.521647817015963*^9}, 
    3.5216478716761913`*^9, 3.521647923482795*^9, 3.5216483897849083`*^9, 
    3.521648420782246*^9, {3.521703953446578*^9, 3.5217039537026157`*^9}, {
@@ -125,7 +170,9 @@ Cell[BoxData[
    3.5224162886839237`*^9, 3.5224162896518373`*^9}, {3.522430282942233*^9, 
    3.5224302942767363`*^9}, {3.5224837369100447`*^9, 3.522483738077983*^9}, {
    3.522483827525591*^9, 3.522483837425868*^9}, {3.5224839031208982`*^9, 
-   3.522483905752846*^9}}],
+   3.522483905752846*^9}, 3.522756532688202*^9, 3.5227567549515257`*^9, {
+   3.5229140023721113`*^9, 3.522914040695409*^9}, {3.522915067685988*^9, 
+   3.522915087641604*^9}, {3.522916945622854*^9, 3.522916946446206*^9}}],
 
 Cell[BoxData[
  RowBox[{
@@ -155,24 +202,30 @@ Cell[BoxData[
 Cell[BoxData[
  RowBox[{
   RowBox[{"labels", "=", 
-   RowBox[{"Flatten", "@", 
-    RowBox[{"Transpose", "@", 
-     RowBox[{"{", 
-      RowBox[{
-       RowBox[{"{", 
-        RowBox[{
-        "\"\<GP_MAP2_ORIG\>\"", ",", "\"\<GP_MAP2_RF4\>\"", ",", 
-         "\"\<GP_MAP2_RF8\>\"", ",", "\"\<GP_MAP2_NOVER\>\"", ",", 
-         "\"\<GP_MAP3_ORIG\>\"", ",", "\"\<GP_MAP3_RF4\>\"", ",", 
-         "\"\<GP_MAP3_RF8\>\"", ",", "\"\<GP_MAP3_NOVER\>\""}], "}"}], ",", 
-       RowBox[{"{", 
-        RowBox[{
-        "\"\<GPAT_MAP2_ORIG\>\"", ",", "\"\<GPAT_MAP2_RF4\>\"", ",", 
-         "\"\<GPAT_MAP2_RF8\>\"", ",", "\"\<GPAT_MAP2_NOVER\>\"", ",", 
-         "\"\<GPAT_MAP3_ORIG\>\"", ",", "\"\<GPAT_MAP3_RF4\>\"", ",", 
-         "\"\<GPAT_MAP3_RF8\>\"", ",", "\"\<GPAT_MAP3_NOVER\>\""}], "}"}]}], 
-      "}"}]}]}]}], ";"}]], "Input",
- CellChangeTimes->{{3.522600971757419*^9, 3.522601054199518*^9}}],
+   RowBox[{"{", 
+    RowBox[{
+    "\"\<GP_MAP2_NOVER\>\"", ",", "\"\<GP_MAP2_ORIG\>\"", ",", 
+     "\"\<GP_MAP2_RF4\>\"", ",", "\"\<GP_MAP2_RF8\>\"", ",", 
+     "\"\<GP_MAP3_NOVER\>\"", ",", "\"\<GP_MAP3_ORIG\>\"", ",", 
+     "\"\<GP_MAP3_RF4\>\"", ",", "\"\<GP_MAP3_RF8\>\"", ",", 
+     "\"\<GP_MAP4_NOVER\>\"", ",", "\"\<GP_MAP4_ORIG\>\"", ",", 
+     "\"\<GP_MAP4_RF4\>\"", ",", "\"\<GP_MAP4_RF8\>\"", ",", 
+     "\"\<GPAT_MAP2_NOVER\>\"", ",", "\"\<GPAT_MAP2_ORIG\>\"", ",", 
+     "\"\<GPAT_MAP2_RF4\>\"", ",", "\"\<GPAT_MAP2_RF8\>\"", ",", 
+     "\"\<GPAT_MAP3_NOVER\>\"", ",", "\"\<GPAT_MAP3_ORIG\>\"", ",", 
+     "\"\<GPAT_MAP3_RF4\>\"", ",", "\"\<GPAT_MAP3_RF8\>\"", ",", 
+     "\"\<GPAT_MAP4_NOVER\>\"", ",", "\"\<GPAT_MAP4_ORIG\>\"", ",", 
+     "\"\<GPAT_MAP4_RF4\>\"", ",", "\"\<GATP_MAP4_RF8\>\"", ",", 
+     "\"\<GPATGP_MAP2_ORIG\>\"", ",", "\"\<GPATGP_MAP2_NOVER\>\"", ",", 
+     "\"\<GPATGP_MAP2_RF4\>\"", ",", "\"\<GPATGP_MAP2_RF8\>\"", ",", 
+     "\"\<GPATGP_MAP3_ORIG\>\"", ",", "\"\<GPATGP_MAP3_NOVER\>\"", ",", 
+     "\"\<GPATGP_MAP3_RF4\>\"", ",", "\"\<GPATGP_MAP3_RF8\>\"", ",", 
+     "\"\<GPATGP_MAP24_ORIG\>\"", ",", "\"\<GPATGP_MAP4_NOVER\>\"", ",", 
+     "\"\<GPATGP_MAP4_RF4\>\"", ",", "\"\<GPATGP_MAP4_RF8\>\""}], "}"}]}], 
+  ";"}]], "Input",
+ CellChangeTimes->{{3.522600971757419*^9, 3.522601054199518*^9}, {
+  3.522915446645932*^9, 3.522915540841547*^9}, {3.522915590126256*^9, 
+  3.522915628311233*^9}, {3.522916845576724*^9, 3.5229169343514767`*^9}}],
 
 Cell[BoxData[
  RowBox[{
@@ -194,19 +247,60 @@ Cell[BoxData[
   3.522601070087699*^9}}],
 
 Cell[BoxData[
+ RowBox[{
+  RowBox[{"data", "=", 
+   RowBox[{"readAllFiles", "[", 
+    RowBox[{"{", 
+     RowBox[{"\"\<X\>\"", ",", "\"\<Y\>\"", ",", "\"\<Y2\>\""}], "}"}], 
+    "]"}]}], ";"}]], "Input",
+ CellChangeTimes->{{3.5229351433034678`*^9, 3.522935152583699*^9}, {
+  3.522935292706546*^9, 3.5229353239694033`*^9}, {3.522937005690754*^9, 
+  3.5229370073706293`*^9}, {3.522937949191236*^9, 3.5229379508469143`*^9}}],
+
+Cell[CellGroupData[{
+
+Cell[BoxData[
+ RowBox[{
+  RowBox[{
+   RowBox[{"StringReplace", "[", 
+    RowBox[{"#", ",", 
+     RowBox[{"\"\<~/java/exp/\>\"", "\[Rule]", "\"\<\>\""}]}], "]"}], "&"}], "/@", 
+  RowBox[{
+  "FileNames", "[", "\"\<~/java/exp/GPAT_MAZE_MAP*\>\"", "]"}]}]], "Input",
+ CellChangeTimes->{{3.522732399529434*^9, 3.522732436308709*^9}, {
+  3.522732488063903*^9, 3.5227325202702417`*^9}}],
+
+Cell[BoxData[
+ RowBox[{"{", 
+  RowBox[{"\<\"GPAT_MAZE_MAP2_NOVER\"\>", ",", "\<\"GPAT_MAZE_MAP2_ORIG\"\>", 
+   ",", "\<\"GPAT_MAZE_MAP2_RF4\"\>", ",", "\<\"GPAT_MAZE_MAP2_RF8\"\>", 
+   ",", "\<\"GPAT_MAZE_MAP3_NOVER\"\>", ",", "\<\"GPAT_MAZE_MAP3_ORIG\"\>", 
+   ",", "\<\"GPAT_MAZE_MAP3_RF4\"\>", ",", "\<\"GPAT_MAZE_MAP3_RF8\"\>", 
+   ",", "\<\"GPAT_MAZE_MAP4_NOVER\"\>", ",", "\<\"GPAT_MAZE_MAP4_ORIG\"\>", 
+   ",", "\<\"GPAT_MAZE_MAP4_RF4\"\>", ",", "\<\"GPAT_MAZE_MAP4_RF8\"\>"}], 
+  "}"}]], "Output",
+ CellChangeTimes->{{3.52273242609758*^9, 3.522732439872242*^9}, 
+   3.522732521218849*^9}]
+}, Open  ]],
+
+Cell[BoxData[
  RowBox[{"keepOnlyBest", "[", 
   RowBox[{
-   RowBox[{"{", 
+   RowBox[{
     RowBox[{
-    "\"\<GPAT_MAZE_MAP2_ORIG\>\"", ",", "\"\<GPAT_MAZE_MAP2_RF4\>\"", ",", 
-     "\"\<GPAT_MAZE_MAP2_RF8\>\""}], "}"}], ",", "\"\<BSF\>\"", ",", "5"}], 
-  "]"}]], "Input",
+     RowBox[{"StringReplace", "[", 
+      RowBox[{"#", ",", 
+       RowBox[{"\"\<~/java/exp/\>\"", "\[Rule]", "\"\<\>\""}]}], "]"}], "&"}],
+     "/@", 
+    RowBox[{"FileNames", "[", "\"\<~/java/exp/GPATGP_MAZE_ALL\>\"", "]"}]}], 
+   ",", "\"\<BSF\>\"", ",", "60"}], "]"}]], "Input",
  CellChangeTimes->{{3.522216272558867*^9, 3.522216297293664*^9}, {
    3.522216368089525*^9, 3.5222163698124657`*^9}, 3.522219542159398*^9, 
    3.522219905401537*^9, {3.5222221997010803`*^9, 3.5222222001568193`*^9}, {
    3.522223596522052*^9, 3.522223597001569*^9}, {3.522229569066558*^9, 
    3.522229612566442*^9}, 3.522230033799423*^9, {3.5225882383342037`*^9, 
-   3.522588263283567*^9}}],
+   3.522588263283567*^9}, 3.52273245851749*^9, {3.5227325352338877`*^9, 
+   3.522732565254361*^9}, {3.522934393004537*^9, 3.5229344032736*^9}}],
 
 Cell[CellGroupData[{
 
@@ -247,10 +341,7 @@ Cell[BoxData[
    RowBox[{"sortDataByParams", "[", 
     RowBox[{"data", ",", 
      RowBox[{"{", 
-      RowBox[{
-      "\"\<MAZE.MAX_STEPS\>\"", ",", "\"\<SYMBOLIC_REGRESSION_1D.F\>\"", ",", 
-       "\"\<SYMBOLIC_REGRESSION_1D.A\>\"", ",", "\"\<SOLVER\>\"", ",", 
-       "\"\<GPAT.SPECIES_SIZE_MEAN\>\""}], "}"}], ",", 
+      RowBox[{"\"\<MAZE.MAP\>\"", ",", "\"\<PROBLEM\>\""}], "}"}], ",", 
      RowBox[{"ReplaceParamValues", "\[Rule]", 
       RowBox[{"{", 
        RowBox[{"\"\<ZFC55\>\"", "\[Rule]", "\"\<FC55\>\""}], "}"}]}]}], 
@@ -271,7 +362,9 @@ Cell[BoxData[
    3.5220601901880617`*^9}, {3.522227810354397*^9, 3.522227810450103*^9}, {
    3.522230050717588*^9, 3.522230050901819*^9}, {3.5222303930668583`*^9, 
    3.522230393210247*^9}, {3.5222396370762873`*^9, 3.522239671181563*^9}, {
-   3.5224059321599913`*^9, 3.5224059327275677`*^9}}],
+   3.5224059321599913`*^9, 3.5224059327275677`*^9}, {3.522914715394998*^9, 
+   3.522914722074665*^9}, {3.522914912669281*^9, 3.522914942910211*^9}, {
+   3.522915018736631*^9, 3.522915021831499*^9}}],
 
 Cell[BoxData[
  RowBox[{"saveData", "[", 
@@ -288,9 +381,9 @@ Cell[BoxData[
   RowBox[{"sortedData", ",", 
    RowBox[{"{", 
     RowBox[{
-    "\"\<SOLVER\>\"", ",", "\"\<MAZE.MAX_STEPS\>\"", ",", 
-     "\"\<SYMBOLIC_REGRESSION_1D.A\>\"", ",", 
-     "\"\<SYMBOLIC_REGRESSION_3D.F\>\"", ",", 
+    "\"\<SOLVER\>\"", ",", "\"\<PROBLEM\>\"", ",", "\"\<MAZE.MAP\>\"", ",", 
+     "\"\<MAZE.MAX_STEPS\>\"", ",", "\"\<GPAT.MUTATION_HEAVY_PROB\>\"", ",", 
+     "\"\<GPAT.MUTATION_HEAVY_POWER\>\"", ",", 
      "\"\<GPAT.SPECIES_SIZE_MEAN\>\""}], "}"}]}], "]"}]], "Input",
  CellChangeTimes->{{3.5215643005349073`*^9, 3.521564310968069*^9}, {
   3.521565007384931*^9, 3.5215650339828043`*^9}, {3.5215660813430634`*^9, 
@@ -302,7 +395,8 @@ Cell[BoxData[
   3.5218771232051992`*^9, 3.521877123292734*^9}, {3.5220602005268793`*^9, 
   3.522060200910984*^9}, {3.522227821162033*^9, 3.522227821281815*^9}, {
   3.522237298860406*^9, 3.5222373059651546`*^9}, {3.522403286290945*^9, 
-  3.522403313596066*^9}}],
+  3.522403313596066*^9}, {3.5227567991291933`*^9, 3.522756817680653*^9}, {
+  3.522938051902587*^9, 3.5229380656061773`*^9}}],
 
 Cell[BoxData[
  TagBox[GridBox[{
@@ -316,60 +410,38 @@ Cell[BoxData[
      StyleBox["\<\"SOLVER\"\>",
       StripOnInput->False,
       FontWeight->Bold], 
+     StyleBox["\<\"PROBLEM\"\>",
+      StripOnInput->False,
+      FontWeight->Bold], 
+     StyleBox["\<\"MAZE.MAP\"\>",
+      StripOnInput->False,
+      FontWeight->Bold], 
      StyleBox["\<\"MAZE.MAX_STEPS\"\>",
       StripOnInput->False,
       FontWeight->Bold], 
-     StyleBox["\<\"SYMBOLIC_REGRESSION_1D.A\"\>",
+     StyleBox["\<\"GPAT.MUTATION_HEAVY_PROB\"\>",
       StripOnInput->False,
       FontWeight->Bold], 
-     StyleBox["\<\"SYMBOLIC_REGRESSION_3D.F\"\>",
+     StyleBox["\<\"GPAT.MUTATION_HEAVY_POWER\"\>",
       StripOnInput->False,
       FontWeight->Bold], 
      StyleBox["\<\"GPAT.SPECIES_SIZE_MEAN\"\>",
       StripOnInput->False,
       FontWeight->Bold]},
-    {"\<\"GP_MAP2_ORIG\"\>", "\<\"GP_MAZE_MAP2_ORIG/parameters_001.txt\"\>", \
-"\<\"GP\"\>", "90", "\<\"NONE\"\>", "\<\"NONE\"\>", "\<\"NONE\"\>"},
-    {"\<\"GPAT_MAP2_ORIG\"\>", \
-"\<\"GPAT_MAZE_MAP2_ORIG/parameters_001.txt\"\>", "\<\"GPAT\"\>", 
-     "90", "\<\"NONE\"\>", "\<\"NONE\"\>", "20.`"},
-    {"\<\"GP_MAP2_RF4\"\>", "\<\"GP_MAZE_MAP2_RF4/parameters_001.txt\"\>", \
-"\<\"GP\"\>", "90", "\<\"NONE\"\>", "\<\"NONE\"\>", "\<\"NONE\"\>"},
-    {"\<\"GPAT_MAP2_RF4\"\>", \
-"\<\"GPAT_MAZE_MAP2_RF4/parameters_001.txt\"\>", "\<\"GPAT\"\>", 
-     "90", "\<\"NONE\"\>", "\<\"NONE\"\>", "20.`"},
-    {"\<\"GP_MAP2_RF8\"\>", "\<\"GP_MAZE_MAP2_RF8/parameters_001.txt\"\>", \
-"\<\"GP\"\>", "90", "\<\"NONE\"\>", "\<\"NONE\"\>", "\<\"NONE\"\>"},
-    {"\<\"GPAT_MAP2_RF8\"\>", \
-"\<\"GPAT_MAZE_MAP2_RF8/parameters_001.txt\"\>", "\<\"GPAT\"\>", 
-     "90", "\<\"NONE\"\>", "\<\"NONE\"\>", "20.`"},
-    {"\<\"GP_MAP2_NOVER\"\>", \
-"\<\"GP_MAZE_MAP2_NOVER/parameters_001.txt\"\>", "\<\"GP\"\>", 
-     "90", "\<\"NONE\"\>", "\<\"NONE\"\>", "\<\"NONE\"\>"},
-    {"\<\"GPAT_MAP2_NOVER\"\>", \
-"\<\"GPAT_MAZE_MAP2_NOVER/parameters_001.txt\"\>", "\<\"GPAT\"\>", 
-     "90", "\<\"NONE\"\>", "\<\"NONE\"\>", "20.`"},
-    {"\<\"GP_MAP3_ORIG\"\>", "\<\"GP_MAZE_MAP3_ORIG/parameters_001.txt\"\>", \
-"\<\"GP\"\>", "90", "\<\"NONE\"\>", "\<\"NONE\"\>", "\<\"NONE\"\>"},
-    {"\<\"GPAT_MAP3_ORIG\"\>", \
-"\<\"GPAT_MAZE_MAP3_ORIG/parameters_001.txt\"\>", "\<\"GPAT\"\>", 
-     "90", "\<\"NONE\"\>", "\<\"NONE\"\>", "20.`"},
-    {"\<\"GP_MAP3_RF4\"\>", "\<\"GP_MAZE_MAP3_RF4/parameters_001.txt\"\>", \
-"\<\"GP\"\>", "90", "\<\"NONE\"\>", "\<\"NONE\"\>", "\<\"NONE\"\>"},
-    {"\<\"GPAT_MAP3_RF4\"\>", \
-"\<\"GPAT_MAZE_MAP3_RF4/parameters_001.txt\"\>", "\<\"GPAT\"\>", 
-     "90", "\<\"NONE\"\>", "\<\"NONE\"\>", "20.`"},
-    {"\<\"GP_MAP3_RF8\"\>", "\<\"GP_MAZE_MAP3_RF8/parameters_001.txt\"\>", \
-"\<\"GP\"\>", "90", "\<\"NONE\"\>", "\<\"NONE\"\>", "\<\"NONE\"\>"},
-    {"\<\"GPAT_MAP3_RF8\"\>", \
-"\<\"GPAT_MAZE_MAP3_RF8/parameters_001.txt\"\>", "\<\"GPAT\"\>", 
-     "90", "\<\"NONE\"\>", "\<\"NONE\"\>", "20.`"},
-    {"\<\"GP_MAP3_NOVER\"\>", \
-"\<\"GP_MAZE_MAP3_NOVER/parameters_001.txt\"\>", "\<\"GP\"\>", 
-     "90", "\<\"NONE\"\>", "\<\"NONE\"\>", "\<\"NONE\"\>"},
-    {"\<\"GPAT_MAP3_NOVER\"\>", \
-"\<\"GPAT_MAZE_MAP3_NOVER/parameters_001.txt\"\>", "\<\"GPAT\"\>", 
-     "90", "\<\"NONE\"\>", "\<\"NONE\"\>", "20.`"}
+    {"\<\"1\"\>", "\<\"X/parameters_001.txt\"\>", "\<\"GPATS\"\>", \
+"\<\"gp.demo.Maze\"\>", "\<\"map2.csv\"\>", "90", "0.`", 
+     "1", "\<\"NONE\"\>"},
+    {"\<\"2\"\>", "\<\"Y/parameters_001.txt\"\>", "\<\"GPATS\"\>", \
+"\<\"gp.demo.Maze\"\>", "\<\"map2.csv\"\>", "90", "0.1`", "1", "\<\"NONE\"\>"},
+    {"\<\"3\"\>", "\<\"Y/parameters_002.txt\"\>", "\<\"GPATS\"\>", \
+"\<\"gp.demo.Maze\"\>", "\<\"map2.csv\"\>", "90", "0.1`", "3", "\<\"NONE\"\>"},
+    {"\<\"4\"\>", "\<\"Y/parameters_003.txt\"\>", "\<\"GPATS\"\>", \
+"\<\"gp.demo.Maze\"\>", "\<\"map2.csv\"\>", "90", "0.1`", "5", "\<\"NONE\"\>"},
+    {"\<\"5\"\>", "\<\"Y2/parameters_001.txt\"\>", "\<\"GPATS\"\>", \
+"\<\"gp.demo.Maze\"\>", "\<\"map2.csv\"\>", "90", "0.1`", 
+     "10", "\<\"NONE\"\>"},
+    {"\<\"6\"\>", "\<\"Y2/parameters_002.txt\"\>", "\<\"GPATS\"\>", \
+"\<\"gp.demo.Maze\"\>", "\<\"map2.csv\"\>", "90", "0.1`", "15", "\<\"NONE\"\>"}
    },
    AutoDelete->False,
    GridBoxFrame->{"Columns" -> {{True}}, "Rows" -> {{True}}},
@@ -382,14 +454,20 @@ Cell[BoxData[
    3.522490739288265*^9, 3.5225882954232073`*^9, 3.522589765537292*^9, 
    3.522600685273521*^9, 3.522600878148808*^9, 3.522600932146224*^9, {
    3.522601086934104*^9, 3.522601104758808*^9}, {3.5226060950152187`*^9, 
-   3.522606106799423*^9}, 3.522606375037163*^9}]
+   3.522606106799423*^9}, 3.522606375037163*^9, 3.522669213895172*^9, {
+   3.522756775837912*^9, 3.5227568183243933`*^9}, 3.522914055815764*^9, 
+   3.522914300761128*^9, 3.52291450872386*^9, 3.522914724418795*^9, 
+   3.522914921785976*^9, 3.522914954699779*^9, {3.522915024434993*^9, 
+   3.522915033045802*^9}, 3.522915103990163*^9, 3.522915395591914*^9, 
+   3.522917148303125*^9, {3.522935299243676*^9, 3.522935336843709*^9}, 
+   3.5229370151424627`*^9, 3.5229379564058743`*^9, 3.522938066381065*^9}]
 }, Open  ]],
 
 Cell[CellGroupData[{
 
 Cell[BoxData[
  RowBox[{"plotBooleanAsBarChart", "[", 
-  RowBox[{"sortedData", ",", "\"\<SUCCESS\>\"", ",", "2"}], "]"}]], "Input",
+  RowBox[{"sortedData", ",", "\"\<SUCCESS\>\"", ",", "1"}], "]"}]], "Input",
  CellChangeTimes->{{3.52156670986381*^9, 3.521566756735133*^9}, {
    3.521566787320612*^9, 3.5215668304316053`*^9}, {3.5215672711471157`*^9, 
    3.5215672712026663`*^9}, {3.521567877005254*^9, 3.521567882781568*^9}, {
@@ -411,7 +489,10 @@ Cell[BoxData[
    3.5220650639722548`*^9, 3.522065064884265*^9}, {3.522239687427457*^9, 
    3.522239687731284*^9}, {3.5224033259644527`*^9, 3.52240332605035*^9}, {
    3.522405976623974*^9, 3.522405977022942*^9}, {3.5224090415006447`*^9, 
-   3.522409042029188*^9}, {3.5226009407417088`*^9, 3.522600940926837*^9}}],
+   3.522409042029188*^9}, {3.5226009407417088`*^9, 3.522600940926837*^9}, {
+   3.52275682890819*^9, 3.522756829020322*^9}, {3.522915124896288*^9, 
+   3.522915125007893*^9}, {3.5229353430124083`*^9, 3.522935343090212*^9}, {
+   3.522937021090926*^9, 3.5229370211782846`*^9}}],
 
 Cell[BoxData[
  GraphicsBox[{
@@ -420,7 +501,57 @@ Cell[BoxData[
     EdgeForm[Opacity[0.7]], {}, 
     {RGBColor[0.798413061722744, 0.824719615472648, 0.968322270542458], 
      EdgeForm[Opacity[0.7]], 
-     {RGBColor[0.6980392156862745, 0.01568627450980392, 0.], EdgeForm[Opacity[
+     {RGBColor[0.471412, 0.108766, 0.527016], EdgeForm[Opacity[0.7]], 
+      DynamicBox[{
+        FEPrivate`If[
+         CurrentValue["MouseOver"], 
+         EdgeForm[{
+           GrayLevel[0.5], 
+           AbsoluteThickness[1.5], 
+           Opacity[0.66]}], {}, {}], 
+        RectangleBox[{0.5454545454545454, 0.}, {1.4545454545454546`, 11.5}, 
+         "RoundingRadius" -> 0]},
+       ImageSizeCache->{{41.01309090909089, 216.38399999999996`}, {
+        246.13888449361434`, 352.6811627991066}}]}, 
+     {RGBColor[0.2484884, 0.3863264, 0.813373], EdgeForm[Opacity[0.7]], 
+      DynamicBox[{
+        FEPrivate`If[
+         CurrentValue["MouseOver"], 
+         EdgeForm[{
+           GrayLevel[0.5], 
+           AbsoluteThickness[1.5], 
+           Opacity[0.66]}], {}, {}], 
+        RectangleBox[{1.5454545454545454`, 0.}, {2.4545454545454546`, 18.}, 
+         "RoundingRadius" -> 0]},
+       ImageSizeCache->{{232.82109090909086`, 408.19199999999995`}, {
+        186.48455327746655`, 352.6811627991066}}]}, 
+     {RGBColor[0.38822480000000004`, 0.674195, 0.6035436000000001], EdgeForm[
+      Opacity[0.7]], 
+      DynamicBox[{
+        FEPrivate`If[
+         CurrentValue["MouseOver"], 
+         EdgeForm[{
+           GrayLevel[0.5], 
+           AbsoluteThickness[1.5], 
+           Opacity[0.66]}], {}, {}], 
+        RectangleBox[{2.5454545454545454`, 0.}, {3.4545454545454546`, 32.}, 
+         "RoundingRadius" -> 0]},
+       ImageSizeCache->{{424.62909090909085`, 599.9999999999999}, {
+        57.99830142730207, 352.6811627991066}}]}, 
+     {RGBColor[0.6660832000000001, 0.7430418, 0.32293540000000004`], EdgeForm[
+      Opacity[0.7]], 
+      DynamicBox[{
+        FEPrivate`If[
+         CurrentValue["MouseOver"], 
+         EdgeForm[{
+           GrayLevel[0.5], 
+           AbsoluteThickness[1.5], 
+           Opacity[0.66]}], {}, {}], 
+        RectangleBox[{3.5454545454545454`, 0.}, {4.454545454545454, 47.}, 
+         "RoundingRadius" -> 0]},
+       ImageSizeCache->{{616.4370909090908, 
+        791.8079999999998}, {-79.6655398407313, 352.6811627991066}}]}, 
+     {RGBColor[0.8935136, 0.6004149999999999, 0.2205464], EdgeForm[Opacity[
       0.7]], 
       DynamicBox[{
         FEPrivate`If[
@@ -429,13 +560,11 @@ Cell[BoxData[
            GrayLevel[0.5], 
            AbsoluteThickness[1.5], 
            Opacity[0.66]}], {}, {}], 
-        RectangleBox[{0.5454545454545454, 0.}, {1.4545454545454546`, 26.}, 
+        RectangleBox[{4.545454545454545, 0.}, {5.454545454545454, 68.5}, 
          "RoundingRadius" -> 0]},
-       ImageSizeCache->{{30.11490909090908, 96.504}, {92.04738491362929, 
-        285.6811627991065}}]}, 
-     {RGBColor[
-      0.9215686274509803, 0.49411764705882355`, 0.43137254901960786`], 
-      EdgeForm[Opacity[0.7]], 
+       ImageSizeCache->{{808.2450909090907, 
+        983.6159999999998}, {-276.9837123249124, 352.6811627991066}}]}, 
+     {RGBColor[0.857359, 0.131106, 0.132128], EdgeForm[Opacity[0.7]], 
       DynamicBox[{
         FEPrivate`If[
          CurrentValue["MouseOver"], 
@@ -443,339 +572,106 @@ Cell[BoxData[
            GrayLevel[0.5], 
            AbsoluteThickness[1.5], 
            Opacity[0.66]}], {}, {}], 
-        RectangleBox[{1.5454545454545454`, 0.}, {2.4545454545454546`, 83.5}, 
+        RectangleBox[{5.545454545454545, 0.}, {6.454545454545454, 77.5}, 
          "RoundingRadius" -> 0]},
-       ImageSizeCache->{{102.04290909090908`, 168.432}, {-333.9696238715607, 
-        285.6811627991065}}]}, 
-     {RGBColor[0.6980392156862745, 0.01568627450980392, 0.], EdgeForm[Opacity[
-      0.7]], 
-      DynamicBox[{
-        FEPrivate`If[
-         CurrentValue["MouseOver"], 
-         EdgeForm[{
-           GrayLevel[0.5], 
-           AbsoluteThickness[1.5], 
-           Opacity[0.66]}], {}, {}], 
-        RectangleBox[{2.5454545454545454`, 0.}, {3.4545454545454546`, 
-         56.00000000000001}, "RoundingRadius" -> 0]},
-       ImageSizeCache->{{173.9709090909091, 
-        240.35999999999999`}, {-130.22235880038295`, 285.6811627991065}}]}, 
-     {RGBColor[
-      0.9215686274509803, 0.49411764705882355`, 0.43137254901960786`], 
-      EdgeForm[Opacity[0.7]], 
-      DynamicBox[{
-        FEPrivate`If[
-         CurrentValue["MouseOver"], 
-         EdgeForm[{
-           GrayLevel[0.5], 
-           AbsoluteThickness[1.5], 
-           Opacity[0.66]}], {}, {}], 
-        RectangleBox[{3.5454545454545454`, 0.}, {4.454545454545454, 50.}, 
-         "RoundingRadius" -> 0]},
-       ImageSizeCache->{{245.8989090909091, 
-        312.28799999999995`}, {-85.76841005758047, 285.6811627991065}}]}, 
-     {RGBColor[0.6980392156862745, 0.01568627450980392, 0.], EdgeForm[Opacity[
-      0.7]], 
-      DynamicBox[{
-        FEPrivate`If[
-         CurrentValue["MouseOver"], 
-         EdgeForm[{
-           GrayLevel[0.5], 
-           AbsoluteThickness[1.5], 
-           Opacity[0.66]}], {}, {}], 
-        RectangleBox[{4.545454545454545, 0.}, {5.454545454545454, 50.5}, 
-         "RoundingRadius" -> 0]},
-       ImageSizeCache->{{317.826909090909, 
-        384.21599999999995`}, {-89.4729057861473, 285.6811627991065}}]}, 
-     {RGBColor[
-      0.9215686274509803, 0.49411764705882355`, 0.43137254901960786`], 
-      EdgeForm[Opacity[0.7]], 
-      DynamicBox[{
-        FEPrivate`If[
-         CurrentValue["MouseOver"], 
-         EdgeForm[{
-           GrayLevel[0.5], 
-           AbsoluteThickness[1.5], 
-           Opacity[0.66]}], {}, {}], 
-        RectangleBox[{5.545454545454545, 0.}, {6.454545454545454, 23.5}, 
-         "RoundingRadius" -> 0]},
-       ImageSizeCache->{{389.754909090909, 456.14399999999995`}, {
-        110.56986355646364`, 285.6811627991065}}]}, 
-     {RGBColor[0.6980392156862745, 0.01568627450980392, 0.], EdgeForm[Opacity[
-      0.7]], 
-      DynamicBox[{
-        FEPrivate`If[
-         CurrentValue["MouseOver"], 
-         EdgeForm[{
-           GrayLevel[0.5], 
-           AbsoluteThickness[1.5], 
-           Opacity[0.66]}], {}, {}], 
-        RectangleBox[{6.545454545454545, 0.}, {7.454545454545454, 40.5}, 
-         "RoundingRadius" -> 0]},
-       ImageSizeCache->{{461.682909090909, 
-        528.0719999999999}, {-15.38299121480992, 285.6811627991065}}]}, 
-     {RGBColor[
-      0.9215686274509803, 0.49411764705882355`, 0.43137254901960786`], 
-      EdgeForm[Opacity[0.7]], 
-      DynamicBox[{
-        FEPrivate`If[
-         CurrentValue["MouseOver"], 
-         EdgeForm[{
-           GrayLevel[0.5], 
-           AbsoluteThickness[1.5], 
-           Opacity[0.66]}], {}, {}], 
-        RectangleBox[{7.545454545454545, 0.}, {8.454545454545453, 96.}, 
-         "RoundingRadius" -> 0]},
-       ImageSizeCache->{{533.610909090909, 
-        599.9999999999999}, {-426.5820170857325, 285.6811627991065}}]}, {}, 
-     {RGBColor[
-      0.9215686274509803, 0.49411764705882355`, 0.43137254901960786`], 
-      EdgeForm[Opacity[0.7]], 
-      DynamicBox[{
-        FEPrivate`If[
-         CurrentValue["MouseOver"], 
-         EdgeForm[{
-           GrayLevel[0.5], 
-           AbsoluteThickness[1.5], 
-           Opacity[0.66]}], {}, {}], 
-        RectangleBox[{9.545454545454545, 0.}, {10.454545454545453`, 8.}, 
-         "RoundingRadius" -> 0]},
-       ImageSizeCache->{{677.466909090909, 743.8559999999999}, {
-        225.40923114203662`, 285.6811627991065}}]}, 
-     {RGBColor[0.6980392156862745, 0.01568627450980392, 0.], EdgeForm[Opacity[
-      0.7]], 
-      DynamicBox[{
-        FEPrivate`If[
-         CurrentValue["MouseOver"], 
-         EdgeForm[{
-           GrayLevel[0.5], 
-           AbsoluteThickness[1.5], 
-           Opacity[0.66]}], {}, {}], 
-        RectangleBox[{10.545454545454545`, 0.}, {11.454545454545453`, 1.}, 
-         "RoundingRadius" -> 0]},
-       ImageSizeCache->{{749.394909090909, 815.7839999999999}, {
-        277.27217134197275`, 285.6811627991065}}]}, {}, {}, {}, {}, 
-     {RGBColor[
-      0.9215686274509803, 0.49411764705882355`, 0.43137254901960786`], 
-      EdgeForm[Opacity[0.7]], 
-      DynamicBox[{
-        FEPrivate`If[
-         CurrentValue["MouseOver"], 
-         EdgeForm[{
-           GrayLevel[0.5], 
-           AbsoluteThickness[1.5], 
-           Opacity[0.66]}], {}, {}], 
-        RectangleBox[{15.545454545454545`, 0.}, {16.454545454545453`, 5.}, 
-         "RoundingRadius" -> 0]},
-       ImageSizeCache->{{1109.034909090909, 1175.4239999999998`}, {
-        247.63620551343783`, 
-        285.6811627991065}}]}}, {}, {}}, {}, {{{{{{{}, {}}, {{}, InsetBox[
-          StyleBox["26.`",
+       ImageSizeCache->{{1000.0530909090905`, 
+        1175.4239999999998`}, {-359.58201708573245`, 
+        352.6811627991066}}]}}, {}, {}}, {}, {{{{{{{}, {}}, {{}, InsetBox[
+          StyleBox["11.5`",
            StripOnInput->False,
            LineColor->GrayLevel[0],
            FrontFaceColor->GrayLevel[0],
            BackFaceColor->GrayLevel[0],
            GraphicsColor->GrayLevel[0],
-           FontColor->GrayLevel[0]], {1., 13.}, 
+           FontColor->GrayLevel[0]], {1., 5.75}, 
           ImageScaled[{0.5, 0.5}]]}}, {{{}, {}}, {{}, InsetBox[
-          StyleBox["83.5`",
+          StyleBox["18.`",
            StripOnInput->False,
            LineColor->GrayLevel[0],
            FrontFaceColor->GrayLevel[0],
            BackFaceColor->GrayLevel[0],
            GraphicsColor->GrayLevel[0],
-           FontColor->GrayLevel[0]], {2., 41.75}, 
+           FontColor->GrayLevel[0]], {2., 9.}, 
           ImageScaled[{0.5, 0.5}]]}}, {{{}, {}}, {{}, InsetBox[
-          StyleBox["56.00000000000001`",
+          StyleBox["32.`",
            StripOnInput->False,
            LineColor->GrayLevel[0],
            FrontFaceColor->GrayLevel[0],
            BackFaceColor->GrayLevel[0],
            GraphicsColor->GrayLevel[0],
-           FontColor->GrayLevel[0]], {3., 28.000000000000004`}, 
+           FontColor->GrayLevel[0]], {3., 16.}, 
           ImageScaled[{0.5, 0.5}]]}}, {{{}, {}}, {{}, InsetBox[
-          StyleBox["50.`",
+          StyleBox["47.`",
            StripOnInput->False,
            LineColor->GrayLevel[0],
            FrontFaceColor->GrayLevel[0],
            BackFaceColor->GrayLevel[0],
            GraphicsColor->GrayLevel[0],
-           FontColor->GrayLevel[0]], {4., 25.}, 
+           FontColor->GrayLevel[0]], {4., 23.5}, 
           ImageScaled[{0.5, 0.5}]]}}, {{{}, {}}, {{}, InsetBox[
-          StyleBox["50.5`",
+          StyleBox["68.5`",
            StripOnInput->False,
            LineColor->GrayLevel[0],
            FrontFaceColor->GrayLevel[0],
            BackFaceColor->GrayLevel[0],
            GraphicsColor->GrayLevel[0],
-           FontColor->GrayLevel[0]], {5., 25.25}, 
+           FontColor->GrayLevel[0]], {5., 34.25}, 
           ImageScaled[{0.5, 0.5}]]}}, {{{}, {}}, {{}, InsetBox[
-          StyleBox["23.5`",
+          StyleBox["77.5`",
            StripOnInput->False,
            LineColor->GrayLevel[0],
            FrontFaceColor->GrayLevel[0],
            BackFaceColor->GrayLevel[0],
            GraphicsColor->GrayLevel[0],
-           FontColor->GrayLevel[0]], {6., 11.75}, 
-          ImageScaled[{0.5, 0.5}]]}}, {{{}, {}}, {{}, InsetBox[
-          StyleBox["40.5`",
-           StripOnInput->False,
-           LineColor->GrayLevel[0],
-           FrontFaceColor->GrayLevel[0],
-           BackFaceColor->GrayLevel[0],
-           GraphicsColor->GrayLevel[0],
-           FontColor->GrayLevel[0]], {7., 20.25}, 
-          ImageScaled[{0.5, 0.5}]]}}, {{{}, {}}, {{}, InsetBox[
-          StyleBox["96.`",
-           StripOnInput->False,
-           LineColor->GrayLevel[0],
-           FrontFaceColor->GrayLevel[0],
-           BackFaceColor->GrayLevel[0],
-           GraphicsColor->GrayLevel[0],
-           FontColor->GrayLevel[0]], {7.999999999999999, 48.}, 
-          ImageScaled[{0.5, 0.5}]]}}, {}, {{{}, {}}, {{}, InsetBox[
-          StyleBox["8.`",
-           StripOnInput->False,
-           LineColor->GrayLevel[0],
-           FrontFaceColor->GrayLevel[0],
-           BackFaceColor->GrayLevel[0],
-           GraphicsColor->GrayLevel[0],
-           FontColor->GrayLevel[0]], {10., 4.}, 
-          ImageScaled[{0.5, 0.5}]]}}, {{{}, {}}, {{}, InsetBox[
-          StyleBox["1.`",
-           StripOnInput->False,
-           LineColor->GrayLevel[0],
-           FrontFaceColor->GrayLevel[0],
-           BackFaceColor->GrayLevel[0],
-           GraphicsColor->GrayLevel[0],
-           FontColor->GrayLevel[0]], {11., 0.5}, 
-          ImageScaled[{0.5, 0.5}]]}}, {}, {}, {}, {}, {{{}, {}}, {{}, InsetBox[
-          StyleBox["5.`",
-           StripOnInput->False,
-           LineColor->GrayLevel[0],
-           FrontFaceColor->GrayLevel[0],
-           BackFaceColor->GrayLevel[0],
-           GraphicsColor->GrayLevel[0],
-           FontColor->GrayLevel[0]], {16., 2.5}, 
+           FontColor->GrayLevel[0]], {6., 38.75}, 
           ImageScaled[{0.5, 0.5}]]}}}, {}}, {}}, {}}, GraphicsGroupBox[
     {GrayLevel[0], 
      StyleBox[
       GraphicsGroupBox[{
         LineBox[{{{0.5454545454545454, 0.}, 
-           Offset[{0, -4}, {0.5454545454545454, 0.}]}, {{16.454545454545453`, 
-           0.}, Offset[{0, -4}, {16.454545454545453`, 0.}]}}], InsetBox[
+           Offset[{0, -4}, {0.5454545454545454, 0.}]}, {{6.454545454545454, 
+           0.}, Offset[{0, -4}, {6.454545454545454, 0.}]}}], InsetBox[
          PaneBox[
           RotationBox[
-           StyleBox["\<\"GP_MAP2_ORIG\"\>",
+           StyleBox["\<\"1\"\>",
             StripOnInput->False,
             FontSize->15],
            BoxRotation->1.5707963267948966`]], Offset[{0, -2}, {1., 0.}], 
          ImageScaled[{Rational[1, 2], 1}]], InsetBox[
          PaneBox[
           RotationBox[
-           StyleBox["\<\"GPAT_MAP2_ORIG\"\>",
+           StyleBox["\<\"2\"\>",
             StripOnInput->False,
             FontSize->15],
            BoxRotation->1.5707963267948966`]], Offset[{0, -2}, {2., 0.}], 
          ImageScaled[{Rational[1, 2], 1}]], InsetBox[
          PaneBox[
           RotationBox[
-           StyleBox["\<\"GP_MAP2_RF4\"\>",
+           StyleBox["\<\"3\"\>",
             StripOnInput->False,
             FontSize->15],
            BoxRotation->1.5707963267948966`]], Offset[{0, -2}, {3., 0.}], 
          ImageScaled[{Rational[1, 2], 1}]], InsetBox[
          PaneBox[
           RotationBox[
-           StyleBox["\<\"GPAT_MAP2_RF4\"\>",
+           StyleBox["\<\"4\"\>",
             StripOnInput->False,
             FontSize->15],
            BoxRotation->1.5707963267948966`]], Offset[{0, -2}, {4., 0.}], 
          ImageScaled[{Rational[1, 2], 1}]], InsetBox[
          PaneBox[
           RotationBox[
-           StyleBox["\<\"GP_MAP2_RF8\"\>",
+           StyleBox["\<\"5\"\>",
             StripOnInput->False,
             FontSize->15],
            BoxRotation->1.5707963267948966`]], Offset[{0, -2}, {5., 0.}], 
          ImageScaled[{Rational[1, 2], 1}]], InsetBox[
          PaneBox[
           RotationBox[
-           StyleBox["\<\"GPAT_MAP2_RF8\"\>",
+           StyleBox["\<\"6\"\>",
             StripOnInput->False,
             FontSize->15],
            BoxRotation->1.5707963267948966`]], Offset[{0, -2}, {6., 0.}], 
-         ImageScaled[{Rational[1, 2], 1}]], InsetBox[
-         PaneBox[
-          RotationBox[
-           StyleBox["\<\"GP_MAP2_NOVER\"\>",
-            StripOnInput->False,
-            FontSize->15],
-           BoxRotation->1.5707963267948966`]], Offset[{0, -2}, {7., 0.}], 
-         ImageScaled[{Rational[1, 2], 1}]], InsetBox[
-         PaneBox[
-          RotationBox[
-           StyleBox["\<\"GPAT_MAP2_NOVER\"\>",
-            StripOnInput->False,
-            FontSize->15],
-           BoxRotation->1.5707963267948966`]], 
-         Offset[{0, -2}, {7.999999999999999, 0.}], 
-         ImageScaled[{Rational[1, 2], 1}]], InsetBox[
-         PaneBox[
-          RotationBox[
-           StyleBox["\<\"GP_MAP3_ORIG\"\>",
-            StripOnInput->False,
-            FontSize->15],
-           BoxRotation->1.5707963267948966`]], Offset[{0, -2}, {9., 0.}], 
-         ImageScaled[{Rational[1, 2], 1}]], InsetBox[
-         PaneBox[
-          RotationBox[
-           StyleBox["\<\"GPAT_MAP3_ORIG\"\>",
-            StripOnInput->False,
-            FontSize->15],
-           BoxRotation->1.5707963267948966`]], Offset[{0, -2}, {10., 0.}], 
-         ImageScaled[{Rational[1, 2], 1}]], InsetBox[
-         PaneBox[
-          RotationBox[
-           StyleBox["\<\"GP_MAP3_RF4\"\>",
-            StripOnInput->False,
-            FontSize->15],
-           BoxRotation->1.5707963267948966`]], Offset[{0, -2}, {11., 0.}], 
-         ImageScaled[{Rational[1, 2], 1}]], InsetBox[
-         PaneBox[
-          RotationBox[
-           StyleBox["\<\"GPAT_MAP3_RF4\"\>",
-            StripOnInput->False,
-            FontSize->15],
-           BoxRotation->1.5707963267948966`]], Offset[{0, -2}, {12., 0.}], 
-         ImageScaled[{Rational[1, 2], 1}]], InsetBox[
-         PaneBox[
-          RotationBox[
-           StyleBox["\<\"GP_MAP3_RF8\"\>",
-            StripOnInput->False,
-            FontSize->15],
-           BoxRotation->1.5707963267948966`]], Offset[{0, -2}, {13., 0.}], 
-         ImageScaled[{Rational[1, 2], 1}]], InsetBox[
-         PaneBox[
-          RotationBox[
-           StyleBox["\<\"GPAT_MAP3_RF8\"\>",
-            StripOnInput->False,
-            FontSize->15],
-           BoxRotation->1.5707963267948966`]], Offset[{0, -2}, {14., 0.}], 
-         ImageScaled[{Rational[1, 2], 1}]], InsetBox[
-         PaneBox[
-          RotationBox[
-           StyleBox["\<\"GP_MAP3_NOVER\"\>",
-            StripOnInput->False,
-            FontSize->15],
-           BoxRotation->1.5707963267948966`]], Offset[{0, -2}, {15., 0.}], 
-         ImageScaled[{Rational[1, 2], 1}]], InsetBox[
-         PaneBox[
-          RotationBox[
-           StyleBox["\<\"GPAT_MAP3_NOVER\"\>",
-            StripOnInput->False,
-            FontSize->15],
-           BoxRotation->1.5707963267948966`]], Offset[{0, -2}, {16., 0.}], 
          ImageScaled[{Rational[1, 2], 1}]]}],
       Antialiasing->False]}]},
   AspectRatio->NCache[GoldenRatio^(-1), 0.6180339887498948],
@@ -803,7 +699,10 @@ Cell[BoxData[
    3.522430310054379*^9, 3.522483755233202*^9, 3.522483919450914*^9, 
    3.522490741372232*^9, 3.522588300955072*^9, {3.5225883416096354`*^9, 
    3.522588355271008*^9}, 3.522589768659691*^9, 3.5226009420837603`*^9, 
-   3.522601125206479*^9, 3.5226061100140553`*^9}]
+   3.522601125206479*^9, 3.5226061100140553`*^9, 3.522756829905567*^9, 
+   3.522914542927249*^9, {3.522915117516799*^9, 3.522915125971867*^9}, 
+   3.522917252848989*^9, 3.52293534363776*^9, 3.522937021683145*^9, 
+   3.522937965319915*^9}]
 }, Open  ]],
 
 Cell[BoxData[
@@ -1019,8 +918,8 @@ Cell[CellGroupData[{
 Cell[BoxData[
  RowBox[{"testFisherExact", "[", 
   RowBox[{
-  "sortedData", ",", "\"\<GPAT_MAP2_RF4\>\"", ",", "\"\<GP_MAP2_NOVER\>\"", 
-   ",", "\"\<SUCCESS\>\"", ",", 
+  "sortedData", ",", "\"\<1\>\"", ",", "\"\<2\>\"", ",", "\"\<SUCCESS\>\"", 
+   ",", 
    RowBox[{"TwoSided", "\[Rule]", "True"}], ",", 
    RowBox[{"PValueOnly", "\[Rule]", "False"}]}], "]"}]], "Input",
  CellChangeTimes->{{3.521628402306006*^9, 3.521628431193521*^9}, {
@@ -1039,25 +938,29 @@ Cell[BoxData[
    3.522606479822876*^9}, 3.522606648100664*^9, {3.522606695148027*^9, 
    3.522606723553114*^9}, {3.522607071056183*^9, 3.52260707314184*^9}, {
    3.522607193545936*^9, 3.522607203890571*^9}, {3.5226072914604683`*^9, 
-   3.522607296026569*^9}, {3.522607346063477*^9, 3.522607353538027*^9}}],
+   3.522607296026569*^9}, {3.522607346063477*^9, 3.522607353538027*^9}, {
+   3.522919466170046*^9, 3.522919497168148*^9}, {3.522919647202014*^9, 
+   3.522919668785862*^9}, {3.522919811819859*^9, 3.522919831330447*^9}, {
+   3.522920314188963*^9, 3.522920363257051*^9}, {3.522935449510186*^9, 
+   3.522935456285453*^9}}],
 
 Cell[BoxData[
  TagBox[GridBox[{
     {"\<\"\"\>", 
-     StyleBox["\<\"GPAT_MAP2_RF4\"\>",
+     StyleBox["\<\"1\"\>",
       StripOnInput->False,
       FontWeight->Bold], 
-     StyleBox["\<\"GP_MAP2_NOVER\"\>",
+     StyleBox["\<\"2\"\>",
       StripOnInput->False,
       FontWeight->Bold]},
     {
      StyleBox["\<\"true\"\>",
       StripOnInput->False,
-      FontWeight->Bold], "100.`", "81.`"},
+      FontWeight->Bold], "23.`", "30.`"},
     {
      StyleBox["\<\"false\"\>",
       StripOnInput->False,
-      FontWeight->Bold], "100.`", "119.`"}
+      FontWeight->Bold], "177.`", "170.`"}
    },
    AutoDelete->False,
    GridBoxFrame->{"Columns" -> {{True}}, "Rows" -> {{True}}},
@@ -1067,9 +970,12 @@ Cell[BoxData[
   3.522604619390732*^9, 3.522606481613926*^9, 3.522606525928294*^9, 
    3.5226066491231527`*^9, {3.5226066970838737`*^9, 3.522606724204578*^9}, 
    3.52260707359024*^9, {3.5226071942950687`*^9, 3.522607204447253*^9}, 
-   3.522607296679356*^9, 3.522607354292714*^9}],
+   3.522607296679356*^9, 3.522607354292714*^9, {3.52291947185858*^9, 
+   3.52291949793274*^9}, {3.5229196529673567`*^9, 3.522919670764799*^9}, {
+   3.522919814049922*^9, 3.522919832503963*^9}, {3.522920343676231*^9, 
+   3.522920363916358*^9}, 3.522935460751411*^9}],
 
-Cell[BoxData["0.07044169994418083`"], "Output",
+Cell[BoxData["0.37636923057186844`"], "Output",
  CellChangeTimes->{
   3.52189198943568*^9, 3.5218987208911467`*^9, 3.522228772523484*^9, 
    3.522228933017984*^9, 3.522230102941086*^9, {3.522232590307526*^9, 
@@ -1081,19 +987,23 @@ Cell[BoxData["0.07044169994418083`"], "Output",
    3.522604597349349*^9, 3.522604619392763*^9}, 3.522606481695064*^9, 
    3.522606525934308*^9, 3.522606649126177*^9, {3.522606697086508*^9, 
    3.522606724293277*^9}, 3.522607073663314*^9, {3.522607194298229*^9, 
-   3.522607204450306*^9}, 3.522607296755436*^9, 3.522607354357628*^9}]
+   3.522607204450306*^9}, 3.522607296755436*^9, 3.522607354357628*^9, {
+   3.522919471924391*^9, 3.5229194979972*^9}, {3.522919652969983*^9, 
+   3.522919670767434*^9}, {3.522919814052339*^9, 3.522919832506564*^9}, {
+   3.522920343678845*^9, 3.522920363918888*^9}, 3.5229354607552156`*^9}]
 }, Open  ]],
 
 Cell[CellGroupData[{
 
 Cell[BoxData[
  RowBox[{"testFisherExactAll", "[", 
-  RowBox[{"data", ",", "\"\<SUCCESS\>\"", ",", "0.05", ",", 
+  RowBox[{"sortedData", ",", "\"\<SUCCESS\>\"", ",", "0.05", ",", 
    RowBox[{"TwoSided", "\[Rule]", "True"}]}], "]"}]], "Input",
  CellChangeTimes->{{3.522602820531152*^9, 3.522602824257257*^9}, {
   3.522604068558424*^9, 3.522604075379595*^9}, {3.522604609756173*^9, 
   3.522604615818596*^9}, {3.522605562025366*^9, 3.522605576326833*^9}, {
-  3.522606288812025*^9, 3.5226062899857616`*^9}}],
+  3.522606288812025*^9, 3.5226062899857616`*^9}, {3.522669327747319*^9, 
+  3.522669329330018*^9}, {3.522938120421315*^9, 3.522938124474325*^9}}],
 
 Cell[BoxData[
  TagBox[GridBox[{
@@ -1101,516 +1011,92 @@ Cell[BoxData[
      StyleBox["\<\"\"\>",
       StripOnInput->False,
       FontWeight->Bold], 
-     StyleBox["\<\"GPAT_MAP2_ORIG\"\>",
+     StyleBox["\<\"2\"\>",
       StripOnInput->False,
       FontWeight->Bold], 
-     StyleBox["\<\"GP_MAP2_RF4\"\>",
+     StyleBox["\<\"3\"\>",
       StripOnInput->False,
       FontWeight->Bold], 
-     StyleBox["\<\"GPAT_MAP2_RF4\"\>",
+     StyleBox["\<\"4\"\>",
       StripOnInput->False,
       FontWeight->Bold], 
-     StyleBox["\<\"GP_MAP2_RF8\"\>",
+     StyleBox["\<\"5\"\>",
       StripOnInput->False,
       FontWeight->Bold], 
-     StyleBox["\<\"GPAT_MAP2_RF8\"\>",
-      StripOnInput->False,
-      FontWeight->Bold], 
-     StyleBox["\<\"GP_MAP2_NOVER\"\>",
-      StripOnInput->False,
-      FontWeight->Bold], 
-     StyleBox["\<\"GPAT_MAP2_NOVER\"\>",
-      StripOnInput->False,
-      FontWeight->Bold], 
-     StyleBox["\<\"GP_MAP3_ORIG\"\>",
-      StripOnInput->False,
-      FontWeight->Bold], 
-     StyleBox["\<\"GPAT_MAP3_ORIG\"\>",
-      StripOnInput->False,
-      FontWeight->Bold], 
-     StyleBox["\<\"GP_MAP3_RF4\"\>",
-      StripOnInput->False,
-      FontWeight->Bold], 
-     StyleBox["\<\"GPAT_MAP3_RF4\"\>",
-      StripOnInput->False,
-      FontWeight->Bold], 
-     StyleBox["\<\"GP_MAP3_RF8\"\>",
-      StripOnInput->False,
-      FontWeight->Bold], 
-     StyleBox["\<\"GPAT_MAP3_RF8\"\>",
-      StripOnInput->False,
-      FontWeight->Bold], 
-     StyleBox["\<\"GP_MAP3_NOVER\"\>",
-      StripOnInput->False,
-      FontWeight->Bold], 
-     StyleBox["\<\"GPAT_MAP3_NOVER\"\>",
+     StyleBox["\<\"6\"\>",
       StripOnInput->False,
       FontWeight->Bold]},
     {
-     StyleBox["\<\"GP_MAP2_ORIG\"\>",
+     StyleBox["\<\"1\"\>",
       StripOnInput->False,
       FontWeight->Bold], 
-     ItemBox["2.923499185457503`*^-32",
-      Background->RGBColor[1, 0, 0],
-      StripOnInput->False], 
-     ItemBox["1.4513911549058143`*^-9",
-      Background->RGBColor[1, 0, 0],
-      StripOnInput->False], 
-     ItemBox["1.1127862437707696`*^-6",
-      Background->RGBColor[1, 0, 0],
-      StripOnInput->False], 
-     ItemBox["6.731509670186858`*^-7",
-      Background->RGBColor[1, 0, 0],
-      StripOnInput->False], 
-     ItemBox["0.6431846869534156`",
+     ItemBox["0.09002130834137666`",
       Background->RGBColor[0, 1, 0],
       StripOnInput->False], 
-     ItemBox["0.0028908968054067985`",
+     ItemBox["8.704277941120254`*^-7",
       Background->RGBColor[1, 0, 0],
       StripOnInput->False], 
-     ItemBox["7.019040381723101`*^-53",
+     ItemBox["2.9973137481849718`*^-15",
       Background->RGBColor[1, 0, 0],
       StripOnInput->False], 
-     ItemBox["9.749207624054698`*^-18",
+     ItemBox["4.398035976931975`*^-33",
       Background->RGBColor[1, 0, 0],
       StripOnInput->False], 
-     ItemBox["2.0332806660316426`*^-6",
-      Background->RGBColor[1, 0, 0],
-      StripOnInput->False], 
-     ItemBox["4.7289547385336034`*^-15",
-      Background->RGBColor[1, 0, 0],
-      StripOnInput->False], 
-     ItemBox["9.749207624054698`*^-18",
-      Background->RGBColor[1, 0, 0],
-      StripOnInput->False], 
-     ItemBox["9.749207624054698`*^-18",
-      Background->RGBColor[1, 0, 0],
-      StripOnInput->False], 
-     ItemBox["9.749207624054698`*^-18",
-      Background->RGBColor[1, 0, 0],
-      StripOnInput->False], 
-     ItemBox["9.749207624054698`*^-18",
-      Background->RGBColor[1, 0, 0],
-      StripOnInput->False], 
-     ItemBox["4.359656868681413`*^-9",
+     ItemBox["2.717137974047267`*^-43",
       Background->RGBColor[1, 0, 0],
       StripOnInput->False]},
     {
-     StyleBox["\<\"GPAT_MAP2_ORIG\"\>",
+     StyleBox["\<\"2\"\>",
       StripOnInput->False,
       FontWeight->Bold], "\<\"\"\>", 
-     ItemBox["2.601945206540745`*^-9",
+     ItemBox["0.00174070748316253`",
       Background->RGBColor[1, 0, 0],
       StripOnInput->False], 
-     ItemBox["1.0762253425892956`*^-12",
+     ItemBox["7.220793940104418`*^-10",
       Background->RGBColor[1, 0, 0],
       StripOnInput->False], 
-     ItemBox["2.157305069988577`*^-12",
+     ItemBox["4.23269447702496`*^-25",
       Background->RGBColor[1, 0, 0],
       StripOnInput->False], 
-     ItemBox["5.045518911702936`*^-35",
-      Background->RGBColor[1, 0, 0],
-      StripOnInput->False], 
-     ItemBox["3.610180876859972`*^-19",
-      Background->RGBColor[1, 0, 0],
-      StripOnInput->False], 
-     ItemBox["0.00004786152846441749`",
-      Background->RGBColor[1, 0, 0],
-      StripOnInput->False], 
-     ItemBox["2.748256781487814`*^-79",
-      Background->RGBColor[1, 0, 0],
-      StripOnInput->False], 
-     ItemBox["8.548845402272418`*^-58",
-      Background->RGBColor[1, 0, 0],
-      StripOnInput->False], 
-     ItemBox["2.8781922227309125`*^-75",
-      Background->RGBColor[1, 0, 0],
-      StripOnInput->False], 
-     ItemBox["2.748256781487814`*^-79",
-      Background->RGBColor[1, 0, 0],
-      StripOnInput->False], 
-     ItemBox["2.748256781487814`*^-79",
-      Background->RGBColor[1, 0, 0],
-      StripOnInput->False], 
-     ItemBox["2.748256781487814`*^-79",
-      Background->RGBColor[1, 0, 0],
-      StripOnInput->False], 
-     ItemBox["2.748256781487814`*^-79",
-      Background->RGBColor[1, 0, 0],
-      StripOnInput->False], 
-     ItemBox["3.745813075998606`*^-64",
+     ItemBox["2.7565068497009867`*^-34",
       Background->RGBColor[1, 0, 0],
       StripOnInput->False]},
     {
-     StyleBox["\<\"GP_MAP2_RF4\"\>",
+     StyleBox["\<\"3\"\>",
       StripOnInput->False,
       FontWeight->Bold], "\<\"\"\>", "\<\"\"\>", 
-     ItemBox["0.27044814933050504`",
-      Background->RGBColor[0, 1, 0],
-      StripOnInput->False], 
-     ItemBox["0.3162874547047332`",
-      Background->RGBColor[0, 1, 0],
-      StripOnInput->False], 
-     ItemBox["3.85697725064535`*^-11",
+     ItemBox["0.0029596376370540885`",
       Background->RGBColor[1, 0, 0],
       StripOnInput->False], 
-     ItemBox["0.0026392206593805687`",
+     ItemBox["3.3343697942206516`*^-13",
       Background->RGBColor[1, 0, 0],
       StripOnInput->False], 
-     ItemBox["9.931761143789661`*^-23",
-      Background->RGBColor[1, 0, 0],
-      StripOnInput->False], 
-     ItemBox["9.557376889559716`*^-44",
-      Background->RGBColor[1, 0, 0],
-      StripOnInput->False], 
-     ItemBox["2.3089889194434194`*^-26",
-      Background->RGBColor[1, 0, 0],
-      StripOnInput->False], 
-     ItemBox["2.9874417600494917`*^-40",
-      Background->RGBColor[1, 0, 0],
-      StripOnInput->False], 
-     ItemBox["9.557376889559716`*^-44",
-      Background->RGBColor[1, 0, 0],
-      StripOnInput->False], 
-     ItemBox["9.557376889559716`*^-44",
-      Background->RGBColor[1, 0, 0],
-      StripOnInput->False], 
-     ItemBox["9.557376889559716`*^-44",
-      Background->RGBColor[1, 0, 0],
-      StripOnInput->False], 
-     ItemBox["9.557376889559716`*^-44",
-      Background->RGBColor[1, 0, 0],
-      StripOnInput->False], 
-     ItemBox["3.3368038113683855`*^-31",
+     ItemBox["3.182563629047951`*^-20",
       Background->RGBColor[1, 0, 0],
       StripOnInput->False]},
     {
-     StyleBox["\<\"GPAT_MAP2_RF4\"\>",
+     StyleBox["\<\"4\"\>",
       StripOnInput->False,
       FontWeight->Bold], "\<\"\"\>", "\<\"\"\>", "\<\"\"\>", 
-     ItemBox["1.000000000000249`",
-      Background->RGBColor[0, 1, 0],
-      StripOnInput->False], 
-     ItemBox["5.459540052815297`*^-8",
+     ItemBox["0.000019695828344573876`",
       Background->RGBColor[1, 0, 0],
       StripOnInput->False], 
-     ItemBox["0.07044169994418083`",
-      Background->RGBColor[0, 1, 0],
-      StripOnInput->False], 
-     ItemBox["1.1028925838438294`*^-27",
-      Background->RGBColor[1, 0, 0],
-      StripOnInput->False], 
-     ItemBox["8.077999966564528`*^-38",
-      Background->RGBColor[1, 0, 0],
-      StripOnInput->False], 
-     ItemBox["1.8948883742014496`*^-21",
-      Background->RGBColor[1, 0, 0],
-      StripOnInput->False], 
-     ItemBox["1.864691471212166`*^-34",
-      Background->RGBColor[1, 0, 0],
-      StripOnInput->False], 
-     ItemBox["8.077999966564528`*^-38",
-      Background->RGBColor[1, 0, 0],
-      StripOnInput->False], 
-     ItemBox["8.077999966564528`*^-38",
-      Background->RGBColor[1, 0, 0],
-      StripOnInput->False], 
-     ItemBox["8.077999966564528`*^-38",
-      Background->RGBColor[1, 0, 0],
-      StripOnInput->False], 
-     ItemBox["8.077999966564528`*^-38",
-      Background->RGBColor[1, 0, 0],
-      StripOnInput->False], 
-     ItemBox["6.412759761059814`*^-26",
+     ItemBox["4.044219808453339`*^-10",
       Background->RGBColor[1, 0, 0],
       StripOnInput->False]},
     {
-     StyleBox["\<\"GP_MAP2_RF8\"\>",
+     StyleBox["\<\"5\"\>",
       StripOnInput->False,
       FontWeight->Bold], "\<\"\"\>", "\<\"\"\>", "\<\"\"\>", "\<\"\"\>", 
-     ItemBox["3.136701008212212`*^-8",
-      Background->RGBColor[1, 0, 0],
-      StripOnInput->False], 
-     ItemBox["0.05628506107316027`",
+     ItemBox["0.055263622971413004`",
       Background->RGBColor[0, 1, 0],
-      StripOnInput->False], 
-     ItemBox["2.9649994693669123`*^-27",
-      Background->RGBColor[1, 0, 0],
-      StripOnInput->False], 
-     ItemBox["2.692666655521975`*^-38",
-      Background->RGBColor[1, 0, 0],
-      StripOnInput->False], 
-     ItemBox["7.715117078096798`*^-22",
-      Background->RGBColor[1, 0, 0],
-      StripOnInput->False], 
-     ItemBox["6.380011118709454`*^-35",
-      Background->RGBColor[1, 0, 0],
-      StripOnInput->False], 
-     ItemBox["2.692666655521975`*^-38",
-      Background->RGBColor[1, 0, 0],
-      StripOnInput->False], 
-     ItemBox["2.692666655521975`*^-38",
-      Background->RGBColor[1, 0, 0],
-      StripOnInput->False], 
-     ItemBox["2.692666655521975`*^-38",
-      Background->RGBColor[1, 0, 0],
-      StripOnInput->False], 
-     ItemBox["2.692666655521975`*^-38",
-      Background->RGBColor[1, 0, 0],
-      StripOnInput->False], 
-     ItemBox["2.4276568708680143`*^-26",
-      Background->RGBColor[1, 0, 0],
-      StripOnInput->False]},
-    {
-     StyleBox["\<\"GPAT_MAP2_RF8\"\>",
-      StripOnInput->False,
-      FontWeight->
-       Bold], "\<\"\"\>", "\<\"\"\>", "\<\"\"\>", "\<\"\"\>", "\<\"\"\>", 
-     ItemBox["0.0003837808773334876`",
-      Background->RGBColor[1, 0, 0],
-      StripOnInput->False], 
-     ItemBox["3.408262361139341`*^-56",
-      Background->RGBColor[1, 0, 0],
-      StripOnInput->False], 
-     ItemBox["6.617558398767836`*^-16",
-      Background->RGBColor[1, 0, 0],
-      StripOnInput->False], 
-     ItemBox["0.00002843402908088362`",
-      Background->RGBColor[1, 0, 0],
-      StripOnInput->False], 
-     ItemBox["2.573797340522671`*^-13",
-      Background->RGBColor[1, 0, 0],
-      StripOnInput->False], 
-     ItemBox["6.617558398767836`*^-16",
-      Background->RGBColor[1, 0, 0],
-      StripOnInput->False], 
-     ItemBox["6.617558398767836`*^-16",
-      Background->RGBColor[1, 0, 0],
-      StripOnInput->False], 
-     ItemBox["6.617558398767836`*^-16",
-      Background->RGBColor[1, 0, 0],
-      StripOnInput->False], 
-     ItemBox["6.617558398767836`*^-16",
-      Background->RGBColor[1, 0, 0],
-      StripOnInput->False], 
-     ItemBox["1.0527631265524078`*^-7",
-      Background->RGBColor[1, 0, 0],
-      StripOnInput->False]},
-    {
-     StyleBox["\<\"GP_MAP2_NOVER\"\>",
-      StripOnInput->False,
-      FontWeight->
-       Bold], "\<\"\"\>", "\<\"\"\>", "\<\"\"\>", "\<\"\"\>", "\<\"\"\>", "\<\
-\"\"\>", 
-     ItemBox["1.74484880844997`*^-36",
-      Background->RGBColor[1, 0, 0],
-      StripOnInput->False], 
-     ItemBox["2.921990183918515`*^-29",
-      Background->RGBColor[1, 0, 0],
-      StripOnInput->False], 
-     ItemBox["1.1934840881583028`*^-14",
-      Background->RGBColor[1, 0, 0],
-      StripOnInput->False], 
-     ItemBox["3.9585746269925973`*^-26",
-      Background->RGBColor[1, 0, 0],
-      StripOnInput->False], 
-     ItemBox["2.921990183918515`*^-29",
-      Background->RGBColor[1, 0, 0],
-      StripOnInput->False], 
-     ItemBox["2.921990183918515`*^-29",
-      Background->RGBColor[1, 0, 0],
-      StripOnInput->False], 
-     ItemBox["2.921990183918515`*^-29",
-      Background->RGBColor[1, 0, 0],
-      StripOnInput->False], 
-     ItemBox["2.921990183918515`*^-29",
-      Background->RGBColor[1, 0, 0],
-      StripOnInput->False], 
-     ItemBox["1.7483172030243017`*^-18",
-      Background->RGBColor[1, 0, 0],
-      StripOnInput->False]},
-    {
-     StyleBox["\<\"GPAT_MAP2_NOVER\"\>",
-      StripOnInput->False,
-      FontWeight->
-       Bold], "\<\"\"\>", "\<\"\"\>", "\<\"\"\>", "\<\"\"\>", "\<\"\"\>", "\<\
-\"\"\>", "\<\"\"\>", 
-     ItemBox["1.4729939688425835`*^-105",
-      Background->RGBColor[1, 0, 0],
-      StripOnInput->False], 
-     ItemBox["2.5005662849516758`*^-82",
-      Background->RGBColor[1, 0, 0],
-      StripOnInput->False], 
-     ItemBox["2.5501182632520982`*^-101",
-      Background->RGBColor[1, 0, 0],
-      StripOnInput->False], 
-     ItemBox["1.4729939688425835`*^-105",
-      Background->RGBColor[1, 0, 0],
-      StripOnInput->False], 
-     ItemBox["1.4729939688425835`*^-105",
-      Background->RGBColor[1, 0, 0],
-      StripOnInput->False], 
-     ItemBox["1.4729939688425835`*^-105",
-      Background->RGBColor[1, 0, 0],
-      StripOnInput->False], 
-     ItemBox["1.4729939688425835`*^-105",
-      Background->RGBColor[1, 0, 0],
-      StripOnInput->False], 
-     ItemBox["2.456857621067564`*^-89",
-      Background->RGBColor[1, 0, 0],
-      StripOnInput->False]},
-    {
-     StyleBox["\<\"GP_MAP3_ORIG\"\>",
-      StripOnInput->False,
-      FontWeight->
-       Bold], "\<\"\"\>", "\<\"\"\>", "\<\"\"\>", "\<\"\"\>", "\<\"\"\>", "\<\
-\"\"\>", "\<\"\"\>", "\<\"\"\>", 
-     ItemBox["0.000022334336654601457`",
-      Background->RGBColor[1, 0, 0],
-      StripOnInput->False], 
-     ItemBox["0.49874686716810696`",
-      Background->RGBColor[0, 1, 0],
-      StripOnInput->False], 
-     ItemBox["1.`",
-      Background->RGBColor[0, 1, 0],
-      StripOnInput->False], 
-     ItemBox["1.`",
-      Background->RGBColor[0, 1, 0],
-      StripOnInput->False], 
-     ItemBox["1.`",
-      Background->RGBColor[0, 1, 0],
-      StripOnInput->False], 
-     ItemBox["1.`",
-      Background->RGBColor[0, 1, 0],
-      StripOnInput->False], 
-     ItemBox["0.0017405177544899317`",
-      Background->RGBColor[1, 0, 0],
-      StripOnInput->False]},
-    {
-     StyleBox["\<\"GPAT_MAP3_ORIG\"\>",
-      StripOnInput->False,
-      FontWeight->
-       Bold], "\<\"\"\>", "\<\"\"\>", "\<\"\"\>", "\<\"\"\>", "\<\"\"\>", "\<\
-\"\"\>", "\<\"\"\>", "\<\"\"\>", "\<\"\"\>", 
-     ItemBox["0.0010304409813449863`",
-      Background->RGBColor[1, 0, 0],
-      StripOnInput->False], 
-     ItemBox["0.000022334336654601457`",
-      Background->RGBColor[1, 0, 0],
-      StripOnInput->False], 
-     ItemBox["0.000022334336654601457`",
-      Background->RGBColor[1, 0, 0],
-      StripOnInput->False], 
-     ItemBox["0.000022334336654601457`",
-      Background->RGBColor[1, 0, 0],
-      StripOnInput->False], 
-     ItemBox["0.000022334336654601457`",
-      Background->RGBColor[1, 0, 0],
-      StripOnInput->False], 
-     ItemBox["0.3105770455633875`",
-      Background->RGBColor[0, 1, 0],
-      StripOnInput->False]},
-    {
-     StyleBox["\<\"GP_MAP3_RF4\"\>",
-      StripOnInput->False,
-      FontWeight->
-       Bold], "\<\"\"\>", "\<\"\"\>", "\<\"\"\>", "\<\"\"\>", "\<\"\"\>", "\<\
-\"\"\>", "\<\"\"\>", "\<\"\"\>", "\<\"\"\>", "\<\"\"\>", 
-     ItemBox["0.49874686716810696`",
-      Background->RGBColor[0, 1, 0],
-      StripOnInput->False], 
-     ItemBox["0.49874686716810696`",
-      Background->RGBColor[0, 1, 0],
-      StripOnInput->False], 
-     ItemBox["0.49874686716810696`",
-      Background->RGBColor[0, 1, 0],
-      StripOnInput->False], 
-     ItemBox["0.49874686716810696`",
-      Background->RGBColor[0, 1, 0],
-      StripOnInput->False], 
-     ItemBox["0.035779909868200455`",
-      Background->RGBColor[1, 0, 0],
-      StripOnInput->False]},
-    {
-     StyleBox["\<\"GPAT_MAP3_RF4\"\>",
-      StripOnInput->False,
-      FontWeight->
-       Bold], "\<\"\"\>", "\<\"\"\>", "\<\"\"\>", "\<\"\"\>", "\<\"\"\>", "\<\
-\"\"\>", "\<\"\"\>", "\<\"\"\>", "\<\"\"\>", "\<\"\"\>", "\<\"\"\>", 
-     ItemBox["1.`",
-      Background->RGBColor[0, 1, 0],
-      StripOnInput->False], 
-     ItemBox["1.`",
-      Background->RGBColor[0, 1, 0],
-      StripOnInput->False], 
-     ItemBox["1.`",
-      Background->RGBColor[0, 1, 0],
-      StripOnInput->False], 
-     ItemBox["0.0017405177544899317`",
-      Background->RGBColor[1, 0, 0],
-      StripOnInput->False]},
-    {
-     StyleBox["\<\"GP_MAP3_RF8\"\>",
-      StripOnInput->False,
-      FontWeight->
-       Bold], "\<\"\"\>", "\<\"\"\>", "\<\"\"\>", "\<\"\"\>", "\<\"\"\>", "\<\
-\"\"\>", "\<\"\"\>", "\<\"\"\>", "\<\"\"\>", "\<\"\"\>", "\<\"\"\>", \
-"\<\"\"\>", 
-     ItemBox["1.`",
-      Background->RGBColor[0, 1, 0],
-      StripOnInput->False], 
-     ItemBox["1.`",
-      Background->RGBColor[0, 1, 0],
-      StripOnInput->False], 
-     ItemBox["0.0017405177544899317`",
-      Background->RGBColor[1, 0, 0],
-      StripOnInput->False]},
-    {
-     StyleBox["\<\"GPAT_MAP3_RF8\"\>",
-      StripOnInput->False,
-      FontWeight->
-       Bold], "\<\"\"\>", "\<\"\"\>", "\<\"\"\>", "\<\"\"\>", "\<\"\"\>", "\<\
-\"\"\>", "\<\"\"\>", "\<\"\"\>", "\<\"\"\>", "\<\"\"\>", "\<\"\"\>", \
-"\<\"\"\>", "\<\"\"\>", 
-     ItemBox["1.`",
-      Background->RGBColor[0, 1, 0],
-      StripOnInput->False], 
-     ItemBox["0.0017405177544899317`",
-      Background->RGBColor[1, 0, 0],
-      StripOnInput->False]},
-    {
-     StyleBox["\<\"GP_MAP3_NOVER\"\>",
-      StripOnInput->False,
-      FontWeight->
-       Bold], "\<\"\"\>", "\<\"\"\>", "\<\"\"\>", "\<\"\"\>", "\<\"\"\>", "\<\
-\"\"\>", "\<\"\"\>", "\<\"\"\>", "\<\"\"\>", "\<\"\"\>", "\<\"\"\>", \
-"\<\"\"\>", "\<\"\"\>", "\<\"\"\>", 
-     ItemBox["0.0017405177544899317`",
-      Background->RGBColor[1, 0, 0],
       StripOnInput->False]}
    },
    AutoDelete->False,
    GridBoxFrame->{"Columns" -> {{True}}, "Rows" -> {{True}}},
    GridBoxItemSize->{"Columns" -> {{Automatic}}, "Rows" -> {{Automatic}}}],
   "Grid"]], "Output",
- CellChangeTimes->{
-  3.522602824737913*^9, 3.522602955828426*^9, {3.522603015183461*^9, 
-   3.522603039712408*^9}, 3.5226031019861097`*^9, 3.5226031706899843`*^9, {
-   3.5226033409059753`*^9, 3.522603359409474*^9}, 3.522603393924983*^9, {
-   3.52260352191647*^9, 3.5226035614317408`*^9}, {3.522603645977192*^9, 
-   3.522603655408551*^9}, {3.522603879713744*^9, 3.522603928646696*^9}, {
-   3.522604323136671*^9, 3.522604344674717*^9}, 3.522604374880733*^9, 
-   3.52260469992776*^9, 3.522604748921393*^9, 3.522604888023971*^9, {
-   3.5226049214838533`*^9, 3.522604946229252*^9}, 3.5226050261727448`*^9, {
-   3.522605111476268*^9, 3.522605129143771*^9}, 3.5226051774182787`*^9, 
-   3.522605207748427*^9, 3.5226052561320257`*^9, 3.522605293768416*^9, 
-   3.522605346717948*^9, 3.522605377578815*^9, {3.522605432241808*^9, 
-   3.5226054556934223`*^9}, 3.522605572141189*^9, {3.522605800224114*^9, 
-   3.522605821803955*^9}, 3.522605864424686*^9, 3.522605982753901*^9, 
-   3.522606017533046*^9, 3.522606049464451*^9, 3.522606128558578*^9, {
-   3.522606159151722*^9, 3.522606255682149*^9}, {3.5226062910690527`*^9, 
-   3.5226063165464973`*^9}, 3.5226063848126497`*^9, 3.522606431952818*^9, 
-   3.522607286104536*^9}]
+ CellChangeTimes->{3.5229381254867573`*^9}]
 }, Open  ]],
 
 Cell[CellGroupData[{
@@ -14760,7 +14246,7 @@ Cell[BoxData["\<\"GP_H2.pdf\"\>"], "Output",
 }, Open  ]]
 },
 WindowSize->{1556, 903},
-WindowMargins->{{Automatic, 9}, {6, Automatic}},
+WindowMargins->{{0, Automatic}, {Automatic, 0}},
 FrontEndVersion->"8.0 for Mac OS X x86 (32-bit, 64-bit Kernel) (February 23, \
 2011)",
 StyleDefinitions->"Default.nb"
@@ -14782,80 +14268,90 @@ Cell[734, 26, 722, 16, 27, "Input"],
 Cell[1459, 44, 887, 14, 27, "Output"]
 }, Open  ]],
 Cell[2361, 61, 1617, 28, 27, "Input"],
-Cell[3981, 91, 2242, 36, 27, "Input"],
-Cell[6226, 129, 1056, 23, 58, "Input"],
-Cell[7285, 154, 889, 20, 58, "Input"],
-Cell[8177, 176, 1041, 17, 27, "Input"],
-Cell[9221, 195, 647, 13, 27, "Input"],
+Cell[3981, 91, 157, 3, 27, "Input"],
 Cell[CellGroupData[{
-Cell[9893, 212, 239, 4, 27, "Input"],
-Cell[10135, 218, 1106, 17, 27, "Output"]
+Cell[4163, 98, 262, 7, 27, "Input"],
+Cell[4428, 107, 547, 9, 43, "Output"]
 }, Open  ]],
-Cell[11256, 238, 155, 3, 27, "Input"],
-Cell[11414, 243, 1763, 30, 27, "Input"],
-Cell[13180, 275, 374, 6, 27, "Input"],
+Cell[4990, 119, 3039, 55, 43, "Input"],
+Cell[8032, 176, 1056, 23, 58, "Input"],
+Cell[9091, 201, 1531, 26, 73, "Input"],
+Cell[10625, 229, 1041, 17, 27, "Input"],
+Cell[11669, 248, 419, 9, 27, "Input"],
 Cell[CellGroupData[{
-Cell[13579, 285, 1077, 19, 27, "Input"],
-Cell[14659, 306, 3785, 78, 307, "Output"]
+Cell[12113, 261, 379, 9, 27, "Input"],
+Cell[12495, 272, 596, 10, 43, "Output"]
+}, Open  ]],
+Cell[13106, 285, 870, 17, 27, "Input"],
+Cell[CellGroupData[{
+Cell[14001, 306, 239, 4, 27, "Input"],
+Cell[14243, 312, 1106, 17, 27, "Output"]
+}, Open  ]],
+Cell[15364, 332, 155, 3, 27, "Input"],
+Cell[15522, 337, 1760, 29, 27, "Input"],
+Cell[17285, 368, 374, 6, 27, "Input"],
+Cell[CellGroupData[{
+Cell[17684, 378, 1226, 20, 27, "Input"],
+Cell[18913, 400, 2917, 62, 137, "Output"]
 }, Open  ]],
 Cell[CellGroupData[{
-Cell[18481, 389, 1754, 24, 27, "Input"],
-Cell[20238, 415, 16171, 390, 892, "Output"]
+Cell[21867, 467, 1953, 27, 27, "Input"],
+Cell[23823, 496, 8978, 208, 758, "Output"]
 }, Open  ]],
-Cell[36424, 808, 661, 11, 27, "Input"],
+Cell[32816, 707, 661, 11, 27, "Input"],
 Cell[CellGroupData[{
-Cell[37110, 823, 570, 10, 27, "Input"],
+Cell[33502, 722, 570, 10, 27, "Input"],
 Cell[CellGroupData[{
-Cell[37705, 837, 255, 5, 20, "Print"],
-Cell[37963, 844, 257, 5, 20, "Print"],
-Cell[38223, 851, 253, 5, 20, "Print"],
-Cell[38479, 858, 253, 5, 20, "Print"],
-Cell[38735, 865, 260, 5, 20, "Print"],
-Cell[38998, 872, 268, 6, 20, "Print"],
-Cell[39269, 880, 300, 6, 20, "Print"],
-Cell[39572, 888, 226, 5, 20, "Print"],
-Cell[39801, 895, 263, 6, 20, "Print"],
-Cell[40067, 903, 1432, 32, 20, "Print"]
+Cell[34097, 736, 255, 5, 20, "Print"],
+Cell[34355, 743, 257, 5, 20, "Print"],
+Cell[34615, 750, 253, 5, 20, "Print"],
+Cell[34871, 757, 253, 5, 20, "Print"],
+Cell[35127, 764, 260, 5, 20, "Print"],
+Cell[35390, 771, 268, 6, 20, "Print"],
+Cell[35661, 779, 300, 6, 20, "Print"],
+Cell[35964, 787, 226, 5, 20, "Print"],
+Cell[36193, 794, 263, 6, 20, "Print"],
+Cell[36459, 802, 1432, 32, 20, "Print"]
 }, Open  ]]
 }, Open  ]],
 Cell[CellGroupData[{
-Cell[41548, 941, 681, 12, 27, "Input"],
-Cell[42232, 955, 883, 26, 80, "Print"],
-Cell[43118, 983, 722, 12, 23, "Message"],
-Cell[43843, 997, 705, 16, 45, "Output"]
+Cell[37940, 840, 681, 12, 27, "Input"],
+Cell[38624, 854, 883, 26, 80, "Print"],
+Cell[39510, 882, 722, 12, 23, "Message"],
+Cell[40235, 896, 705, 16, 45, "Output"]
 }, Open  ]],
 Cell[CellGroupData[{
-Cell[44585, 1018, 1526, 23, 27, "Input"],
-Cell[46114, 1043, 919, 26, 62, "Print"],
-Cell[47036, 1071, 867, 12, 27, "Output"]
+Cell[40977, 917, 1748, 27, 27, "Input"],
+Cell[42728, 946, 1112, 29, 62, "Print"],
+Cell[43843, 977, 1085, 15, 27, "Output"]
 }, Open  ]],
 Cell[CellGroupData[{
-Cell[47940, 1088, 435, 7, 27, "Input"],
-Cell[48378, 1097, 18211, 515, 555, "Output"]
+Cell[44965, 997, 536, 8, 27, "Input"],
+Cell[45504, 1007, 2880, 91, 133, "Output"]
 }, Open  ]],
 Cell[CellGroupData[{
-Cell[66626, 1617, 1394, 20, 27, "Input"],
-Cell[68023, 1639, 1402, 29, 189, "Output"]
+Cell[48421, 1103, 1394, 20, 27, "Input"],
+Cell[49818, 1125, 1402, 29, 189, "Output"]
 }, Open  ]],
 Cell[CellGroupData[{
-Cell[69462, 1673, 400, 9, 27, "Input"],
-Cell[69865, 1684, 314, 7, 27, "Output"]
+Cell[51257, 1159, 400, 9, 27, "Input"],
+Cell[51660, 1170, 314, 7, 27, "Output"]
 }, Open  ]],
 Cell[CellGroupData[{
-Cell[70216, 1696, 2528, 43, 27, "Input"],
-Cell[72747, 1741, 9971, 312, 263, "Output"]
+Cell[52011, 1182, 2528, 43, 27, "Input"],
+Cell[54542, 1227, 9971, 312, 263, "Output"]
 }, Open  ]],
 Cell[CellGroupData[{
-Cell[82755, 2058, 758, 17, 27, "Input"],
-Cell[83516, 2077, 15448, 413, 657, "Output"]
+Cell[64550, 1544, 758, 17, 27, "Input"],
+Cell[65311, 1563, 15448, 413, 657, "Output"]
 }, Open  ]],
 Cell[CellGroupData[{
-Cell[99001, 2495, 600, 13, 27, "Input"],
-Cell[99604, 2510, 548033, 12232, 8193, "Output"]
+Cell[80796, 1981, 600, 13, 27, "Input"],
+Cell[81399, 1996, 548033, 12232, 8193, "Output"]
 }, Open  ]],
 Cell[CellGroupData[{
-Cell[647674, 14747, 337, 6, 27, "Input"],
-Cell[648014, 14755, 247, 3, 27, "Output"]
+Cell[629469, 14233, 337, 6, 27, "Input"],
+Cell[629809, 14241, 247, 3, 27, "Output"]
 }, Open  ]]
 }
 ]

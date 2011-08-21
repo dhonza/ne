@@ -79,7 +79,7 @@ public class GPATMain {
                 Utils.setStaticParameters(combination, GPAT.class, "GPAT");
                 Utils.setStaticParameters(combination, GPATSimple.class, "GPATS");
 
-                IGPAT gp = createAlgorithm(type, combination, populationManager, functions, terminals);
+                IGPAT gp = createAlgorithm(combination, populationManager, functions, terminals);
 
                 EvolutionaryAlgorithmSolver solver = new EvolutionaryAlgorithmSolver(gp, stats, false);
                 solver.addProgressPrinter(new GPBasicProgressPrinter(gp));
@@ -208,10 +208,12 @@ public class GPATMain {
         return populationManager;
     }
 
-    private static IGPAT createAlgorithm(String type, ParameterCombination combination, PopulationManager populationManager, ATNodeImpl[] functions, ATNodeImpl[] terminals) {
-        if (type.equals("GPAT")) {
+    private static IGPAT createAlgorithm(ParameterCombination combination, PopulationManager populationManager, ATNodeImpl[] functions, ATNodeImpl[] terminals) {
+        String solver = combination.getString("SOLVER").toUpperCase();
+        if (solver.equals("GPAT")) {
             return new GPAT(populationManager, functions, terminals);
-//            return new GPATSimple(populationManager, functions, terminals);
+        } else if (solver.equals("GPATS")) {
+            return new GPATSimple(populationManager, functions, terminals);
         } else {
             throw new IllegalArgumentException("Unsupported algorithm type");
         }
