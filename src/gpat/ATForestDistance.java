@@ -1,7 +1,7 @@
 package gpat;
 
 import common.evolution.IDistance;
-import gpaac.AACForest;
+import gpat.distance.ATTreeDistance;
 
 /**
  * Created by IntelliJ IDEA.
@@ -11,10 +11,20 @@ import gpaac.AACForest;
  * To change this template use File | Settings | File Templates.
  */
 public class ATForestDistance implements IDistance<ATForest> {
+    final private IDistance<ATTree> treeIDistance;
+
+    public ATForestDistance() {
+        this(new ATTreeDistance());
+    }
+
+    public ATForestDistance(IDistance<ATTree> treeIDistance) {
+        this.treeIDistance = treeIDistance;
+    }
+
     public double distance(ATForest a, ATForest b) {
         double distances = 0.0;
         for (int i = 0; i < a.trees.length; i++) {
-            distances += a.trees[i].distance(b.trees[i]);
+            distances += treeIDistance.distance(a.trees[i], b.trees[i]);
         }
         return distances / a.trees.length;
     }

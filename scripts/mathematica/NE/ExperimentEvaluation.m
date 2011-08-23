@@ -106,7 +106,11 @@ toFixedWidth[n_Integer, width_Integer] :=
 listOfColors[numOfColors_] :=
     If[ numOfColors == 1,
         colors = "Rainbow",
-        colors = Take[ColorData[10,"ColorList"],numOfColors]
+        colors = 
+            If[ numOfColors <= 11,
+                Take[ColorData[10,"ColorList"],numOfColors],
+                ColorData["Rainbow"][#]& /@ Range[0.05, 0.95, 0.9/(numOfColors - 1)]
+            ]
     (*colors = Take[{LightRed,LightGreen,LightBlue,LightOrange,LightBrown,LightCyan,LightMagenta},numOfColors]*)
     ];
 
@@ -213,15 +217,26 @@ printAsTable[data_,paramNames_List] :=
 (* PLOTS -------------------------------------------------------------------------------------------------- *)
 (* -------------------------------------------------------------------------------------------------------- *)
 
+CHOSEN2 = {Null,Null}
+
 (* Other possibility is two set Operation -> Total *)
 Options[plotBooleanAsBarChart] = {Operation -> (100*Mean[#]&)};
 plotBooleanAsBarChart[data_,paramName_,numOfColors_:1,OptionsPattern[]] :=
-    Module[ {colors,labelPlacement,sum},
+    Module[ {colors,labels,labelPlacement,sum,buttons},
         (* Prepare colors *)
+        CHOSEN2 = {Null,Null};
         colors = listOfColors[numOfColors];
-        labelPlacement = Placed[Style[#,FontSize->15]&/@labelsForData[data],Axis,Rotate[#,Pi/2]&];
+        labels = labelsForData[data];
+        labelPlacement = Placed[Style[#,FontSize->15]&/@labels,Axis,Rotate[#,Pi/2]&];
         sum = OptionValue[Operation][resultsForConfiguration[#,paramName]]&/@data;
-        BarChart[sum,ChartLabels->labelPlacement,ChartStyle->colors,LabelingFunction->Center,ImageSize->1200]
+        buttons = MapThread[Button[#1,CHOSEN2 = Append[CHOSEN2,#2][[-2 ;; -1]]]&,{sum,labels}];
+        Grid[{
+            {BarChart[buttons,ChartLabels->labelPlacement,ChartStyle->colors,LabelingFunction->Center,ImageSize->1200]},
+            {Dynamic[If[ Count[CHOSEN2,Null] == 0,
+                         testFisherExact[data, CHOSEN2[[1]], CHOSEN2[[2]], paramName, TwoSided -> True, PValueOnly -> False],
+                         "Choose two bars for Fisher's Exact Test."
+                     ]]}
+        }]
     ]
 
 plotAsBoxWhiskerChart[data_,paramName_,numOfColors_:1] :=
@@ -314,23 +329,28 @@ testFisherExact[{{a_,b_},{c_,d_}},OptionsPattern[]] :=
 
 Options[testFisherExact] = {TwoSided -> True,PValueOnly -> False};
 testFisherExact[data_,label1_,label2_,statName_,opt:OptionsPattern[]] :=
-    Module[ {data1,data2,outcomeA1,outcomeA2,outcomeB1,outcomeB2},
+    Module[ {data1,data2,outcomeA1,outcomeA2,outcomeB1,outcomeB2,significanceLevel = 0.05,res},
         data1 = resultsForConfiguration[configurationForLabel[data,label1],statName];
         data2 = resultsForConfiguration[configurationForLabel[data,label2],statName];
         outcomeA1 = Total[data1];
         outcomeA2 = Total[data2];
         outcomeB1 = Length[data1]-outcomeA1;
         outcomeB2 = Length[data2]-outcomeA2;
+        res = testFisherExact[{{outcomeA1,outcomeA2},{outcomeB1,outcomeB2}},opt];
         If[ Not[OptionValue[PValueOnly]],
-            Print[Grid[
+            Grid[
                 {
                     {"",Style[label1,Bold],Style[label2,Bold]},
                     {Style["true",Bold],outcomeA1,outcomeA2},
-                    {Style["false",Bold],outcomeB1,outcomeB2}
+                    {Style["false",Bold],outcomeB1,outcomeB2},
+                    {Style["p-value",Bold],If[ res < significanceLevel,
+                                               Item[res,Background->LightRed],
+                                               Item[res,Background->LightGreen]
+                                           ],SpanFromLeft}
                 }
-            ,Frame->All]]
-        ];
-        testFisherExact[{{outcomeA1,outcomeA2},{outcomeB1,outcomeB2}},opt]
+            ,Frame->All],
+            res
+        ]
     ]
 
 Options[testFisherExactAll] = {TwoSided -> True};
@@ -346,7 +366,10 @@ testFisherExactAll[data_,statName_,significanceLevel_,opt:OptionsPattern[]] :=
         items = items /. "f"[_, "span"[_]] -> "";
         items[[All, 1]] = Style[#, Bold] & /@ ({""}~Join~Most[labels]);
         items = items /. ("f"[a_,b_] :> testFisherExact[data,a,b,statName,opt,PValueOnly -> True]);
-        items = items /. (a:_?NumberQ :> If[a < significanceLevel, Item[a,Background->Red], Item[a,Background->Green]]);
+        items = items /. (a:_?NumberQ :> If[ a < significanceLevel,
+                                             Item[a,Background->LightRed],
+                                             Item[a,Background->LightGreen]
+                                         ]);
         Grid[items, Frame -> All]
     ]
   

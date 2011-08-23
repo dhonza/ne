@@ -19,7 +19,7 @@ public class ATTree {
 
     final private List<String> origin;
 
-    private ATNode root;
+    ATNode root;
 
     //stores nodes, uses ids as keys
     private LinkedHashMap<Integer, ATNode> nodeGenes;
@@ -93,6 +93,14 @@ public class ATTree {
 
     public int getNumOfNodes() {
         return root.computeNodes();
+    }
+
+    public ATNode getRoot() {
+        return root;
+    }
+
+    public List<ATLinkGene> getLinkGenesList() {
+        return linkGenesList;
     }
 
     private void addNode(ATNode node) {
@@ -500,54 +508,6 @@ public class ATTree {
 
     public double evaluate(TreeInputs treeInputs) {
         return root.evaluate(treeInputs);
-    }
-
-    public double distance(ATTree other) {
-        ATTree a = this;
-        ATTree b = other;
-        int disjoint = 0, excess;
-        int common = 0; // how many genes have the same innovation numbers
-        double wDif = 0.0; // weight difference
-        double actDif = 0.0; // activation function difference
-
-        int i = 0, j = 0;
-        ATLinkGene il, jl;
-
-        int iLen = a.linkGenesList.size(), jLen = b.linkGenesList.size();
-
-        while ((i < iLen) && (j < jLen)) {
-            il = a.linkGenesList.get(i);
-            jl = b.linkGenesList.get(j);
-            if (il.getInnovation() == jl.getInnovation()) {
-                i++;
-                j++;
-                common++;
-                double iConstant = il.getTo().getConstantForLinkGene(il);
-                double jConstant = jl.getTo().getConstantForLinkGene(jl);
-                wDif += Math.abs(iConstant - jConstant);
-            } else if (il.getInnovation() > jl.getInnovation()) {
-                disjoint++;
-                j++;
-            } else {
-                disjoint++;
-                i++;
-            }
-        }
-        if (i < iLen) {
-            excess = iLen - i;
-        } else {
-            excess = jLen - j;
-        }
-        //TODO different for large genes: see neat.GenomeDistance
-        //TODO involve locks?
-
-        double weights = (GPAT.DISTANCE_C3 * wDif) / common;
-        if (Double.isNaN(weights)) {
-            weights = 0.0;
-        }
-        //TODO should be proportional to to length of a longer genome!!!
-        double distance = GPAT.DISTANCE_C1 * excess + GPAT.DISTANCE_C2 * disjoint + weights;
-        return distance;
     }
 
     boolean limitStructure() {
