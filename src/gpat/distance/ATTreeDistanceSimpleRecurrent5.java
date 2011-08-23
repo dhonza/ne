@@ -19,7 +19,7 @@ public class ATTreeDistanceSimpleRecurrent5 implements IDistance<ATTree> {
     }
 
     private double distanceRecursive(ATNode a, ATNode b, int depth) {
-        double df = 0.9;
+        double df = 0.8;
         double distance = 0.0;
         double factor = 0.9 * Math.pow(df, depth);
 
