@@ -10,6 +10,10 @@ readAllFiles::usage = "readAllFiles[{dir1, dir2, ...},{labelForConfig1, ...}] re
     {statName1\[Rule]{valueExp1, valueExp2, ...}, ...},
     {paramName1\[Rule]paramValue1, paramName2\[Rule]paramValue2, ...}}.
      If labels are not given assigns numbers."
+assignLabelsByParameters::usage = "assignLabelsByParameters replaces current labels with labels given by parameters"
+selectData::usage = "selectData[data, paramRule] selects only experiments having given parameter value (given by paramRule), param rules are in form:
+	{ParamA -> Value1, AndParamB -> {Value2 , OrValue3}}."    
+removeData::usage = "removeData works similar to selectData, but removes experiments" 
 saveData::usage = "saveData"
 keepOnlyBest::usage = "keepOnlyBest"
 
@@ -134,6 +138,47 @@ readAllFiles[dirs_List,labels_:Null,OptionsPattern[]] :=
         ];
         MapThread[{#1}~Join~#2&,{tlabels,data}]
     ]
+    
+assignLabelsByParameters[data_,paramNames_,replacementRules_:{}] :=
+	Module[{values,newData},
+		values = Replace[paramNames,#[[idxPARAMS]]~Join~{_ -> Null},1] & /@ data;
+		(* Remove missing parameters *)
+		values = Select[#, (# =!= Null)&]& /@ values;
+		(*values = Select[values] & /@ values;*)
+		If[replacementRules =!= {},
+			values = StringReplace[#, replacementRules]& /@ values
+		];
+		values = StringJoin[Riffle[#,"_"]]& /@ values;
+		newData = data;
+		newData[[All,1]] = values;
+		newData
+	]
+
+selectDataHelper[params_,paramRule_] :=
+	Module[{orRules},
+		(*Print[paramRule," ", MemberQ[params, paramRule]];*)
+		If[MatchQ[paramRule,_ -> {__}],
+			(
+				orRules = paramRule/. (f : _ -> t : {__}) :> (Rule[f, #] & /@ t);
+				MemberQ[MemberQ[params,#]& /@ orRules,True]
+			),
+			MemberQ[params, paramRule]
+		]
+	]
+
+selectData[data_,paramRule_List] :=
+	Module[{},
+		Select[data, 
+			Function[x,FreeQ[selectDataHelper[x[[idxPARAMS]],#]& /@ paramRule,False]]
+		]		
+	]
+
+removeData[data_,paramRule_List] :=
+	Module[{},
+		Select[data, 
+			Function[x,FreeQ[selectDataHelper[x[[idxPARAMS]],#]& /@ paramRule,True]]
+		]		
+	]
 
 saveData[data_,targetDir_] :=
     Module[ {fullTargetDir},
