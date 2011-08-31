@@ -50,6 +50,7 @@ public class GPATMain {
         }
 
         reportStorage.startAll(seed);
+        reportStorage.openExperimentsOveralResults();
         for (ParameterCombination combination : manager) {
             int experiments = combination.getInteger("EXPERIMENTS");
 
@@ -100,7 +101,7 @@ public class GPATMain {
             System.out.println(stats.scopeToString("EXPERIMENT"));
             reportStorage.prepareNewParameterCombination();
         }
-        reportStorage.storeExperimentsOverallResults();
+        reportStorage.closeExperimentsOverallResults();
         SoundHelper.playSoundFile("/System/Library/Sounds/Glass.aiff");
         String experimentDirectory = args.length > 1 ? "(" + args[1] + ")" : "";
         XMPPHelper.sendViaXMPP("NE run (GPATMain) finished " + experimentDirectory + ".");

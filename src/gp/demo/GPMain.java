@@ -55,6 +55,7 @@ public class GPMain {
         }
 
         reportStorage.startAll(seed);
+        reportStorage.openExperimentsOveralResults();
         for (ParameterCombination combination : manager) {
             int experiments = combination.getInteger("EXPERIMENTS");
             Stats stats = prepareStats();
@@ -105,7 +106,7 @@ public class GPMain {
             System.out.println(stats.scopeToString("EXPERIMENT"));
             reportStorage.prepareNewParameterCombination();
         }
-        reportStorage.storeExperimentsOverallResults();
+        reportStorage.closeExperimentsOverallResults();
         SoundHelper.playSoundFile("/System/Library/Sounds/Glass.aiff");
         String experimentDirectory = args.length > 1 ? "(" + args[1] + ")" : "";
         XMPPHelper.sendViaXMPP("NE run (GPMain) finished " + experimentDirectory + ".");

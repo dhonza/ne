@@ -3,9 +3,7 @@ package hyper.evaluate.printer;
 import common.stats.Stats;
 import org.apache.commons.io.FileUtils;
 
-import java.io.File;
-import java.io.IOException;
-import java.io.Serializable;
+import java.io.*;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -36,9 +34,10 @@ public class ReportStorage implements Serializable {
     final private static String EXPERIMENTS_OVERALL_FILE_PREFIX = "experiments_overall";
     final private static String SINGLE_RUN_FILE_PREFIX = "run_";
     final private static String SUFFIX = ".txt";
+    final private static String SUFFIX_TEMP = ".tmp.txt";
 
     private File baseDir;
-    final private StringBuilder experimentOverallBuilder = new StringBuilder();
+    private BufferedWriter experimentOverallFile;
     private List<SingleRunFile> generationInfo = new ArrayList<SingleRunFile>();
     private int experimentId = 1;
     private int parameterCombinationId = 1;
@@ -93,19 +92,37 @@ public class ReportStorage implements Serializable {
         }
     }
 
+    public void openExperimentsOveralResults() {
+        try {
+            experimentOverallFile = new BufferedWriter(new FileWriter(new File(baseDir, EXPERIMENTS_OVERALL_FILE_PREFIX + SUFFIX_TEMP)));
+        } catch (IOException e) {
+            System.err.println("Cannot open experiments result file: " + experimentOverallFile);
+            System.exit(1);
+        }
+    }
+
     public void appendExperimentsOverallResults(String changingParameters, Stats stats) {
+        StringBuilder experimentOverallBuilder = new StringBuilder();
         experimentOverallBuilder.append(parameterCombinationId).append(": ").
                 append(changingParameters).append('\n').
                 append(stats.scopeToString("EXPERIMENT")).append('\n');
+        try {
+            experimentOverallFile.append(experimentOverallBuilder.toString());
+            experimentOverallFile.flush();
+        } catch (IOException e) {
+            System.err.println("Cannot append experiments result file: " + experimentOverallFile);
+            System.exit(1);
+        }
     }
 
-    public void storeExperimentsOverallResults() {
-        File file = new File(baseDir, EXPERIMENTS_OVERALL_FILE_PREFIX +
-                SUFFIX);
+    public void closeExperimentsOverallResults() {
+        //originally the file was written at once at the end
+        //any final strings can be appended here
         try {
-            FileUtils.writeStringToFile(file, experimentOverallBuilder.toString());
+            experimentOverallFile.close();
+            new File(baseDir, EXPERIMENTS_OVERALL_FILE_PREFIX + SUFFIX_TEMP).renameTo(new File(baseDir, EXPERIMENTS_OVERALL_FILE_PREFIX + SUFFIX));
         } catch (IOException e) {
-            System.err.println("Cannot save experiments result file: " + file);
+            System.err.println("Cannot close experiments result file: " + experimentOverallFile);
         }
     }
 

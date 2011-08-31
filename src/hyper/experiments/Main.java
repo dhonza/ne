@@ -32,6 +32,9 @@ public class Main {
         ParameterMatrixManager manager = ParameterMatrixStorage.load(new File(args[0], "experiment.properties"));
         System.out.println("PARAMETER SETTINGS: " + manager);
 
+//        reportStorage.startAll(seed);
+//        TODO sjednotit zapis seed!!! s GPATMain/GPMain
+        reportStorage.openExperimentsOveralResults();
         for (ParameterCombination combination : manager) {
             StringBuilder parameterString = new StringBuilder();
             parameterString.append("FIXED:\n").append("-----\n").append(manager.toStringNewLines());
@@ -72,6 +75,6 @@ public class Main {
             System.out.println(stats.scopeToString("EXPERIMENT"));
             reportStorage.prepareNewParameterCombination();
         }
-        reportStorage.storeExperimentsOverallResults();
+        reportStorage.closeExperimentsOverallResults();
     }
 }
