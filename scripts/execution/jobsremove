@@ -1,0 +1,32 @@
+#!/bin/bash
+
+#http://www.ibm.com/developerworks/linux/library/l-tip-prompt/
+NORMAL="\x1B[0m"
+GREEN="\x1B[32m"
+RED="\x1B[31m"
+BBLUE="\x1B[34;1m"
+
+export JOBLIST=~/java/exp/jobs.txt
+
+TFILE="/tmp/$(basename $0).$$.tmp"
+
+while read line
+do
+    MACHINE=`echo "${line}" | cut -d ":" -f 1`
+    DIR=`echo "${line}" | cut -d ":" -f 2`
+    if [ "${MACHINE}" == "${DIR}" ] ; then
+	DIR="."
+    fi;
+    INFO=`ssh -n ${MACHINE} "cd "${DIR}" ; cd nepack ; ./info"`
+    C1=`echo "${INFO}" | cut -d " " -f 1`
+    C2=`echo "${INFO}" | cut -d " " -f 2`
+    C3=`echo "${INFO}" | cut -d " " -f 3`
+    if [ ${C1} == "FINISHED" ] ; then
+	echo -e  "Removing "${GREEN}${line}${NORMAL}". "
+    else
+	echo ${line} >> ${TFILE}
+    fi
+done < ${JOBLIST}
+
+cp ${TFILE} ${JOBLIST}
+rm ${TFILE}

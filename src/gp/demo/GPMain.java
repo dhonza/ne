@@ -58,6 +58,7 @@ public class GPMain {
         reportStorage.openExperimentsOveralResults();
         for (ParameterCombination combination : manager) {
             int experiments = combination.getInteger("EXPERIMENTS");
+
             Stats stats = prepareStats();
 
             StringBuilder parameterString = new StringBuilder();
@@ -84,6 +85,7 @@ public class GPMain {
                 Utils.setStaticParameters(combination, GEP.class, "GEP");
                 Utils.setStaticParameters(combination, GPAAC.class, "GPAAC");
                 Utils.setStaticParameters(combination, GPAAC.class, "GPAT");
+                Utils.setStaticParameters(combination, GPAAC.class, "GPATS");
 
                 GPBase gp = createAlgorithm(type, combination, populationManager, functions, terminals);
 

@@ -1,0 +1,40 @@
+#!/bin/bash
+
+#http://www.ibm.com/developerworks/linux/library/l-tip-prompt/
+NORMAL="\x1B[0m"
+GREEN="\x1B[32m"
+RED="\x1B[31m"
+BBLUE="\x1B[34;1m"
+
+export JOBLIST=~/java/exp/jobs.txt
+
+TFILE="/tmp/$(basename $0).$$.tmp"
+
+while read line
+do
+    MACHINE=`echo "${line}" | cut -d ":" -f 1`
+    DIR=`echo "${line}" | cut -d ":" -f 2`
+    if [ "${MACHINE}" == "${DIR}" ] ; then
+	DIR="."
+    fi;
+    INFO=`ssh -n ${MACHINE} "cd "${DIR}" ; cd nepack ; ./info"`
+    C1=`echo "${INFO}" | cut -d " " -f 1`
+    C2=`echo "${INFO}" | cut -d " " -f 2`
+    C3=`echo "${INFO}" | cut -d " " -f 3`
+    if [ ${C1} == "FINISHED" ] ; then
+	echo -e  "Getting results of ${GREEN}${C2}${NORMAL} from ${GREEN}${line}${NORMAL}. "
+	scp -r ${MACHINE}:"${DIR}/nepack/${C2}/" NEW
+	echo ${C2} >> ${TFILE}
+    fi
+done < ${JOBLIST}
+
+sort -n ${TFILE} -o ${TFILE} 
+
+ASSTRING=""
+while read line
+do
+    ASSTRING=${ASSTRING}'"'${line}'",'
+done < ${TFILE}
+echo ${ASSTRING}
+
+rm ${TFILE}

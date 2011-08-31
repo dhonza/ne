@@ -70,15 +70,16 @@ public class GPATMain {
                 GP.POPULATION_SIZE = combination.getInteger("GP.POPULATION_SIZE");
                 GP.TARGET_FITNESS = combination.getDouble("GP.TARGET_FITNESS");
 
+                PopulationManager<ATForest, ATForest> populationManager = createPopulationManager(combination);
+
                 ATNodeImpl[] functions = createFunctions(type, combination);
                 ATNodeImpl[] terminals = createTerminals(type);
                 //--------------------
 
-                PopulationManager<Forest, Forest> populationManager = createPopulationManager(combination);
-
                 Utils.setStaticParameters(combination, GP.class, "GP");
                 Utils.setStaticParameters(combination, GPAT.class, "GPAT");
                 Utils.setStaticParameters(combination, GPATSimple.class, "GPATS");
+
 
                 IGPAT gp = createAlgorithm(combination, populationManager, functions, terminals);
 
@@ -184,7 +185,7 @@ public class GPATMain {
         }
     }
 
-    private static PopulationManager<Forest, Forest> createPopulationManager(ParameterCombination combination) {
+    private static PopulationManager<ATForest, ATForest> createPopulationManager(ParameterCombination combination) {
         boolean parallel = combination.getBoolean("PARALLEL");
         int threads = 1;
         if (parallel) {
@@ -195,16 +196,16 @@ public class GPATMain {
             }
         }
 
-        List<IGenotypeToPhenotype<Forest, Forest>> converter = new ArrayList<IGenotypeToPhenotype<Forest, Forest>>(threads);
-        List<IEvaluable<Forest>> evaluator = new ArrayList<IEvaluable<Forest>>(threads);
+        List<IGenotypeToPhenotype<ATForest, ATForest>> converter = new ArrayList<IGenotypeToPhenotype<ATForest, ATForest>>(threads);
+        List<IEvaluable<ATForest>> evaluator = new ArrayList<IEvaluable<ATForest>>(threads);
 
         for (int i = (threads - 1); i >= 0; i--) {
-            converter.add(new IdentityConversion<Forest>());
-            IEvaluable<Forest> evaluable = EvaluableFactory.createByName(combination);
+            converter.add(new IdentityConversion<ATForest>());
+            IEvaluable<ATForest> evaluable = EvaluableFactory.createByName(combination);
             evaluator.add(evaluable);
         }
 
-        PopulationManager<Forest, Forest> populationManager = new PopulationManager<Forest, Forest>(
+        PopulationManager<ATForest, ATForest> populationManager = new PopulationManager<ATForest, ATForest>(
                 combination, converter, evaluator);
         return populationManager;
     }
