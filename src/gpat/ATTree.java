@@ -511,6 +511,7 @@ public class ATTree {
     }
 
     boolean limitStructure() {
+//        return getDepth() > 5 || getNumOfConstants() > 10;
         return getDepth() > 5 || getNumOfConstants() > 10 || getNumOfNodes() > 12;
 //        return getDepth() > 6 || getNumOfConstants() > 20;
     }

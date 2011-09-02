@@ -157,6 +157,10 @@ public class Forest implements IGPForest, Comparable, Serializable {
         for (Tree tree : trees) {
             arity += tree.getAverageArity();
         }
+//        System.out.println(arity);
+        if (Double.isNaN(arity)) {
+            throw new IllegalStateException("Arity is NaN!");
+        }
         return arity / trees.length;
     }
 

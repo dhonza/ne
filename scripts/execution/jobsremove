@@ -9,6 +9,7 @@ BBLUE="\x1B[34;1m"
 export JOBLIST=~/java/exp/jobs.txt
 
 TFILE="/tmp/$(basename $0).$$.tmp"
+touch ${TFILE}
 
 while read line
 do

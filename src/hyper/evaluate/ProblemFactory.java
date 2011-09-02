@@ -21,6 +21,10 @@ public class ProblemFactory {
         String name = parameters.getString("PROBLEM");
         if (name.equalsIgnoreCase("RECO")) {
             return new Recognition1D(parameters);
+        } else if (name.equalsIgnoreCase("XOR")) {
+            return new Recognition1D(parameters);
+        } else if (name.equalsIgnoreCase("AND")) {
+            return new Recognition1D(parameters);
         } else if (name.equalsIgnoreCase("FIND_CLUSTER")) {
             return new FindCluster(parameters, reportStorage);
         } else if (name.equalsIgnoreCase("FIND_CLUSTER2")) {

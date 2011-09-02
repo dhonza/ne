@@ -83,7 +83,7 @@ public class GPRunner implements EvolutionaryAlgorithmRunner {
             return GPFactory.createByName(combination.getString("GP.TYPE"), populationManager, functions, terminals, null);
         } else if (type.equals("gep.GEP")) {
             return new GEP(populationManager, functions, terminals, null);
-        } else if (type.equals("gpaac.GPAAC")) {
+        } else if (type.equals("GPAAC")) {
             return new GPAAC(populationManager, functions, terminals, null);
         } else {
             throw new IllegalArgumentException("Unsupported algorithm type");

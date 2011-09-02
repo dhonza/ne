@@ -22,7 +22,7 @@ public class SymbolicRegression3D implements IEvaluable<IGPForest> {
 
     public SymbolicRegression3D(ParameterCombination combination) {
         steps = combination.getInteger("SYMBOLIC_REGRESSION_3D.STEPS");
-        String fName = combination.getString("SYMBOLIC_REGRESSION_3D.F");
+        String fName = combination.getString("SYMBOLIC_REGRESSION.F");
         if (fName.equals("A")) {
             f = new F() {
                 public double f(double x, double y, double z) {

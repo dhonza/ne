@@ -24,7 +24,7 @@ public class SymbolicRegression4D implements IEvaluable<IGPForest> {
 
     public SymbolicRegression4D(ParameterCombination combination) {
         steps = combination.getInteger("SYMBOLIC_REGRESSION_4D.STEPS");
-        String fName = combination.getString("SYMBOLIC_REGRESSION_4D.F");
+        String fName = combination.getString("SYMBOLIC_REGRESSION.F");
         if (fName.equals("A")) {
             f = new F() {
                 public double f(double x1, double x2, double x3, double x4) {

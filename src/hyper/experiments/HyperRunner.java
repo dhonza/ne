@@ -1,4 +1,4 @@
-package common.run;
+package hyper.experiments;
 
 import common.RND;
 import common.SoundHelper;
@@ -6,13 +6,9 @@ import common.XMPPHelper;
 import common.pmatrix.ParameterCombination;
 import common.pmatrix.ParameterMatrixManager;
 import common.pmatrix.ParameterMatrixStorage;
-import common.pmatrix.Utils;
 import common.stats.Stats;
-import gep.GEP;
-import gp.GP;
-import gpaac.GPAAC;
-import gpat.GPAT;
-import gpat.GPATSimple;
+import hyper.evaluate.Solver;
+import hyper.evaluate.SolverFactory;
 import hyper.evaluate.printer.ReportStorage;
 
 import java.io.File;
@@ -20,11 +16,12 @@ import java.io.File;
 /**
  * Created by IntelliJ IDEA.
  * User: drchaj1
- * Date: 8/31/11
- * Time: 9:36 PM
+ * Date: Jun 15, 2009
+ * Time: 9:50:01 PM
  * To change this template use File | Settings | File Templates.
  */
-public class Runner {
+public class HyperRunner {
+
     public static void main(String[] args) {
         long seed = RND.initializeTime();
 //        long seed = 1321410388649375013L;
@@ -49,42 +46,26 @@ public class Runner {
         reportStorage.startAll(seed);
         reportStorage.openExperimentsOveralResults();
         for (ParameterCombination combination : manager) {
-            int experiments = combination.getInteger("EXPERIMENTS");
-
-            Stats stats = prepareStats();
-
             StringBuilder parameterString = new StringBuilder();
             parameterString.append("FIXED:\n").append("-----\n").append(manager.toStringNewLines());
             parameterString.append("\nCHANGING:\n").append("--------\n").append(combination.toStringOnlyChanngingNewLines());
             reportStorage.storeParameters(parameterString.toString());
 
+            int experiments = combination.getInteger("EXPERIMENTS");
+            boolean storeRun = combination.getBoolean("PRINT.storeRun");
+
+            Stats stats = prepareStats();
+
             for (int i = 1; i <= experiments; i++) {
                 reportStorage.startSingleRun();
-
-                System.out.println("PARAMETER SETTING: " + combination);
-                GP.MAX_GENERATIONS = combination.getInteger("GP.MAX_GENERATIONS");
-                GP.MAX_EVALUATIONS = combination.getInteger("GP.MAX_EVALUATIONS");
-                GP.POPULATION_SIZE = combination.getInteger("GP.POPULATION_SIZE");
-                GP.TARGET_FITNESS = combination.getDouble("GP.TARGET_FITNESS");
-
-                EvolutionaryAlgorithmRunner runnerEA;
-
-                String solver = combination.getString("SOLVER");
-                if (solver.equals("GP")) {
-                    runnerEA = new GPRunner(combination);
-                } else if (solver.equals("GPAT")) {
-                    runnerEA = new GPATRunner(combination);
-                } else {
-                    throw new IllegalStateException("Unknown SOLVER: " + solver + ".");
+                Solver solver = SolverFactory.getSolver(combination, stats, reportStorage);
+                if (i == 1) {
+                    System.out.println("SOLVER PARAMS:");
+                    System.out.println(solver.getConfigString());
+//                    parameterString.append("\nSOLVER:\n").append("------\n").append(solver.getConfigString());
+//                    reportStorage.storeParameters(parameterString.toString());
                 }
-
-                Utils.setStaticParameters(combination, GP.class, "GP");
-                Utils.setStaticParameters(combination, GEP.class, "GEP");
-                Utils.setStaticParameters(combination, GPAAC.class, "GPAAC");
-                Utils.setStaticParameters(combination, GPAT.class, "GPAT");
-                Utils.setStaticParameters(combination, GPATSimple.class, "GPATS");
-
-                runnerEA.run(stats, reportStorage);
+                solver.solve();
 
                 reportStorage.storeSingleRunResults();
                 reportStorage.incrementExperimentId();

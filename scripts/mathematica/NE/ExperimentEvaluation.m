@@ -141,14 +141,21 @@ readAllFiles[dirs_List,labels_:Null,OptionsPattern[]] :=
     
 assignLabelsByParameters[data_,paramNames_,replacementRules_:{}] :=
 	Module[{values,newData},
-		values = Replace[paramNames,#[[idxPARAMS]]~Join~{_ -> Null},1] & /@ data;
+		values = Replace[paramNames,#[[idxPARAMS]]~Join~{_ -> Null},1] & /@ data;		
 		(* Remove missing parameters *)
 		values = Select[#, (# =!= Null)&]& /@ values;
+		(* Convert any nonstring values to strings *)
+		values = Map[ToString,values,{2}];		
 		(*values = Select[values] & /@ values;*)
 		If[replacementRules =!= {},
 			values = StringReplace[#, replacementRules]& /@ values
 		];
+		(* Delete repeating missing values *)
+		values = DeleteCases[#,""]& /@ values;
+		
+		(* Insert underscores and join to strings *)
 		values = StringJoin[Riffle[#,"_"]]& /@ values;
+		
 		newData = data;
 		newData[[All,1]] = values;
 		newData

@@ -26,7 +26,7 @@ public class SymbolicRegression implements IEvaluable<IGPForest> {
     public SymbolicRegression(ParameterCombination combination) {
         steps = combination.getInteger("SYMBOLIC_REGRESSION_1D.STEPS");
         a = combination.getDouble("SYMBOLIC_REGRESSION_1D.A");
-        String fName = combination.getString("SYMBOLIC_REGRESSION_1D.F");
+        String fName = combination.getString("SYMBOLIC_REGRESSION.F");
         if (fName.equals("A")) {
             f = new F() {
                 public double f(double x) {

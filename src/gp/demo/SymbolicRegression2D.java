@@ -22,7 +22,7 @@ public class SymbolicRegression2D implements IEvaluable<IGPForest> {
 
     public SymbolicRegression2D(ParameterCombination combination) {
         steps = combination.getInteger("SYMBOLIC_REGRESSION_2D.STEPS");
-        String fName = combination.getString("SYMBOLIC_REGRESSION_2D.F");
+        String fName = combination.getString("SYMBOLIC_REGRESSION.F");
         if (fName.equals("A")) {
             f = new F() {
                 public double f(double x, double y) {

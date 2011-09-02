@@ -27,6 +27,7 @@ public class Recognition1D implements IProblem<INet> {
     final private int activations;
     final private int lineSize;
     final private double fitnessTolerance;
+    final private String problem;
 
     private boolean solved = false;
 
@@ -38,6 +39,7 @@ public class Recognition1D implements IProblem<INet> {
         this.generator = PatternGeneratorFactory.createByName(parameters);
         this.activations = parameters.getInteger("NET_ACTIVATIONS");
         this.lineSize = parameters.getInteger("RECO.LINE_SIZE");
+        this.problem = parameters.getString("PROBLEM");
         this.fitnessTolerance = fitnessTolerance;
     }
 
@@ -77,17 +79,19 @@ public class Recognition1D implements IProblem<INet> {
     }
 
     public ISubstrate getSubstrate() {
-        BasicSubstrate substrate = RecoSubstrateFactory.createInputToOutput(lineSize);
-//            BasicSubstrate substrate = RecoSubstrateFactory.createInputHiddenOutput(lineSize, 2, lineSize);
-//            BasicSubstrate substrate = RecoSubstrateFactory.createInputHiddenOutput(lineSize, 3, 1);
-
-        //XOR
-//        BasicSubstrate substrate = RecoSubstrateFactory.createInputHiddenOutput(lineSize, lineSize, 1);
-
-        //AND
-//            BasicSubstrate substrate = RecoSubstrateFactory.createInputToOutput(lineSize, 1);
-//            BasicSubstrate substrate = RecoSubstrateFactory.createInputHiddenOutput(lineSize, 2, 1);
-
+        BasicSubstrate substrate;
+        if (problem.equals("RECO")) {
+            substrate = RecoSubstrateFactory.createInputToOutput(lineSize);
+//            substrate = RecoSubstrateFactory.createInputHiddenOutput(lineSize, 2, lineSize);
+//            substrate = RecoSubstrateFactory.createInputHiddenOutput(lineSize, 3, 1);
+        } else if (problem.equals("XOR")) {
+            substrate = RecoSubstrateFactory.createInputHiddenOutput(lineSize, lineSize, 1);
+        } else if (problem.equals("AND")) {
+            substrate = RecoSubstrateFactory.createInputToOutput(lineSize, 1);
+//            substrate = RecoSubstrateFactory.createInputHiddenOutput(lineSize, 2, 1);
+        } else {
+            throw new IllegalStateException("Unknown problem type: " + problem);
+        }
         return substrate;
     }
 
