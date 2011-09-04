@@ -1,0 +1,22 @@
+#!/bin/bash
+
+if [ $# != 2 ] ; then
+    echo "usage: "$0"  PREFIX NAME"
+    exit
+fi
+
+PREFIX="${1}"
+NAME="${2}"
+NEDIR=~/java/ne
+CFG=${NEDIR}/cfg/hyper/gphyper.properties
+
+
+function run {
+    sed -i "" "1s/.*/INCLUDE = "${3}"\/"${4}"\.properties/" ${CFG}
+    ./nepackage ${1} ${PREFIX}"_"${4}_${NAME}
+    ./runssh ${2}
+}
+
+run "HGP" "kovarik:~/nepackh1" "bool" "xor"
+run "HGP" "drchal:~/nepackh2" "reco" "reco1D"
+run "HGP" "kovarik:~/nepackh3" "fc" "fc55"

@@ -283,7 +283,7 @@ plotBooleanAsBarChart[data_,paramName_,numOfColors_:1,OptionsPattern[]] :=
         sum = OptionValue[Operation][resultsForConfiguration[#,paramName]]&/@data;
         buttons = MapThread[Button[#1,CHOSEN2 = Append[CHOSEN2,#2][[-2 ;; -1]]]&,{sum,labels}];
         Grid[{
-            {BarChart[buttons,ChartLabels->labelPlacement,ChartStyle->colors,LabelingFunction->Center,ImageSize->1200]},
+            {BarChart[buttons,ChartLabels->labelPlacement,ChartStyle->colors,LabelingFunction->Center,ImageSize->1200(*,ChartElementFunction->"FadingRectangle"*)]},
             {Dynamic[If[ Count[CHOSEN2,Null] == 0,
                          testFisherExact[data, CHOSEN2[[1]], CHOSEN2[[2]], paramName, TwoSided -> True, PValueOnly -> False],
                          "Choose two bars for Fisher's Exact Test."

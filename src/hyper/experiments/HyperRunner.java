@@ -78,7 +78,7 @@ public class HyperRunner {
         reportStorage.closeExperimentsOverallResults();
         SoundHelper.playSoundFile("/System/Library/Sounds/Glass.aiff");
         String experimentDirectory = args.length > 1 ? "(" + args[1] + ")" : "";
-        XMPPHelper.sendViaXMPP("NE run (GPATMain) finished " + experimentDirectory + ".");
+        XMPPHelper.sendViaXMPP("NE run (HyperRunner) finished " + experimentDirectory + ".");
     }
 
     private static Stats prepareStats() {

@@ -10,21 +10,30 @@ export RUNSCRIPT=${NEPACKAGE}/run
 export INFOSCRIPT=${NEPACKAGE}/info
 
 export EXPDIR=exp
-export CLASS="gpat.demo.GPATMain"
+export CLASS="common.run.Runner"
 export CFG="cfg/demo/gpatdemo.properties"
 
 if [ $# -ge 1 ] ; then
     if [ "${1}" == "GP" ] ; then
-        export CLASS="gp.demo.GPMain"
+        export CLASS="common.run.Runner"
 	export CFG="cfg/demo/gpdemo.properties"
     fi
     if [ "${1}" == "GPAT" ] ; then
-        export CLASS="gpat.demo.GPATMain"
+        export CLASS="common.run.Runner"
 	export CFG="cfg/demo/gpatdemo.properties"
     fi
     if [ "${1}" == "GPATS" ] ; then
-        export CLASS="gpat.demo.GPATMain"
+        export CLASS="common.run.Runner"
 	export CFG="cfg/demo/gpatsimpledemo.properties"
+    fi
+
+    if [ "${1}" == "HGP" ] ; then
+        export CLASS="hyper.experiments.HyperRunner"
+	export CFG="cfg/hyper/gphyper.properties"
+    fi
+    if [ "${1}" == "HGPAT" ] ; then
+        export CLASS="hyper.experiments.HyperRunner"
+	export CFG="cfg/hyper/gpathyper.properties"
     fi
 
 fi
