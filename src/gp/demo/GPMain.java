@@ -54,7 +54,7 @@ public class GPMain {
             reportStorage = new ReportStorage();
         }
 
-        reportStorage.startAll(seed);
+        reportStorage.startAll(seed, manager);
         reportStorage.openExperimentsOveralResults();
         for (ParameterCombination combination : manager) {
             int experiments = combination.getInteger("EXPERIMENTS");

@@ -37,6 +37,10 @@ public class ParameterMatrixManager implements Iterable<ParameterCombination> {
         return new ParameterManagerIterator();
     }
 
+    public int size() {
+        return combinations.size();
+    }
+
     @Override
     public String toString() {
         if (combinations.size() == 0) {

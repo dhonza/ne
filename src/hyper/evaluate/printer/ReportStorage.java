@@ -1,5 +1,7 @@
 package hyper.evaluate.printer;
 
+import common.pmatrix.ParameterCombination;
+import common.pmatrix.ParameterMatrixManager;
 import common.stats.Stats;
 import org.apache.commons.io.FileUtils;
 
@@ -35,6 +37,8 @@ public class ReportStorage implements Serializable {
     final private static String SINGLE_RUN_FILE_PREFIX = "run_";
     final private static String SUFFIX = ".txt";
     final private static String SUFFIX_TEMP = ".tmp.txt";
+    final private static String TOTAL_FILE = "_total.txt";
+    final private static String SEED_FILE = "_seed.txt";
 
     private File baseDir;
     private BufferedWriter experimentOverallFile;
@@ -119,6 +123,11 @@ public class ReportStorage implements Serializable {
         //originally the file was written at once at the end
         //any final strings can be appended here
         try {
+            FileWriter tw = new FileWriter(new File(baseDir, TOTAL_FILE), true);
+            BufferedWriter totalWriter = new BufferedWriter(tw);
+            totalWriter.write("# END\n");
+            totalWriter.write(new Date().toString() + "\n");
+            totalWriter.close();
             experimentOverallFile.close();
             new File(baseDir, EXPERIMENTS_OVERALL_FILE_PREFIX + SUFFIX_TEMP).renameTo(new File(baseDir, EXPERIMENTS_OVERALL_FILE_PREFIX + SUFFIX));
         } catch (IOException e) {
@@ -131,10 +140,19 @@ public class ReportStorage implements Serializable {
         this.generationInfo.addAll(generationInfo);
     }
 
-    public void startAll(long seed) {
-        File experimentIdFile = new File(baseDir, "_seed.txt");
+    public void startAll(long seed, ParameterMatrixManager manager) {
+        File experimentIdFile = new File(baseDir, SEED_FILE);
+        File totalFile = new File(baseDir, TOTAL_FILE);
         try {
             FileUtils.writeStringToFile(experimentIdFile, String.valueOf(seed));
+            StringBuilder builder = new StringBuilder();
+            builder.append("# START\n");
+            builder.append(new Date().toString()).append('\n');
+            builder.append("# Number of experiments for each parameter combination\n");
+            for (ParameterCombination combination : manager) {
+                builder.append(combination.getInteger("EXPERIMENTS")).append('\n');
+            }
+            FileUtils.writeStringToFile(totalFile, builder.toString());
         } catch (IOException e) {
             System.err.println("Cannot save experiment id file: " + experimentIdFile);
         }

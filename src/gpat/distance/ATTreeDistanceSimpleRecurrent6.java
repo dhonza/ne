@@ -17,8 +17,8 @@ public class ATTreeDistanceSimpleRecurrent6 implements IDistance<ATTree> {
     private double c2;
 
     public ATTreeDistanceSimpleRecurrent6(ParameterCombination parameters) {
-        c1 = parameters.getDouble("GPAT.DISTANCE_REC5_C1");
-        c2 = parameters.getDouble("GPAT.DISTANCE_REC5_C2");
+        c1 = parameters.getDouble("GPAT.DISTANCE_REC6_C1");
+        c2 = parameters.getDouble("GPAT.DISTANCE_REC6_C2");
     }
 
     public double distance(ATTree a, ATTree b) {
