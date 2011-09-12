@@ -1,4 +1,4 @@
-// $ANTLR 3.2 Sep 23, 2009 12:02:23 /Users/drchaj1/java/ne/ne/src/common/pmatrix/Property.g 2011-03-25 12:54:53
+// $ANTLR 3.2 Sep 23, 2009 12:02:23 /Users/drchaj1/java/ne/ne/src/common/pmatrix/Property.g 2011-09-11 23:28:56
 
 package common.pmatrix;
 
@@ -173,45 +173,41 @@ public class PropertyLexer extends Lexer {
         try {
             int _type = DBL;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // /Users/drchaj1/java/ne/ne/src/common/pmatrix/Property.g:45:5: ( ( '0' .. '9' )+ '.' ( '0' .. '9' )* ( EXP )? | '.' ( '0' .. '9' )+ ( EXP )? | ( '0' .. '9' )+ EXP )
-            int alt9 = 3;
-            alt9 = dfa9.predict(input);
-            switch (alt9) {
+            // /Users/drchaj1/java/ne/ne/src/common/pmatrix/Property.g:45:5: ( ( '-' | '+' )? ( '0' .. '9' )+ '.' ( '0' .. '9' )* ( EXP )? | ( '-' | '+' )? '.' ( '0' .. '9' )+ ( EXP )? | ( '-' | '+' )? ( '0' .. '9' )+ EXP )
+            int alt12 = 3;
+            alt12 = dfa12.predict(input);
+            switch (alt12) {
                 case 1:
-                    // /Users/drchaj1/java/ne/ne/src/common/pmatrix/Property.g:45:9: ( '0' .. '9' )+ '.' ( '0' .. '9' )* ( EXP )?
+                    // /Users/drchaj1/java/ne/ne/src/common/pmatrix/Property.g:45:9: ( '-' | '+' )? ( '0' .. '9' )+ '.' ( '0' .. '9' )* ( EXP )?
                 {
-                    // /Users/drchaj1/java/ne/ne/src/common/pmatrix/Property.g:45:9: ( '0' .. '9' )+
-                    int cnt3 = 0;
-                    loop3:
-                    do {
-                        int alt3 = 2;
-                        int LA3_0 = input.LA(1);
+                    // /Users/drchaj1/java/ne/ne/src/common/pmatrix/Property.g:45:9: ( '-' | '+' )?
+                    int alt3 = 2;
+                    int LA3_0 = input.LA(1);
 
-                        if (((LA3_0 >= '0' && LA3_0 <= '9'))) {
-                            alt3 = 1;
-                        }
+                    if ((LA3_0 == '+' || LA3_0 == '-')) {
+                        alt3 = 1;
+                    }
+                    switch (alt3) {
+                        case 1:
+                            // /Users/drchaj1/java/ne/ne/src/common/pmatrix/Property.g:
+                        {
+                            if (input.LA(1) == '+' || input.LA(1) == '-') {
+                                input.consume();
 
-
-                        switch (alt3) {
-                            case 1:
-                                // /Users/drchaj1/java/ne/ne/src/common/pmatrix/Property.g:45:10: '0' .. '9'
-                            {
-                                matchRange('0', '9');
-
+                            } else {
+                                MismatchedSetException mse = new MismatchedSetException(null, input);
+                                recover(mse);
+                                throw mse;
                             }
-                            break;
 
-                            default:
-                                if (cnt3 >= 1) break loop3;
-                                EarlyExitException eee =
-                                        new EarlyExitException(3, input);
-                                throw eee;
+
                         }
-                        cnt3++;
-                    } while (true);
+                        break;
 
-                    match('.');
-                    // /Users/drchaj1/java/ne/ne/src/common/pmatrix/Property.g:45:23: ( '0' .. '9' )*
+                    }
+
+                    // /Users/drchaj1/java/ne/ne/src/common/pmatrix/Property.g:45:19: ( '0' .. '9' )+
+                    int cnt4 = 0;
                     loop4:
                     do {
                         int alt4 = 2;
@@ -224,7 +220,7 @@ public class PropertyLexer extends Lexer {
 
                         switch (alt4) {
                             case 1:
-                                // /Users/drchaj1/java/ne/ne/src/common/pmatrix/Property.g:45:24: '0' .. '9'
+                                // /Users/drchaj1/java/ne/ne/src/common/pmatrix/Property.g:45:20: '0' .. '9'
                             {
                                 matchRange('0', '9');
 
@@ -232,20 +228,50 @@ public class PropertyLexer extends Lexer {
                             break;
 
                             default:
-                                break loop4;
+                                if (cnt4 >= 1) break loop4;
+                                EarlyExitException eee =
+                                        new EarlyExitException(4, input);
+                                throw eee;
+                        }
+                        cnt4++;
+                    } while (true);
+
+                    match('.');
+                    // /Users/drchaj1/java/ne/ne/src/common/pmatrix/Property.g:45:33: ( '0' .. '9' )*
+                    loop5:
+                    do {
+                        int alt5 = 2;
+                        int LA5_0 = input.LA(1);
+
+                        if (((LA5_0 >= '0' && LA5_0 <= '9'))) {
+                            alt5 = 1;
+                        }
+
+
+                        switch (alt5) {
+                            case 1:
+                                // /Users/drchaj1/java/ne/ne/src/common/pmatrix/Property.g:45:34: '0' .. '9'
+                            {
+                                matchRange('0', '9');
+
+                            }
+                            break;
+
+                            default:
+                                break loop5;
                         }
                     } while (true);
 
-                    // /Users/drchaj1/java/ne/ne/src/common/pmatrix/Property.g:45:34: ( EXP )?
-                    int alt5 = 2;
-                    int LA5_0 = input.LA(1);
+                    // /Users/drchaj1/java/ne/ne/src/common/pmatrix/Property.g:45:44: ( EXP )?
+                    int alt6 = 2;
+                    int LA6_0 = input.LA(1);
 
-                    if ((LA5_0 == 'E' || LA5_0 == 'e')) {
-                        alt5 = 1;
+                    if ((LA6_0 == 'E' || LA6_0 == 'e')) {
+                        alt6 = 1;
                     }
-                    switch (alt5) {
+                    switch (alt6) {
                         case 1:
-                            // /Users/drchaj1/java/ne/ne/src/common/pmatrix/Property.g:45:34: EXP
+                            // /Users/drchaj1/java/ne/ne/src/common/pmatrix/Property.g:45:44: EXP
                         {
                             mEXP();
 
@@ -258,64 +284,36 @@ public class PropertyLexer extends Lexer {
                 }
                 break;
                 case 2:
-                    // /Users/drchaj1/java/ne/ne/src/common/pmatrix/Property.g:46:6: '.' ( '0' .. '9' )+ ( EXP )?
+                    // /Users/drchaj1/java/ne/ne/src/common/pmatrix/Property.g:46:6: ( '-' | '+' )? '.' ( '0' .. '9' )+ ( EXP )?
                 {
-                    match('.');
-                    // /Users/drchaj1/java/ne/ne/src/common/pmatrix/Property.g:46:9: ( '0' .. '9' )+
-                    int cnt6 = 0;
-                    loop6:
-                    do {
-                        int alt6 = 2;
-                        int LA6_0 = input.LA(1);
-
-                        if (((LA6_0 >= '0' && LA6_0 <= '9'))) {
-                            alt6 = 1;
-                        }
-
-
-                        switch (alt6) {
-                            case 1:
-                                // /Users/drchaj1/java/ne/ne/src/common/pmatrix/Property.g:46:10: '0' .. '9'
-                            {
-                                matchRange('0', '9');
-
-                            }
-                            break;
-
-                            default:
-                                if (cnt6 >= 1) break loop6;
-                                EarlyExitException eee =
-                                        new EarlyExitException(6, input);
-                                throw eee;
-                        }
-                        cnt6++;
-                    } while (true);
-
-                    // /Users/drchaj1/java/ne/ne/src/common/pmatrix/Property.g:46:20: ( EXP )?
+                    // /Users/drchaj1/java/ne/ne/src/common/pmatrix/Property.g:46:6: ( '-' | '+' )?
                     int alt7 = 2;
                     int LA7_0 = input.LA(1);
 
-                    if ((LA7_0 == 'E' || LA7_0 == 'e')) {
+                    if ((LA7_0 == '+' || LA7_0 == '-')) {
                         alt7 = 1;
                     }
                     switch (alt7) {
                         case 1:
-                            // /Users/drchaj1/java/ne/ne/src/common/pmatrix/Property.g:46:20: EXP
+                            // /Users/drchaj1/java/ne/ne/src/common/pmatrix/Property.g:
                         {
-                            mEXP();
+                            if (input.LA(1) == '+' || input.LA(1) == '-') {
+                                input.consume();
+
+                            } else {
+                                MismatchedSetException mse = new MismatchedSetException(null, input);
+                                recover(mse);
+                                throw mse;
+                            }
+
 
                         }
                         break;
 
                     }
 
-
-                }
-                break;
-                case 3:
-                    // /Users/drchaj1/java/ne/ne/src/common/pmatrix/Property.g:47:6: ( '0' .. '9' )+ EXP
-                {
-                    // /Users/drchaj1/java/ne/ne/src/common/pmatrix/Property.g:47:6: ( '0' .. '9' )+
+                    match('.');
+                    // /Users/drchaj1/java/ne/ne/src/common/pmatrix/Property.g:46:19: ( '0' .. '9' )+
                     int cnt8 = 0;
                     loop8:
                     do {
@@ -329,7 +327,7 @@ public class PropertyLexer extends Lexer {
 
                         switch (alt8) {
                             case 1:
-                                // /Users/drchaj1/java/ne/ne/src/common/pmatrix/Property.g:47:7: '0' .. '9'
+                                // /Users/drchaj1/java/ne/ne/src/common/pmatrix/Property.g:46:20: '0' .. '9'
                             {
                                 matchRange('0', '9');
 
@@ -343,6 +341,86 @@ public class PropertyLexer extends Lexer {
                                 throw eee;
                         }
                         cnt8++;
+                    } while (true);
+
+                    // /Users/drchaj1/java/ne/ne/src/common/pmatrix/Property.g:46:30: ( EXP )?
+                    int alt9 = 2;
+                    int LA9_0 = input.LA(1);
+
+                    if ((LA9_0 == 'E' || LA9_0 == 'e')) {
+                        alt9 = 1;
+                    }
+                    switch (alt9) {
+                        case 1:
+                            // /Users/drchaj1/java/ne/ne/src/common/pmatrix/Property.g:46:30: EXP
+                        {
+                            mEXP();
+
+                        }
+                        break;
+
+                    }
+
+
+                }
+                break;
+                case 3:
+                    // /Users/drchaj1/java/ne/ne/src/common/pmatrix/Property.g:47:6: ( '-' | '+' )? ( '0' .. '9' )+ EXP
+                {
+                    // /Users/drchaj1/java/ne/ne/src/common/pmatrix/Property.g:47:6: ( '-' | '+' )?
+                    int alt10 = 2;
+                    int LA10_0 = input.LA(1);
+
+                    if ((LA10_0 == '+' || LA10_0 == '-')) {
+                        alt10 = 1;
+                    }
+                    switch (alt10) {
+                        case 1:
+                            // /Users/drchaj1/java/ne/ne/src/common/pmatrix/Property.g:
+                        {
+                            if (input.LA(1) == '+' || input.LA(1) == '-') {
+                                input.consume();
+
+                            } else {
+                                MismatchedSetException mse = new MismatchedSetException(null, input);
+                                recover(mse);
+                                throw mse;
+                            }
+
+
+                        }
+                        break;
+
+                    }
+
+                    // /Users/drchaj1/java/ne/ne/src/common/pmatrix/Property.g:47:16: ( '0' .. '9' )+
+                    int cnt11 = 0;
+                    loop11:
+                    do {
+                        int alt11 = 2;
+                        int LA11_0 = input.LA(1);
+
+                        if (((LA11_0 >= '0' && LA11_0 <= '9'))) {
+                            alt11 = 1;
+                        }
+
+
+                        switch (alt11) {
+                            case 1:
+                                // /Users/drchaj1/java/ne/ne/src/common/pmatrix/Property.g:47:17: '0' .. '9'
+                            {
+                                matchRange('0', '9');
+
+                            }
+                            break;
+
+                            default:
+                                if (cnt11 >= 1) break loop11;
+                                EarlyExitException eee =
+                                        new EarlyExitException(11, input);
+                                throw eee;
+                        }
+                        cnt11++;
                     } while (true);
 
                     mEXP();
@@ -376,13 +454,13 @@ public class PropertyLexer extends Lexer {
                 }
 
                 // /Users/drchaj1/java/ne/ne/src/common/pmatrix/Property.g:48:16: ( '-' | '+' )?
-                int alt10 = 2;
-                int LA10_0 = input.LA(1);
+                int alt13 = 2;
+                int LA13_0 = input.LA(1);
 
-                if ((LA10_0 == '+' || LA10_0 == '-')) {
-                    alt10 = 1;
+                if ((LA13_0 == '+' || LA13_0 == '-')) {
+                    alt13 = 1;
                 }
-                switch (alt10) {
+                switch (alt13) {
                     case 1:
                         // /Users/drchaj1/java/ne/ne/src/common/pmatrix/Property.g:
                     {
@@ -402,18 +480,18 @@ public class PropertyLexer extends Lexer {
                 }
 
                 // /Users/drchaj1/java/ne/ne/src/common/pmatrix/Property.g:48:26: ( '0' .. '9' )+
-                int cnt11 = 0;
-                loop11:
+                int cnt14 = 0;
+                loop14:
                 do {
-                    int alt11 = 2;
-                    int LA11_0 = input.LA(1);
+                    int alt14 = 2;
+                    int LA14_0 = input.LA(1);
 
-                    if (((LA11_0 >= '0' && LA11_0 <= '9'))) {
-                        alt11 = 1;
+                    if (((LA14_0 >= '0' && LA14_0 <= '9'))) {
+                        alt14 = 1;
                     }
 
 
-                    switch (alt11) {
+                    switch (alt14) {
                         case 1:
                             // /Users/drchaj1/java/ne/ne/src/common/pmatrix/Property.g:48:27: '0' .. '9'
                         {
@@ -423,12 +501,12 @@ public class PropertyLexer extends Lexer {
                         break;
 
                         default:
-                            if (cnt11 >= 1) break loop11;
+                            if (cnt14 >= 1) break loop14;
                             EarlyExitException eee =
-                                    new EarlyExitException(11, input);
+                                    new EarlyExitException(14, input);
                             throw eee;
                     }
-                    cnt11++;
+                    cnt14++;
                 } while (true);
 
 
@@ -451,19 +529,19 @@ public class PropertyLexer extends Lexer {
             {
                 match('\"');
                 // /Users/drchaj1/java/ne/ne/src/common/pmatrix/Property.g:49:15: ( . )*
-                loop12:
+                loop15:
                 do {
-                    int alt12 = 2;
-                    int LA12_0 = input.LA(1);
+                    int alt15 = 2;
+                    int LA15_0 = input.LA(1);
 
-                    if ((LA12_0 == '\"')) {
-                        alt12 = 2;
-                    } else if (((LA12_0 >= '\u0000' && LA12_0 <= '!') || (LA12_0 >= '#' && LA12_0 <= '\uFFFF'))) {
-                        alt12 = 1;
+                    if ((LA15_0 == '\"')) {
+                        alt15 = 2;
+                    } else if (((LA15_0 >= '\u0000' && LA15_0 <= '!') || (LA15_0 >= '#' && LA15_0 <= '\uFFFF'))) {
+                        alt15 = 1;
                     }
 
 
-                    switch (alt12) {
+                    switch (alt15) {
                         case 1:
                             // /Users/drchaj1/java/ne/ne/src/common/pmatrix/Property.g:49:15: .
                         {
@@ -473,7 +551,7 @@ public class PropertyLexer extends Lexer {
                         break;
 
                         default:
-                            break loop12;
+                            break loop15;
                     }
                 } while (true);
 
@@ -497,18 +575,18 @@ public class PropertyLexer extends Lexer {
             // /Users/drchaj1/java/ne/ne/src/common/pmatrix/Property.g:50:10: ( ' ' | '\\t' )+
             {
                 // /Users/drchaj1/java/ne/ne/src/common/pmatrix/Property.g:50:10: ( ' ' | '\\t' )+
-                int cnt13 = 0;
-                loop13:
+                int cnt16 = 0;
+                loop16:
                 do {
-                    int alt13 = 2;
-                    int LA13_0 = input.LA(1);
+                    int alt16 = 2;
+                    int LA16_0 = input.LA(1);
 
-                    if ((LA13_0 == '\t' || LA13_0 == ' ')) {
-                        alt13 = 1;
+                    if ((LA16_0 == '\t' || LA16_0 == ' ')) {
+                        alt16 = 1;
                     }
 
 
-                    switch (alt13) {
+                    switch (alt16) {
                         case 1:
                             // /Users/drchaj1/java/ne/ne/src/common/pmatrix/Property.g:
                         {
@@ -526,12 +604,12 @@ public class PropertyLexer extends Lexer {
                         break;
 
                         default:
-                            if (cnt13 >= 1) break loop13;
+                            if (cnt16 >= 1) break loop16;
                             EarlyExitException eee =
-                                    new EarlyExitException(13, input);
+                                    new EarlyExitException(16, input);
                             throw eee;
                     }
-                    cnt13++;
+                    cnt16++;
                 } while (true);
 
                 skip();
@@ -551,32 +629,32 @@ public class PropertyLexer extends Lexer {
             int _type = BOOL;
             int _channel = DEFAULT_TOKEN_CHANNEL;
             // /Users/drchaj1/java/ne/ne/src/common/pmatrix/Property.g:50:6: ( 'true' | 'TRUE' | 'false' | 'FALSE' )
-            int alt14 = 4;
+            int alt17 = 4;
             switch (input.LA(1)) {
                 case 't': {
-                    alt14 = 1;
+                    alt17 = 1;
                 }
                 break;
                 case 'T': {
-                    alt14 = 2;
+                    alt17 = 2;
                 }
                 break;
                 case 'f': {
-                    alt14 = 3;
+                    alt17 = 3;
                 }
                 break;
                 case 'F': {
-                    alt14 = 4;
+                    alt17 = 4;
                 }
                 break;
                 default:
                     NoViableAltException nvae =
-                            new NoViableAltException("", 14, 0, input);
+                            new NoViableAltException("", 17, 0, input);
 
                     throw nvae;
             }
 
-            switch (alt14) {
+            switch (alt17) {
                 case 1:
                     // /Users/drchaj1/java/ne/ne/src/common/pmatrix/Property.g:50:10: 'true'
                 {
@@ -620,9 +698,9 @@ public class PropertyLexer extends Lexer {
 
     public void mTokens() throws RecognitionException {
         // /Users/drchaj1/java/ne/ne/src/common/pmatrix/Property.g:1:8: ( T__10 | T__11 | T__12 | INT | DBL | EXP | STRING | WS | BOOL )
-        int alt15 = 9;
-        alt15 = dfa15.predict(input);
-        switch (alt15) {
+        int alt18 = 9;
+        alt18 = dfa18.predict(input);
+        switch (alt18) {
             case 1:
                 // /Users/drchaj1/java/ne/ne/src/common/pmatrix/Property.g:1:10: T__10
             {
@@ -692,84 +770,86 @@ public class PropertyLexer extends Lexer {
     }
 
 
-    protected DFA9 dfa9 = new DFA9(this);
-    protected DFA15 dfa15 = new DFA15(this);
-    static final String DFA9_eotS =
-            "\5\uffff";
-    static final String DFA9_eofS =
-            "\5\uffff";
-    static final String DFA9_minS =
-            "\2\56\3\uffff";
-    static final String DFA9_maxS =
-            "\1\71\1\145\3\uffff";
-    static final String DFA9_acceptS =
-            "\2\uffff\1\2\1\1\1\3";
-    static final String DFA9_specialS =
-            "\5\uffff}>";
-    static final String[] DFA9_transitionS = {
-            "\1\2\1\uffff\12\1",
-            "\1\3\1\uffff\12\1\13\uffff\1\4\37\uffff\1\4",
+    protected DFA12 dfa12 = new DFA12(this);
+    protected DFA18 dfa18 = new DFA18(this);
+    static final String DFA12_eotS =
+            "\6\uffff";
+    static final String DFA12_eofS =
+            "\6\uffff";
+    static final String DFA12_minS =
+            "\1\53\2\56\3\uffff";
+    static final String DFA12_maxS =
+            "\2\71\1\145\3\uffff";
+    static final String DFA12_acceptS =
+            "\3\uffff\1\2\1\3\1\1";
+    static final String DFA12_specialS =
+            "\6\uffff}>";
+    static final String[] DFA12_transitionS = {
+            "\1\1\1\uffff\1\1\1\3\1\uffff\12\2",
+            "\1\3\1\uffff\12\2",
+            "\1\5\1\uffff\12\2\13\uffff\1\4\37\uffff\1\4",
             "",
             "",
             ""
     };
 
-    static final short[] DFA9_eot = DFA.unpackEncodedString(DFA9_eotS);
-    static final short[] DFA9_eof = DFA.unpackEncodedString(DFA9_eofS);
-    static final char[] DFA9_min = DFA.unpackEncodedStringToUnsignedChars(DFA9_minS);
-    static final char[] DFA9_max = DFA.unpackEncodedStringToUnsignedChars(DFA9_maxS);
-    static final short[] DFA9_accept = DFA.unpackEncodedString(DFA9_acceptS);
-    static final short[] DFA9_special = DFA.unpackEncodedString(DFA9_specialS);
-    static final short[][] DFA9_transition;
+    static final short[] DFA12_eot = DFA.unpackEncodedString(DFA12_eotS);
+    static final short[] DFA12_eof = DFA.unpackEncodedString(DFA12_eofS);
+    static final char[] DFA12_min = DFA.unpackEncodedStringToUnsignedChars(DFA12_minS);
+    static final char[] DFA12_max = DFA.unpackEncodedStringToUnsignedChars(DFA12_maxS);
+    static final short[] DFA12_accept = DFA.unpackEncodedString(DFA12_acceptS);
+    static final short[] DFA12_special = DFA.unpackEncodedString(DFA12_specialS);
+    static final short[][] DFA12_transition;
 
     static {
-        int numStates = DFA9_transitionS.length;
-        DFA9_transition = new short[numStates][];
+        int numStates = DFA12_transitionS.length;
+        DFA12_transition = new short[numStates][];
         for (int i = 0; i < numStates; i++) {
-            DFA9_transition[i] = DFA.unpackEncodedString(DFA9_transitionS[i]);
+            DFA12_transition[i] = DFA.unpackEncodedString(DFA12_transitionS[i]);
         }
     }
 
-    class DFA9 extends DFA {
+    class DFA12 extends DFA {
 
-        public DFA9(BaseRecognizer recognizer) {
+        public DFA12(BaseRecognizer recognizer) {
             this.recognizer = recognizer;
-            this.decisionNumber = 9;
-            this.eot = DFA9_eot;
-            this.eof = DFA9_eof;
-            this.min = DFA9_min;
-            this.max = DFA9_max;
-            this.accept = DFA9_accept;
-            this.special = DFA9_special;
-            this.transition = DFA9_transition;
+            this.decisionNumber = 12;
+            this.eot = DFA12_eot;
+            this.eof = DFA12_eof;
+            this.min = DFA12_min;
+            this.max = DFA12_max;
+            this.accept = DFA12_accept;
+            this.special = DFA12_special;
+            this.transition = DFA12_transition;
         }
 
         public String getDescription() {
-            return "45:1: DBL : ( ( '0' .. '9' )+ '.' ( '0' .. '9' )* ( EXP )? | '.' ( '0' .. '9' )+ ( EXP )? | ( '0' .. '9' )+ EXP );";
+            return "45:1: DBL : ( ( '-' | '+' )? ( '0' .. '9' )+ '.' ( '0' .. '9' )* ( EXP )? | ( '-' | '+' )? '.' ( '0' .. '9' )+ ( EXP )? | ( '-' | '+' )? ( '0' .. '9' )+ EXP );";
         }
     }
 
-    static final String DFA15_eotS =
-            "\5\uffff\1\4\5\uffff";
-    static final String DFA15_eofS =
-            "\13\uffff";
-    static final String DFA15_minS =
-            "\1\11\4\uffff\1\56\5\uffff";
-    static final String DFA15_maxS =
-            "\1\164\4\uffff\1\145\5\uffff";
-    static final String DFA15_acceptS =
-            "\1\uffff\1\1\1\2\1\3\1\4\1\uffff\1\5\1\6\1\7\1\10\1\11";
-    static final String DFA15_specialS =
-            "\13\uffff}>";
-    static final String[] DFA15_transitionS = {
+    static final String DFA18_eotS =
+            "\5\uffff\1\13\6\uffff";
+    static final String DFA18_eofS =
+            "\14\uffff";
+    static final String DFA18_minS =
+            "\1\11\3\uffff\2\56\6\uffff";
+    static final String DFA18_maxS =
+            "\1\164\3\uffff\1\71\1\145\6\uffff";
+    static final String DFA18_acceptS =
+            "\1\uffff\1\1\1\2\1\3\2\uffff\1\5\1\6\1\7\1\10\1\11\1\4";
+    static final String DFA18_specialS =
+            "\14\uffff}>";
+    static final String[] DFA18_transitionS = {
             "\1\11\26\uffff\1\11\1\uffff\1\10\5\uffff\1\1\1\3\1\uffff\1\4" +
                     "\1\uffff\1\4\1\6\1\uffff\12\5\1\uffff\1\2\11\uffff\1\7\1\12" +
                     "\15\uffff\1\12\20\uffff\1\7\1\12\15\uffff\1\12",
             "",
             "",
             "",
-            "",
+            "\1\6\1\uffff\12\5",
             "\1\6\1\uffff\12\5\13\uffff\1\6\37\uffff\1\6",
+            "",
             "",
             "",
             "",
@@ -777,34 +857,34 @@ public class PropertyLexer extends Lexer {
             ""
     };
 
-    static final short[] DFA15_eot = DFA.unpackEncodedString(DFA15_eotS);
-    static final short[] DFA15_eof = DFA.unpackEncodedString(DFA15_eofS);
-    static final char[] DFA15_min = DFA.unpackEncodedStringToUnsignedChars(DFA15_minS);
-    static final char[] DFA15_max = DFA.unpackEncodedStringToUnsignedChars(DFA15_maxS);
-    static final short[] DFA15_accept = DFA.unpackEncodedString(DFA15_acceptS);
-    static final short[] DFA15_special = DFA.unpackEncodedString(DFA15_specialS);
-    static final short[][] DFA15_transition;
+    static final short[] DFA18_eot = DFA.unpackEncodedString(DFA18_eotS);
+    static final short[] DFA18_eof = DFA.unpackEncodedString(DFA18_eofS);
+    static final char[] DFA18_min = DFA.unpackEncodedStringToUnsignedChars(DFA18_minS);
+    static final char[] DFA18_max = DFA.unpackEncodedStringToUnsignedChars(DFA18_maxS);
+    static final short[] DFA18_accept = DFA.unpackEncodedString(DFA18_acceptS);
+    static final short[] DFA18_special = DFA.unpackEncodedString(DFA18_specialS);
+    static final short[][] DFA18_transition;
 
     static {
-        int numStates = DFA15_transitionS.length;
-        DFA15_transition = new short[numStates][];
+        int numStates = DFA18_transitionS.length;
+        DFA18_transition = new short[numStates][];
         for (int i = 0; i < numStates; i++) {
-            DFA15_transition[i] = DFA.unpackEncodedString(DFA15_transitionS[i]);
+            DFA18_transition[i] = DFA.unpackEncodedString(DFA18_transitionS[i]);
         }
     }
 
-    class DFA15 extends DFA {
+    class DFA18 extends DFA {
 
-        public DFA15(BaseRecognizer recognizer) {
+        public DFA18(BaseRecognizer recognizer) {
             this.recognizer = recognizer;
-            this.decisionNumber = 15;
-            this.eot = DFA15_eot;
-            this.eof = DFA15_eof;
-            this.min = DFA15_min;
-            this.max = DFA15_max;
-            this.accept = DFA15_accept;
-            this.special = DFA15_special;
-            this.transition = DFA15_transition;
+            this.decisionNumber = 18;
+            this.eot = DFA18_eot;
+            this.eof = DFA18_eof;
+            this.min = DFA18_min;
+            this.max = DFA18_max;
+            this.accept = DFA18_accept;
+            this.special = DFA18_special;
+            this.transition = DFA18_transition;
         }
 
         public String getDescription() {

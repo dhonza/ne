@@ -61,7 +61,8 @@ public class ATTreeDistanceWeightedOnly2 implements IDistance<ATTree> {
             distance += distanceRecursive(a.getChild(i), b.getChild(i)) + deltas[i];
         }
 
-        distance += 2.0 * rest;
+//        distance += 2.0 * rest;
+        distance += rest;
 
         return distance;
     }

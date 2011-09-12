@@ -66,6 +66,12 @@ public class DistanceFactory {
                 return new ATForestDistance(new ATTreeDistanceWeightedOnly(parameters));
             } else if (parameters.getString("GPAT.DISTANCE").equals("WEIGHTEDO2")) {
                 return new ATForestDistance(new ATTreeDistanceWeightedOnly2(parameters));
+            } else if (parameters.getString("GPAT.DISTANCE").equals("RESTO")) {
+                return new ATForestDistance(new ATTreeDistanceOnlyRest());
+            } else if (parameters.getString("GPAT.DISTANCE").equals("RESTO2")) {
+                return new ATForestDistance(new ATTreeDistanceOnlyRest2());
+            } else if (parameters.getString("GPAT.DISTANCE").equals("PHENO")) {
+                return new ATForestDistance(new ATTreeDistancePhenotypic(parameters));
             } else {
                 throw new IllegalStateException("GPAT.DISTANCE: " + parameters.getString("GPAT.DISTANCE"));
             }

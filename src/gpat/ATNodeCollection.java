@@ -19,11 +19,13 @@ public class ATNodeCollection {
     //functions, terminals, input terminals in this order here
     final protected ATNodeImpl[] all;
     final protected int indexOfFirstInput;
+    final protected int numOfInputs;
 
     public ATNodeCollection(ATNodeImpl[] functions, ATNodeImpl[] terminals, int numOfInputs) {
         this.indexOfFirstInput = terminals.length;
         this.functions = functions.clone();
         this.terminals = addInputs(terminals, numOfInputs);
+        this.numOfInputs = numOfInputs;
         this.all = new ATNodeImpl[this.functions.length + this.terminals.length];
         System.arraycopy(this.functions, 0, all, 0, this.functions.length);
         System.arraycopy(this.terminals, 0, all, this.functions.length, this.terminals.length);
@@ -80,5 +82,9 @@ public class ATNodeCollection {
     //index of a first input in "terminals"
     protected int getIndexOfFirstInput() {
         return indexOfFirstInput;
+    }
+
+    public int getNumOfInputs() {
+        return numOfInputs;
     }
 }

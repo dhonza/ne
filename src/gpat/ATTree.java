@@ -103,6 +103,10 @@ public class ATTree {
         return linkGenesList;
     }
 
+    public int getNumOfInputs() {
+        return nodeCollection.getNumOfInputs();
+    }
+
     private void addNode(ATNode node) {
         nodeGeneList.add(node);
         nodeGenes.put(node.getId(), node);
