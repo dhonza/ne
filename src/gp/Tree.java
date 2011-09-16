@@ -4,7 +4,10 @@ import common.RND;
 import gp.terminals.Random;
 
 import java.io.Serializable;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 /**
  * Created by IntelliJ IDEA.
@@ -56,6 +59,15 @@ public class Tree implements Serializable {
 
     public double evaluate(TreeInputs treeInputs) {
         return root.evaluate(treeInputs);
+    }
+
+    public Tree copy() {
+        clear();
+
+        Tree mutated = new Tree();
+        mutated.origin = "ELITE";
+        mutated.root = root.copySubtree();
+        return mutated;
     }
 
     public Tree mutateNode(NodeCollection nodeCollection) {
@@ -132,23 +144,6 @@ public class Tree implements Serializable {
             newRoot = replaceAncestors(ancestors.get(ancestor), ancestor, newAncestor);
         }
         return newRoot;
-    }
-
-    public double distance(Tree other) {
-        Set<Long> innovationsA = new HashSet<Long>();
-        populateInnovations(innovationsA, this.root);
-        Set<Long> innovationsB = new HashSet<Long>();
-        populateInnovations(innovationsB, other.root);
-        double mean = (innovationsA.size() + innovationsB.size()) / 2.0;
-        innovationsA.retainAll(innovationsB);
-        return 1.0 - (double) innovationsA.size() / mean;
-    }
-
-    private void populateInnovations(Set<Long> innovationList, INode startNode) {
-        innovationList.add(startNode.getInnovation());
-        for (INode child : startNode.getChildren()) {
-            populateInnovations(innovationList, child);
-        }
     }
 
     @Override

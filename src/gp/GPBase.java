@@ -89,7 +89,7 @@ abstract public class GPBase<P, T extends IGPForest> implements IEvolutionaryAlg
 
     abstract protected void selectAndReproduce();
 
-    private void evaluate(T[] evalPopulation) {
+    protected void evaluate(T[] evalPopulation) {
         populationManager.loadGenotypes(Arrays.asList(evalPopulation));
         List<EvaluationInfo> evaluationInfos = populationManager.evaluate();
         int cnt = 0;
@@ -114,7 +114,7 @@ abstract public class GPBase<P, T extends IGPForest> implements IEvolutionaryAlg
 
     protected abstract void reduce();
 
-    private void recomputeBest() {
+    protected void recomputeBest() {
         bestOfGeneration = population[0];
         for (T forest : population) {
             if (forest.getFitness() > bestOfGeneration.getFitness()) {

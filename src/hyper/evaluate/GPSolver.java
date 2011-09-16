@@ -36,6 +36,7 @@ public class GPSolver extends AbstractSolver {
         Utils.setStaticParameters(parameters, GP.class, "GP");
         Utils.setStaticParameters(parameters, GEP.class, "GEP");
         Utils.setStaticParameters(parameters, GPAAC.class, "GPAAC");
+        Utils.setStaticParameters(parameters, GPEFS.class, "GPEFS");
 
         String functionPackage = "gp.functions.";
         if (parameters.getString("GP.TYPE").equals("gpaac.GPAAC")) {

@@ -39,7 +39,11 @@ public abstract class Node implements INode, Serializable {
     abstract public INode copy(INode[] children);
 
     public INode copySubtree() {
-        throw new IllegalStateException("NOT YET IMPLEMENTED: not needed for GP and GEP!");
+        INode[] children = getChildren();
+        for (int i = 0, childrenLength = children.length; i < childrenLength; i++) {
+            children[i] = children[i].copySubtree();
+        }
+        return copy(children);
     }
 
     public void setChild(int idx, INode child) {

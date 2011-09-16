@@ -81,6 +81,8 @@ public class GPRunner implements EvolutionaryAlgorithmRunner {
     private static GPBase createAlgorithm(String type, ParameterCombination combination, PopulationManager populationManager, INode[] functions, INode[] terminals) {
         if (type.equals("gp.GP")) {
             return GPFactory.createByName(combination.getString("GP.TYPE"), populationManager, functions, terminals, null);
+        } else if (type.equals("gp.GPEFS")) {
+            return GPFactory.createByName(combination.getString("GP.TYPE"), populationManager, functions, terminals, null);
         } else if (type.equals("gep.GEP")) {
             return new GEP(populationManager, functions, terminals, null);
         } else if (type.equals("GPAAC")) {
@@ -127,6 +129,8 @@ public class GPRunner implements EvolutionaryAlgorithmRunner {
     private static INode[] createFunctions(String type, ParameterCombination combination) {
         if (type.equals("gp.GP")) {
             return NodeFactory.createByNameList("gp.functions.", combination.getString("GP.FUNCTIONS"));
+        } else if (type.equals("gp.GPEFS")) {
+            return NodeFactory.createByNameList("gp.functions.", combination.getString("GP.FUNCTIONS"));
         } else if (type.equals("gep.GEP")) {
             return NodeFactory.createByNameList("gp.functions.", combination.getString("GP.FUNCTIONS"));
         } else if (type.equals("gpaac.GPAAC")) {
@@ -139,6 +143,8 @@ public class GPRunner implements EvolutionaryAlgorithmRunner {
     private static INode[] createTerminals(String type) {
         if (type.equals("gp.GP")) {
             return new Node[]{new Constant(-1.0), new Random()};//GP
+        } else if (type.equals("gp.GPEFS")) {
+            return new Node[]{new Constant(-1.0), new Random()};//GPEFS
         } else if (type.equals("gep.GEP")) {
             return new Node[]{new RNC()};//GEP
         } else if (type.equals("gpaac.GPAAC")) {

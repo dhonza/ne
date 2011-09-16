@@ -72,6 +72,20 @@ public class Forest implements IGPForest, Comparable, Serializable {
         return forest;
     }
 
+    public Forest eliteCopy(int generationOfOrigin) {
+        Forest forest = new Forest(generationOfOrigin, this.getNumOfInputs(), id);
+        forest.trees = new Tree[trees.length];
+        //TODO nebo vybrat jeden?
+        for (int i = 0; i < trees.length; i++) {
+            forest.trees[i] = this.trees[i].copy();
+        }
+        forest.setFitness(Double.NaN);
+        EvaluationInfo evaluationInfo = new EvaluationInfo(Double.NaN);
+        forest.setEvaluationInfo(evaluationInfo);
+        return forest;
+
+    }
+
     public Forest mutate(NodeCollection nodeCollection, int generationOfOrigin) {
         Forest forest = new Forest(generationOfOrigin, this.getNumOfInputs(), id);
         forest.trees = new Tree[trees.length];
@@ -88,14 +102,6 @@ public class Forest implements IGPForest, Comparable, Serializable {
         forest.setEvaluationInfo(evaluationInfo);
         return forest;
 
-    }
-
-    public double distance(Forest other) {
-        double distances = 0.0;
-        for (int i = 0; i < trees.length; i++) {
-            distances += this.trees[i].distance(other.trees[i]);
-        }
-        return distances / trees.length;
     }
 
     public int getNumOfInputs() {

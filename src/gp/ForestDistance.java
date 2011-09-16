@@ -1,6 +1,7 @@
 package gp;
 
 import common.evolution.IDistance;
+import gp.distance.TreeDistance;
 
 /**
  * Created by IntelliJ IDEA.
@@ -10,10 +11,20 @@ import common.evolution.IDistance;
  * To change this template use File | Settings | File Templates.
  */
 public class ForestDistance implements IDistance<Forest> {
+    final private IDistance<Tree> treeIDistance;
+
+    public ForestDistance() {
+        this(new TreeDistance());
+    }
+
+    public ForestDistance(IDistance<Tree> treeIDistance) {
+        this.treeIDistance = treeIDistance;
+    }
+
     public double distance(Forest a, Forest b) {
         double distances = 0.0;
         for (int i = 0; i < a.trees.length; i++) {
-            distances += a.trees[i].distance(b.trees[i]);
+            distances += treeIDistance.distance(a.trees[i], b.trees[i]);
         }
         return distances / a.trees.length;
     }

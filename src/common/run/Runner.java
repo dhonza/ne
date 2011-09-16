@@ -10,6 +10,7 @@ import common.pmatrix.Utils;
 import common.stats.Stats;
 import gep.GEP;
 import gp.GP;
+import gp.GPEFS;
 import gpaac.GPAAC;
 import gpat.GPAT;
 import gpat.GPATSimple;
@@ -81,6 +82,7 @@ public class Runner {
                 Utils.setStaticParameters(combination, GP.class, "GP");
                 Utils.setStaticParameters(combination, GEP.class, "GEP");
                 Utils.setStaticParameters(combination, GPAAC.class, "GPAAC");
+                Utils.setStaticParameters(combination, GPEFS.class, "GPEFS");
                 Utils.setStaticParameters(combination, GPAT.class, "GPAT");
                 Utils.setStaticParameters(combination, GPATSimple.class, "GPATS");
 

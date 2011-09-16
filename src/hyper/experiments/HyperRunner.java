@@ -52,7 +52,6 @@ public class HyperRunner {
             reportStorage.storeParameters(parameterString.toString());
 
             int experiments = combination.getInteger("EXPERIMENTS");
-            boolean storeRun = combination.getBoolean("PRINT.storeRun");
 
             Stats stats = prepareStats();
 

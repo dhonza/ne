@@ -4,6 +4,8 @@ import common.evolution.IDistance;
 import common.pmatrix.ParameterCombination;
 import gep.GEPChromosomeDistance;
 import gp.ForestDistance;
+import gp.distance.TreeDistanceOnlyRest2;
+import gp.distance.TreeDistanceRandom;
 import gpaac.AACForestDistance;
 import gpat.ATForestDistance;
 import gpat.distance.*;
@@ -26,13 +28,25 @@ public class DistanceFactory {
         if (solver.equals("NEAT")) {
             return new GenomeDistance();
         } else if (solver.equals("GP")) {
-            if (parameters.getString("GP.TYPE").equals("gep.GEP")) {
+            if (parameters.getString("GP.TYPE").equals("gp.GP")) {
+                return new ForestDistance();
+            } else if (parameters.getString("GP.TYPE").equals("gep.GEP")) {
                 return new GEPChromosomeDistance();
-            }
-            if (parameters.getString("GP.TYPE").equals("gpaac.GPAAC")) {
+            } else if (parameters.getString("GP.TYPE").equals("gpaac.GPAAC")) {
                 return new AACForestDistance();
+            } else if (parameters.getString("GP.TYPE").equals("gp.GPEFS")) {
+                if (parameters.getString("GP.DISTANCE").equals("BASIC")) {
+                    return new ForestDistance();
+                } else if (parameters.getString("GP.DISTANCE").equals("RANDOM")) {
+                    return new ForestDistance(new TreeDistanceRandom());
+                } else if (parameters.getString("GP.DISTANCE").equals("RESTO2")) {
+                    return new ForestDistance(new TreeDistanceOnlyRest2());
+                } else {
+                    throw new IllegalStateException("GP.DISTANCE: " + parameters.getString("GP.DISTANCE"));
+                }
+            } else {
+                throw new IllegalStateException("Unknown GP.TYPE: " + parameters.getString("GP.TYPE"));
             }
-            return new ForestDistance();
         } else if (solver.equals("GPAT")) {
             if (parameters.getString("GPAT.DISTANCE").equals("BASIC")) {
                 return new ATForestDistance();
