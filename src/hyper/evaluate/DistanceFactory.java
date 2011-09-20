@@ -6,6 +6,7 @@ import gep.GEPChromosomeDistance;
 import gp.ForestDistance;
 import gp.distance.TreeDistanceOnlyRest2;
 import gp.distance.TreeDistanceRandom;
+import gp.distance.TreeDistanceTreeplicity;
 import gpaac.AACForestDistance;
 import gpat.ATForestDistance;
 import gpat.distance.*;
@@ -41,6 +42,8 @@ public class DistanceFactory {
                     return new ForestDistance(new TreeDistanceRandom());
                 } else if (parameters.getString("GP.DISTANCE").equals("RESTO2")) {
                     return new ForestDistance(new TreeDistanceOnlyRest2());
+                } else if (parameters.getString("GP.DISTANCE").equals("TREEP")) {
+                    return new ForestDistance(new TreeDistanceTreeplicity(parameters));
                 } else {
                     throw new IllegalStateException("GP.DISTANCE: " + parameters.getString("GP.DISTANCE"));
                 }

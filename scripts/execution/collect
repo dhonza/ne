@@ -1,0 +1,45 @@
+#!/bin/bash
+
+if [ $# -le 2 ] ; then
+    echo "usage: "$0" target_dir dir1 dir2 ..."
+    exit 1
+fi
+
+TARGET=${1}
+echo ${PREFIX}
+shift
+
+((CNT=1))
+
+function copy {
+    for EFILE in ${1}/experiments_???.txt 
+    do
+	PFILE=`echo ${EFILE} | sed s/experiments/parameters/g`
+	if [ ! -e ${PFILE} ]
+	then
+	    echo "file ${PFILE} does not exists but ${EFILE} does!"
+	    exit 1
+	fi
+	SCNT=$(printf "%03d" ${CNT})
+	echo ${EFILE}
+	cp ${EFILE} "${TARGET}/experiments_${SCNT}.txt"
+	echo ${PFILE}
+	cp ${PFILE} "${TARGET}/parameters_${SCNT}.txt"
+	CNT=$((CNT+1))
+    done
+}
+
+
+if [ -e ${TARGET} ]
+then
+  echo "target dir ${TARGET} already exists!"
+#  exit 1
+fi
+
+mkdir -p ${TARGET}
+
+while [ $# != "0" ]; do
+    echo ${1}
+    copy ${1}
+    shift
+done
