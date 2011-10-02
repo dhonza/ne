@@ -7,6 +7,7 @@ import gp.ForestDistance;
 import gp.distance.TreeDistanceOnlyRest2;
 import gp.distance.TreeDistanceRandom;
 import gp.distance.TreeDistanceTreeplicity;
+import gp.distance.TreeDistanceTreeplicity2;
 import gpaac.AACForestDistance;
 import gpat.ATForestDistance;
 import gpat.distance.*;
@@ -44,6 +45,8 @@ public class DistanceFactory {
                     return new ForestDistance(new TreeDistanceOnlyRest2());
                 } else if (parameters.getString("GP.DISTANCE").equals("TREEP")) {
                     return new ForestDistance(new TreeDistanceTreeplicity(parameters));
+                } else if (parameters.getString("GP.DISTANCE").equals("TREEP2")) {
+                    return new ForestDistance(new TreeDistanceTreeplicity2(parameters));
                 } else {
                     throw new IllegalStateException("GP.DISTANCE: " + parameters.getString("GP.DISTANCE"));
                 }

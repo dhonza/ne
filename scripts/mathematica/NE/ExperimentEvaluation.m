@@ -23,6 +23,7 @@ sortDataByParams::usage = "sortDataByParams[data,paramOrder] sorts configuration
 sortConfigurationResults::usage = "sortConfigurationResults"
 
 printAsTable::usage = "printAsTable"
+printBooleanRanksAsTable::usage = "printBooleanRanksAsTable"
 plotBooleanAsBarChart::usage = "plotBooleanAsBarChart"
 plotAsBoxWhiskerChart::usage = "plotAsBoxWhiskerChart"
 plotAsHistograms::usage = "plotAsSmoothHistograms"
@@ -140,52 +141,51 @@ readAllFiles[dirs_List,labels_:Null,OptionsPattern[]] :=
     ]
     
 assignLabelsByParameters[data_,paramNames_,replacementRules_:{}] :=
-	Module[{values,newData},
-		values = Replace[paramNames,#[[idxPARAMS]]~Join~{_ -> Null},1] & /@ data;		
-		(* Remove missing parameters *)
-		values = Select[#, (# =!= Null)&]& /@ values;
-		(* Convert any nonstring values to strings *)
-		values = Map[ToString,values,{2}];		
-		(*values = Select[values] & /@ values;*)
-		If[replacementRules =!= {},
-			values = StringReplace[#, replacementRules]& /@ values
-		];
-		(* Delete repeating missing values *)
-		values = DeleteCases[#,""]& /@ values;
-		
-		(* Insert underscores and join to strings *)
-		values = StringJoin[Riffle[#,"_"]]& /@ values;
-		
-		newData = data;
-		newData[[All,1]] = values;
-		newData
-	]
+    Module[ {values,newData},
+        values = Replace[paramNames,#[[idxPARAMS]]~Join~{_ -> Null},1] & /@ data;        
+        (* Remove missing parameters *)
+        values = Select[#, (# =!= Null)&]& /@ values;
+        (* Convert any nonstring values to strings *)
+        values = Map[ToString,values,{2}];        
+        (*values = Select[values] & /@ values;*)
+        If[ replacementRules =!= {},
+            values = StringReplace[#, replacementRules]& /@ values
+        ];
+        (* Delete repeating missing values *)
+        values = DeleteCases[#,""]& /@ values;
+        
+        (* Insert underscores and join to strings *)
+        values = StringJoin[Riffle[#,"_"]]& /@ values;
+        newData = data;
+        newData[[All,1]] = values;
+        newData
+    ]
 
 selectDataHelper[params_,paramRule_] :=
-	Module[{orRules},
-		(*Print[paramRule," ", MemberQ[params, paramRule]];*)
-		If[MatchQ[paramRule,_ -> {__}],
-			(
-				orRules = paramRule/. (f : _ -> t : {__}) :> (Rule[f, #] & /@ t);
-				MemberQ[MemberQ[params,#]& /@ orRules,True]
-			),
-			MemberQ[params, paramRule]
-		]
-	]
+    Module[ {orRules},
+        (*Print[paramRule," ", MemberQ[params, paramRule]];*)
+        If[ MatchQ[paramRule,_ -> {__}],
+            (
+                orRules = paramRule/. (f : _ -> t : {__}) :> (Rule[f, #] & /@ t);
+                MemberQ[MemberQ[params,#]& /@ orRules,True]
+            ),
+            MemberQ[params, paramRule]
+        ]
+    ]
 
 selectData[data_,paramRule_List] :=
-	Module[{},
-		Select[data, 
-			Function[x,FreeQ[selectDataHelper[x[[idxPARAMS]],#]& /@ paramRule,False]]
-		]		
-	]
+    Module[ {},
+        Select[data, 
+            Function[x,FreeQ[selectDataHelper[x[[idxPARAMS]],#]& /@ paramRule,False]]
+        ]
+    ]
 
 removeData[data_,paramRule_List] :=
-	Module[{},
-		Select[data, 
-			Function[x,FreeQ[selectDataHelper[x[[idxPARAMS]],#]& /@ paramRule,True]]
-		]		
-	]
+    Module[ {},
+        Select[data, 
+            Function[x,FreeQ[selectDataHelper[x[[idxPARAMS]],#]& /@ paramRule,True]]
+        ]
+    ]
 
 saveData[data_,targetDir_] :=
     Module[ {fullTargetDir},
@@ -265,6 +265,33 @@ printAsTable[data_,paramNames_List] :=
             Sequence@@(({Style[#,Bold]}~Join~paramValuesForData[data,#])& /@ paramNames)
         },Frame->All]
 
+(* Computes ranks averaging the same values: assignMeanRanks[{10, 2, 10, 4, 5, 10, 4}] gives {6, 1, 6, 5/2, 4, 6, 5/2} *)
+assignMeanRanks[values_List] :=
+    Module[ {multi, pos, rank, means, replace},
+        multi = Select[Tally[values], #[[2]] > 1 &][[All, 1]];
+        pos = Position[values, #] & /@ multi;
+        rank = Array[0 &, Length[values]];
+        rank[[Ordering[values]]] = Range[Length[values]];
+        means = Mean[Extract[rank, #]] & /@ pos;
+        replace = 
+         Flatten[MapThread[
+           Outer[Rule, Flatten[#1], {#2}] &, {pos, means}]];
+        ReplacePart[rank, replace]
+    ]
+
+Options[printBooleanRanksAsTable] = {Operation -> (100*Mean[#]&)};
+printBooleanRanksAsTable[data_,paramName_,groupSize_,OptionsPattern[]]:=
+    Module[ {labels,sum,ranks,params,paramValues,table,tableData},
+        labels = labelsForData[data];
+        sum = OptionValue[Operation][resultsForConfiguration[#,paramName]]&/@data;
+        ranks = Flatten[Mean/@Transpose[assignMeanRanks /@ Partition[sum,groupSize]]];
+        params = (changingParameters /@ Partition[data,groupSize])[[1]];
+        paramValues = paramValuesForConfiguration[#,params]& /@ (data[[1;;groupSize]]);
+        tableData = Transpose[{Range[groupSize]}~Join~Transpose[paramValues]~Join~{ranks}];
+        tableData = Sort[tableData,#1[[4]] < #2[[4]]&];
+        table = {Style[#,Bold]& /@ ({"ID"}~Join~params~Join~{"RANK"})}~Join~tableData;
+        Grid[table,Frame->All]
+    ]
 (* -------------------------------------------------------------------------------------------------------- *)
 (* PLOTS -------------------------------------------------------------------------------------------------- *)
 (* -------------------------------------------------------------------------------------------------------- *)
