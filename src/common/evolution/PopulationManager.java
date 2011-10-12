@@ -45,6 +45,7 @@ public class PopulationManager<G, P> {
     private boolean storeGenotypesMathematica;
 
     public PopulationManager(List<IGenotypeToPhenotype<G, P>> perThreadConverters, List<IEvaluable<P>> perThreadEvaluators) {
+        genomeDistance = DistanceFactory.createGenomeDistance(null);
         this.perThreadConverters = perThreadConverters;
         this.perThreadEvaluators = perThreadEvaluators;
         populationStorage = new SimplePopulationStorage<G, P>(threadExecutor, perThreadConverters);

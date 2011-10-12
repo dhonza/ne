@@ -7,6 +7,7 @@ import org.jivesoftware.smack.XMPPException;
 
 import java.net.InetAddress;
 import java.net.UnknownHostException;
+import java.util.Calendar;
 
 /**
  * Created by IntelliJ IDEA.
@@ -17,6 +18,11 @@ import java.net.UnknownHostException;
  */
 public class XMPPHelper {
     public static void sendViaXMPP(String message) {
+        Calendar cal = Calendar.getInstance();
+        int hour24 = cal.get(Calendar.HOUR_OF_DAY);
+        if (hour24 <= 9) {//do not wake me up :)
+            return;
+        }
         try {
             String hostName = InetAddress.getLocalHost().getHostName();
             if (hostName.equals("mbp.local") || hostName.startsWith("eduroam")) {

@@ -26,6 +26,10 @@ public class DistanceFactory {
     }
 
     public static IDistance createGenomeDistance(ParameterCombination parameters) {
+        if (parameters == null) {
+            //TODO remove
+            return new GenomeDistance();
+        }
         String solver = parameters.getString("SOLVER").toUpperCase();
         if (solver.equals("NEAT")) {
             return new GenomeDistance();

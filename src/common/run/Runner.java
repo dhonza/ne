@@ -63,17 +63,18 @@ public class Runner {
                 reportStorage.startSingleRun();
 
                 System.out.println("PARAMETER SETTING: " + combination);
-                GP.MAX_GENERATIONS = combination.getInteger("GP.MAX_GENERATIONS");
-                GP.MAX_EVALUATIONS = combination.getInteger("GP.MAX_EVALUATIONS");
-                GP.POPULATION_SIZE = combination.getInteger("GP.POPULATION_SIZE");
-                GP.TARGET_FITNESS = combination.getDouble("GP.TARGET_FITNESS");
 
                 EvolutionaryAlgorithmRunner runnerEA;
 
                 String solver = combination.getString("SOLVER");
                 if (solver.equals("GP")) {
+                    initializeGP(combination);
                     runnerEA = new GPRunner(combination);
                 } else if (solver.equals("GPAT")) {
+                    initializeGP(combination);
+                    runnerEA = new GPATRunner(combination);
+                } else if (solver.equals("NEAT")) {
+                    initializeNEAT(combination);
                     runnerEA = new GPATRunner(combination);
                 } else {
                     throw new IllegalStateException("Unknown SOLVER: " + solver + ".");
@@ -100,6 +101,20 @@ public class Runner {
         SoundHelper.playSoundFile("/System/Library/Sounds/Glass.aiff");
         String experimentDirectory = args.length > 1 ? "(" + args[1] + ")" : "";
         XMPPHelper.sendViaXMPP("NE run (Runner) finished " + experimentDirectory + ".");
+    }
+
+    private static void initializeGP(ParameterCombination combination) {
+        GP.MAX_GENERATIONS = combination.getInteger("GP.MAX_GENERATIONS");
+        GP.MAX_EVALUATIONS = combination.getInteger("GP.MAX_EVALUATIONS");
+        GP.POPULATION_SIZE = combination.getInteger("GP.POPULATION_SIZE");
+        GP.TARGET_FITNESS = combination.getDouble("GP.TARGET_FITNESS");
+    }
+
+    private static void initializeNEAT(ParameterCombination combination) {
+//        NEAT.MAX_GENERATIONS = combination.getInteger("NEAT.MAX_GENERATIONS");
+//        NEAT.MAX_EVALUATIONS = combination.getInteger("NEAT.MAX_EVALUATIONS");
+//        NEAT.POPULATION_SIZE = combination.getInteger("NEAT.POPULATION_SIZE");
+//        NEAT.TARGET_FITNESS = combination.getDouble("NEAT.TARGET_FITNESS");
     }
 
     private static Stats prepareStats() {
