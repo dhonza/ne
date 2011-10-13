@@ -1,7 +1,7 @@
 package hyper.cppn;
 
-import hyper.substrate.ICoordinate;
 import common.net.linked.Net;
+import hyper.substrate.ICoordinate;
 
 /**
  * Created by IntelliJ IDEA.
@@ -43,7 +43,7 @@ public class BasicNetCPPN implements ICPPN {
         for (int i = 0; i < 5; i++) {
             net.activate();
         }
-        return net.getOutputValues()[outputId];
+        return net.getOutputs()[outputId];
     }
 
     public int getNumInputs() {

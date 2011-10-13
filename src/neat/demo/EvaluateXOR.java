@@ -22,7 +22,7 @@ public class EvaluateXOR implements IEvaluable<Net> {
             n.loadInputs(in[i]);
             n.reset();
             activate(n);
-            error += Math.abs(out[i] - n.getOutputValues()[0]);
+            error += Math.abs(out[i] - n.getOutputs()[0]);
         }
         return new EvaluationInfo(Math.pow((4.0 - error), 2));
     }

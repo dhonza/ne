@@ -73,7 +73,7 @@ public class PrecompiledFeedForwardNet implements INet {
         //not needed for this implementation
     }
 
-    public double[] getOutputValues() {
+    public double[] getOutputs() {
         if (!activated) {
             throw new IllegalStateException("FF precompiled network not activated");
         }

@@ -1,58 +1,90 @@
-package hyper.evaluate;
+package common.run;
 
-import common.evolution.EvolutionaryAlgorithmSolver;
-import common.evolution.PopulationManager;
-import common.evolution.SolvedStopCondition;
+import common.evolution.*;
 import common.net.INet;
 import common.net.linked.Net;
 import common.net.linked.Neuron;
 import common.pmatrix.ParameterCombination;
 import common.pmatrix.Utils;
 import common.stats.Stats;
+import gp.EvaluableFactory;
 import hyper.evaluate.printer.FileProgressPrinter;
-import hyper.evaluate.printer.NEATProgressPrinter1D;
 import hyper.evaluate.printer.ReportStorage;
+import hyper.experiments.DummyProblem;
 import neat.*;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
  * Created by IntelliJ IDEA.
  * User: drchaj1
- * Date: Jun 15, 2009
- * Time: 9:50:43 PM
+ * Date: 8/31/11
+ * Time: 10:43 PM
  * To change this template use File | Settings | File Templates.
  */
-
-public class NEATSolver extends AbstractSolver {
+public class NEATRunner implements EvolutionaryAlgorithmRunner {
+    private final ParameterCombination parameters;
+    private final PopulationManager<INet, INet> populationManager;
     private NEAT neat;
-    private FitnessSharingPopulation population;
-//    private DeterministicCrowdingPopulation population;
 
-    protected NEATSolver(ParameterCombination parameters, Stats stats, ReportStorage reportStorage) {
-        super(parameters, stats, reportStorage);
-        init();
+    public NEATRunner(ParameterCombination parameters) {
+        this.parameters = parameters;
+        populationManager = createPopulationManager(parameters);
+        neat = createAlgorithm(parameters, populationManager);
     }
 
+    public void run(Stats stats, ReportStorage reportStorage) {
+        EvolutionaryAlgorithmSolver solver = new EvolutionaryAlgorithmSolver(neat, stats, false);
+        solver.addProgressPrinter(new NEATBasicProgressPrinter(neat));
+        solver.addProgressPrinter(new FileProgressPrinter(neat, new DummyProblem(), reportStorage, parameters));
+        solver.addStopCondition(new neat.MaxGenerationsStopCondition(neat));
+        solver.addStopCondition(new neat.MaxEvaluationsStopCondition(neat));
+        solver.addStopCondition(new neat.TargetFitnessStopCondition(neat));
+        solver.addStopCondition(new SolvedStopCondition(populationManager));
 
-    private void init() {
-        neat = new NEAT();
+        solver.run();
+
+        extractStats(stats, neat);
+    }
+
+    private static PopulationManager<INet, INet> createPopulationManager(ParameterCombination combination) {
+        boolean parallel = combination.getBoolean("PARALLEL");
+        int threads = 1;
+        if (parallel) {
+            if (combination.contains("PARALLEL.FORCE_THREADS")) {
+                threads = combination.getInteger("PARALLEL.FORCE_THREADS");
+            } else {
+                threads = PopulationManager.getNumberOfThreads();
+            }
+        }
+
+        List<IGenotypeToPhenotype<INet, INet>> converter = new ArrayList<IGenotypeToPhenotype<INet, INet>>(threads);
+        List<IEvaluable<INet>> evaluator = new ArrayList<IEvaluable<INet>>(threads);
+
+        for (int i = (threads - 1); i >= 0; i--) {
+            converter.add(new IdentityConversion<INet>());
+            IEvaluable<INet> evaluable = EvaluableFactory.createByName(combination);
+            evaluator.add(evaluable);
+        }
+
+        PopulationManager<INet, INet> populationManager = new PopulationManager<INet, INet>(
+                combination, converter, evaluator);
+        return populationManager;
+    }
+
+    private static NEAT createAlgorithm(ParameterCombination parameters, PopulationManager populationManager) {
+        NEAT neat = new NEAT();
         NEATConfig config = NEAT.getConfig();
-        config.targetFitness = problem.getTargetFitness();
+        config.targetFitness = parameters.getDouble("GP.TARGET_FITNESS");
         Utils.setParameters(parameters, config, "NEAT");
 
-        population = new FitnessSharingPopulation<INet>(populationManager, getPrototype(populationManager));
+        Population population = new FitnessSharingPopulation<INet>(populationManager, getPrototype(populationManager));
 //        population = new DeterministicCrowdingPopulation<INet>(populationManager, getPrototype(populationManager));
 
         neat.setPopulation(population);
 
-        solver = new EvolutionaryAlgorithmSolver(neat, stats, problem instanceof IProblemGeneralization);
-        solver.addProgressPrinter(new NEATProgressPrinter1D(neat, problem, reportStorage, parameters));
-        solver.addProgressPrinter(new FileProgressPrinter(neat, problem, reportStorage, parameters));
-        solver.addStopCondition(new MaxGenerationsStopCondition(neat));
-        solver.addStopCondition(new MaxEvaluationsStopCondition(neat));
-        solver.addStopCondition(new TargetFitnessStopCondition(neat));
-        solver.addStopCondition(new SolvedStopCondition(populationManager));
+        return neat;
     }
 
     private static Genome getPrototype(PopulationManager<Genome, INet> populationManager) {
@@ -64,15 +96,6 @@ public class NEATSolver extends AbstractSolver {
         }
         net.randomizeWeights(-0.3, 0.3);
         return new Genome(net);
-    }
-
-    public void solve() {
-        solver.run();
-        extractStats(stats, neat);
-    }
-
-    public String getConfigString() {
-        return neat.getConfigString();
     }
 
     private static void extractStats(Stats stats, NEAT neat) {

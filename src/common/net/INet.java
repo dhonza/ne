@@ -1,5 +1,7 @@
 package common.net;
 
+import common.evolution.IBlackBox;
+
 /**
  * Created by IntelliJ IDEA.
  * User: drchaj1
@@ -7,7 +9,7 @@ package common.net;
  * Time: 8:20:48 PM
  * To change this template use File | Settings | File Templates.
  */
-public interface INet {
+public interface INet extends IBlackBox {
     int getNumInputs();
 
     int getNumOutputs();
@@ -16,8 +18,6 @@ public interface INet {
 
     int getNumLinks();
 
-    void loadInputs(double[] inputs);
-
     void loadInputsNotBias(double[] inputs);
 
     void activate();
@@ -25,6 +25,4 @@ public interface INet {
     void reset();
 
     void initSetBias();
-
-    double[] getOutputValues();
 }

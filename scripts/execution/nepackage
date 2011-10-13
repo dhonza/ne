@@ -35,6 +35,10 @@ if [ $# -ge 1 ] ; then
         export CLASS="hyper.experiments.HyperRunner"
 	export CFG="cfg/hyper/gpathyper.properties"
     fi
+    if [ "${1}" == "HNEAT" ] ; then
+        export CLASS="hyper.experiments.HyperRunner"
+	export CFG="cfg/hyper/neathyper.properties"
+    fi
 
 fi
 if [ $# -ge 2 ] ; then

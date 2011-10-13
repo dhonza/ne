@@ -63,6 +63,8 @@ public abstract class Population<P> {
      */
     protected int lastInnovation = 0;
 
+    protected int generationOfBSF = 0;
+
     /**
      * Here we store Species history (for stats etc.)
      */
@@ -158,6 +160,10 @@ public abstract class Population<P> {
         return bestSoFar;
     }
 
+    public int getGenerationOfBSF() {
+        return generationOfBSF;
+    }
+
     /**
      * The Net of the best so far Genome (the best of all generations).
      *
@@ -207,6 +213,7 @@ public abstract class Population<P> {
         if (bestOfGeneration.fitness > bestSoFar.fitness) {
             bestSoFar = bestOfGeneration;
             lastInnovation = 0;
+            generationOfBSF = generation;
 //            evaluator.storeEvaluation(bestSoFar); // for gradient learning
 //            bsfInputs = evaluator.getStoredInputs();
 //            bsfOutputs = evaluator.getStoredOutputs();

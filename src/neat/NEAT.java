@@ -4,6 +4,7 @@ import common.evolution.BasicInfo;
 import common.evolution.EvaluationInfo;
 import common.evolution.IEvolutionaryAlgorithm;
 
+import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -110,6 +111,18 @@ public class NEAT implements IEvolutionaryAlgorithm {
         return population.getBestSoFar().getFitness();
     }
 
+    public Genome getBestSoFar() {
+        return population.getBestSoFar();
+    }
+
+    public int getGenerationOfBSF() {
+        return population.getGenerationOfBSF();
+    }
+
+    public Genome getBestOfGeneration() {
+        return population.getBestOfGeneration();
+    }
+
     public List<EvaluationInfo> getEvaluationInfo() {
         return population.getEvaluationInfo();
     }
@@ -131,5 +144,9 @@ public class NEAT implements IEvolutionaryAlgorithm {
 
     public List<String> getEvaluationInfoItemNames() {
         return new LinkedList<String>();
+    }
+
+    public List<Genome> getLastGenerationPopulation() {
+        return Arrays.asList(population.genomes);
     }
 }

@@ -1,9 +1,9 @@
 package gp.demo;
 
 import common.evolution.EvaluationInfo;
+import common.evolution.IBlackBox;
 import common.evolution.IEvaluable;
 import common.pmatrix.ParameterCombination;
-import gp.IGPForest;
 
 import java.io.BufferedReader;
 import java.io.DataInputStream;
@@ -19,7 +19,7 @@ import java.util.List;
  * Time: 11:49 PM
  * To change this template use File | Settings | File Templates.
  */
-public class Maze implements IEvaluable<IGPForest> {
+public class Maze<P extends IBlackBox> implements IEvaluable<P> {
     final public static int EMPTY = 0;
     final public static int WALL = 1;
     final public static int START = 2;
@@ -51,7 +51,7 @@ public class Maze implements IEvaluable<IGPForest> {
     }
 
 
-    public EvaluationInfo evaluate(IGPForest forest) {
+    public EvaluationInfo evaluate(P forest) {
         setToStart();
         int steps = 0;
         for (int i = 0; i < maxSteps; i++) {
@@ -81,11 +81,11 @@ public class Maze implements IEvaluable<IGPForest> {
         return new EvaluationInfo(fitness);
     }
 
-    public EvaluationInfo evaluateGeneralization(IGPForest forest) {
+    public EvaluationInfo evaluateGeneralization(P forest) {
         return evaluate(forest);
     }
 
-    public void show(IGPForest forest) {
+    public void show(P forest) {
         evaluate(forest);
         System.out.println(this);
     }

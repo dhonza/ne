@@ -35,8 +35,7 @@ public class TestNeuralNetwork {
             CascadeCorrelation correlation = new CascadeCorrelation(network);
             correlation.trainNetwork(trainingSet);
             network.printError(trainingSet);
-        }
-        catch (Exception ex) {
+        } catch (Exception ex) {
             System.out.println(ex.toString());
         }
 
@@ -84,8 +83,7 @@ public class TestNeuralNetwork {
             }
             */
 
-        }
-        catch (Exception ex) {
+        } catch (Exception ex) {
             System.out.println(ex.toString());
         }
         return network;
@@ -164,15 +162,14 @@ public class TestNeuralNetwork {
                     //network.printError(trainingSet);
                 }
                 double error = network.calculateSquaredError(trainingSet);
-                double[][] outputs = network.getOutputValues(trainingSet, network.getOutputLayer().size());
+                double[][] outputs = network.getOutputs(trainingSet, network.getOutputLayer().size());
                 System.out.println(error);
             }
 
 
             //CascadeCorrelation correlation = new CascadeCorrelation(network);
             //correlation.trainNetwork(trainingSet);
-        }
-        catch (Exception ex) {
+        } catch (Exception ex) {
             System.out.println(ex.toString());
         }
 
@@ -203,8 +200,7 @@ public class TestNeuralNetwork {
             correlation.setRpropParams();
             correlation.trainNetwork(trainingSet);
             return network;
-        }
-        catch (Exception ex) {
+        } catch (Exception ex) {
             System.out.println(ex.toString());
         }
         return null;
@@ -275,8 +271,7 @@ public class TestNeuralNetwork {
             cascadeCorrelation.setQuickParams();
             cascadeCorrelation.trainNetwork(trainingSet);
             return network;
-        }
-        catch (Exception ex) {
+        } catch (Exception ex) {
             System.out.println(ex.getMessage());
         }
         return null;
@@ -295,8 +290,7 @@ public class TestNeuralNetwork {
             cascadeCorrelation.trainNetwork(trainingSet);
 
 
-        }
-        catch (Exception ex) {
+        } catch (Exception ex) {
             throw new Exception("TestNeuralNetwork: testHousing -> " + ex.getMessage());
         }
     }

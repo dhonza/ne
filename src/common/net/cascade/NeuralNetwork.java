@@ -51,8 +51,7 @@ public class NeuralNetwork implements Serializable, INet {
             }
             this.neuronLayers.add(inputLayer);
             this.neuronLayers.add(outputLayer);
-        }
-        catch (Exception ex) {
+        } catch (Exception ex) {
             throw new Exception("NeuralNetwork: NeuralNetwork -> " + ex.getMessage());
         }
     }
@@ -89,8 +88,7 @@ public class NeuralNetwork implements Serializable, INet {
             NeuronLayer outputLayer = createLayer(layers[layers.length - 1], LayerType.output, this.neuronId, 0, activationFunction);
             this.fullyConnectLayersWithBias(prev, outputLayer, biasNeuron);
             this.neuronLayers.add(outputLayer);
-        }
-        catch (Exception ex) {
+        } catch (Exception ex) {
             throw new Exception("NeuralNetwork: NeuralNetwork -> " + ex.getMessage());
         }
     }
@@ -199,8 +197,7 @@ public class NeuralNetwork implements Serializable, INet {
             this.fullyConnectLayers(this.neuronLayers.get(index - 1), newHiddenLayer, true);
             this.fullyConnectLayers(newHiddenLayer, this.neuronLayers.get(index), true);
             this.neuronLayers.add(index, newHiddenLayer);
-        }
-        catch (Exception e) {
+        } catch (Exception e) {
             return false;
         }
         return true;
@@ -372,29 +369,28 @@ public class NeuralNetwork implements Serializable, INet {
      * @return array of outputs of all input patterns
      * @throws java.lang.Exception
      */
-    public double[][] getOutputValues(TrainingSet trainingSet, int numberOfOutputs) throws Exception {
+    public double[][] getOutputs(TrainingSet trainingSet, int numberOfOutputs) throws Exception {
         double[][] outputs;
         outputs = new double[trainingSet.size()][numberOfOutputs];
         int patternIndex = 0;
         for (TrainingPattern trainingPattern : trainingSet.getTraningSet()) {
-            outputs[patternIndex] = this.getOutputValues(trainingPattern);
+            outputs[patternIndex] = this.getOutputs(trainingPattern);
             patternIndex++;
         }
         return outputs;
     }
 
-    public double[] getOutputValues(TrainingPattern trainingPattern) throws Exception {
+    public double[] getOutputs(TrainingPattern trainingPattern) throws Exception {
         try {
             this.injectInput(trainingPattern.getInputPattern());
-        }
-        catch (Exception ex) {
-            throw new Exception("NeuralNetwork: getOutputValues -> " + ex.getMessage());
+        } catch (Exception ex) {
+            throw new Exception("NeuralNetwork: getOutputs -> " + ex.getMessage());
         }
         this.bubbleThrough();
-        return this.getOutputValues();
+        return this.getOutputs();
     }
 
-    public double[] getOutputValues() {
+    public double[] getOutputs() {
         double[] outputs = new double[this.getOutputLayer().size()];
         int index = 0;
         for (Neuron neuron : this.getOutputLayer().neuronList()) {
@@ -588,8 +584,7 @@ public class NeuralNetwork implements Serializable, INet {
             for (int i = 0; i < inputPattern.size(); i++) {
                 try {
                     inputLayer.getNeuron(i).setOutput(inputPattern.get(i));
-                }
-                catch (Exception ex) {
+                } catch (Exception ex) {
                     throw new Exception("NeuralNetwork: injectInput -> " + ex.getMessage());
                 }
             }
@@ -612,8 +607,7 @@ public class NeuralNetwork implements Serializable, INet {
     public void printError(TrainingSet trainingSet) throws Exception {
         try {
             System.out.println("E = " + this.calculateSquaredError(trainingSet));
-        }
-        catch (Exception ex) {
+        } catch (Exception ex) {
             throw new Exception("NeuralNetwork: printError -> " + ex.getMessage());
         }
     }
@@ -651,8 +645,7 @@ public class NeuralNetwork implements Serializable, INet {
             out.newLine();
             out.newLine();
             out.close();
-        }
-        catch (Exception e) {
+        } catch (Exception e) {
             System.out.println("NeuralNetwork: printNetwork: " + e.getMessage());
         }
 

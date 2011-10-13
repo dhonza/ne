@@ -1,6 +1,7 @@
 package gp;
 
 import common.evolution.EvaluationInfo;
+import common.evolution.IBlackBox;
 import common.evolution.IMathematicaPrintable;
 
 /**
@@ -10,7 +11,7 @@ import common.evolution.IMathematicaPrintable;
  * Time: 9:06:13 PM
  * To change this template use File | Settings | File Templates.
  */
-public interface IGPForest extends IMathematicaPrintable {
+public interface IGPForest extends IBlackBox, IMathematicaPrintable {
     int getNumOfInputs();
 
     double getFitness();
@@ -20,10 +21,6 @@ public interface IGPForest extends IMathematicaPrintable {
     EvaluationInfo getEvaluationInfo();
 
     void setEvaluationInfo(EvaluationInfo evaluationInfo);
-
-    void loadInputs(double[] inputs);
-
-    double[] getOutputs();
 
     String[] getOrigins();
 

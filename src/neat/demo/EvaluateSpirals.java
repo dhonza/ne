@@ -101,7 +101,7 @@ public class EvaluateSpirals implements IEvaluable<Net> {
             net.loadInputs(tin[i]);
             net.reset();
             activate(net);
-            o = net.getOutputValues();
+            o = net.getOutputs();
             if (o[0] < 0.0) {
                 c1 += 1.0;
             }
@@ -110,7 +110,7 @@ public class EvaluateSpirals implements IEvaluable<Net> {
             net.loadInputs(tin[i + size]);
             net.reset();
             activate(net);
-            o = net.getOutputValues();
+            o = net.getOutputs();
             if (o[0] > 0.0) {
                 c2 += 1.0;
             }
@@ -135,7 +135,7 @@ public class EvaluateSpirals implements IEvaluable<Net> {
             n.loadInputs(in[i]);
             n.reset();
             activate(n);
-            o = n.getOutputValues();
+            o = n.getOutputs();
             if (o[0] < o[1]) {
                 c1 += 1.0;
             }
@@ -144,7 +144,7 @@ public class EvaluateSpirals implements IEvaluable<Net> {
             n.loadInputs(in[i + size]);
             n.reset();
             activate(n);
-            o = n.getOutputValues();
+            o = n.getOutputs();
             if (o[0] > o[1]) {
                 c2 += 1.0;
             }

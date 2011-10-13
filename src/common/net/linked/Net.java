@@ -2,7 +2,6 @@ package common.net.linked;
 
 import common.RND;
 import common.net.INet;
-import common.net.linked.NetStorage;
 
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -162,7 +161,7 @@ public class Net implements INet, Serializable {
         return hidout;
     }
 
-    public List<Neuron> getOutputs() {
+    public List<Neuron> getOutputNodes() {
         return outputs;
     }
 
@@ -640,7 +639,7 @@ public class Net implements INet, Serializable {
      *
      * @return the outputs
      */
-    public double[] getOutputValues() {
+    public double[] getOutputs() {
         double[] t = new double[numOutputs];
         for (int i = 0; i < numOutputs; i++)
             t[i] = outputs.get(i).getOutput();

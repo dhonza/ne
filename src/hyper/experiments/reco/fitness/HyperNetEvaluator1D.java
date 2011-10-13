@@ -41,6 +41,6 @@ public class HyperNetEvaluator1D implements HyperEvaluator1D {
     }
 
     public double[] getOutputs() {
-        return hyperNet.getOutputValues();
+        return hyperNet.getOutputs();
     }
 }

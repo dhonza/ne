@@ -214,14 +214,14 @@ public class FindCluster2 implements IProblem<INet> {
     // Determine the coordinate of the pixel with the highest activation.
 
     public static ActivationOutputInfo findMaxActivationOutput(INet hyperNet, int visualFieldResolution) {
-        double minActivation = hyperNet.getOutputValues()[0];
+        double minActivation = hyperNet.getOutputs()[0];
         double maxActivation = minActivation;
 
         int maxOutputIdx = 0;
 
-        int len = hyperNet.getOutputValues().length;
+        int len = hyperNet.getOutputs().length;
         for (int i = 1; i < len; i++) {
-            double val = hyperNet.getOutputValues()[i];
+            double val = hyperNet.getOutputs()[i];
 
             if (val > maxActivation) {
                 maxActivation = val;
@@ -233,7 +233,7 @@ public class FindCluster2 implements IProblem<INet> {
 
         int y = maxOutputIdx / visualFieldResolution;
         int x = maxOutputIdx - (y * visualFieldResolution);
-        return new ActivationOutputInfo(new Point(x, y), minActivation, maxActivation, hyperNet.getOutputValues());
+        return new ActivationOutputInfo(new Point(x, y), minActivation, maxActivation, hyperNet.getOutputs());
     }
 
 

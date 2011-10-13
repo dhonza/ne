@@ -75,7 +75,7 @@ public class Runner {
                     runnerEA = new GPATRunner(combination);
                 } else if (solver.equals("NEAT")) {
                     initializeNEAT(combination);
-                    runnerEA = new GPATRunner(combination);
+                    runnerEA = new NEATRunner(combination);
                 } else {
                     throw new IllegalStateException("Unknown SOLVER: " + solver + ".");
                 }

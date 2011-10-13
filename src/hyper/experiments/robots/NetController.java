@@ -1,6 +1,5 @@
 package hyper.experiments.robots;
 
-import common.ArrayHelper;
 import common.net.INet;
 import robot.IRobotInterface;
 import robot.controller.IRobotController;
@@ -30,13 +29,13 @@ public class NetController implements IRobotController {
         net.loadInputsNotBias(input);
 //        hyperNet.loadInputs(in);
         net.activate();
-        double[] outputs = net.getOutputValues();
+        double[] outputs = net.getOutputs();
 //        System.out.print(" -> ");
 //        ArrayHelper.printArray(outputs);
 //        System.out.println();
         double left = outputs[0];
-        double right = outputs[outputs.length-1];
-        robot.setWheelSpeed(5*left, 5*right);
+        double right = outputs[outputs.length - 1];
+        robot.setWheelSpeed(5 * left, 5 * right);
     }
 
     public IRobotInterface getRobot() {

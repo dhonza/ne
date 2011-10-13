@@ -133,7 +133,7 @@ public class FindCluster implements IProblem<INet>, IProblemGeneralization<INet>
             hyperNet.activate();
         }
 
-        return new Pattern(in, hyperNet.getOutputValues());
+        return new Pattern(in, hyperNet.getOutputs());
     }
 
     private double evaluateSingleConfiguration(INet hyperNet, int x1, int y1, int x1Big, int y1Big) {
