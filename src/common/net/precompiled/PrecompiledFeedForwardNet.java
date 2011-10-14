@@ -44,12 +44,12 @@ public class PrecompiledFeedForwardNet implements INet {
         return weights.length;
     }
 
-    public void loadInputs(double[] inputs) {
+    public void loadInputsWithBias(double[] inputs) {
         bias = inputs[0];
         System.arraycopy(inputs, 1, this.inputs, 0, inputs.length - 1);
     }
 
-    public void loadInputsNotBias(double[] inputs) {
+    public void loadInputs(double[] inputs) {
         bias = 1.0;
         this.inputs = inputs;
     }

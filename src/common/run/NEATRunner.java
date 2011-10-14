@@ -25,7 +25,7 @@ import java.util.List;
  */
 public class NEATRunner implements EvolutionaryAlgorithmRunner {
     private final ParameterCombination parameters;
-    private final PopulationManager<INet, INet> populationManager;
+    private final PopulationManager<Genome, INet> populationManager;
     private NEAT neat;
 
     public NEATRunner(ParameterCombination parameters) {
@@ -48,7 +48,7 @@ public class NEATRunner implements EvolutionaryAlgorithmRunner {
         extractStats(stats, neat);
     }
 
-    private static PopulationManager<INet, INet> createPopulationManager(ParameterCombination combination) {
+    private static PopulationManager<Genome, INet> createPopulationManager(ParameterCombination combination) {
         boolean parallel = combination.getBoolean("PARALLEL");
         int threads = 1;
         if (parallel) {
@@ -59,16 +59,16 @@ public class NEATRunner implements EvolutionaryAlgorithmRunner {
             }
         }
 
-        List<IGenotypeToPhenotype<INet, INet>> converter = new ArrayList<IGenotypeToPhenotype<INet, INet>>(threads);
+        List<IGenotypeToPhenotype<Genome, INet>> converter = new ArrayList<IGenotypeToPhenotype<Genome, INet>>(threads);
         List<IEvaluable<INet>> evaluator = new ArrayList<IEvaluable<INet>>(threads);
 
         for (int i = (threads - 1); i >= 0; i--) {
-            converter.add(new IdentityConversion<INet>());
+            converter.add(new GenomeConversion());
             IEvaluable<INet> evaluable = EvaluableFactory.createByName(combination);
             evaluator.add(evaluable);
         }
 
-        PopulationManager<INet, INet> populationManager = new PopulationManager<INet, INet>(
+        PopulationManager<Genome, INet> populationManager = new PopulationManager<Genome, INet>(
                 combination, converter, evaluator);
         return populationManager;
     }

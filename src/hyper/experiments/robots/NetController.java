@@ -26,7 +26,7 @@ public class NetController implements IRobotController {
         double[] input = robot.getSensorData();
 //        ArrayHelper.printArray(input);
         net.initSetBias();//TODO zbytecne - prozkoumat a zdokumentovat, co se v tech sitich deje?
-        net.loadInputsNotBias(input);
+        net.loadInputs(input);
 //        hyperNet.loadInputs(in);
         net.activate();
         double[] outputs = net.getOutputs();

@@ -38,7 +38,7 @@ public class BasicNetCPPN implements ICPPN {
             in[cnt++] = to.get(i);
         }
 
-        net.loadInputs(in);
+        net.loadInputsWithBias(in);
         net.reset();
         for (int i = 0; i < 5; i++) {
             net.activate();

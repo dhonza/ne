@@ -26,7 +26,7 @@ public class CompareTester {
         net.initSetBias();
         double[] outputs = null;
         for (double[] input : in) {
-            net.loadInputsNotBias(input);
+            net.loadInputs(input);
             net.reset();
             for (int i = 0; i < 1; i++) {
                 net.activate();

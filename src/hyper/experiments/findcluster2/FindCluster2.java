@@ -204,9 +204,9 @@ public class FindCluster2 implements IProblem<INet> {
             System.exit(1);
         }
 
-        hyperNet.loadInputsNotBias(in);
+        hyperNet.loadInputs(in);
         hyperNet.initSetBias();//TODO zbytecne - prozkoumat a zdokumentovat, co se v tech sitich deje?
-        hyperNet.loadInputsNotBias(in);
+        hyperNet.loadInputs(in);
 //        hyperNet.loadInputs(in);
         return in;
     }

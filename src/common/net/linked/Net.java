@@ -685,13 +685,14 @@ public class Net implements INet, Serializable {
      * @param inputs array of input values, it's preffered to have <i>inputs[0] =
      *               const. </i> for biasing
      */
-    public void loadInputs(double[] inputs) {
+
+    public void loadInputsWithBias(double[] inputs) {
         for (int i = 0; i < numInputs; i++) {
             this.inputs.get(i).setOutput(inputs[i]);
         }
     }
 
-    public void loadInputsNotBias(double[] inputs) {
+    public void loadInputs(double[] inputs) {
         for (int i = 1; i < numInputs; i++) {
             this.inputs.get(i).setOutput(inputs[i - 1]);
         }

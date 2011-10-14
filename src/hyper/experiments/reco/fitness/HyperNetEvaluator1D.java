@@ -30,7 +30,7 @@ public class HyperNetEvaluator1D implements HyperEvaluator1D {
     }
 
     public void loadPatternToInputs(double[] pattern) {
-        hyperNet.loadInputsNotBias(pattern);
+        hyperNet.loadInputs(pattern);
         hyperNet.reset();
     }
 

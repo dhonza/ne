@@ -19,7 +19,7 @@ public class EvaluateXOR implements IEvaluable<Net> {
     public EvaluationInfo evaluate(Net n) {
         double error = 0.0;
         for (int i = 0; i < 4; i++) {
-            n.loadInputs(in[i]);
+            n.loadInputsWithBias(in[i]);
             n.reset();
             activate(n);
             error += Math.abs(out[i] - n.getOutputs()[0]);

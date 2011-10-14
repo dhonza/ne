@@ -766,14 +766,14 @@ public class NeuralNetwork implements Serializable, INet {
         return numOfLinks;
     }
 
-    public void loadInputs(double[] inputs) {
+    public void loadInputsWithBias(double[] inputs) {
         NeuronLayer inputLayer = this.getInputLayer();
         for (int i = 0; i < inputs.length; i++) {
             inputLayer.getNeuron(i).setOutput(inputs[i]);
         }
     }
 
-    public void loadInputsNotBias(double[] inputs) {
+    public void loadInputs(double[] inputs) {
         NeuronLayer inputLayer = this.getInputLayer();
         inputLayer.getNeuron(0).setOutput(1.0);
         for (int i = 0; i < inputs.length; i++) {

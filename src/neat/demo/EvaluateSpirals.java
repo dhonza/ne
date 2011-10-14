@@ -98,7 +98,7 @@ public class EvaluateSpirals implements IEvaluable<Net> {
         double[][] tin = jitter(in);
         double c1 = 0.0, c2 = 0.0;
         for (int i = from; i < size; i++) {
-            net.loadInputs(tin[i]);
+            net.loadInputsWithBias(tin[i]);
             net.reset();
             activate(net);
             o = net.getOutputs();
@@ -107,7 +107,7 @@ public class EvaluateSpirals implements IEvaluable<Net> {
             }
         }
         for (int i = from; i < size; i++) {
-            net.loadInputs(tin[i + size]);
+            net.loadInputsWithBias(tin[i + size]);
             net.reset();
             activate(net);
             o = net.getOutputs();
@@ -132,7 +132,7 @@ public class EvaluateSpirals implements IEvaluable<Net> {
         og.setError(0.0);
         double c1 = 0.0, c2 = 0.0;
         for (int i = from; i < size; i++) {
-            n.loadInputs(in[i]);
+            n.loadInputsWithBias(in[i]);
             n.reset();
             activate(n);
             o = n.getOutputs();
@@ -141,7 +141,7 @@ public class EvaluateSpirals implements IEvaluable<Net> {
             }
         }
         for (int i = from; i < size; i++) {
-            n.loadInputs(in[i + size]);
+            n.loadInputsWithBias(in[i + size]);
             n.reset();
             activate(n);
             o = n.getOutputs();

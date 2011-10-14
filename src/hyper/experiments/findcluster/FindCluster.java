@@ -126,7 +126,7 @@ public class FindCluster implements IProblem<INet>, IProblemGeneralization<INet>
         }
 
         hyperNet.initSetBias();//TODO zbytecne - prozkoumat a zdokumentovat, co se v tech sitich deje?
-        hyperNet.loadInputsNotBias(in);
+        hyperNet.loadInputs(in);
 //        hyperNet.loadInputs(in);
         hyperNet.reset();
         for (int i = 0; i < activations; i++) {

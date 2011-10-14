@@ -18,7 +18,7 @@ public interface INet extends IBlackBox {
 
     int getNumLinks();
 
-    void loadInputsNotBias(double[] inputs);
+    void loadInputsWithBias(double[] inputs);
 
     void activate();
 
