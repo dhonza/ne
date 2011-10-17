@@ -10,5 +10,7 @@ package common.evolution;
 public interface IBlackBox {
     public void loadInputs(double[] inputs);
 
+    public void propagate();
+
     public double[] getOutputs();
 }

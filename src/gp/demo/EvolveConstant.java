@@ -1,9 +1,9 @@
 package gp.demo;
 
 import common.evolution.EvaluationInfo;
+import common.evolution.IBlackBox;
 import common.evolution.IEvaluable;
 import common.pmatrix.ParameterCombination;
-import gp.IGPForest;
 
 /**
  * Created by IntelliJ IDEA.
@@ -12,20 +12,22 @@ import gp.IGPForest;
  * Time: 5:02:46 PM
  * To change this template use File | Settings | File Templates.
  */
-public class EvolveConstant implements IEvaluable<IGPForest> {
+public class EvolveConstant implements IEvaluable<IBlackBox> {
+
     public EvolveConstant(ParameterCombination combination) {
     }
 
-    public EvaluationInfo evaluate(IGPForest forest) {
+    public EvaluationInfo evaluate(IBlackBox forest) {
+        forest.propagate();
         double output = forest.getOutputs()[0];
         return new EvaluationInfo(0.0 - Math.abs(2.1 - output));
     }
 
-    public EvaluationInfo evaluateGeneralization(IGPForest forest) {
+    public EvaluationInfo evaluateGeneralization(IBlackBox forest) {
         return evaluate(forest);
     }
 
-    public void show(IGPForest individual) {
+    public void show(IBlackBox individual) {
     }
 
     public boolean isSolved() {

@@ -467,6 +467,9 @@ public class GEPChromosome implements IGPForest, Comparable, Serializable {
         treeInputs.loadInputs(inputs);
     }
 
+    public void propagate() {
+    }
+
     public double[] getOutputs() {
         double[] outputs = new double[genes.length];
         for (int i = 0; i < genes.length; i++) {

@@ -1,9 +1,9 @@
 package gp.demo;
 
 import common.evolution.EvaluationInfo;
+import common.evolution.IBlackBox;
 import common.evolution.IEvaluable;
 import common.pmatrix.ParameterCombination;
-import gp.IGPForest;
 
 /**
  * This is a simple symbolic regression y = (a^2)/2 + 3a task from the GEP book (chapter 3.4)
@@ -12,7 +12,7 @@ import gp.IGPForest;
  * Date: Jun 18, 2009
  * Time: 5:02:46 PM
  */
-public class SymbolicRegressionGEPBook implements IEvaluable<IGPForest> {
+public class SymbolicRegressionGEPBook implements IEvaluable<IBlackBox> {
     private boolean solved = false;
 
     public SymbolicRegressionGEPBook(ParameterCombination combination) {
@@ -33,11 +33,12 @@ public class SymbolicRegressionGEPBook implements IEvaluable<IGPForest> {
     };
 
 
-    public EvaluationInfo evaluate(IGPForest forest) {
+    public EvaluationInfo evaluate(IBlackBox forest) {
         double sum = 0;
         boolean solved = true;
         for (int i = 0; i < data.length; i++) {
             forest.loadInputs(new double[]{data[i][0]});
+            forest.propagate();
             double output = forest.getOutputs()[0];
             double diff = Math.abs(output - data[i][1]);
             if (diff > 0.01) {
@@ -49,11 +50,11 @@ public class SymbolicRegressionGEPBook implements IEvaluable<IGPForest> {
         return new EvaluationInfo(sum);
     }
 
-    public EvaluationInfo evaluateGeneralization(IGPForest forest) {
+    public EvaluationInfo evaluateGeneralization(IBlackBox forest) {
         return evaluate(forest);
     }
 
-    public void show(IGPForest individual) {
+    public void show(IBlackBox individual) {
     }
 
     public boolean isSolved() {

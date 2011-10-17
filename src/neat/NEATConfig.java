@@ -199,6 +199,8 @@ public class NEATConfig implements Serializable {
     public double elitistProportionPerSpecies = 0.2;
 
     //------------activation functions--------
+    //note: used only by Activation.getRandomWeighted(),
+    //getRandom() uses uniform distribution
     public double activationSigmoidProbability = 0.1;
     public double activationBipolarSigmoidProbability = 0.2;
     public double activationLinearProbability = 0.1;

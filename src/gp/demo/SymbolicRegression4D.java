@@ -1,10 +1,10 @@
 package gp.demo;
 
 import common.evolution.EvaluationInfo;
+import common.evolution.IBlackBox;
 import common.evolution.IEvaluable;
 import common.pmatrix.ParameterCombination;
 import gp.GP;
-import gp.IGPForest;
 
 /**
  * Created by IntelliJ IDEA.
@@ -13,7 +13,7 @@ import gp.IGPForest;
  * Time: 5:02:46 PM
  * Used to "learn" FindCluster 4D substrate.
  */
-public class SymbolicRegression4D implements IEvaluable<IGPForest> {
+public class SymbolicRegression4D implements IEvaluable<IBlackBox> {
     private interface F {
         double f(double x1, double x2, double x3, double x4);
     }
@@ -91,7 +91,7 @@ public class SymbolicRegression4D implements IEvaluable<IGPForest> {
         }
     }
 
-    public EvaluationInfo evaluate(IGPForest forest) {
+    public EvaluationInfo evaluate(IBlackBox forest) {
         double startX = -1.0;
         double endX = 1.0;
         double scaleX = endX - startX;
@@ -107,6 +107,7 @@ public class SymbolicRegression4D implements IEvaluable<IGPForest> {
                         double x3 = startX + i3 * stepX;
                         double x4 = startX + i4 * stepX;
                         forest.loadInputs(new double[]{x1, x2, x3, x4});
+                        forest.propagate();
                         double output = forest.getOutputs()[0];
                         diff = f.f(x1, x2, x3, x4) - output;
 
@@ -126,11 +127,11 @@ public class SymbolicRegression4D implements IEvaluable<IGPForest> {
         return new EvaluationInfo(error);
     }
 
-    public EvaluationInfo evaluateGeneralization(IGPForest forest) {
+    public EvaluationInfo evaluateGeneralization(IBlackBox forest) {
         return evaluate(forest);
     }
 
-    public void show(IGPForest individual) {
+    public void show(IBlackBox individual) {
     }
 
     public boolean isSolved() {

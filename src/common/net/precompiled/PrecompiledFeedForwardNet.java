@@ -54,6 +54,10 @@ public class PrecompiledFeedForwardNet implements INet {
         this.inputs = inputs;
     }
 
+    public void propagate() {
+        activate();
+    }
+
     public void activate() {
         if (activated) {
 //            throw new IllegalStateException("FF precompiled network activated more than once!");

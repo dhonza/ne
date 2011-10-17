@@ -53,6 +53,8 @@ public class ExampleXOR {
         config.distanceC3 = 0.4;
 
         config.mutateAddLink = 0.3;
+//        config.mutateAddLink = 0.8;
+
         config.mutateAddNeuron = 0.1;
 
         config.mutationPower = 10.0;
@@ -62,8 +64,8 @@ public class ExampleXOR {
         config.globalNeuronInnovationAcceptNewRatio = 1.0;
         config.globalNeuronInnovationAttentuationRatio = 0.8;
 
-//        System.out.println("INITIALIZED SEED: " + RND.initializeTime());
-        RND.initialize(8804995495815986L);
+        System.out.println("INITIALIZED SEED: " + RND.initializeTime());
+//        RND.initialize(8804995495815986L);
 
         Net net = new Net(1);
         int[] h = {};

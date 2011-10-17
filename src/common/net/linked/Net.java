@@ -29,6 +29,8 @@ import java.util.List;
 public class Net implements INet, Serializable {
     public static final int INPUT = 1, HIDDEN = 2, OUTPUT = 3;
 
+    public static int ACTIVATION_STEPS = 5;
+
     class NetRuntimeException extends RuntimeException implements Serializable {
         NetRuntimeException() {
         }
@@ -695,6 +697,14 @@ public class Net implements INet, Serializable {
     public void loadInputs(double[] inputs) {
         for (int i = 1; i < numInputs; i++) {
             this.inputs.get(i).setOutput(inputs[i - 1]);
+        }
+    }
+
+    public void propagate() {
+        reset();
+        getBiasNeuron().setOutput(1.0);//just to be sure, better check!
+        for (int i = 1; i < ACTIVATION_STEPS; i++) {
+            activate();
         }
     }
 

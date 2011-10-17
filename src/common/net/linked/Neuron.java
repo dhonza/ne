@@ -49,9 +49,19 @@ public class Neuron implements Serializable {
         SIN,
         COS,
         SQR,
-        SQRT;
+        SQRT,
+        MULT;
+
 
         public static Activation getRandom() {
+//            Activation[] all = new Activation[]{SIGMOID, BIPOLAR_SIGMOID, LINEAR, GAUSS, ABS, SIN, COS, SQR, SQRT, MULT};
+            Activation[] all = new Activation[]{BIPOLAR_SIGMOID, LINEAR, GAUSS, SIN, MULT};
+            return RND.randomChoice(all);
+        }
+
+        public static Activation getRandomWeighted() {
+            System.out.println("NOT ALL NODES IMPLEMENTED!");
+            System.exit(1);
             double r = RND.getDouble();
             double t = NEAT.getConfig().activationSigmoidProbability;
             if (r < t) {
@@ -273,14 +283,27 @@ public class Neuron implements Serializable {
 
     public void computeSum() {
         Link tl;
-        sum = 0.0;
         setUpdated(false);
-        for (int i = 0; i < getIncoming().size(); i++) {
-            tl = getIncoming().get(i);
-            if (tl.isEnabled()) { //only if the Link is enabled
-                sum += tl.getIn().output * tl.getWeight();
-                if (tl.getIn().isUpdated()) {
-                    setUpdated(true);
+        sum = 0.0;
+        if (activation != Activation.MULT) {
+            for (int i = 0; i < getIncoming().size(); i++) {
+                tl = getIncoming().get(i);
+                if (tl.isEnabled()) { //only if the Link is enabled
+                    sum += tl.getIn().output * tl.getWeight();
+                    if (tl.getIn().isUpdated()) {
+                        setUpdated(true);
+                    }
+                }
+            }
+        } else {
+            sum = 1.0;
+            for (int i = 0; i < getIncoming().size(); i++) {
+                tl = getIncoming().get(i);
+                if (tl.isEnabled()) { //only if the Link is enabled
+                    sum *= tl.getIn().output * tl.getWeight();
+                    if (tl.getIn().isUpdated()) {
+                        setUpdated(true);
+                    }
                 }
             }
         }
@@ -291,6 +314,7 @@ public class Neuron implements Serializable {
      * TODO correct
      * Functional value of <i>1/( 1 + exp( -ALPHA/sum ) ) </i>
      */
+
     public void computeOutput() {
         //System.out.println(sum);
         if (isUpdated()) {
@@ -321,6 +345,9 @@ public class Neuron implements Serializable {
                     break;
                 case SQRT:
                     output = Math.sqrt(Math.abs(sum));
+                    break;
+                case MULT://special type sum already contains multiplication of inputs and the weights
+                    output = sum;
                     break;
                 default:
                     System.out.println("Unknown activation funcion: " + activation);

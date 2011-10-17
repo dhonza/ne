@@ -25,7 +25,7 @@ public class XMPPHelper {
         }
         try {
             String hostName = InetAddress.getLocalHost().getHostName();
-            if (hostName.equals("mbp.local") || hostName.startsWith("eduroam")) {
+            if (hostName.equals("mbp.local") || hostName.startsWith("eduroam") || hostName.startsWith("dhcp")) {
                 return;
             }
             message = hostName + ": " + message;

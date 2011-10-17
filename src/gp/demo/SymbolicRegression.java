@@ -104,6 +104,7 @@ public class SymbolicRegression implements IEvaluable<IBlackBox> {
         for (int i0 = 0; i0 < steps; i0++) {
             double x = startX + i0 * stepX;
             forest.loadInputs(new double[]{x});
+            forest.propagate();
             double output = forest.getOutputs()[0];
             diff = f.f(x) - output;
 

@@ -1,17 +1,17 @@
 package gp.demo;
 
 import common.evolution.EvaluationInfo;
+import common.evolution.IBlackBox;
 import common.evolution.IEvaluable;
 import common.pmatrix.ParameterCombination;
 import gp.GP;
-import gp.IGPForest;
 
 /**
  * Created by IntelliJ IDEA.
  * User: drchaj1
  * Tests for 2 inputs.
  */
-public class SymbolicRegression2D implements IEvaluable<IGPForest> {
+public class SymbolicRegression2D implements IEvaluable<IBlackBox> {
     private interface F {
         double f(double x, double y);
     }
@@ -94,7 +94,7 @@ public class SymbolicRegression2D implements IEvaluable<IGPForest> {
         }
     }
 
-    public EvaluationInfo evaluate(IGPForest forest) {
+    public EvaluationInfo evaluate(IBlackBox forest) {
         double startX = -10.0;
         double endX = 10.0;
         double scaleX = endX - startX;
@@ -106,6 +106,7 @@ public class SymbolicRegression2D implements IEvaluable<IGPForest> {
                 double x = startX + i0 * stepX;
                 double y = startX + i1 * stepX;
                 forest.loadInputs(new double[]{x, y});
+                forest.propagate();
                 double output = forest.getOutputs()[0];
                 diff = f.f(x, y) - output;
 
@@ -123,11 +124,11 @@ public class SymbolicRegression2D implements IEvaluable<IGPForest> {
         return new EvaluationInfo(error);
     }
 
-    public EvaluationInfo evaluateGeneralization(IGPForest forest) {
+    public EvaluationInfo evaluateGeneralization(IBlackBox forest) {
         return evaluate(forest);
     }
 
-    public void show(IGPForest individual) {
+    public void show(IBlackBox individual) {
     }
 
     public boolean isSolved() {

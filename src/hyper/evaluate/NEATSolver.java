@@ -5,7 +5,6 @@ import common.evolution.PopulationManager;
 import common.evolution.SolvedStopCondition;
 import common.net.INet;
 import common.net.linked.Net;
-import common.net.linked.Neuron;
 import common.pmatrix.ParameterCombination;
 import common.pmatrix.Utils;
 import common.stats.Stats;
@@ -39,9 +38,10 @@ public class NEATSolver extends AbstractSolver {
         neat = new NEAT();
         NEATConfig config = NEAT.getConfig();
         config.targetFitness = problem.getTargetFitness();
+        Net.ACTIVATION_STEPS = parameters.getInteger("NET.ACTIVATION_STEPS");
         Utils.setParameters(parameters, config, "NEAT");
 
-        population = new FitnessSharingPopulation<INet>(populationManager, getPrototype(populationManager));
+        population = new FitnessSharingPopulation<INet>(populationManager, getPrototype(populationManager, parameters));
 //        population = new DeterministicCrowdingPopulation<INet>(populationManager, getPrototype(populationManager));
 
         neat.setPopulation(population);
@@ -55,12 +55,11 @@ public class NEATSolver extends AbstractSolver {
         solver.addStopCondition(new SolvedStopCondition(populationManager));
     }
 
-    private static Genome getPrototype(PopulationManager<Genome, INet> populationManager) {
+    private static Genome getPrototype(PopulationManager<Genome, INet> populationManager, ParameterCombination parameters) {
         Net net = new Net(1);
         net.createFeedForward(populationManager.getNumberOfInputs(), new int[]{}, populationManager.getNumberOfOutputs());
         for (int i = 0; i < populationManager.getNumberOfOutputs(); i++) {
-            net.getOutputNodes().get(i).setActivation(Neuron.Activation.BIPOLAR_SIGMOID);
-//            net.getOutputs().get(i).setActivation(Neuron.Activation.LINEAR);
+            net.getOutputNodes().get(i).setActivation(OutputNeuronTypeFactory.getOutputNeuron(parameters));
         }
         net.randomizeWeights(-0.3, 0.3);
         return new Genome(net);

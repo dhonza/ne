@@ -781,6 +781,10 @@ public class NeuralNetwork implements Serializable, INet {
         }
     }
 
+    public void propagate() {
+        activate();
+    }
+
     public void activate() {
         if (activated) {
             return;

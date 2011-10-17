@@ -102,6 +102,9 @@ public class AACForest implements IGPForest, Comparable, Serializable {
         treeInputs.loadInputs(inputs);
     }
 
+    public void propagate() {
+    }
+
     public double[] getOutputs() {
         double[] outputs = new double[trees.length];
         for (int i = 0; i < trees.length; i++) {

@@ -36,6 +36,7 @@ public class NEATBasicProgressPrinter implements IProgressPrinter {
                 " NEW CHAMP:" + pop.getBestSoFar().getFitness() +
                         " BSFL:" + pop.getBestSoFar().getNet().getNumLinks() +
                         " BSFHN:" + pop.getBestSoFar().getNet().getNumHidden());
+        System.out.println(pop.getBestSoFarNet());
     }
 
     public void printFinished() {

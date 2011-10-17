@@ -61,6 +61,7 @@ public class Maze<P extends IBlackBox> implements IEvaluable<P> {
             }
             readInputs(inputs);
             forest.loadInputs(inputs);
+            forest.propagate();
             double output = forest.getOutputs()[0];
             if (output < -0.5) {
                 rotateL();
