@@ -5,6 +5,7 @@ import common.evolution.PopulationManager;
 import common.evolution.SolvedStopCondition;
 import common.net.INet;
 import common.net.linked.Net;
+import common.net.linked.Neuron;
 import common.pmatrix.ParameterCombination;
 import common.pmatrix.Utils;
 import common.stats.Stats;
@@ -37,6 +38,7 @@ public class NEATSolver extends AbstractSolver {
     private void init() {
         neat = new NEAT();
         NEATConfig config = NEAT.getConfig();
+        Neuron.Activation.setFunctions(parameters);
         config.targetFitness = problem.getTargetFitness();
         Net.ACTIVATION_STEPS = parameters.getInteger("NET.ACTIVATION_STEPS");
         Utils.setParameters(parameters, config, "NEAT");

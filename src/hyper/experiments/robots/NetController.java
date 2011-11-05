@@ -1,8 +1,7 @@
 package hyper.experiments.robots;
 
-import common.net.INet;
-import robot.IRobotInterface;
-import robot.controller.IRobotController;
+//import robot.IRobotInterface;
+//import robot.controller.IRobotController;
 
 /**
  * Created by IntelliJ IDEA.
@@ -11,6 +10,14 @@ import robot.controller.IRobotController;
  * Time: 4:59 PM
  * To change this template use File | Settings | File Templates.
  */
+
+// This legacy VIVAE code has been commented out. Remove after rewriting to new interfaces!
+
+public class NetController {
+
+}
+
+/*
 public class NetController implements IRobotController {
     private IRobotInterface robot;
     private INet net;
@@ -42,3 +49,4 @@ public class NetController implements IRobotController {
         return robot;
     }
 }
+*/

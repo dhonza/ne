@@ -1,26 +1,9 @@
 package hyper.experiments.robots;
 
-import common.evolution.EvaluationInfo;
-import common.net.INet;
-import common.pmatrix.ParameterCombination;
-import hyper.evaluate.IProblem;
-import hyper.evaluate.printer.ReportStorage;
-import hyper.experiments.robots.distance.NetControlledRobotDistance;
-import hyper.experiments.robots.friction.NetControlledRobotFriction;
-import hyper.substrate.ISubstrate;
-import robot.IRobotInterface;
-import robot.RobotWithSensors;
-import robot.VivaeControllerAdapter;
-import robot.VivaeRobot;
-import vivae.arena.Arena;
-import vivae.arena.parts.Active;
-import vivae.fitness.AverageSpeed;
-import vivae.fitness.FitnessFunction;
-
-import javax.swing.*;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Vector;
+//import robot.IRobotInterface;
+//import robot.RobotWithSensors;
+//import robot.VivaeControllerAdapter;
+//import robot.VivaeRobot;
 
 /**
  * Created by IntelliJ IDEA.
@@ -29,6 +12,13 @@ import java.util.Vector;
  * Time: 3:50 PM
  * To change this template use File | Settings | File Templates.
  */
+
+// This legacy VIVAE code has been commented out. Remove after rewriting to new interfaces!
+
+public class Robots {
+
+}
+/*
 public class Robots implements IProblem<INet> {
     private Arena arena = null;
     private Vector<Active> agents = null;
@@ -147,3 +137,4 @@ public class Robots implements IProblem<INet> {
         arena.init();
     }
 }
+*/

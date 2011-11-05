@@ -1,6 +1,8 @@
 package common.net.linked;
 
 import common.RND;
+import common.pmatrix.ParameterCombination;
+import common.pmatrix.Utils;
 import neat.NEAT;
 
 import java.io.Serializable;
@@ -53,10 +55,20 @@ public class Neuron implements Serializable {
         MULT;
 
 
+        private static Activation[] functions = new Activation[]{BIPOLAR_SIGMOID};
+
+        public static void setFunctions(ParameterCombination parameters) {
+            String classNameList = parameters.getString("NEAT.FUNCTIONS");
+            String[] classNames = Utils.extractIdentificators(classNameList);
+            functions = new Activation[classNames.length];
+            for (int i = 0; i < classNames.length; i++) {
+                functions[i] = Activation.valueOf(classNames[i]);
+            }
+
+        }
+
         public static Activation getRandom() {
-//            Activation[] all = new Activation[]{SIGMOID, BIPOLAR_SIGMOID, LINEAR, GAUSS, ABS, SIN, COS, SQR, SQRT, MULT};
-            Activation[] all = new Activation[]{BIPOLAR_SIGMOID, LINEAR, GAUSS, SIN, MULT};
-            return RND.randomChoice(all);
+            return RND.randomChoice(functions);
         }
 
         public static Activation getRandomWeighted() {

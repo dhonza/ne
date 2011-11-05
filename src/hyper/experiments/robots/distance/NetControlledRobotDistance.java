@@ -8,27 +8,19 @@
  */
 package hyper.experiments.robots.distance;
 
-import net.phys2d.math.Vector2f;
-import net.phys2d.raw.Body;
-import net.phys2d.raw.World;
-import net.phys2d.raw.shapes.Box;
-import robot.RobotWithSensors;
-import vivae.arena.Arena;
-import vivae.arena.parts.Robot;
-import vivae.arena.parts.VivaeObject;
-import vivae.arena.parts.sensors.DistanceSensor;
-import vivae.arena.parts.sensors.Sensor;
-import vivae.util.Util;
-
-import java.awt.*;
-import java.awt.geom.AffineTransform;
-import java.awt.geom.Rectangle2D;
-import java.util.HashMap;
-import java.util.Vector;
+//import robot.RobotWithSensors;
+//import vivae.arena.parts.Robot;
 
 /**
  * @author HKou
  */
+
+// This legacy VIVAE code has been commented out. Remove after rewriting to new interfaces!
+
+public class NetControlledRobotDistance {
+
+}
+/*
 public class NetControlledRobotDistance extends RobotWithSensors {
 
     protected double[] sensoryData;
@@ -267,3 +259,4 @@ public class NetControlledRobotDistance extends RobotWithSensors {
     }
 }
 
+*/

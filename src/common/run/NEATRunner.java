@@ -3,6 +3,7 @@ package common.run;
 import common.evolution.*;
 import common.net.INet;
 import common.net.linked.Net;
+import common.net.linked.Neuron;
 import common.pmatrix.ParameterCombination;
 import common.pmatrix.Utils;
 import common.stats.Stats;
@@ -75,6 +76,7 @@ public class NEATRunner implements EvolutionaryAlgorithmRunner {
     private static NEAT createAlgorithm(ParameterCombination parameters, PopulationManager populationManager) {
         NEAT neat = new NEAT();
         NEATConfig config = NEAT.getConfig();
+        Neuron.Activation.setFunctions(parameters);
         config.targetFitness = parameters.getDouble("GP.TARGET_FITNESS");
         Net.ACTIVATION_STEPS = parameters.getInteger("NET.ACTIVATION_STEPS");
         Utils.setParameters(parameters, config, "NEAT");
