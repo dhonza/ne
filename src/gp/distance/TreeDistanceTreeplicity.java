@@ -35,25 +35,10 @@ public class TreeDistanceTreeplicity implements IDistance<Tree> {
             return distance;
         }
 
-        INode shorter;
-        INode longer;
+        assert a.getArity() == b.getArity();
 
-        if (a.getArity() < b.getArity()) {
-            shorter = a;
-            longer = b;
-        } else {
-            shorter = b;
-            longer = a;
-        }
-
-        for (int i = 0; i < shorter.getArity(); i++) {
+        for (int i = 0; i < a.getArity(); i++) {
             distance += distanceRecursive(a.getChild(i), b.getChild(i), depth + 1);
-        }
-
-        for (int i = shorter.getArity(); i < longer.getArity(); i++) {
-            //TODO otestovat ruzne verze viz ATTreeDistanceSimpleRecurrent7
-            //hlavne treeplicity(longer.getChild(i), 0);
-            distance += treeplicity(longer.getChild(i), depth + 1);
         }
 
         return distance;

@@ -26,20 +26,11 @@ public class TreeDistanceOnlyRest2 implements IDistance<Tree> {
             return distance;
         }
 
-        int shorter;
-        int rest;
-        if (a.getArity() < b.getArity()) {
-            shorter = a.getArity();
-            rest = b.getArity() - shorter;
-        } else {
-            shorter = b.getArity();
-            rest = a.getArity() - shorter;
-        }
+        assert a.getArity() == b.getArity();
 
-        for (int i = 0; i < shorter; i++) {
+        for (int i = 0; i < a.getArity(); i++) {
             distance += distanceRecursive(a.getChild(i), b.getChild(i));
         }
-        distance += rest;
 
         return distance;
     }

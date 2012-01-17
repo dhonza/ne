@@ -4,10 +4,7 @@ import common.evolution.IDistance;
 import common.pmatrix.ParameterCombination;
 import gep.GEPChromosomeDistance;
 import gp.ForestDistance;
-import gp.distance.TreeDistanceOnlyRest2;
-import gp.distance.TreeDistanceRandom;
-import gp.distance.TreeDistanceTreeplicity;
-import gp.distance.TreeDistanceTreeplicity2;
+import gp.distance.*;
 import gpaac.AACForestDistance;
 import gpat.ATForestDistance;
 import gpat.distance.*;
@@ -51,6 +48,8 @@ public class DistanceFactory {
                     return new ForestDistance(new TreeDistanceTreeplicity(parameters));
                 } else if (parameters.getString("GP.DISTANCE").equals("TREEP2")) {
                     return new ForestDistance(new TreeDistanceTreeplicity2(parameters));
+                } else if (parameters.getString("GP.DISTANCE").equals("GENERAL")) {
+                    return new ForestDistance(new TreeDistanceGeneral(parameters));
                 } else {
                     throw new IllegalStateException("GP.DISTANCE: " + parameters.getString("GP.DISTANCE"));
                 }

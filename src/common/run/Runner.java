@@ -28,7 +28,7 @@ import java.io.File;
 public class Runner {
     public static void main(String[] args) {
         long seed = RND.initializeTime();
-//        long seed = 1321410388649375013L;
+//        long seed = 12341957678627684L;
         System.out.println("INITIALIZED SEED: " + seed);
         RND.initialize(seed);
 
