@@ -22,7 +22,10 @@ public class NodeCollection implements Serializable {
     final protected INode[] all;
     protected Map<Integer, List<INode>> nodesPerArity;
 
+    final protected int numOfInputs;
+
     public NodeCollection(INode[] functions, INode[] terminals, int numOfInputs) {
+        this.numOfInputs = numOfInputs;
         this.functions = functions.clone();
         this.terminals = addInputs(terminals, numOfInputs);
         this.all = new INode[this.functions.length + this.terminals.length];
@@ -75,5 +78,9 @@ public class NodeCollection implements Serializable {
 
     public INode[] getTerminals() {
         return terminals.clone();
+    }
+
+    public int getNumOfInputs() {
+        return numOfInputs;
     }
 }

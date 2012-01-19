@@ -19,7 +19,7 @@ function run {
 
 run "GP" "kovarik:~/nepack1" "regression" "1D-1"
 run "GP" "drchal:~/nepack2" "regression" "2D-1"
-run "GP" "drchal:~/nepack3" "regression" "3D-1"
+run "GP" "kovarik:~/nepack3" "regression" "3D-1"
 run "GP" "drchal:~/nepack4" "regression" "4D-1a"
 run "GP" "kovarik:~/nepack5" "regression" "4D-1b"
 run "GP" "drchal:~/nepack6" "maze" "maze-1"

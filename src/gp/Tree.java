@@ -21,6 +21,8 @@ public class Tree implements Serializable {
 
     private String origin = "NEW";
 
+    private NodeCollection nodeCollection;
+
     transient private List<INode> nodes = new ArrayList<INode>();
     transient private Map<INode, INode> ancestors = new HashMap<INode, INode>();
 
@@ -32,8 +34,12 @@ public class Tree implements Serializable {
         return origin;
     }
 
+    public Tree(NodeCollection nodeCollection) {
+        this.nodeCollection = nodeCollection;
+    }
+
     public static Tree createRandom(NodeCollection nodeCollection) {
-        Tree tree = new Tree();
+        Tree tree = new Tree(nodeCollection);
         tree.root = createRandomSubtree(nodeCollection, 0);
         return tree;
     }
@@ -64,7 +70,7 @@ public class Tree implements Serializable {
     public Tree copy() {
         clear();
 
-        Tree mutated = new Tree();
+        Tree mutated = new Tree(nodeCollection);
         mutated.origin = "ELITE";
         mutated.root = root.copySubtree();
         return mutated;
@@ -87,7 +93,7 @@ public class Tree implements Serializable {
 
         INode newNode = prototype.create(mutatedNode.getDepth(), mutatedNode.getChildren());
 
-        Tree mutated = new Tree();
+        Tree mutated = new Tree(nodeCollection);
         mutated.origin = "NODE";
         mutated.root = replaceAncestors(mutatedNodeAncestor, mutatedNode, newNode);
         return mutated;
@@ -103,7 +109,7 @@ public class Tree implements Serializable {
         INode mutatedNodeAncestor = ancestors.get(mutatedNode);
         INode newSubtree;
 
-        Tree mutated = new Tree();
+        Tree mutated = new Tree(nodeCollection);
 
         if (mutatedNode instanceof Random && RND.getDouble() < GP.MUTATION_CAUCHY_PROBABILITY) {
             mutated.origin = "CAUCHY";
@@ -180,6 +186,10 @@ public class Tree implements Serializable {
             return 0.0;
         }
         return aritySum / nodesMinusLeaves;
+    }
+
+    public int getNumOfInputs() {
+        return nodeCollection.getNumOfInputs();
     }
 
     public int getDepth() {

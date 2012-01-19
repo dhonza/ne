@@ -50,6 +50,10 @@ public class DistanceFactory {
                     return new ForestDistance(new TreeDistanceTreeplicity2(parameters));
                 } else if (parameters.getString("GP.DISTANCE").equals("GENERAL")) {
                     return new ForestDistance(new TreeDistanceGeneral(parameters));
+                } else if (parameters.getString("GP.DISTANCE").equals("NODES")) {
+                    return new ForestDistance(new TreeDistanceNodes());
+                } else if (parameters.getString("GP.DISTANCE").equals("ISO")) {
+                    return new ForestDistance(new TreeDistanceIsomorphs());
                 } else {
                     throw new IllegalStateException("GP.DISTANCE: " + parameters.getString("GP.DISTANCE"));
                 }
