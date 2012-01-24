@@ -24,9 +24,9 @@ import java.io.File;
  * To change this template use File | Settings | File Templates.
  */
 public class Player {
-    static String cfgFile = "cfg/robots/experiment.properties";
-    //        String aCPPNFile = "../exp/110109123434_1/bestCPPN_001_001.xml";
-    static String aCPPNFile = "bestCPPN_001_001.xml";
+    static String cfgFile = "cfg/hyper/gphyper.properties";
+    static String aCPPNFile = "../exp/HGP_robo_5b/bestCPPN_001_003.xml";
+//    static String aCPPNFile = "bestCPPN_001_001.xml";
 
     public static void play() {
         ParameterMatrixManager manager = ParameterMatrixStorage.load(new File(cfgFile));

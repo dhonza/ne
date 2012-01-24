@@ -23,8 +23,10 @@ sortDataByParams::usage = "sortDataByParams[data,paramOrder] sorts configuration
 sortConfigurationResults::usage = "sortConfigurationResults"
 
 printAsTable::usage = "printAsTable"
+printBooleanValueAsTable::usage = "printBooleanValueAsTable"
 printBooleanRanksAsTable::usage = "printBooleanRanksAsTable"
 plotBooleanAsBarChart::usage = "plotBooleanAsBarChart"
+plotBooleanAsBarChartPub::usage = "plotBooleanAsBarChartPub"
 plotAsBoxWhiskerChart::usage = "plotAsBoxWhiskerChart"
 plotAsHistograms::usage = "plotAsSmoothHistograms"
 
@@ -257,6 +259,7 @@ sortConfigurationResults[data_,label_,statName_,number_:All,opts:OptionsPattern[
 (* -------------------------------------------------------------------------------------------------------- *)
 (* TABLES ------------------------------------------------------------------------------------------------- *)
 (* -------------------------------------------------------------------------------------------------------- *)
+(* Prints parameters *)
 printAsTable[data_,paramNames_List] :=
     Grid[
         Transpose@{
@@ -264,6 +267,21 @@ printAsTable[data_,paramNames_List] :=
             {Style["PARAM FILE",Bold]}~Join~(StringReplace[#,PREFIX->""]&/@data[[All,idxPFILE]]),
             Sequence@@(({Style[#,Bold]}~Join~paramValuesForData[data,#])& /@ paramNames)
         },Frame->All]
+
+(* Prints results *)
+(* Other possibility is two set Operation -> Total *)
+Options[printBooleanValueAsTable] = {Operation -> (100*Mean[#]&)};
+printBooleanValueAsTable[data_,paramName_,OptionsPattern[]] :=
+    Module[ {labels,sum},
+        labels = labelsForData[data];
+        sum = OptionValue[Operation][resultsForConfiguration[#,paramName]]&/@data;
+    	Grid[
+        	Transpose@{
+            	{Style["ID",Bold]}~Join~labels,
+            	{Style["PARAM FILE",Bold]}~Join~(StringReplace[#,PREFIX->""]&/@data[[All,idxPFILE]]),
+            	{Style[paramName,Bold]}~Join~sum
+        	},Frame->All]       
+    ]
 
 (* Computes ranks averaging the same values: assignMeanRanks[{10, 2, 10, 4, 5, 10, 4}] gives {6, 1, 6, 5/2, 4, 6, 5/2} *)
 assignMeanRanks[values_List] :=
@@ -298,8 +316,22 @@ printBooleanRanksAsTable[data_,paramName_,groupSize_,OptionsPattern[]]:=
 
 CHOSEN2 = {Null,Null}
 
-(* Other possibility is two set Operation -> Total *)
-Options[plotBooleanAsBarChart] = {Operation -> (100*Mean[#]&)};
+(* Other possibility is to set Operation -> Total *)
+Options[plotBooleanAsBarChartPub] = {Operation -> (100*Mean[#]&)};
+plotBooleanAsBarChartPub[data_,paramName_,numOfColors_:1,OptionsPattern[]] :=
+    Module[ {colors,labels,labelPlacement,sum,barLabels},
+        (* Prepare colors *)
+        CHOSEN2 = {Null,Null};
+        colors = listOfColors[numOfColors];
+        labels = labelsForData[data];
+        labels = Grid[{{"G"},{"P"},{1},{2}},Spacings->{2,0}]&/@data;
+        labelPlacement = Placed[Style[#,FontSize->15]&/@labels,Axis];
+        sum = OptionValue[Operation][resultsForConfiguration[#,paramName]]&/@data;
+        Print[sum];
+        barLabels = (Placed[Style[Grid[{{#1}},Background->White],FontSize->13],Above]&);        
+ 		BarChart[sum,LabelingFunction->barLabels,ChartLabels->labelPlacement,ChartStyle->colors,ImageSize->{{700},{1600}},AxesStyle->Directive[15],AspectRatio->0.5/GoldenRatio]            
+    ]
+
 plotBooleanAsBarChart[data_,paramName_,numOfColors_:1,OptionsPattern[]] :=
     Module[ {colors,labels,labelPlacement,sum,buttons},
         (* Prepare colors *)

@@ -54,6 +54,8 @@ public class DistanceFactory {
                     return new ForestDistance(new TreeDistanceNodes());
                 } else if (parameters.getString("GP.DISTANCE").equals("ISO")) {
                     return new ForestDistance(new TreeDistanceIsomorphs());
+                } else if (parameters.getString("GP.DISTANCE").equals("PHENO")) {
+                    return new ForestDistance(new TreeDistancePhenotypic(parameters));
                 } else {
                     throw new IllegalStateException("GP.DISTANCE: " + parameters.getString("GP.DISTANCE"));
                 }

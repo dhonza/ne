@@ -1,0 +1,26 @@
+#!/bin/bash
+
+if [ $# != 2 ] ; then
+    echo "usage: "$0" PREFIX NAME"
+    exit
+fi
+
+PREFIX="${1}"
+NAME="${2}"
+NEDIR=~/java/ne
+GPDEMOCFG=${NEDIR}/cfg/demo/gpdemo.properties
+
+
+function run {
+    sed -i "" "1s/.*/INCLUDE = "${3}"\/"${4}"\.properties/" ${GPDEMOCFG}
+    ./nepackage ${1} ${PREFIX}"_"${4}_${NAME}
+    ./runssh ${2}
+}
+
+run "GP" "pilny:~/nepack1" "regression" "1D-1"
+run "GP" "pilny:~/nepack2" "regression" "2D-1"
+run "GP" "pilny:~/nepack3" "regression" "3D-1"
+run "GP" "pilny:~/nepack4" "regression" "4D-1a"
+run "GP" "pilny:~/nepack5" "regression" "4D-1b"
+run "GP" "pilny:~/nepack6" "maze" "maze-1"
+run "GP" "pilny:~/nepack7" "maze" "maze-2"

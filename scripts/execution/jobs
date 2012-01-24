@@ -8,7 +8,7 @@ BBLUE="\x1B[34;1m"
 
 export JOBLIST=~/java/exp/jobs.txt
 
-echo -e ${BBLUE}"MACHINE  \tCFG\tEXP\tNAME"${NORMAL}
+echo -e ${BBLUE}"MACHINE  \tCFG\tEXP\tNAME\tDIR"${NORMAL}
 
 while read line
 do
@@ -23,8 +23,8 @@ do
     C2=`echo "${INFO}" | cut -d " " -f 2`
     C3=`echo "${INFO}" | cut -d " " -f 3`
     if [ ${C1} == "FINISHED" ] ; then
-	echo -e "\t"${GREEN}FINISHED"\t"${NORMAL}${C2}
+	echo -e "\t"${GREEN}FINISHED"\t"${NORMAL}${C2}"\t"${line}
     else
-	echo -e "\t"${C1}"\t"${C2}"\t"${C3}
+	echo -e "\t"${C1}"\t"${C2}"\t"${C3}"\t"${line}
     fi
 done < ${JOBLIST}

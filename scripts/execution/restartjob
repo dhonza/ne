@@ -1,0 +1,29 @@
+#!/bin/bash
+
+export JOBLIST=~/java/exp/jobs.txt
+
+if [ $# != 1 ] ; then
+    echo usage: runssh machine[:remote_dir]
+    exit
+fi
+
+MACHINE=`echo ${1} | cut -d ":" -f 1`
+RDIR=`echo ${1} | cut -d ":" -f 2`
+
+if [ ${MACHINE} == ${RDIR} ] ; then
+    RDIR="."
+    TDIR=""
+else
+    TDIR=${RDIR}
+fi
+
+echo Running on ${1} ...
+
+echo " running ..."
+ssh -n -f "${MACHINE}" "sh -c \"cd ${RDIR}; cd nepack; nohup ./run > /dev/null 2>&1 &\""
+
+TFILE="/tmp/$(basename $0).$$.tmp"
+cp ${JOBLIST} ${TFILE}
+echo ${1} >> ${TFILE}
+sort -u ${TFILE} > ${JOBLIST}
+rm ${TFILE}
