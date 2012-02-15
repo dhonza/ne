@@ -54,16 +54,48 @@ public class ParameterCombination implements Iterable<String>, Serializable {
         return (Double) get(name, Double.class);
     }
 
+    public double getDouble(String name, double def) {
+        if (contains(name)) {
+            return (Double) get(name, Double.class);
+        } else {
+            return def;
+        }
+    }
+
     public int getInteger(String name) {
         return (Integer) get(name, Integer.class);
+    }
+
+    public int getInteger(String name, int def) {
+        if (contains(name)) {
+            return (Integer) get(name, Integer.class);
+        } else {
+            return def;
+        }
     }
 
     public boolean getBoolean(String name) {
         return (Boolean) get(name, Boolean.class);
     }
 
+    public boolean getBoolean(String name, boolean def) {
+        if (contains(name)) {
+            return (Boolean) get(name, Boolean.class);
+        } else {
+            return def;
+        }
+    }
+
     public String getString(String name) {
         return (String) get(name, String.class);
+    }
+
+    public String getString(String name, String def) {
+        if (contains(def)) {
+            return (String) get(name, String.class);
+        } else {
+            return def;
+        }
     }
 
     public String getAsString(String name) {

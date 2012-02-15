@@ -137,6 +137,7 @@ public class FindCluster implements IProblem<INet>, IProblemGeneralization<INet>
     }
 
     private double evaluateSingleConfiguration(INet hyperNet, int x1, int y1, int x1Big, int y1Big) {
+//        System.out.println("POS: " + x1 + " " + y1 + " " + x1Big + " " + y1Big);
         double[] outputs = evaluateNetForSingleConfiguration(hyperNet, x1, y1, x1Big, y1Big).out;
 
         double largestValue = -Integer.MAX_VALUE;
@@ -221,8 +222,6 @@ public class FindCluster implements IProblem<INet>, IProblemGeneralization<INet>
         if (fitness >= maxFitness * fitnessThreshold) {//original setting
             solved = true;
         }
-
-
         Map<String, Object> infoMap = new LinkedHashMap<String, Object>();
         infoMap.put("AVG_DISTANCE", computeAverageDistance());
 

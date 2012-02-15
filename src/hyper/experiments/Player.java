@@ -1,9 +1,8 @@
 package hyper.experiments;
 
+import common.RND;
 import common.evolution.IGenotypeToPhenotype;
-import common.mathematica.MathematicaUtils;
 import common.net.INet;
-import common.net.linked.Net;
 import common.pmatrix.ParameterCombination;
 import common.pmatrix.ParameterMatrixManager;
 import common.pmatrix.ParameterMatrixStorage;
@@ -25,10 +24,11 @@ import java.io.File;
  */
 public class Player {
     static String cfgFile = "cfg/hyper/gphyper.properties";
-    static String aCPPNFile = "../exp/HGP_robo_5b/bestCPPN_001_003.xml";
+    static String aCPPNFile = "../exp/120215152533_1/bestCPPN_001_001.xml";
 //    static String aCPPNFile = "bestCPPN_001_001.xml";
 
     public static void play() {
+        RND.initialize();
         ParameterMatrixManager manager = ParameterMatrixStorage.load(new File(cfgFile));
         for (ParameterCombination combination : manager) {
             Object genome = GenomeStorage.loadGenome(combination, aCPPNFile);
@@ -42,7 +42,7 @@ public class Player {
 
             INet net = converter.transform(genome);
             System.out.println(net);
-            MathematicaUtils.printMatrixMathematica(((Net) net).toWeightMatrix());
+//            MathematicaUtils.printMatrixMathematica(((Net) net).toWeightMatrix());
 
             problem.show(net);
         }

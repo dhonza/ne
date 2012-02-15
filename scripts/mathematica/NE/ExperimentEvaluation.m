@@ -11,11 +11,14 @@ readAllFiles::usage = "readAllFiles[{dir1, dir2, ...},{labelForConfig1, ...}] re
     {paramName1\[Rule]paramValue1, paramName2\[Rule]paramValue2, ...}}.
      If labels are not given assigns numbers."
 assignLabelsByParameters::usage = "assignLabelsByParameters replaces current labels with labels given by parameters"
+extractParameters::usage = "extractParameters"
+replaceLabels::usage = "replaceLabels"
 selectData::usage = "selectData[data, paramRule] selects only experiments having given parameter value (given by paramRule), param rules are in form:
 	{ParamA -> Value1, AndParamB -> {Value2 , OrValue3}}."    
 removeData::usage = "removeData works similar to selectData, but removes experiments" 
 saveData::usage = "saveData"
 keepOnlyBest::usage = "keepOnlyBest"
+aggregateBoolean::usage = "aggregateBoolean"
 
 changingParameters::usage = "changingParameters"
 sortDataByParams::usage = "sortDataByParams[data,paramOrder] sorts configuration in data by given parameters, paramOrder is a 
@@ -93,7 +96,8 @@ labelsForData[data_] :=
 
 (* Returns a list of values of parameters given by a name for a single configuration. Nonexisting values are replaced by "NONE" string. *)
 paramValuesForConfiguration[cfg_,paramNames_List] :=
-    ((Cases[cfg[[idxPARAMS]],(#->x_)->x]~Join~{"NONE"})[[1]])&/@paramNames
+(*    ((Cases[cfg[[idxPARAMS]],(#->x_)->x]~Join~{"NONE"})[[1]])&/@paramNames*)
+    ((Cases[cfg[[idxPARAMS]],(#->x_)->x]~Join~{""})[[1]])&/@paramNames
 
 (* Returns a list of values of a single parameter given by a name for a all configurations. *)
 paramValuesForData[data_,paramName_] :=
@@ -143,7 +147,7 @@ readAllFiles[dirs_List,labels_:Null,OptionsPattern[]] :=
     ]
     
 assignLabelsByParameters[data_,paramNames_,replacementRules_:{}] :=
-    Module[ {values,newData},
+    Module[ {values},
         values = Replace[paramNames,#[[idxPARAMS]]~Join~{_ -> Null},1] & /@ data;        
         (* Remove missing parameters *)
         values = Select[#, (# =!= Null)&]& /@ values;
@@ -158,8 +162,22 @@ assignLabelsByParameters[data_,paramNames_,replacementRules_:{}] :=
         
         (* Insert underscores and join to strings *)
         values = StringJoin[Riffle[#,"_"]]& /@ values;
+        replaceLabels[data,values]
+    ]
+
+extractParameters[data_,params_] :=
+    Module[ {paramNames,values,replacement},
+    	paramNames = params[[All,1]];
+        values = Replace[paramNames,#[[idxPARAMS]]~Join~{_ -> Null},1] & /@ data;        
+        values = Map[ToString,values,{2}];
+        replacement = params[[All,2]];
+        MapThread[(StringReplace[#1,#2]&),{#,replacement}]&/@values        
+    ]
+
+replaceLabels[data_,labels_] :=
+    Module[ {newData},
         newData = data;
-        newData[[All,1]] = values;
+        newData[[All,1]] = labels;
         newData
     ]
 
@@ -229,6 +247,27 @@ changingParameters[data_] :=
         allParams = (Union@@(#[[idxPARAMS]]&/@ data))/.(x_->_)->x;
         Select[Tally[allParams],#[[2]]>1&][[All,1]]
     ]
+
+(* -------------------------------------------------------------------------------------------------------- *)
+(* AGGREGATE DATA ----------------------------------------------------------------------------------------- *)
+(* -------------------------------------------------------------------------------------------------------- *)
+
+(* Helper function, aggregates the whole dataset, resulting in dataset with a single configuration. 
+The configuration contains only single result parameter "paramName".*)    
+aggregateBooleanAll[data_,paramName_] :=
+ Module[ {results,params},
+ 	(*"ID","EFILE","PFILE",*)
+ 	params = #[[idxPARAMS]]&/@data;
+ 	results = Select[#[[idxRESULTS]], #[[1]] == paramName &]&/@data;
+ 	params = Intersection[Flatten[params]]; (* extract not changing parameters only*)
+ 	results = {paramName->Flatten[MapThread[Mean[{##}]&,results[[All,All,2]]]]};
+ 	{"ID","EFILE","PFILE",results,params} 	
+ ]
+
+aggregateBoolean[data_,paramName_,partSize_:1] :=
+ Module[ {},
+ 	aggregateBooleanAll[#,paramName]&/@Partition[data,partSize]	
+ ]
 
 (* -------------------------------------------------------------------------------------------------------- *)
 (* SORT DATA ---------------------------------------------------------------------------------------------- *)
@@ -317,32 +356,51 @@ printBooleanRanksAsTable[data_,paramName_,groupSize_,OptionsPattern[]]:=
 CHOSEN2 = {Null,Null}
 
 (* Other possibility is to set Operation -> Total *)
-Options[plotBooleanAsBarChartPub] = {Operation -> (100*Mean[#]&)};
-plotBooleanAsBarChartPub[data_,paramName_,numOfColors_:1,OptionsPattern[]] :=
-    Module[ {colors,labels,labelPlacement,sum,barLabels},
-        (* Prepare colors *)
-        CHOSEN2 = {Null,Null};
-        colors = listOfColors[numOfColors];
+Options[plotBooleanAsBarChartPub] = {Operation -> (100*Mean[#]&),Epilog -> {},PlotRange -> Automatic,ImagePadding->Automatic};
+plotBooleanAsBarChartPub[data_,paramName_,partNames_,subChartSpacing_,partSize_:1,OptionsPattern[]] :=
+    Module[ {colors,parts,labels,partPlacement,labelPlacement,sum,barLabels},
+        colors = listOfColors[partSize];
         labels = labelsForData[data];
-        labels = Grid[{{"G"},{"P"},{1},{2}},Spacings->{2,0}]&/@data;
-        labelPlacement = Placed[Style[#,FontSize->15]&/@labels,Axis];
+        parts = Grid[Array[{""}&,Length[labels[[1]]]]~Join~{{#}},Spacings->{2,subChartSpacing}]&/@partNames;        
+        labels = Grid[Partition[#,1],Spacings->{2,0}]&/@labels;
         sum = OptionValue[Operation][resultsForConfiguration[#,paramName]]&/@data;
-        Print[sum];
-        barLabels = (Placed[Style[Grid[{{#1}},Background->White],FontSize->13],Above]&);        
- 		BarChart[sum,LabelingFunction->barLabels,ChartLabels->labelPlacement,ChartStyle->colors,ImageSize->{{700},{1600}},AxesStyle->Directive[15],AspectRatio->0.5/GoldenRatio]            
+        sum = Partition[sum,partSize];
+        barLabels = (Placed[Style[Grid[{{#1}},Background->White],FontSize->13],Above]&);
+        partPlacement = Placed[Style[#,FontSize->17]&/@parts,Axis];
+        labelPlacement = Placed[Style[#,FontSize->15]&/@labels,Axis];
+ 		BarChart[sum,
+ 			LabelingFunction->barLabels,
+ 			ChartLabels->{partPlacement,labelPlacement},
+ 			ChartStyle->colors,
+ 			ImageSize->{{700},{1600}},
+ 			AxesStyle->Directive[15],
+ 			AspectRatio->0.5/GoldenRatio,
+ 			BarSpacing->{Automatic, 1.5},
+ 			Epilog->OptionValue[Epilog],
+ 			PlotRange->OptionValue[PlotRange],
+ 			ImagePadding->OptionValue[ImagePadding],
+ 			AxesLabel->"SUCCESS %"
+ 			]            
     ]
-
-plotBooleanAsBarChart[data_,paramName_,numOfColors_:1,OptionsPattern[]] :=
+    
+Options[plotBooleanAsBarChart] = {Operation -> (100*Mean[#]&)};    
+plotBooleanAsBarChart[data_,paramName_,partSize_:1,OptionsPattern[]] :=
     Module[ {colors,labels,labelPlacement,sum,buttons},
         (* Prepare colors *)
         CHOSEN2 = {Null,Null};
-        colors = listOfColors[numOfColors];
+        colors = listOfColors[partSize];
         labels = labelsForData[data];
         labelPlacement = Placed[Style[#,FontSize->15]&/@labels,Axis,Rotate[#,Pi/2]&];
         sum = OptionValue[Operation][resultsForConfiguration[#,paramName]]&/@data;
         buttons = MapThread[Button[#1,CHOSEN2 = Append[CHOSEN2,#2][[-2 ;; -1]]]&,{sum,labels}];
         Grid[{
-            {BarChart[buttons,ChartLabels->labelPlacement,ChartStyle->colors,LabelingFunction->Center,ImageSize->1200(*,ChartElementFunction->"FadingRectangle"*)]},
+            {BarChart[buttons,ChartLabels->labelPlacement,
+            	ChartStyle->colors,
+            	LabelingFunction->Center,
+            	ImageSize->{{700},{1600}},
+            	AspectRatio->0.5/GoldenRatio,
+ 				BarSpacing->{Automatic, 1.5}
+ 			]},
             {Dynamic[If[ Count[CHOSEN2,Null] == 0,
                          testFisherExact[data, CHOSEN2[[1]], CHOSEN2[[2]], paramName, TwoSided -> True, PValueOnly -> False],
                          "Choose two bars for Fisher's Exact Test."

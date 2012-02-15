@@ -13,7 +13,7 @@ import hyper.substrate.node.Node;
 public class OriginalWeightEvaluator implements IWeightEvaluator {
     public double evaluate(ICPPN aCPPN, int aCPPNOutput, Node nodeFrom, Node nodeTo, int incomingLinks) {
         double greyVal = aCPPN.evaluate(aCPPNOutput, nodeFrom.getCoordinate(), nodeTo.getCoordinate());
-//        System.out.println(nodeFrom.getCoordinate() + " -> " + nodeTo.getCoordinate());
+//        System.out.println("{" + nodeFrom.getCoordinate() + ", " + nodeTo.getCoordinate() + ", " + aCPPNOutput + "},");
         if (Math.abs(greyVal) > 0.2) {
             if (greyVal > 0.0) {
                 return (((greyVal - 0.2) / 0.8) * 3.0);

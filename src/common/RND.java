@@ -4,6 +4,7 @@ import org.apache.commons.lang.ArrayUtils;
 
 import java.io.Serializable;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 import java.util.Random;
 
@@ -208,6 +209,15 @@ public class RND implements Serializable {
             array[i - 1] = array[r];
             array[r] = tmp;
         }
+    }
+
+    /**
+     * Randomly shuffles a List. Using Java Collections class.
+     *
+     * @param list to shuffle
+     */
+    public static <T> void shuffle(List<T> list) {
+        Collections.shuffle(list, seed);
     }
 
     /**

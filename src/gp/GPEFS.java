@@ -153,11 +153,15 @@ public class GPEFS<P> extends GP<P> {
         }
 
         int[] toAssign = new int[distribute - assigned];
-        if (toAssign.length <= species.size()) {
-            RND.sampleRangeWithoutReplacement(species.size(), toAssign);
-        } else {
-            RND.sampleRangeWithReplacement(species.size(), toAssign);
-        }
+//        if (toAssign.length <= species.size()) {
+//            RND.sampleRangeWithoutReplacement(species.size(), toAssign);
+//        } else {
+//            RND.sampleRangeWithReplacement(species.size(), toAssign);
+//        }
+        assert (toAssign.length <= species.size());
+        //the opposite should can not happen as the rounding error is max 1 less for each species
+        RND.sampleRangeWithoutReplacement(species.size(), toAssign);
+
 
         for (int i : toAssign) {
             Species spec = species.get(i);
