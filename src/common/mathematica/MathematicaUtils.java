@@ -38,6 +38,20 @@ public class MathematicaUtils {
         return b.toString();
     }
 
+    public static String matrixToMathematica(double[][] array) {
+        if (array.length == 0) {
+            return "{{}}\n";
+        }
+        StringBuilder b = new StringBuilder("{\n");
+        for (int i = 0; i < array.length - 1; i++) {
+            b.append(arrayToMathematica(array[i]));
+            b.append(", \n");
+        }
+        b.append(arrayToMathematica(array[array.length - 1]));
+        b.append("\n}");
+        return b.toString();
+    }
+
     public static void printArrayMathematica(int[] array) {
         System.out.print(arrayToMathematica(array));
     }

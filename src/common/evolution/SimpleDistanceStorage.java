@@ -1,5 +1,8 @@
 package common.evolution;
 
+import common.mathematica.MathematicaUtils;
+import divvis.DistanceProjection;
+
 import java.util.List;
 
 /**
@@ -38,8 +41,8 @@ public class SimpleDistanceStorage<D> implements IDistanceStorage {
     }
 
     public double distance(int idxA, int idxB) {
-        int a = idxA <= idxB ? idxA : idxB;
-        int b = idxA <= idxB ? idxB : idxA;
+        int a = (idxA <= idxB ? idxA : idxB);
+        int b = (idxA <= idxB ? idxB : idxA);
         if (a == b) {
             return 0.0;
         }
@@ -52,5 +55,26 @@ public class SimpleDistanceStorage<D> implements IDistanceStorage {
 
     public int getPopulationSize() {
         return N;
+    }
+
+    public double[][] makeCompleteDistanceMatrix() {
+        double[][] d = new double[N][N];
+        for (int i = 0; i < N; i++) {
+            for (int j = 0; j < N; j++) {
+                d[i][j] = distance(i, j);
+            }
+        }
+        return d;
+    }
+
+    public DistanceProjection project() {
+        DistanceProjection prj = new DistanceProjection(makeCompleteDistanceMatrix());
+        prj.project();
+        return prj;
+    }
+
+    @Override
+    public String toString() {
+        return MathematicaUtils.matrixToMathematica(makeCompleteDistanceMatrix());
     }
 }

@@ -273,4 +273,20 @@ public class DistanceProjection {
     public int getNumGradientCalls() {
         return optimizer.getNumGradientCalls();
     }
+
+    @Override
+    public String toString() {
+        StringBuilder b = new StringBuilder();
+        for (int i = 0; i < n; i++) {
+            for (int j = 0; j < equations.getDimension() - 1; j++) {
+                b.append(p[j * n + i]);
+                b.append("\t");
+            }
+            b.append(p[(equations.getDimension() - 1) * n + i]);
+            if (i != n - 1) {
+                b.append("\n");
+            }
+        }
+        return b.toString();
+    }
 }

@@ -38,6 +38,8 @@ public class PopulationManager<G, P> {
     private IDistance<G> genomeDistance = null;
     private IDistance<P> phenomeDistance = null;
     private boolean computeGenomeDistanceMatrix = false;
+    private boolean storeGenomeDistanceMatrix = false;
+    private boolean computeGenomeDistanceProjection = false;
     private boolean computePhenomeDistanceMatrix = false;
 
     private DefaultDistance defaultDistance = DefaultDistance.GENOTYPE;
@@ -60,6 +62,12 @@ public class PopulationManager<G, P> {
 
         if (parameters.contains("GENOTYPE_DIVERSITY") && parameters.getBoolean("GENOTYPE_DIVERSITY")) {
             computeGenomeDistanceMatrix = true;
+        }
+        if (parameters.contains("GENOTYPE_DISTANCE_MATRIX") && parameters.getBoolean("GENOTYPE_DISTANCE_MATRIX")) {
+            storeGenomeDistanceMatrix = true;
+        }
+        if (parameters.contains("GENOTYPE_DISTANCE_PROJECTION") && parameters.getBoolean("GENOTYPE_DISTANCE_PROJECTION")) {
+            computeGenomeDistanceProjection = true;
         }
         if (parameters.contains("PHENOTYPE_DIVERSITY") && parameters.getBoolean("PHENOTYPE_DIVERSITY")) {
             computePhenomeDistanceMatrix = true;
@@ -146,6 +154,12 @@ public class PopulationManager<G, P> {
         Map<String, Object> infoMap = new LinkedHashMap<String, Object>();
         if (genomeDistanceStorage != null) {
             infoMap.put("G_DIVERSITY", DistanceUtils.average(genomeDistanceStorage));
+            if (storeGenomeDistanceMatrix) {
+                infoMap.put("G_DISTANCE_MATRIX", genomeDistanceStorage.toString());
+            }
+            if (computeGenomeDistanceProjection) {
+                infoMap.put("G_DISTANCE_PROJECTION", genomeDistanceStorage.project().toString());
+            }
         }
         if (phenomeDistanceStorage != null) {
             infoMap.put("P_DIVERSITY", DistanceUtils.average(phenomeDistanceStorage));

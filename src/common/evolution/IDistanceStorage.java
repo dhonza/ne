@@ -1,5 +1,7 @@
 package common.evolution;
 
+import divvis.DistanceProjection;
+
 /**
  * Created by IntelliJ IDEA.
  * User: drchaj1
@@ -15,4 +17,6 @@ public interface IDistanceStorage {
     double distanceToPrev(int idxCur, int idxPrev);
 
     int getPopulationSize();
+
+    public DistanceProjection project();
 }
