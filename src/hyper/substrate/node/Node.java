@@ -1,5 +1,6 @@
 package hyper.substrate.node;
 
+import common.net.linked.Neuron;
 import hyper.substrate.ICoordinate;
 
 import java.io.Serializable;
@@ -19,4 +20,6 @@ public interface Node extends Serializable {
     public ICoordinate getCoordinate();
 
     public NodeType getType();
+
+    public Neuron.Activation getActivationFunction();
 }

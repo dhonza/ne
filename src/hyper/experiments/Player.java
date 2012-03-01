@@ -24,7 +24,7 @@ import java.io.File;
  */
 public class Player {
     static String cfgFile = "cfg/hyper/gphyper.properties";
-    static String aCPPNFile = "../exp/120215152533_1/bestCPPN_001_001.xml";
+    static String aCPPNFile = "../exp/NEW/GPEFS_OCTOPUS_500_GENERAL/bestCPPN_001_001.xml";
 //    static String aCPPNFile = "bestCPPN_001_001.xml";
 
     public static void play() {

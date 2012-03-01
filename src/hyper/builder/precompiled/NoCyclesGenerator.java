@@ -1,7 +1,7 @@
 package hyper.builder.precompiled;
 
-import hyper.substrate.layer.SubstrateInterLayerConnection;
 import hyper.substrate.layer.ISubstrateLayer;
+import hyper.substrate.layer.SubstrateInterLayerConnection;
 import hyper.substrate.node.Node;
 
 import java.util.List;
@@ -42,7 +42,7 @@ public class NoCyclesGenerator {
             Node[] fNodes = connection.getFrom().getNodes();
             src.append("\tn = new double[").append(tNodes.length).append("];\n");
             for (int t = 0; t < tNodes.length; t++) {
-                src.append("\tn[").append(t).append("] = a(");
+                src.append("\tn[").append(t).append("] = " + getActivationFunction(tNodes[t]) + "(");
                 if (biasLayer != null) {
                     src.append("w[").append(weightCnt++).append("]*b + ");
                 }
@@ -56,9 +56,28 @@ public class NoCyclesGenerator {
         src.append("\treturn n;\n}\n\n");
     }
 
+    protected static String getActivationFunction(Node n) {
+        switch (n.getActivationFunction()) {
+            case SIGMOID:
+                return "a";
+            case SIGMOID_ALPHA1:
+                return "a1";
+            case BIPOLAR_SIGMOID_ALPHA1:
+                return "a1b";
+            default:
+                throw new IllegalStateException("Not yet implemented!");
+        }
+    }
+
     protected void generateHelperMethods(StringBuilder src) {
         src.append("public double a(double s) {\n");
         src.append("\treturn 1/(1+Math.exp(-4.924273 * s));\n");
+        src.append("}\n\n");
+        src.append("public double a1(double s) {\n");
+        src.append("\treturn 1/(1+Math.exp(-s));\n");
+        src.append("}\n\n");
+        src.append("public double a1b(double s) {\n");
+        src.append("\treturn 2.0/(1+Math.exp(-s)) - 1.0;\n");
         src.append("}\n\n");
         src.append("public int getNumberOfInputs() {\n");
         src.append("\treturn ").append(numberOfInputs).append(";\n");

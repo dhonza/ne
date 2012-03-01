@@ -68,6 +68,8 @@ public class Recognition1D implements IProblem<INet> {
             System.out.print(" ");
             double[] output = recognition.propagate(inputPatterns[i]);
             PatternUtils.printFormattedPattern(output);
+//            System.out.print(" ");
+//            PatternUtils.printPattern(output);
             System.out.println("");
         }
     }

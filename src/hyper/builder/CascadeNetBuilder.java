@@ -3,10 +3,11 @@ package hyper.builder;
 import common.net.INet;
 import common.net.cascade.ActivationFunctionSigmoid;
 import common.net.cascade.NeuralNetwork;
+import common.net.linked.Neuron;
 import hyper.cppn.ICPPN;
 import hyper.substrate.ISubstrate;
-import hyper.substrate.layer.SubstrateInterLayerConnection;
 import hyper.substrate.layer.ISubstrateLayer;
+import hyper.substrate.layer.SubstrateInterLayerConnection;
 import hyper.substrate.node.Node;
 import hyper.substrate.node.NodeType;
 
@@ -148,6 +149,9 @@ public class CascadeNetBuilder implements IEvaluableSubstrateBuilder {
         int cnt = 0;
         for (PreviousLayerConnectionContainer successiveConnection : successiveConnections) {
             for (Node nodeTo : successiveConnection.connection.getTo().getNodes()) {
+                if (nodeTo.getActivationFunction() != Neuron.Activation.SIGMOID) {
+                    throw new IllegalStateException("Only Neuron.Activation.SIGMOID supported by cascade networks!");
+                }
                 //number of incoming links
                 int incomingLinks = successiveConnection.connection.getFrom().getNodes().length;
                 //bias

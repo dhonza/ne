@@ -45,6 +45,8 @@ public class Neuron implements Serializable {
     public enum Activation implements Serializable {
         SIGMOID,
         BIPOLAR_SIGMOID,
+        SIGMOID_ALPHA1,
+        BIPOLAR_SIGMOID_ALPHA1,
         LINEAR,
         GAUSS,
         ABS,
@@ -71,6 +73,7 @@ public class Neuron implements Serializable {
             return RND.randomChoice(functions);
         }
 
+        //For HyperNEAT
         public static Activation getRandomWeighted() {
             System.out.println("NOT ALL NODES IMPLEMENTED!");
             System.exit(1);
@@ -336,6 +339,12 @@ public class Neuron implements Serializable {
                     break;
                 case BIPOLAR_SIGMOID:
                     output = 2.0 / (1.0 + Math.exp(-alpha * sum)) - 1.0;
+                    break;
+                case SIGMOID_ALPHA1:
+                    output = 1.0 / (1.0 + Math.exp(-sum));
+                    break;
+                case BIPOLAR_SIGMOID_ALPHA1:
+                    output = 2.0 / (1.0 + Math.exp(-sum)) - 1.0;
                     break;
                 case LINEAR:
                     output = sum;

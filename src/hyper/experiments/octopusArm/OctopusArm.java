@@ -34,6 +34,7 @@ import hyper.experiments.octopusArm.model.RunMetrics;
 import hyper.experiments.octopusArm.model.Simulation;
 import hyper.experiments.octopusArm.model.Target;
 import hyper.experiments.octopusArm.model.Trial;
+import hyper.experiments.octopusArm.userInterface.SimulationViewer;
 import hyper.substrate.ISubstrate;
 
 import java.text.DecimalFormat;
@@ -44,7 +45,7 @@ import java.util.*;
  */
 public class OctopusArm implements IProblem<INet> {
 
-    private boolean enableDisplay = false;
+    private static boolean enableDisplay;
 
     private final ReportStorage reportStorage;
     private static int activations;
@@ -77,6 +78,7 @@ public class OctopusArm implements IProblem<INet> {
         buoyancy = parameters.getDouble(BUOYANCY_FORCE_KEY, DEFAULT_BUOYANCY_FORCE);
 
         activations = parameters.getInteger("NET_ACTIVATIONS");
+        enableDisplay = parameters.getBoolean("OCTOPUS.SHOW_GRAPHICS", false);
         this.reportStorage = reportStorage;
     }
 
@@ -84,52 +86,22 @@ public class OctopusArm implements IProblem<INet> {
         return activations;
     }
 
-//	private static final Logger logger = Logger.getLogger( OctopusArm.class );
-
-    /*
-    public static void main(String[] args) {
-        copyright();
-
-        if (args.length == 0) {
-            usage();
-
-            // launch a simulation display for a particular chromosome
-        } else if (args[0].equalsIgnoreCase("-simView")) {
-
-            Properties props = loadProperties(args[1]);
-            Chromosome chrom = loadChromosome(props, args[2]);
-            OctopusArm ff = new OctopusArm();
-            ff.enableDisplay();
-            ff.init(props);
-            ff.evaluate(chrom, System.currentTimeMillis());
-            System.out.println(ff.runSummary());
-
-            // evaluate the chromosome specified (no simulation viewer)
-        } else if (args[0].equalsIgnoreCase("-evaluate")) {
-            Properties props = loadProperties(args[1]);
-            Chromosome chrom = loadChromosome(props, args[2]);
-            OctopusArm ff = new OctopusArm();
-            ff.init(props);
-            ff.evaluate(chrom, System.currentTimeMillis());
-            System.out.println(ff.runSummary());
-
-            // launch a human controlled GUI simulation
-        } else if (args[0].equalsIgnoreCase("-humanController")) {
-            new HumanController();
-        } else {
-            usage();
-        }
-
-    }
- */
-
     public EvaluationInfo evaluate(INet hyperNet) {
         INetAgentAdapter adapter = new INetAgentAdapter(hyperNet);
-        Simulation simulation = new Simulation(adapter, getRandomTargetSet(getNumTrials()));
+        //changed from original Wooley's
+//        Simulation simulation = new Simulation(adapter, getRandomTargetSet(getNumTrials()));
+        Simulation simulation = new Simulation(adapter, getTargetSet(getNumTrials()));
         simulation.run();
         System.out.println("FITNESS = " + adapter.getFitness());
-//        System.out.println(getMaxFitnessValue());
-        return new EvaluationInfo(adapter.getFitness());
+        System.out.flush();
+
+        RunMetrics results = simulation.getRunMetrics();
+        Map<String, Object> infoMap = new LinkedHashMap<String, Object>();
+        infoMap.put("AVG_DISTANCE", results.getAverageDistToTarget());
+        infoMap.put("TIME_ELAPSED", results.getTimeElapsed());
+        infoMap.put("HITS", results.hitTargetCount());
+
+        return new EvaluationInfo(simulation.getFitnessFunction().calculateFitness(results), infoMap);
     }
 
     public boolean isSolved() {
@@ -139,7 +111,9 @@ public class OctopusArm implements IProblem<INet> {
     public void show(INet hyperNet) {
         INetAgentAdapter adapter = new INetAgentAdapter(hyperNet);
         Simulation simulation = new Simulation(adapter, getRandomTargetSet(getNumTrials()));
-//        if (enableDisplay) simulation.enableDisplay(new SimulationViewer());
+        if (enableDisplay) {
+            simulation.enableDisplay(new SimulationViewer());
+        }
         simulation.run();
 
         String agentID = simulation.getAgent().getID();
@@ -172,12 +146,14 @@ public class OctopusArm implements IProblem<INet> {
     }
 
     public ISubstrate getSubstrate() {
-        return OctopusArmSubstrateFactory.createInputHiddenOutputNoBias(numSegments, 36);
+        return OctopusArmSubstrateFactory.createInputHiddenOutputNoBias(numSegments, getRangeSensorResolution());
     }
 
     public List<String> getEvaluationInfoItemNames() {
         List<String> listOfNames = new ArrayList<String>();
-//        listOfNames.add("AVG_DISTANCE");
+        listOfNames.add("AVG_DISTANCE");
+        listOfNames.add("TIME_ELAPSED");
+        listOfNames.add("HITS");
         return listOfNames;
     }
 
@@ -544,14 +520,14 @@ public class OctopusArm implements IProblem<INet> {
         return targetReward;
     }
 
-    private static Map<Integer, Target> targets = null;
+    private Map<Integer, Target> targets;
 
     /**
      * Get a random target from the set of training targets.
      *
      * @return A random target.
      */
-    public static Target getRandomTarget() {
+    public Target getRandomTarget() {
         return getTarget("random");
     }
 
@@ -575,13 +551,27 @@ public class OctopusArm implements IProblem<INet> {
         return targetSet;
     }
 
+    public Collection<Target> getTargetSet(int count) {
+        if (targets == null) initTargets();
+
+        List<Target> targetSet = new ArrayList<Target>(targets.values());
+
+        while (targetSet.size() < count) {
+            targetSet.addAll(targetSet);
+        }
+
+//        RND.shuffle(targetSet);
+        targetSet = targetSet.subList(0, count);
+        return targetSet;
+    }
+
     /**
      * Get a target by name.  A random target is returned otherwise.
      *
      * @param name The name of a target (e.g. "training.1").
      * @return The specified target (or a random target otherwise).
      */
-    public static Target getTarget(String name) {
+    public Target getTarget(String name) {
         if (targets == null) initTargets();
 
         if (name.equalsIgnoreCase("training.0")) return targets.get(0);
@@ -600,12 +590,12 @@ public class OctopusArm implements IProblem<INet> {
      *
      * @return The collection of training targets.
      */
-    public static Collection<Target> getTargets() {
+    public Collection<Target> getTargets() {
         if (targets == null) initTargets();
         return targets.values();
     }
 
-    private static void initTargets() {
+    private void initTargets() {
         // Designed for experiment 2
         targets = new HashMap<Integer, Target>();
 //		targets.put(0, new Target(-0.85, 0.5, 0.1));
@@ -617,10 +607,6 @@ public class OctopusArm implements IProblem<INet> {
         targets.put(4, new Target(0.0, -0.75, 0.1));
         targets.put(5, new Target(-0.5, -1.0, 0.1));
 //		targets.put(7, new Target(-0.85, -0.4, 0.1));
-    }
-
-    public void enableDisplay() {
-        enableDisplay = true;
     }
 
     /**

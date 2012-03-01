@@ -1,8 +1,9 @@
 package hyper.experiments.octopusArm;
 
+import common.net.linked.Neuron;
 import hyper.substrate.BasicSubstrate;
+import hyper.substrate.layer.CartesianSheet;
 import hyper.substrate.layer.ISubstrateLayer;
-import hyper.substrate.layer.MeshLayer2D;
 import hyper.substrate.layer.SubstrateInterLayerConnection;
 import hyper.substrate.node.NodeType;
 
@@ -20,10 +21,9 @@ public class OctopusArmSubstrateFactory {
     public static BasicSubstrate createInputHiddenOutputNoBias(int segments, int sensors) {
         BasicSubstrate substrate = new BasicSubstrate();
 
-        //TODO activation functions and ranges does not match exactly Brian Woolley's LidarOnAllSegments2_GE substrate
-        ISubstrateLayer inputLayer = new MeshLayer2D(NodeType.INPUT, segments, sensors, 2.0, 2.0);
-        ISubstrateLayer hiddenLayer = new MeshLayer2D(NodeType.HIDDEN, segments, 3, 2.0, 2.0);
-        ISubstrateLayer outputLayer = new MeshLayer2D(NodeType.OUTPUT, segments, 3, 2.0, 2.0);
+        ISubstrateLayer inputLayer = new CartesianSheet(segments, sensors, NodeType.INPUT, Neuron.Activation.LINEAR);
+        ISubstrateLayer hiddenLayer = new CartesianSheet(segments, 3, NodeType.HIDDEN, Neuron.Activation.BIPOLAR_SIGMOID_ALPHA1);
+        ISubstrateLayer outputLayer = new CartesianSheet(segments, 3, NodeType.OUTPUT, Neuron.Activation.SIGMOID_ALPHA1);
 
         SubstrateInterLayerConnection inputToHidden = new SubstrateInterLayerConnection(inputLayer, hiddenLayer);
         SubstrateInterLayerConnection hiddenToOutput = new SubstrateInterLayerConnection(hiddenLayer, outputLayer);

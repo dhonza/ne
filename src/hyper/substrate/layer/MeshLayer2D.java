@@ -54,9 +54,11 @@ public class MeshLayer2D implements ISubstrateLayer {
         double xPos = xMin;
         double yPos = yMax;
         int cnt = 0;
+//        System.out.println("--------------------" + xNodes + " " + yNodes + " " + xStep + " " + yStep);
         for (int i = 0; i < yNodes; i++) {
             for (int j = 0; j < xNodes; j++) {
                 nodes[cnt++] = new Node2D(xPos, yPos, nodeType);
+//                System.out.println("POS: " + xPos + " " + yPos);
                 xPos += xStep;
             }
             xPos = xMin;

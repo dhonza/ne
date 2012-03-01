@@ -65,13 +65,13 @@ public class ParallelTransform<S, T> {
             start += evalsPerThisThread;
         }
 
-
         for (ThreadTransformer threadTransformer : threadTransformers) {
             threadExecutor.execute(threadTransformer);
         }
 
         try {
             stopLatch.await();
+//            stopLatch.await(20L, TimeUnit.SECONDS);
         } catch (InterruptedException e) {
             e.printStackTrace();
             System.exit(1);

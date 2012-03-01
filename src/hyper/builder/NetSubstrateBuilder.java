@@ -76,13 +76,13 @@ public class NetSubstrateBuilder implements IEvaluableSubstrateBuilder {
             for (Node node : nodes) {
                 Neuron newNeuron;
                 if (node.getType() == NodeType.INPUT || node.getType() == NodeType.BIAS) {
-                    newNeuron = new Neuron(neuronIdCounter++, Neuron.Type.INPUT, Neuron.Activation.LINEAR);
+                    newNeuron = new Neuron(neuronIdCounter++, Neuron.Type.INPUT, node.getActivationFunction());
                     numInput++;
                 } else if (node.getType() == NodeType.HIDDEN) {
-                    newNeuron = new Neuron(neuronIdCounter++, Neuron.Type.HIDDEN, Neuron.Activation.SIGMOID);
+                    newNeuron = new Neuron(neuronIdCounter++, Neuron.Type.HIDDEN, node.getActivationFunction());
                     numHidden++;
                 } else {
-                    newNeuron = new Neuron(neuronIdCounter++, Neuron.Type.OUTPUT, Neuron.Activation.SIGMOID);
+                    newNeuron = new Neuron(neuronIdCounter++, Neuron.Type.OUTPUT, node.getActivationFunction());
                     numOutput++;
                 }
                 nodeMap.put(node, newNeuron);

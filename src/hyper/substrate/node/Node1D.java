@@ -1,5 +1,6 @@
 package hyper.substrate.node;
 
+import common.net.linked.Neuron;
 import hyper.substrate.Coordinate1D;
 
 /**
@@ -14,12 +15,18 @@ import hyper.substrate.Coordinate1D;
  * This class is immutable.
  */
 public class Node1D implements Node {
-    private Coordinate1D coordinate;
-    private NodeType type;
+    final private Coordinate1D coordinate;
+    final private NodeType type;
+    final private Neuron.Activation activationFunction;
 
     public Node1D(double x, NodeType type) {
+        this(x, type, Neuron.Activation.SIGMOID);
+    }
+
+    public Node1D(double x, NodeType type, Neuron.Activation activationFunction) {
         this.coordinate = new Coordinate1D(x);
         this.type = type;
+        this.activationFunction = activationFunction;
     }
 
     public Coordinate1D getCoordinate() {
@@ -30,11 +37,16 @@ public class Node1D implements Node {
         return type;
     }
 
+    public Neuron.Activation getActivationFunction() {
+        return activationFunction;
+    }
+
     @Override
     public String toString() {
         return "Node1D{" +
                 "coordinate=" + coordinate +
                 ", type=" + type +
+                ", activationFunction=" + activationFunction +
                 '}';
     }
 }
