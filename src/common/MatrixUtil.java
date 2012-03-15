@@ -9,7 +9,7 @@ public class MatrixUtil {
     //TODO min is always 0 for divvis normalization
     public static double[][] normalize(double[][] omatrix) {
         double min = Double.MAX_VALUE;
-        double max = Double.MIN_VALUE;
+        double max = -Double.MAX_VALUE;
 
         for (double[] value : omatrix) {
             for (double aDouble : value) {

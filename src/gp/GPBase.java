@@ -1,6 +1,7 @@
 package gp;
 
 import common.evolution.*;
+import common.pmatrix.ParameterCombination;
 
 import java.io.Serializable;
 import java.util.*;
@@ -25,6 +26,7 @@ abstract public class GPBase<P, T extends IGPForest> implements IEvolutionaryAlg
     final protected int inputs;
     final protected int outputs;
     final protected NodeCollection nodeCollection;
+    final protected ParameterCombination parameters;
     final protected PopulationManager<T, P> populationManager;
 
     final protected String initialGenome;
@@ -42,7 +44,8 @@ abstract public class GPBase<P, T extends IGPForest> implements IEvolutionaryAlg
 
     protected Map<String, Long> origins;
 
-    public GPBase(PopulationManager<T, P> populationManager, INode[] functions, INode[] terminals, String initialGenome) {
+    public GPBase(ParameterCombination parameters, PopulationManager<T, P> populationManager, INode[] functions, INode[] terminals, String initialGenome) {
+        this.parameters = parameters;
         this.populationManager = populationManager;
         this.initialGenome = initialGenome;
         if (populationManager == null) {//for debuging only

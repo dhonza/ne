@@ -84,7 +84,14 @@ public class FileProgressPrinter implements IProgressPrinter {
                 itemList.add(new ReportStorage.SingleRunFile("GENERALIZATION_" + name, extractGeneralizationEvaluationInfo(name).toString()));
             }
         }
-        for (String name : new String[]{"G_DIVERSITY", "G_DISTANCE_MATRIX", "G_DISTANCE_PROJECTION", "P_DIVERSITY", "P_DIVERSITY_MATRIX", "GENOMES_MATH"}) {
+        for (String name : new String[]{
+                "G_DIVERSITY",
+                "G_DISTANCE_MATRIX",
+                "G_DISTANCE_PROJECTION",
+                "P_DIVERSITY",
+                "P_DIVERSITY_MATRIX",
+                "GENOMES_MATH",
+                "G_SPECIES"}) {
             if (generationsKeys != null && !extractPopulationInfo(name).toString().startsWith("null")) {
                 itemList.add(new ReportStorage.SingleRunFile(name, extractPopulationInfo(name).toString()));
             }

@@ -8,6 +8,7 @@ export NEPACKAGE=nepack
 export ARCHIVE=/tmp/nepack.tar.gz
 export RUNSCRIPT=${NEPACKAGE}/run
 export INFOSCRIPT=${NEPACKAGE}/info
+export NAMEFILE=${NEPACKAGE}/name
 
 export EXPDIR=exp
 export CLASS="common.run.Runner"
@@ -73,8 +74,8 @@ cp -r ${NEDIR}/vivae/vivae/cfg ${NEPACKAGE}
 
 echo '#!/bin/bash' > ${RUNSCRIPT}
 chmod a+x ${RUNSCRIPT}
-
-echo 'ln -s ../../nelib ./lib' >> ${RUNSCRIPT}
+echo 'source ~/environment' >> ${RUNSCRIPT}
+echo 'ln -s ~/nelib ./lib' >> ${RUNSCRIPT}
 
 echo 'export CLASS="'${CLASS}'"' >> ${RUNSCRIPT}
 echo 'export CFG="'${CFG}'"' >> ${RUNSCRIPT}
@@ -99,7 +100,6 @@ if [ -n "${COPYBACK}" ] ; then
     echo 'scp -r '${EXPDIR}' '${COPYBACK}':' >> ${RUNSCRIPT}
 fi
 
-
 echo '#!/bin/bash' > ${INFOSCRIPT}
 chmod a+x ${INFOSCRIPT}
 echo 'export EXPDIR="'${EXPDIR}'"' >> ${INFOSCRIPT}
@@ -111,5 +111,7 @@ echo 'fi' >> ${INFOSCRIPT}
 echo 'export CONFIG=`ls parameters_???.txt | tr " " "\n" | tail -n1 | sed "s/parameters\_\(.*\)\.txt/\1/"`' >> ${INFOSCRIPT}
 echo 'export EXP=`cat _experiment_id.txt`' >> ${INFOSCRIPT}
 echo 'echo ${CONFIG}" "${EXP}" "${EXPDIR}' >> ${INFOSCRIPT}
+
+echo ${EXPDIR} > ${NAMEFILE}
 
 tar czf ${ARCHIVE} ${NEPACKAGE}

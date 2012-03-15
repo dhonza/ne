@@ -27,6 +27,10 @@ public class Species {
         members = new ArrayList<Forest>();
     }
 
+    public int getId() {
+        return id;
+    }
+
     public Forest getRepresentative() {
         return representative;
     }
@@ -77,6 +81,10 @@ public class Species {
 
     public void resetSpecies() {
         representative = RND.randomChoice(members);
+        members.clear();
+    }
+
+    public void clearSpecies() {
         members.clear();
     }
 

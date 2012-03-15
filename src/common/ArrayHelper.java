@@ -2,6 +2,9 @@ package common;
 
 import common.mathematica.MathematicaUtils;
 
+import java.util.Arrays;
+import java.util.Comparator;
+
 /**
  * Created by IntelliJ IDEA.
  * User: drchaj1
@@ -49,6 +52,32 @@ public class ArrayHelper {
     public static void range(int[] array, int min) {
         for (int i = 0; i < array.length; i++) {
             array[i] = min++;
+        }
+    }
+
+    private static class SortHelperDouble<T> {
+        T a;
+        double b;
+
+        private SortHelperDouble(T a, double b) {
+            this.a = a;
+            this.b = b;
+        }
+    }
+
+    public static <T> void sortABasedOnB(T[] a, double[] b) {
+        SortHelperDouble[] h = new SortHelperDouble[b.length];
+        for (int i = 0; i < h.length; i++) {
+            h[i] = new SortHelperDouble(a[i], b[i]);
+
+        }
+        Arrays.sort(h, new Comparator<SortHelperDouble>() {
+            public int compare(SortHelperDouble h1, SortHelperDouble h2) {
+                return Double.compare(h1.b, h2.b);
+            }
+        });
+        for (int i = 0; i < h.length; i++) {
+            a[i] = (T) h[i].a;
         }
     }
 

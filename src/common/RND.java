@@ -315,6 +315,16 @@ public class RND implements Serializable {
 
     // SAMPLE WITHOUT REPLACEMENT
 
+    public static <T> void sampleWithoutReplacement(T[] array, T[] sample) {
+        int[] indices = new int[array.length];
+        ArrayHelper.range(indices, 0);
+        int[] isample = new int[sample.length];
+        sampleWithoutReplacement(indices, isample);
+        for (int i = 0; i < isample.length; i++) {
+            sample[i] = array[isample[i]];
+        }
+    }
+
     /**
      * Simple random sample without replacement (SRSWOR) from int array.
      * See http://en.wikipedia.org/wiki/Simple_random_sample

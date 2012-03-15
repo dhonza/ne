@@ -2,7 +2,7 @@ package gp;
 
 import common.RND;
 import common.evolution.PopulationManager;
-import hyper.evaluate.storage.GenomeStorage;
+import common.pmatrix.ParameterCombination;
 
 import java.util.Arrays;
 
@@ -18,8 +18,8 @@ public class GP<P> extends GPBase<P, Forest> {
     public static int MAX_DEPTH = 3;
     public static double MUTATION_SUBTREE_PROBABLITY = 0.5;
 
-    public GP(PopulationManager<Forest, P> populationManager, INode[] functions, INode[] terminals, String initialGenome) {
-        super(populationManager, functions, terminals, initialGenome);
+    public GP(ParameterCombination parameters, PopulationManager<Forest, P> populationManager, INode[] functions, INode[] terminals, String initialGenome) {
+        super(parameters, populationManager, functions, terminals, initialGenome);
         bestOfGeneration = bestSoFar = Forest.createEmpty();
     }
 

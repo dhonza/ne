@@ -1,6 +1,7 @@
 package gp;
 
 import common.evolution.PopulationManager;
+import common.pmatrix.ParameterCombination;
 import gp.terminals.Constant;
 import gp.terminals.RNC;
 import gp.terminals.Random;
@@ -17,11 +18,12 @@ import java.lang.reflect.InvocationTargetException;
  * To change this template use File | Settings | File Templates.
  */
 public class GPFactory {
-    public static GPBase createByName(String className, PopulationManager populationManager, INode[] functions, INode[] terminals, String initialGenome) {
+    public static GPBase createByName(ParameterCombination parameters, PopulationManager populationManager, INode[] functions, INode[] terminals, String initialGenome) {
         GPBase gp = null;
+        String className = parameters.getString("GP.TYPE");
         try {
-            Constructor constructor = Class.forName(className).getConstructor(PopulationManager.class, INode[].class, INode[].class, String.class);
-            gp = (GPBase) constructor.newInstance(populationManager, functions, terminals, initialGenome);
+            Constructor constructor = Class.forName(className).getConstructor(ParameterCombination.class, PopulationManager.class, INode[].class, INode[].class, String.class);
+            gp = (GPBase) constructor.newInstance(parameters, populationManager, functions, terminals, initialGenome);
         } catch (NoSuchMethodException e) {
             System.err.println(e.getCause());
             e.printStackTrace();

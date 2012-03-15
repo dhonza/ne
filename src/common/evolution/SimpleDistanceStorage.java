@@ -1,7 +1,11 @@
 package common.evolution;
 
+import common.MatrixUtil;
 import common.mathematica.MathematicaUtils;
 import divvis.DistanceProjection;
+import divvis.EquationsA;
+import divvis.EquationsInterface;
+import divvis.OptimizeConjugateGradient;
 
 import java.util.List;
 
@@ -68,7 +72,12 @@ public class SimpleDistanceStorage<D> implements IDistanceStorage {
     }
 
     public DistanceProjection project() {
-        DistanceProjection prj = new DistanceProjection(makeCompleteDistanceMatrix());
+        double[][] dM = makeCompleteDistanceMatrix();
+        MatrixUtil.normalize(dM);
+//        MatrixUtil.squash(dM, 0.5, 100.0);
+        EquationsInterface e = new EquationsA();
+//        EquationsInterface e = new EquationsB();
+        DistanceProjection prj = new DistanceProjection(dM, new EquationsA(), new OptimizeConjugateGradient(dM, e));
         prj.project();
         return prj;
     }

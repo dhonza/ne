@@ -6,6 +6,7 @@ import hyper.evaluate.DistanceFactory;
 import hyper.evaluate.converter.DirectGenomeToINet;
 import org.apache.commons.lang.ArrayUtils;
 
+import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
@@ -25,6 +26,36 @@ public class PopulationManager<G, P> {
         PHENOTYPE
     }
 
+    private class DistanceCache {
+        private G i;
+        private G j;
+
+        private DistanceCache(G i, G j) {
+            this.i = i;
+            this.j = j;
+        }
+
+        @Override
+        public boolean equals(Object o) {
+            if (this == o) return true;
+            if (o == null || getClass() != o.getClass()) return false;
+
+            DistanceCache that = (DistanceCache) o;
+
+            if (!i.equals(that.i)) return false;
+            if (!j.equals(that.j)) return false;
+
+            return true;
+        }
+
+        @Override
+        public int hashCode() {
+            int result = i.hashCode();
+            result = 31 * result + j.hashCode();
+            return result;
+        }
+    }
+
     final private SimplePopulationStorage<G, P> populationStorage;
     final private PopulationEvaluator<P> populationEvaluator;
 
@@ -41,6 +72,8 @@ public class PopulationManager<G, P> {
     private boolean storeGenomeDistanceMatrix = false;
     private boolean computeGenomeDistanceProjection = false;
     private boolean computePhenomeDistanceMatrix = false;
+
+    private Map<DistanceCache, Double> genomeDistanceCache = new HashMap<DistanceCache, Double>();
 
     private DefaultDistance defaultDistance = DefaultDistance.GENOTYPE;
 
@@ -103,6 +136,8 @@ public class PopulationManager<G, P> {
     }
 
     public List<EvaluationInfo> evaluate() {
+        genomeDistanceCache.clear();
+
         populationStorage.convert();
 //        checkAgainstSequential(evaluationInfo);
         if (computeGenomeDistanceMatrix && genomeDistance != null) {
@@ -138,7 +173,16 @@ public class PopulationManager<G, P> {
     }
 
     public double getGenomeDistance(G a, G b) {
-        return genomeDistance.distance(a, b);
+        DistanceCache item = new DistanceCache(a, b);
+        Double d = genomeDistanceCache.get(item);
+        if (d == null) {
+            d = genomeDistanceCache.get(new DistanceCache(b, a));
+        }
+        if (d == null) {
+            d = genomeDistance.distance(a, b);
+            genomeDistanceCache.put(item, d);
+        }
+        return d;
     }
 
     public double getDistanceToPrevious(int idxCur, int idxPrev) {

@@ -2,6 +2,7 @@ package gp;
 
 import common.RND;
 import common.evolution.PopulationManager;
+import common.pmatrix.ParameterCombination;
 
 /**
  * Created by IntelliJ IDEA.
@@ -16,8 +17,8 @@ import common.evolution.PopulationManager;
  * TODO create a single common abstract predecessor class (do not use newPopulation from GP)
  */
 public class GPCrowding<P> extends GP<P> {
-    public GPCrowding(PopulationManager<Forest, P> populationManager, Node[] functions, Node[] terminals, String initialGenome) {
-        super(populationManager, functions, terminals, initialGenome);
+    public GPCrowding(ParameterCombination parameters, PopulationManager<Forest, P> populationManager, Node[] functions, Node[] terminals, String initialGenome) {
+        super(parameters, populationManager, functions, terminals, initialGenome);
         if (GP.POPULATION_SIZE % 2 != 0) {
             throw new IllegalStateException("Population size must be even.");
         }

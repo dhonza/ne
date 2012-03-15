@@ -80,13 +80,13 @@ public class GPRunner implements EvolutionaryAlgorithmRunner {
 
     private static GPBase createAlgorithm(String type, ParameterCombination combination, PopulationManager populationManager, INode[] functions, INode[] terminals) {
         if (type.equals("gp.GP")) {
-            return GPFactory.createByName(combination.getString("GP.TYPE"), populationManager, functions, terminals, null);
+            return GPFactory.createByName(combination, populationManager, functions, terminals, null);
         } else if (type.equals("gp.GPEFS")) {
-            return GPFactory.createByName(combination.getString("GP.TYPE"), populationManager, functions, terminals, null);
+            return GPFactory.createByName(combination, populationManager, functions, terminals, null);
         } else if (type.equals("gep.GEP")) {
-            return new GEP(populationManager, functions, terminals, null);
+            return new GEP(combination, populationManager, functions, terminals, null);
         } else if (type.equals("GPAAC")) {
-            return new GPAAC(populationManager, functions, terminals, null);
+            return new GPAAC(combination, populationManager, functions, terminals, null);
         } else {
             throw new IllegalArgumentException("Unsupported algorithm type");
         }

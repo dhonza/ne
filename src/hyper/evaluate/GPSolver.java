@@ -53,7 +53,7 @@ public class GPSolver extends AbstractSolver {
             initialGenome = parameters.getString("INITIAL_GENOME");
         }
 
-        gp = GPFactory.createByName(parameters.getString("GP.TYPE"), populationManager, functions, terminals, initialGenome);
+        gp = GPFactory.createByName(parameters, populationManager, functions, terminals, initialGenome);
 
         solver = new EvolutionaryAlgorithmSolver(gp, stats, problem instanceof IProblemGeneralization);
         solver.addProgressPrinter(new GPProgressPrinter1D(gp, problem, reportStorage, parameters));
