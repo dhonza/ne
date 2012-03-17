@@ -31,6 +31,7 @@ printBooleanRanksAsTable::usage = "printBooleanRanksAsTable"
 plotBooleanAsBarChart::usage = "plotBooleanAsBarChart"
 plotBooleanAsBarChartPub::usage = "plotBooleanAsBarChartPub"
 plotAsBoxWhiskerChart::usage = "plotAsBoxWhiskerChart"
+plotAsBoxWhiskerChartPub::usage = "plotAsBoxWhiskerChartPub"
 plotAsHistograms::usage = "plotAsSmoothHistograms"
 
 testMannWhitney::usage = "testMannWhitney[data,label1,label2,statName] computes Mann-Whitney U test on a single stat (given by name) 
@@ -356,13 +357,13 @@ printBooleanRanksAsTable[data_,paramName_,groupSize_,OptionsPattern[]]:=
 CHOSEN2 = {Null,Null}
 
 (* Other possibility is to set Operation -> Total *)
-Options[plotBooleanAsBarChartPub] = {Operation -> (100*Mean[#]&),Epilog -> {},PlotRange -> Automatic,ImagePadding->Automatic};
+Options[plotBooleanAsBarChartPub] = {Operation -> (100*Mean[#]&),Epilog -> {},PlotRange -> Automatic,ImagePadding->Automatic,AxesLabel -> "SUCCESS %"};
 plotBooleanAsBarChartPub[data_,paramName_,partNames_,subChartSpacing_,partSize_:1,OptionsPattern[]] :=
     Module[ {colors,parts,labels,partPlacement,labelPlacement,sum,barLabels},
         colors = listOfColors[partSize];
         labels = labelsForData[data];
-        parts = Grid[Array[{""}&,Length[labels[[1]]]]~Join~{{#}},Spacings->{2,subChartSpacing}]&/@partNames;        
-        labels = Grid[Partition[#,1],Spacings->{2,0}]&/@labels;
+        parts = Grid[Array[{""}&,Length[labels[[1]]]]~Join~{{#}},Spacings->{2,subChartSpacing}]&/@partNames;
+        labels = Grid[Partition[#,1],Spacings->{2,0}]&/@labels;                 
         sum = OptionValue[Operation][resultsForConfiguration[#,paramName]]&/@data;
         sum = Partition[sum,partSize];
         barLabels = (Placed[Style[Grid[{{#1}},Background->White],FontSize->13],Above]&);
@@ -379,10 +380,40 @@ plotBooleanAsBarChartPub[data_,paramName_,partNames_,subChartSpacing_,partSize_:
  			Epilog->OptionValue[Epilog],
  			PlotRange->OptionValue[PlotRange],
  			ImagePadding->OptionValue[ImagePadding],
- 			AxesLabel->"SUCCESS %"
+ 			AxesLabel->OptionValue[AxesLabel]
  			]            
     ]
-    
+
+Options[plotAsBoxWhiskerChartPub] = {Epilog -> {},PlotRange -> Automatic,ImagePadding->Automatic,AxesLabel -> "", PlotRangePadding -> Automatic};
+plotAsBoxWhiskerChartPub[data_,paramName_,partNames_,subChartSpacing_,partSize_:1,OptionsPattern[]] :=
+    Module[ {colors,parts,labels,partPlacement,labelPlacement,values,barLabels},
+        colors = listOfColors[partSize];
+        labels = labelsForData[data];
+        parts = Grid[Array[{""}&,Length[labels[[1]]]]~Join~{{#}},Spacings->{2,subChartSpacing}]&/@partNames;
+        labels = Grid[Partition[#,1],Spacings->{2,0}]&/@labels;                 
+        values = resultsForConfiguration[#,paramName]&/@data;
+ 		values = Partition[values,partSize];
+        barLabels = (Placed[Style[Grid[{{#1}},Background->White],FontSize->13],Above]&);
+        partPlacement = Placed[Style[#,FontSize->17]&/@parts,Axis];
+        labelPlacement = Placed[Style[#,FontSize->15]&/@labels,Axis];
+ 		(*Style[#, FontSize -> 14] & /@ *)
+ 		BoxWhiskerChart[
+ 			values,
+ 			"Notched",
+ 			ChartLabels->labelPlacement,
+ 			LabelingFunction->(Placed[Style[Round[Mean[#1],0.1], FontSize -> 14], Above] &),
+ 			ChartStyle->colors,
+ 			FrameTicksStyle -> Directive[18],
+			AspectRatio -> 0.5/GoldenRatio,
+ 			ImageSize->700,
+ 			Epilog->OptionValue[Epilog],
+ 			PlotRange->OptionValue[PlotRange],
+ 			ImagePadding->OptionValue[ImagePadding],
+			PlotRangePadding->OptionValue[PlotRangePadding],
+ 			AxesLabel->{"",OptionValue[AxesLabel]}
+ 			]        
+    ]
+        
 Options[plotBooleanAsBarChart] = {Operation -> (100*Mean[#]&)};    
 plotBooleanAsBarChart[data_,paramName_,partSize_:1,OptionsPattern[]] :=
     Module[ {colors,labels,labelPlacement,sum,buttons},

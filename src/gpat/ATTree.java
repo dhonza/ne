@@ -80,7 +80,8 @@ public class ATTree {
         //this returns the number of all constants including those not used (hasConstants() -> false).
 //        return numOfConstants;
         //this returns only used constants
-        return root.computeUsedConstants();
+        int c = root.computeUsedConstants();
+        return c;
     }
 
     public int getDepth() {
@@ -433,31 +434,13 @@ public class ATTree {
         }
     }
 
-/* TODO check version with constant locks
-    public void mutateConstants() {
+    public void mutateSwitchLocks() {
         boolean mutation = false;
         for (ATNode node : nodeGeneList) {
             for (int i = 0; i < node.getArity(); i++) {
-                if (!node.isConstantLock(i) &&
-                        RND.getDouble() < GP.MUTATION_CAUCHY_PROBABILITY) {
-                    node.setConstant(i, node.getConstant(i) +
-                            GP.MUTATION_CAUCHY_POWER * RND.getCauchy());
-                    mutation = true;
-                }
-            }
-        }
-        if (mutation) {
-            origin.add("CONSTANTS");
-        }
-    }
-
-
-    public void mutateSwitchConstantLocks() {
-        boolean mutation = false;
-        for (ATNode2 node : nodeGeneList) {
-            for (int i = 0; i < node.getArity(); i++) {
                 if (RND.getDouble() < GPAT.MUTATION_SWITCH_CONSTANT_LOCK) {
-                    node.setConstantLock(i, !node.isConstantLock(i));
+//                    node.setLocked(i, !node.isLocked(i));//SWITCH
+                    node.setLocked(i, false);//SWITCH ON
                     mutation = true;
                 }
             }
@@ -466,7 +449,7 @@ public class ATTree {
             origin.add("CONSTANT_LOCKS");
         }
     }
-*/
+
 
     public void elite() {
         origin.add("ELITE");
@@ -479,6 +462,9 @@ public class ATTree {
             ATNode nodeCopy = new ATNode(node);
             //Note, this shallow copy will be immediately replaced by deep copy.
             //Just to ensure the right size of the ArrayList.
+//            if (node.getArity() > 0 && node.getConstant(0) != 1.0) {
+//                System.out.println("RRRRURRRRR");
+//            }
             for (ATNode children : node.children) {
                 nodeCopy.children.add(children);
             }

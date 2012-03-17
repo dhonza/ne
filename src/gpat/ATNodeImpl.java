@@ -15,24 +15,25 @@ public abstract class ATNodeImpl {
     abstract public double evaluate(IATNode node, TreeInputs treeInputs);
 
     public boolean hasConstants() {
-//        return true;
-        return false;
+        //DO NOT CHANGE!
+        return false;//DEFAULT
     }
 
     public boolean isTerminal() {
-        return false;
+        return false;//DEFAULT
     }
 
     public int repeatConstant() {
-        return 1;
+        return Integer.MAX_VALUE;//DEFAULT
+//        return 1;
     }
 
     public int repeatInput() {
-        return 1;
+        return 1;//DEFAULT
     }
 
     public int maxArity() {
-        return Integer.MAX_VALUE;
+        return Integer.MAX_VALUE;//DEFAULT
     }
 
     protected double innerPotential(IATNode node, TreeInputs treeInputs) {

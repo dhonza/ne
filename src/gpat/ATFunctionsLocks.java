@@ -9,8 +9,8 @@ import gp.TreeInputs;
  * Time: 4:46:50 PM
  * To change this template use File | Settings | File Templates.
  */
-public class ATFunctionsLikeGP {
-    private ATFunctionsLikeGP() {
+public class ATFunctionsLocks {
+    private ATFunctionsLocks() {
     }
 
     public static class Plus extends ATNodeImpl {
@@ -20,16 +20,7 @@ public class ATFunctionsLikeGP {
         }
 
         public double evaluate(IATNode node, TreeInputs treeInputs) {
-            double result = 0.0;
-            if (hasConstants()) {
-                for (int i = 0; i < node.getArity(); i++) {
-                    result += node.getConstant(i) * node.getChild(i).evaluate(treeInputs);
-                }
-            } else {
-                for (int i = 0; i < node.getArity(); i++) {
-                    result += node.getChild(i).evaluate(treeInputs);
-                }
-            }
+            double result = sums((ATNode) node, treeInputs);
             return result;
         }
 
@@ -37,11 +28,6 @@ public class ATFunctionsLikeGP {
         public boolean hasConstants() {
 //            return false;
             return true;
-        }
-
-        @Override
-        public int maxArity() {
-            return 2;
         }
     }
 
@@ -68,12 +54,9 @@ public class ATFunctionsLikeGP {
         }
 
         @Override
-        public int maxArity() {
-            return 2;
-        }
-
         public int repeatInput() {
             return Integer.MAX_VALUE;
+//            return 1;
         }
     }
 
@@ -86,7 +69,7 @@ public class ATFunctionsLikeGP {
             if (node.getArity() == 0) {
                 return 0.0;
             }
-            return Math.atan(innerPotential(node, treeInputs));
+            return Math.atan(sums((ATNode) node, treeInputs));
         }
 
         @Override
@@ -96,8 +79,9 @@ public class ATFunctionsLikeGP {
         }
 
         @Override
-        public int maxArity() {
-            return 1;
+        public int repeatInput() {
+            return Integer.MAX_VALUE;
+//            return 1;
         }
     }
 
@@ -110,7 +94,7 @@ public class ATFunctionsLikeGP {
             if (node.getArity() == 0) {
                 return 0.0;
             }
-            return Math.sin(innerPotential(node, treeInputs));
+            return Math.sin(sums((ATNode) node, treeInputs));
         }
 
         @Override
@@ -120,8 +104,9 @@ public class ATFunctionsLikeGP {
         }
 
         @Override
-        public int maxArity() {
-            return 1;
+        public int repeatInput() {
+            return Integer.MAX_VALUE;
+//            return 1;
         }
     }
 
@@ -134,7 +119,7 @@ public class ATFunctionsLikeGP {
             if (node.getArity() == 0) {
                 return 0.0;
             }
-            double result = (innerPotential(node, treeInputs));
+            double result = (sums((ATNode) node, treeInputs));
             return Math.exp(-(result * result));
         }
 
@@ -145,8 +130,28 @@ public class ATFunctionsLikeGP {
         }
 
         @Override
-        public int maxArity() {
-            return 1;
+        public int repeatInput() {
+            return Integer.MAX_VALUE;
+//            return 1;
         }
+    }
+
+    private static double sums(ATNode node, TreeInputs treeInputs) {
+        double result = 0.0;
+        if (node.hasConstants()) {
+            for (int i = 0; i < node.getArity(); i++) {
+                double c = 1.0;
+//                if (true) {
+                if (!node.isLocked(i)) {
+                    c = node.getConstant(i);
+                }
+                result += c * node.getChild(i).evaluate(treeInputs);
+            }
+        } else {
+            for (int i = 0; i < node.getArity(); i++) {
+                result += node.getChild(i).evaluate(treeInputs);
+            }
+        }
+        return result;
     }
 }

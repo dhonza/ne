@@ -39,9 +39,15 @@ public class GPATSolver extends AbstractSolver {
         Utils.setStaticParameters(parameters, GPAT.class, "GPAT");
         Utils.setStaticParameters(parameters, GPATSimple.class, "GPATS");
 
-        ATNodeImpl[] functions = ATNodeFactory.createByNameList("gpat.ATFunctions$", parameters.getString("GPAT.FUNCTIONS"));
-        ATNodeImpl[] terminals = new ATNodeImpl[]{new ATTerminals.Constant(1.0)};
-
+        ATNodeImpl[] functions = ATNodeFactory.createByNameList(parameters.getString("GPAT.FUNCTION_IMPL"), parameters.getString("GPAT.FUNCTIONS"));
+        ATNodeImpl[] terminals = null;
+        if (parameters.getString("GPAT.FUNCTION_IMPL").equals("gpat.ATFunctionsNoConsts$")) {
+            terminals = new ATNodeImpl[]{new ATTerminals.Constant(1.0), new ATTerminals.ConstantMarker()};
+//            terminals = new ATNodeImpl[]{new ATTerminals.Constant(1.0), new ATTerminals.ConstantMarker(), new ATTerminals.ConstantMarker(), new ATTerminals.ConstantMarker()};
+//            terminals = new ATNodeImpl[]{new ATTerminals.ConstantMarker()};
+        } else {
+            terminals = new ATNodeImpl[]{new ATTerminals.Constant(1.0)};
+        }
         GP.TARGET_FITNESS = problem.getTargetFitness();
 
         gp = new GPAT(populationManager, functions, terminals);

@@ -1,0 +1,79 @@
+#!/bin/bash
+
+if [ $# != 2 ] ; then
+    echo "usage: "$0" BASE_ALGORITHM NAME"
+    exit
+fi
+
+BALG="${1}"
+NAME="${2}"
+CPUS="${3}"
+NEDIR="/Users/drchaj1/java/ne"
+
+case ${BALG} in
+	"GP")
+    	export CLASS="common.run.Runner"
+		export CFG=${NEDIR}"/cfg/demo/gpdemo.properties"
+		;;
+	"GPAT")
+    	export CLASS="common.run.Runner"
+		export CFG=${NEDIR}"/cfg/demo/gpatdemo.properties"
+		;;
+	"GPATS")
+    	export CLASS="common.run.Runner"
+		export CFG=${NEDIR}"/cfg/demo/gpatsimpledemo.properties"
+		;;
+	"NEAT")
+    	export CLASS="common.run.Runner"
+		export CFG=${NEDIR}"/cfg/demo/neatdemo.properties"
+		;;		
+	"HGP")
+    	export CLASS="hyper.experiments.HyperRunner"
+		export CFG=${NEDIR}"/cfg/hyper/gphyper.properties"
+		;;
+	"HGPAT")
+    	export CLASS="hyper.experiments.HyperRunner"
+		export CFG=${NEDIR}"/cfg/hyper/gpathyper.properties"
+		;;
+	"HNEAT")
+    	export CLASS="hyper.experiments.HyperRunner"
+		export CFG=${NEDIR}"/cfg/hyper/neathyper.properties"
+		;;
+	*)
+		echo "Unknown BASE ALGORITHM: "${BALG}" !!!"
+		exit 1 ;;
+esac
+
+# par. 1: machine and dir to run
+# par. 2: problem config file dir
+# par. 3: problem config file name (no extension)
+# par. 4: number of CPUs
+function run {
+    sed -i "" "1s/.*/INCLUDE = "${2}"\/"${3}"\.properties/" ${CFG}
+    sed -i "" "s/^PARALLEL\.FORCE_THREADS.*/PARALLEL\.FORCE_THREADS = "${4}"/" ${CFG}
+    ./nepackage ${BALG} ${NAME}"_"${3}
+    ./runaltix ${1} ${4}
+}
+
+echo "CHECK"
+echo "	- The project has actual BUILD."
+echo "	- All problem includes are COMMENTED OUT."
+read -n 1 -p "Press any key to continue..."
+
+run "hal:~/scratch/nepack"${BALG}"_1D-F" "regression" "1D-F" 6
+run "hal:~/scratch/nepack"${BALG}"_1D-H" "regression" "1D-H" 6
+
+run "hal:~/scratch/nepack"${BALG}"_2D-I" "regression" "2D-I" 6
+run "hal:~/scratch/nepack"${BALG}"_2D-K" "regression" "2D-K" 6
+
+run "hal:~/scratch/nepack"${BALG}"_3D-E" "regression" "3D-E" 6
+run "hal:~/scratch/nepack"${BALG}"_3D-H" "regression" "3D-H" 6
+run "hal:~/scratch/nepack"${BALG}"_3D-K" "regression" "3D-K" 6
+
+run "hal:~/scratch/nepack"${BALG}"_4D-C" "regression" "4D-C" 6
+run "hal:~/scratch/nepack"${BALG}"_4D-F" "regression" "4D-F" 6
+run "hal:~/scratch/nepack"${BALG}"_4D-G" "regression" "4D-G" 6
+run "hal:~/scratch/nepack"${BALG}"_4D-V" "regression" "4D-V" 6
+
+run "hal:~/scratch/nepack"${BALG}"_maze-1" "maze" "maze-1" 6
+run "hal:~/scratch/nepack"${BALG}"_maze-2" "maze" "maze-2" 6

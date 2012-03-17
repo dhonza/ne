@@ -17,11 +17,50 @@ import java.util.List;
  * To change this template use File | Settings | File Templates.
  */
 public class ATNode implements IATNode, Comparable<ATNode> {
+    public static class Constant {
+        double value;
+        boolean lock;
+
+        public Constant(double value) {
+            this.value = value;
+            this.lock = true;
+        }
+
+        @Override
+        public boolean equals(Object o) {
+            if (this == o) return true;
+            if (o == null || getClass() != o.getClass()) return false;
+
+            Constant constant = (Constant) o;
+
+            if (lock != constant.lock) return false;
+            if (Double.compare(constant.value, value) != 0) return false;
+
+            return true;
+        }
+
+        @Override
+        public int hashCode() {
+            int result;
+            long temp;
+            temp = value != +0.0d ? Double.doubleToLongBits(value) : 0L;
+            result = (int) (temp ^ (temp >>> 32));
+            result = 31 * result + (lock ? 1 : 0);
+            return result;
+        }
+
+        protected Constant copy() {
+            Constant c = new Constant(value);
+            c.lock = lock;
+            return c;
+        }
+    }
+
     private int id;
     private ATNodeImpl impl;
 
     protected List<ATNode> children;
-    protected List<Double> constants;
+    protected List<Constant> constants;
 
     //The number of terminals EVER connected to this node, even when the terminal is disconnected by mutateAddNode it
     //stays here. See incTerminalsConnected for further explanation.
@@ -31,13 +70,16 @@ public class ATNode implements IATNode, Comparable<ATNode> {
         this.id = id;
         this.impl = impl;
         this.children = new ArrayList<ATNode>();
-        this.constants = new ArrayList<Double>();
+        this.constants = new ArrayList<Constant>();
         this.terminalsConnected = new int[numOfTerminals];
     }
 
     public ATNode(ATNode node) {
         this(node.getId(), node.getImpl(), node.terminalsConnected.length);
-        this.constants = new ArrayList<Double>(node.constants);
+        this.constants = new ArrayList<Constant>();
+        for (Constant constant : node.constants) {
+            this.constants.add(constant.copy());
+        }
         this.terminalsConnected = node.terminalsConnected.clone();
     }
 
@@ -66,7 +108,11 @@ public class ATNode implements IATNode, Comparable<ATNode> {
     }
 
     public double getConstant(int idx) {
-        return constants.get(idx);
+        return constants.get(idx).value;
+    }
+
+    public boolean isLocked(int idx) {
+        return constants.get(idx).lock;
     }
 
     public double getConstantForLinkGene(ATLinkGene linkGene) {
@@ -81,7 +127,11 @@ public class ATNode implements IATNode, Comparable<ATNode> {
     }
 
     public void setConstant(int idx, double value) {
-        constants.set(idx, value);
+        constants.get(idx).value = value;
+    }
+
+    public void setLocked(int idx, boolean lock) {
+        constants.get(idx).lock = lock;
     }
 
     public String getName() {
@@ -126,8 +176,7 @@ public class ATNode implements IATNode, Comparable<ATNode> {
 
     public void addChild(ATNode child) {
         children.add(child);
-        constants.add(1.0);
-//        constantLocks.add(true);
+        constants.add(new Constant(1.0));
     }
 
     public void replaceChild(int idx, ATNode child) {
@@ -154,7 +203,12 @@ public class ATNode implements IATNode, Comparable<ATNode> {
         }
         int sum = hasConstants() ? getArity() : 0;
         for (ATNode child : children) {
-            sum += child.computeUsedConstants();
+            if (child.getImpl() instanceof ATTerminals.ConstantMarker) {
+                sum++;
+                //ConstantMarker is a leaf, so we don't have to descend
+            } else {
+                sum += child.computeUsedConstants();
+            }
         }
         return sum;
     }
@@ -215,7 +269,7 @@ public class ATNode implements IATNode, Comparable<ATNode> {
             for (int i = 0; i < children.size(); i++) {
                 ATNode child = children.get(i);
                 if (hasConstants()) {
-                    b.append(MathematicaUtils.toMathematica(constants.get(i))).append("*");
+                    b.append(MathematicaUtils.toMathematica(constants.get(i).value)).append("*");
                 }
                 b.append(child.toMathematicaExpression());
                 if (i < children.size() - 1) {

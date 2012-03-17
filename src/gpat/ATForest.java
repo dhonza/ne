@@ -72,6 +72,7 @@ public class ATForest implements IGPForest, Comparable, Serializable {
 
             toMutate.mutateStructure();
             toMutate.mutateConstants();
+            toMutate.mutateSwitchLocks();
 
             forest.trees[i] = toMutate;
         }

@@ -57,4 +57,22 @@ public class ATTerminals {
             return true;
         }
     }
+
+    public static class ConstantMarker extends ATNodeImpl {
+        public ConstantMarker() {
+        }
+
+        public double evaluate(IATNode node, TreeInputs treeInputs) {
+            return 1.0;
+        }
+
+        public String getName() {
+            return "r1";
+        }
+
+        @Override
+        public boolean isTerminal() {
+            return true;
+        }
+    }
 }

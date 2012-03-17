@@ -30,7 +30,7 @@ public class GPATRunner implements EvolutionaryAlgorithmRunner {
         this.parameters = parameters;
         populationManager = createPopulationManager(parameters);
         functions = createFunctions("GPAT", parameters);
-        terminals = createTerminals("GPAT");
+        terminals = createTerminals("GPAT", parameters);
         ea = createAlgorithm(parameters, populationManager, functions, terminals);
     }
 
@@ -80,10 +80,15 @@ public class GPATRunner implements EvolutionaryAlgorithmRunner {
         }
     }
 
-    private static ATNodeImpl[] createTerminals(String type) {
+    private static ATNodeImpl[] createTerminals(String type, ParameterCombination combination) {
         if (type.equals("GPAT")) {
 //            return new ATNode2[]{};//GPAT
-            return new ATNodeImpl[]{new ATTerminals.Constant(1.0)};//GPAT
+//            return new ATNodeImpl[]{new ATTerminals.Constant(1.0)};//GPAT
+            if (combination.getString("GPAT.FUNCTION_IMPL").equals("gpat.ATFunctionsNoConsts$")) {
+                return new ATNodeImpl[]{new ATTerminals.Constant(1.0), new ATTerminals.ConstantMarker()};//GPAT without inner constants
+            } else {
+                return new ATNodeImpl[]{new ATTerminals.Constant(1.0)};
+            }
         } else {
             throw new IllegalArgumentException("Unsupported algorithm type");
         }

@@ -52,6 +52,7 @@ if [ $# -ge 3 ] ; then
     export COPYBACK="${3}"
 fi
 
+echo "Have you rebuilt the sources? (if needed)"
 cd /tmp
 
 rm -rf ${NEPACKAGE}

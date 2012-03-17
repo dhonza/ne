@@ -14,19 +14,20 @@ shift
 function copy {
     for EFILE in ${1}/experiments_???.txt 
     do
-	PFILE=`echo ${EFILE} | sed s/experiments/parameters/g`
-	if [ ! -e ${PFILE} ]
-	then
-	    echo "file ${PFILE} does not exists but ${EFILE} does!"
-	    exit 1
-	fi
-	SCNT=$(printf "%03d" ${CNT})
-	echo ${EFILE}
-	cp ${EFILE} "${TARGET}/experiments_${SCNT}.txt"
-	echo ${PFILE}
-	cp ${PFILE} "${TARGET}/parameters_${SCNT}.txt"
-	CNT=$((CNT+1))
+		PFILE=`echo ${EFILE} | sed s/experiments/parameters/g`
+		if [ ! -e ${PFILE} ]
+		then
+	    	echo "file ${PFILE} does not exists but ${EFILE} does!"
+	    	exit 1
+		fi
+		SCNT=$(printf "%03d" ${CNT})
+		echo ${EFILE}
+		cp ${EFILE} "${TARGET}/experiments_${SCNT}.txt"
+		echo ${PFILE}
+		cp ${PFILE} "${TARGET}/parameters_${SCNT}.txt"
+		CNT=$((CNT+1))
     done
+    cat "${1}/experiments_overall.txt" >> "${TARGET}/experiments_overall.txt"
 }
 
 
