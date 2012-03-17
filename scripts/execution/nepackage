@@ -105,6 +105,10 @@ echo '#!/bin/bash' > ${INFOSCRIPT}
 chmod a+x ${INFOSCRIPT}
 echo 'export EXPDIR="'${EXPDIR}'"' >> ${INFOSCRIPT}
 echo 'cd ${EXPDIR}' >> ${INFOSCRIPT}
+echo 'if [ ! -e "_experiment_id.txt" ] ; then' >> ${INFOSCRIPT}
+echo 'echo "WAITING "${EXPDIR}' >> ${INFOSCRIPT}
+echo 'exit' >> ${INFOSCRIPT}
+echo 'fi' >> ${INFOSCRIPT}
 echo 'if [ -e "experiments_overall.txt" ] ; then' >> ${INFOSCRIPT}
 echo 'echo "FINISHED "${EXPDIR}' >> ${INFOSCRIPT}
 echo 'exit' >> ${INFOSCRIPT}

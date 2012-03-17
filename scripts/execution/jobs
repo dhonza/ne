@@ -4,6 +4,7 @@
 NORMAL="\x1B[0m"
 GREEN="\x1B[32m"
 RED="\x1B[31m"
+YELLOW="\x1B[33m"
 BBLUE="\x1B[34;1m"
 
 export JOBLIST=~/java/exp/jobs.txt
@@ -23,8 +24,10 @@ do
     C2=`echo "${INFO}" | cut -d " " -f 2`
     C3=`echo "${INFO}" | cut -d " " -f 3`
     if [ ${C1} == "FINISHED" ] ; then
-	echo -e "\t"${GREEN}FINISHED"\t"${NORMAL}${C2}"\t"${line}
+		echo -e "\t"${GREEN}FINISHED"\t"${NORMAL}${C2}"\t"${line}
+    elif [ ${C1} == "WAITING" ] ; then
+		echo -e "\t"${YELLOW}WAITING"\t"${NORMAL}${C2}"\t"${line}
     else
-	echo -e "\t"${C1}"\t"${C2}"\t"${C3}"\t"${line}
+		echo -e "\t"${C1}"\t"${C2}"\t"${C3}"\t"${line}
     fi
 done < ${JOBLIST}
