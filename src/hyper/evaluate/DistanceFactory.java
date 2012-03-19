@@ -69,6 +69,8 @@ public class DistanceFactory {
                 return new ATForestDistance(new ATTreeDistanceConstant());
             } else if (parameters.getString("GPAT.DISTANCE").equals("RANDOM")) {
                 return new ATForestDistance(new ATTreeDistanceRandom());
+            } else if (parameters.getString("GPAT.DISTANCE").equals("GNERAL")) {
+                return new ATForestDistance(new ATTreeDistanceGeneral(parameters));
             } else if (parameters.getString("GPAT.DISTANCE").equals("ROOTO")) {
                 return new ATForestDistance(new ATTreeDistanceRootsOnly());
             } else if (parameters.getString("GPAT.DISTANCE").equals("SIMPLE")) {

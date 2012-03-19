@@ -14,14 +14,6 @@ import gpat.ATTree;
  */
 public class ATTreeDistanceRandom implements IDistance<ATTree> {
     public double distance(ATTree a, ATTree b) {
-        double distance = 0.0;
-        distance = distanceRecursive(a.getRoot(), b.getRoot());
-        return distance;
+        return RND.getDouble();
     }
-
-    private double distanceRecursive(ATNode a, ATNode b) {
-        double distance = RND.getDouble();
-        return distance;
-    }
-
 }

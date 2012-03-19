@@ -28,7 +28,6 @@ public class TreeDistanceGeneral implements IDistance<Tree> {
         K = parameters.getDouble("GP.DISTANCE_GENERAL_K");
         notMatchingNodeExit = parameters.getBoolean("GP.DISTANCE_GENERAL_NOT_MATCHING_NODE_EXIT");
         descendNullTrees = parameters.getBoolean("GP.DISTANCE_GENERAL_DESCEND_NULL_TREES");
-
     }
 
     public double distance(Tree a, Tree b) {

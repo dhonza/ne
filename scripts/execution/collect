@@ -34,7 +34,7 @@ function copy {
 if [ -e ${TARGET} ]
 then
   echo "target dir ${TARGET} already exists!"
-#  exit 1
+  exit 1
 fi
 
 mkdir -p ${TARGET}

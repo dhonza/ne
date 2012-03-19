@@ -1,0 +1,8 @@
+#!/bin/bash
+
+if [ $# -ne 1 ] ; then
+    echo "usage: "$0" prefix"
+    exit 1
+fi
+
+./collect ${1} ${1}"_1D-F" ${1}"_1D-H" ${1}"_2D-I" ${1}"_2D-K" ${1}"_3D-E" ${1}"_3D-H" ${1}"_3D-K" ${1}"_4D-C" ${1}"_4D-F" ${1}"_4D-G" ${1}"_4D-V" ${1}"_maze-1" ${1}"_maze-2"

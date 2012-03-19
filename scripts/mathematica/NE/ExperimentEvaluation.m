@@ -357,7 +357,7 @@ printBooleanRanksAsTable[data_,paramName_,groupSize_,OptionsPattern[]]:=
 CHOSEN2 = {Null,Null}
 
 (* Other possibility is to set Operation -> Total *)
-Options[plotBooleanAsBarChartPub] = {Operation -> (100*Mean[#]&),Epilog -> {},PlotRange -> Automatic,ImagePadding->Automatic,AxesLabel -> "SUCCESS %"};
+Options[plotBooleanAsBarChartPub] = {Operation -> (100*Mean[#]&),Epilog -> {},PlotRange -> Automatic,ImagePadding->Automatic,AxesLabel -> "SUCCESS %",AspectRatio->0.5/GoldenRatio};
 plotBooleanAsBarChartPub[data_,paramName_,partNames_,subChartSpacing_,partSize_:1,OptionsPattern[]] :=
     Module[ {colors,parts,labels,partPlacement,labelPlacement,sum,barLabels},
         colors = listOfColors[partSize];
@@ -375,7 +375,7 @@ plotBooleanAsBarChartPub[data_,paramName_,partNames_,subChartSpacing_,partSize_:
  			ChartStyle->colors,
  			ImageSize->{{700},{1600}},
  			AxesStyle->Directive[15],
- 			AspectRatio->0.5/GoldenRatio,
+ 			AspectRatio->OptionValue[AspectRatio],
  			BarSpacing->{Automatic, 1.5},
  			Epilog->OptionValue[Epilog],
  			PlotRange->OptionValue[PlotRange],

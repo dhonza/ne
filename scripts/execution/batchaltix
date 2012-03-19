@@ -55,25 +55,40 @@ function run {
     ./runaltix ${1} ${4}
 }
 
-echo "CHECK"
-echo "	- The project has actual BUILD."
-echo "	- All problem includes are COMMENTED OUT."
-read -n 1 -p "Press any key to continue..."
+#echo "CHECK"
+#echo "	- The project has actual BUILD."
+#echo "	- All problem includes are COMMENTED OUT."
+#read -n 1 -p "Press any key to continue..."
 
-run "hal:~/scratch/nepack"${BALG}"_1D-F" "regression" "1D-F" 6
-run "hal:~/scratch/nepack"${BALG}"_1D-H" "regression" "1D-H" 6
+if [[ ${BALG} == H* ]]
+then
+	echo "INDIRECT ENCODING EXPERIMENTS"
+	run "rex:~/scratch/nepack"${BALG}"_"${NAME}"_rcM" "reco" "rcM" 6
+	run "rex:~/scratch/nepack"${BALG}"_"${NAME}"_rcS" "reco" "rcS" 6
+	run "rex:~/scratch/nepack"${BALG}"_"${NAME}"_rcR" "reco" "rcR" 6
+	
+	run "rex:~/scratch/nepack"${BALG}"_"${NAME}"_xor" "bool" "xor" 6
+	
+	run "rex:~/scratch/nepack"${BALG}"_"${NAME}"_fc55" "fc" "fc55" 6
 
-run "hal:~/scratch/nepack"${BALG}"_2D-I" "regression" "2D-I" 6
-run "hal:~/scratch/nepack"${BALG}"_2D-K" "regression" "2D-K" 6
+else
+	echo "DIRECT ENCODING EXPERIMENTS"
 
-run "hal:~/scratch/nepack"${BALG}"_3D-E" "regression" "3D-E" 6
-run "hal:~/scratch/nepack"${BALG}"_3D-H" "regression" "3D-H" 6
-run "hal:~/scratch/nepack"${BALG}"_3D-K" "regression" "3D-K" 6
-
-run "hal:~/scratch/nepack"${BALG}"_4D-C" "regression" "4D-C" 6
-run "hal:~/scratch/nepack"${BALG}"_4D-F" "regression" "4D-F" 6
-run "hal:~/scratch/nepack"${BALG}"_4D-G" "regression" "4D-G" 6
-run "hal:~/scratch/nepack"${BALG}"_4D-V" "regression" "4D-V" 6
-
-run "hal:~/scratch/nepack"${BALG}"_maze-1" "maze" "maze-1" 6
-run "hal:~/scratch/nepack"${BALG}"_maze-2" "maze" "maze-2" 6
+	run "hal:~/scratch/nepack"${BALG}"_"${NAME}"_1DF" "regression" "1DF" 6
+	run "hal:~/scratch/nepack"${BALG}"_"${NAME}"_1DH" "regression" "1DH" 3
+	
+	run "hal:~/scratch/nepack"${BALG}"_"${NAME}"_2DI" "regression" "2DI" 6
+	run "hal:~/scratch/nepack"${BALG}"_"${NAME}"_2DK" "regression" "2DK" 3
+	
+	run "hal:~/scratch/nepack"${BALG}"_"${NAME}"_3DE" "regression" "3DE" 6
+	run "hal:~/scratch/nepack"${BALG}"_"${NAME}"_3DH" "regression" "3DH" 6
+	run "hal:~/scratch/nepack"${BALG}"_"${NAME}"_3DK" "regression" "3DK" 6
+	
+	run "hal:~/scratch/nepack"${BALG}"_"${NAME}"_4DC" "regression" "4DC" 6
+	run "hal:~/scratch/nepack"${BALG}"_"${NAME}"_4DF" "regression" "4DF" 6
+	run "hal:~/scratch/nepack"${BALG}"_"${NAME}"_4DG" "regression" "4DG" 6
+	run "hal:~/scratch/nepack"${BALG}"_"${NAME}"_4DV" "regression" "4DV" 6
+	
+	run "hal:~/scratch/nepack"${BALG}"_"${NAME}"_M1" "maze" "M1" 6
+	run "hal:~/scratch/nepack"${BALG}"_"${NAME}"_M2" "maze" "M2" 6
+fi

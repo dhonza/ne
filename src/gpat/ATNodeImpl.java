@@ -36,19 +36,30 @@ public abstract class ATNodeImpl {
         return Integer.MAX_VALUE;//DEFAULT
     }
 
-    protected double innerPotential(IATNode node, TreeInputs treeInputs) {
-        if (hasConstants()) {
-            double result = node.getConstant(0) * node.getChild(0).evaluate(treeInputs);
-            for (int i = 1; i < node.getArity(); i++) {
-                result += node.getConstant(i) * node.getChild(i).evaluate(treeInputs);
+    boolean isActive(ATNode node, int idx) {
+        return hasConstants();
+    }
+
+    protected double sum(IATNode node, TreeInputs treeInputs) {
+        double result = 0.0;
+        for (int i = 0; i < node.getArity(); i++) {
+            double c = 1.0;
+            if (node.isActive(i)) {
+                c = node.getConstant(i);
             }
-            return result;
-        } else {
-            double result = node.getChild(0).evaluate(treeInputs);
-            for (int i = 1; i < node.getArity(); i++) {
-                result += node.getChild(i).evaluate(treeInputs);
-            }
-            return result;
+            result += c * node.getChild(i).evaluate(treeInputs);
         }
+        return result;
+    }
+
+    protected double times(IATNode node, TreeInputs treeInputs) {
+        if (node.getArity() == 0) {
+            return 0.0;
+        }
+        double result = node.getChild(0).evaluate(treeInputs);
+        for (int i = 1; i < node.getArity(); i++) {
+            result *= node.getChild(i).evaluate(treeInputs);
+        }
+        return result;
     }
 }

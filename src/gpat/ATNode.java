@@ -111,6 +111,10 @@ public class ATNode implements IATNode, Comparable<ATNode> {
         return constants.get(idx).value;
     }
 
+    public boolean isActive(int idx) {
+        return impl.isActive(this, idx);
+    }
+
     public boolean isLocked(int idx) {
         return constants.get(idx).lock;
     }

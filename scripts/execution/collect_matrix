@@ -1,0 +1,49 @@
+#!/bin/bash
+
+if [ $# != 1 ] ; then
+    echo "usage: "$0" NAME"
+    exit
+fi
+
+
+NAME=${1}
+echo ${NAME}
+
+mkdir -p COLLECTED
+
+function sel {
+    ./collect COLLECTED/${NAME}"_"${1} ${NAME}*${1}
+}
+
+sel "1DF"
+sel "1DH"
+
+sel "2DI"
+sel "2DK"
+
+sel "3DE"
+sel "3DH"
+sel "3DK"
+
+sel "4DC"
+sel "4DF"
+sel "4DG"
+sel "4DV"
+
+sel "M1"
+sel "M2"
+
+sel "rcM"
+sel "rcS"
+sel "rcR"
+
+sel "xor"
+
+sel "fc55"
+
+
+
+
+
+
+

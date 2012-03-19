@@ -59,19 +59,13 @@ rm -rf ${NEPACKAGE}
 mkdir ${NEPACKAGE}
 
 cp -r ${NEDIR}/out/production/Ne/ ${NEPACKAGE}/
-#Vivae
-cp -r ${NEDIR}/out/production/Vivae/ ${NEPACKAGE}/
 
 #mkdir ${NEPACKAGE}/lib
 mkdir ${NEPACKAGE}/${EXPDIR}
 
 #find ${NEDIR}/ne/lib -type f -exec cp {} ${NEPACKAGE}/lib/ \;
-#Vivae
-#find ${NEDIR}/vivae/vivae/lib -type f -exec cp {} ${NEPACKAGE}/lib/ \;
 
-cp -r ${NEDIR}/ne/cfg ${NEPACKAGE}
-#Vivae
-cp -r ${NEDIR}/vivae/vivae/cfg ${NEPACKAGE}
+cp -r ${NEDIR}/cfg ${NEPACKAGE}
 
 echo '#!/bin/bash' > ${RUNSCRIPT}
 chmod a+x ${RUNSCRIPT}

@@ -1,0 +1,8 @@
+#!/bin/bash
+
+if [ $# -ne 1 ] ; then
+    echo "usage: "$0" prefix"
+    exit 1
+fi
+
+./collect ${1} ${1}"_reco1D-M" ${1}"_reco1D-S" ${1}"_reco1D-R" ${1}"_fc55" ${1}"_xor"

@@ -34,6 +34,9 @@ public class ATTreeDistance implements IDistance<ATTree> {
                 double iConstant = il.getTo().getConstantForLinkGene(il);
                 double jConstant = jl.getTo().getConstantForLinkGene(jl);
                 wDif += Math.abs(iConstant - jConstant);
+                if (!il.getTo().getImpl().getClass().equals(jl.getTo().getImpl().getClass())) {
+                    actDif += 1.0;
+                }
             } else if (il.getInnovation() > jl.getInnovation()) {
                 disjoint++;
                 j++;
@@ -55,7 +58,7 @@ public class ATTreeDistance implements IDistance<ATTree> {
             weights = 0.0;
         }
         //TODO should be proportional to to length of a longer genome!!!
-        double distance = GPAT.DISTANCE_C1 * excess + GPAT.DISTANCE_C2 * disjoint + weights;
+        double distance = GPAT.DISTANCE_C1 * excess + GPAT.DISTANCE_C2 * disjoint + weights + GPAT.DISTANCE_CACT * actDif;
         return distance;
     }
 

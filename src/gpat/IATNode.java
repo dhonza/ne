@@ -14,6 +14,9 @@ public interface IATNode {
 
     double getConstant(int idx);
 
+    //is the constant i active?
+    boolean isActive(int idx);
+
     IATNode getChild(int idx);
 
     double evaluate(TreeInputs treeInputs);

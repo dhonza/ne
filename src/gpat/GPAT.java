@@ -40,6 +40,7 @@ public class GPAT<P> implements IGPAT {
     public static double DISTANCE_C1 = 1.0;
     public static double DISTANCE_C2 = 1.0;
     public static double DISTANCE_C3 = 2.0;
+    public static double DISTANCE_CACT = 0.0;
     public static double ELITIST_PROPORTION_SIZE = 0.2;
 
     final protected int inputs;

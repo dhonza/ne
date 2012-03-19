@@ -20,7 +20,12 @@ public class ATFunctionsNoConsts {
         }
 
         public double evaluate(IATNode node, TreeInputs treeInputs) {
-            return sums(node, treeInputs);
+            return sum(node, treeInputs);
+        }
+
+        @Override
+        boolean isActive(ATNode node, int idx) {
+            return node.getChild(idx).getImpl() instanceof ATTerminals.ConstantMarker;
         }
     }
 
@@ -41,16 +46,14 @@ public class ATFunctionsNoConsts {
             return result;
             */
 //            /*
-            ATNode child = (ATNode) (node.getChild(0));
             double result;
-            if (child.getImpl() instanceof ATTerminals.ConstantMarker) {
+            if (node.isActive(0)) {
                 result = node.getConstant(0) * node.getChild(0).evaluate(treeInputs);
             } else {
                 result = node.getChild(0).evaluate(treeInputs);
             }
             for (int i = 1; i < node.getArity(); i++) {
-                child = (ATNode) (node.getChild(i));
-                if (child.getImpl() instanceof ATTerminals.ConstantMarker) {
+                if (node.isActive(i)) {
                     result *= node.getConstant(i) * node.getChild(i).evaluate(treeInputs);
                 } else {
                     result *= node.getChild(i).evaluate(treeInputs);
@@ -58,12 +61,18 @@ public class ATFunctionsNoConsts {
             }
             return result;
 //            */
+
         }
 
         @Override
         public int repeatInput() {
             return Integer.MAX_VALUE;
 //            return 1;
+        }
+
+        @Override
+        boolean isActive(ATNode node, int idx) {
+            return node.getChild(idx).getImpl() instanceof ATTerminals.ConstantMarker;
         }
     }
 
@@ -73,13 +82,18 @@ public class ATFunctionsNoConsts {
         }
 
         public double evaluate(IATNode node, TreeInputs treeInputs) {
-            return Math.atan(sums(node, treeInputs));
+            return Math.atan(sum(node, treeInputs));
         }
 
         @Override
         public int repeatInput() {
             return Integer.MAX_VALUE;
 //            return 1;
+        }
+
+        @Override
+        boolean isActive(ATNode node, int idx) {
+            return node.getChild(idx).getImpl() instanceof ATTerminals.ConstantMarker;
         }
     }
 
@@ -89,13 +103,18 @@ public class ATFunctionsNoConsts {
         }
 
         public double evaluate(IATNode node, TreeInputs treeInputs) {
-            return Math.sin(sums(node, treeInputs));
+            return Math.sin(sum(node, treeInputs));
         }
 
         @Override
         public int repeatInput() {
             return Integer.MAX_VALUE;
 //            return 1;
+        }
+
+        @Override
+        boolean isActive(ATNode node, int idx) {
+            return node.getChild(idx).getImpl() instanceof ATTerminals.ConstantMarker;
         }
     }
 
@@ -108,7 +127,7 @@ public class ATFunctionsNoConsts {
             if (node.getArity() == 0) {
                 return 0.0;
             }
-            double result = sums(node, treeInputs);
+            double result = sum(node, treeInputs);
             return Math.exp(-(result * result));
         }
 
@@ -117,18 +136,10 @@ public class ATFunctionsNoConsts {
             return Integer.MAX_VALUE;
 //            return 1;
         }
-    }
 
-    private static double sums(IATNode node, TreeInputs treeInputs) {
-        double result = 0.0;
-        for (int i = 0; i < node.getArity(); i++) {
-            ATNode child = (ATNode) (node.getChild(i));
-            if (child.getImpl() instanceof ATTerminals.ConstantMarker) {
-                result += node.getConstant(i) * node.getChild(i).evaluate(treeInputs);
-            } else {
-                result += node.getChild(i).evaluate(treeInputs);
-            }
+        @Override
+        boolean isActive(ATNode node, int idx) {
+            return node.getChild(idx).getImpl() instanceof ATTerminals.ConstantMarker;
         }
-        return result;
     }
 }

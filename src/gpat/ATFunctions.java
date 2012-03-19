@@ -22,22 +22,11 @@ public class ATFunctions {
         }
 
         public double evaluate(IATNode node, TreeInputs treeInputs) {
-            double result = 0.0;
-            if (hasConstants()) {
-                for (int i = 0; i < node.getArity(); i++) {
-                    result += node.getConstant(i) * node.getChild(i).evaluate(treeInputs);
-                }
-            } else {
-                for (int i = 0; i < node.getArity(); i++) {
-                    result += node.getChild(i).evaluate(treeInputs);
-                }
-            }
-            return result;
+            return sum(node, treeInputs);
         }
 
         @Override
         public boolean hasConstants() {
-//            return false;
             return true;
         }
     }
@@ -48,19 +37,11 @@ public class ATFunctions {
         }
 
         public double evaluate(IATNode node, TreeInputs treeInputs) {
-            if (node.getArity() == 0) {
-                return 0.0;
-            }
-            double result = node.getChild(0).evaluate(treeInputs);
-            for (int i = 1; i < node.getArity(); i++) {
-                result *= node.getChild(i).evaluate(treeInputs);
-            }
-            return result;
+            return times(node, treeInputs);
         }
 
         @Override
         public boolean hasConstants() {
-//            return true;
             return false;
         }
 
@@ -80,12 +61,11 @@ public class ATFunctions {
             if (node.getArity() == 0) {
                 return 0.0;
             }
-            return Math.atan(innerPotential(node, treeInputs));
+            return Math.atan(sum(node, treeInputs));
         }
 
         @Override
         public boolean hasConstants() {
-//            return true;
             return false;
         }
 
@@ -105,12 +85,11 @@ public class ATFunctions {
             if (node.getArity() == 0) {
                 return 0.0;
             }
-            return Math.sin(innerPotential(node, treeInputs));
+            return Math.sin(sum(node, treeInputs));
         }
 
         @Override
         public boolean hasConstants() {
-//            return true;
             return false;
         }
 
@@ -130,13 +109,12 @@ public class ATFunctions {
             if (node.getArity() == 0) {
                 return 0.0;
             }
-            double result = (innerPotential(node, treeInputs));
+            double result = (sum(node, treeInputs));
             return Math.exp(-(result * result));
         }
 
         @Override
         public boolean hasConstants() {
-//            return true;
             return false;
         }
 

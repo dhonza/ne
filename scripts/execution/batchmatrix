@@ -1,0 +1,39 @@
+#!/usr/bin/env mash.pl
+
+name = "AT_B"
+baseAlgorithm = "HGPAT"
+(*baseAlgorithm = "GPAT"*)
+neDir="/Users/drchaj1/java/ne"
+cfg = neDir<>"/cfg/hyper/gpathyper.properties";
+(*cfg = neDir<>"/cfg/demo/gpatdemo.properties";*)
+
+file = Import["/Users/drchaj1/java/exp/MATRIX", "TSV"];
+
+params = file[[All, 1]];
+values = file[[All, 2 ;; All]];
+
+ids = Range[Length[#]] & /@ values;
+
+toString[e_] :=
+ If[NumberQ[e] || e == "true" || e == "false",
+  ToString[e],
+  "\"" <> e <> "\""]
+  
+applyConfiguration[cfg_, params_, values_, ids_] :=
+ Module[{cfgFile, rules, ord, cmd},
+  cfgFile = Import[cfg];
+  rules = 
+   MapThread[Shortest[StartOfLine ~~ #1 ~~ ___ ~~ EndOfLine] ->
+      #1 <> " = " <> toString[#2] &,
+    {params, values}];
+  ord = StringJoin["_"<>ToString[#] & /@ ids];
+  Print[name<>ord, 
+  	MapThread[#1 -> #2&, {params, values}]];
+  cfgFile = StringReplace[cfgFile, rules];
+  Export[cfg, cfgFile <> "\n", "String"];
+  cmd = "./batchaltix "<>baseAlgorithm<>" "<>name<>ord;
+  prn["Running: ",cmd];
+  Run[cmd];
+  ]
+  
+MapThread[applyConfiguration[cfg, params, #1, #2] &, {Tuples[values], Tuples[ids]}];

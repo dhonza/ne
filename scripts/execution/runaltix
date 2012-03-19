@@ -1,0 +1,74 @@
+#!/bin/bash
+
+export JOBLIST=~/java/exp/jobs.txt
+export PBSSCRIPT=/tmp/pbsrun
+
+if [ $# != 2 ] ; then
+    echo usage: runaltix machine[:remote_dir] cpus
+    exit
+fi
+
+MACHINE=`echo ${1} | cut -d ":" -f 1`
+RDIR=`echo ${1} | cut -d ":" -f 2`
+
+if [ ${MACHINE} == ${RDIR} ] ; then
+    RDIR="."
+    TDIR=""
+else
+    TDIR=${RDIR}
+fi
+
+CPUS=${2}
+
+echo Running on ${1} using ${CPUS} CPUs...
+
+if [ ${RDIR} != "." ] ; then
+    echo " creating remote dir if not exist..."
+    ssh "${MACHINE}" "mkdir -p "${RDIR}
+    if [ $? != 0 ] ; then
+	exit
+    fi
+fi
+
+echo " deleting old ..."
+ssh "${MACHINE}" "cd ${RDIR} ; rm -rf nepack ; rm nepack.tar.gz"
+
+echo " copying ..."
+scp /tmp/nepack.tar.gz "${MACHINE}:${TDIR}"
+
+echo " unpacking ..."
+ssh "${MACHINE}" "cd ${RDIR} ; tar xzf nepack.tar.gz"
+
+echo '#!/bin/bash' > ${PBSSCRIPT}
+echo '#PBS -S /bin/bash' >> ${PBSSCRIPT}
+echo '#PBS -M dhonza@gmail.com' >> ${PBSSCRIPT}
+echo '#PBS -j oe' >> ${PBSSCRIPT}
+echo '#PBS -N run' >> ${PBSSCRIPT}
+echo '#PBS -m a' >> ${PBSSCRIPT}
+echo '#PBS -l walltime=24:00:00' >> ${PBSSCRIPT}
+echo '#PBS -l select=1:ncpus='${CPUS}':host='${MACHINE} >> ${PBSSCRIPT}
+echo '#PBS -l place=pack:shared' >> ${PBSSCRIPT}
+echo 'echo "Pocitano na pocitaci `uname -a`"' >> ${PBSSCRIPT}
+echo 'echo "Pracovni adresar `echo $PBS_O_WORKDIR`"' >> ${PBSSCRIPT}
+echo 'echo "Uloha spustena z pocitace `echo $PBS_O_HOST`"' >> ${PBSSCRIPT}
+echo 'cd $PBS_O_WORKDIR' >> ${PBSSCRIPT}
+echo 'rm *.o' >> ${PBSSCRIPT}
+echo '. /etc/profile.d/modules.sh' >> ${PBSSCRIPT}
+echo 'export KMP_AFFINITY=disabled' >> ${PBSSCRIPT}
+echo '# Execute a program:' >> ${PBSSCRIPT}
+echo 'module load icc-11-1' >> ${PBSSCRIPT}
+echo 'echo "Starting run at: `date`"' >> ${PBSSCRIPT}
+echo 'export KMP_MONITOR_STACKSIZE=192K' >> ${PBSSCRIPT}
+echo './run' >> ${PBSSCRIPT}
+echo 'echo "Job finished at: `date`"' >> ${PBSSCRIPT}
+chmod a+x ${PBSSCRIPT}
+scp ${PBSSCRIPT} "${MACHINE}:${TDIR}/nepack"
+
+echo " running ..."
+ssh -n -f "${MACHINE}" "sh -c \"cd ${RDIR}; cd nepack; ~/runner\""
+
+TFILE="/tmp/$(basename $0).$$.tmp"
+cp ${JOBLIST} ${TFILE}
+echo ${1} >> ${TFILE}
+sort -u ${TFILE} > ${JOBLIST}
+rm ${TFILE}
