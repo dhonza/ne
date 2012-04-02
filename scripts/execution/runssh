@@ -37,7 +37,7 @@ echo " unpacking ..."
 ssh "${MACHINE}" "cd ${RDIR} ; tar xzf nepack.tar.gz"
 
 echo " running ..."
-ssh -n -f "${MACHINE}" "sh -c \"cd ${RDIR}; cd nepack; nohup ./run > /dev/null 2>&1 &\""
+ssh -n -f "${MACHINE}" "sh -c \"cd ${RDIR}; cd nepack; . ~/environment; nohup ts ./run > /dev/null 2>&1 &\""
 
 TFILE="/tmp/$(basename $0).$$.tmp"
 cp ${JOBLIST} ${TFILE}

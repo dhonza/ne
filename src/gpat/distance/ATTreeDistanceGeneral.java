@@ -3,6 +3,7 @@ package gpat.distance;
 import common.RND;
 import common.evolution.IDistance;
 import common.pmatrix.ParameterCombination;
+import gpat.ATNode;
 import gpat.ATTree;
 
 /**
@@ -30,6 +31,54 @@ public class ATTreeDistanceGeneral implements IDistance<ATTree> {
     }
 
     public double distance(ATTree a, ATTree b) {
-        return RND.getDouble();
+        return distanceRecursive(a.getRoot(), b.getRoot());
     }
+
+    private double distanceRecursive(ATNode a, ATNode b) {
+        double distanceA = 0.0;
+
+        assert a != null || b != null;
+
+        int aLength = 0;
+        int bLength = 0;
+
+        if (a == null) {
+            bLength = b.getArity();
+            distanceA += 1.0;
+            if (notMatchingNodeExit) {
+                return distanceA;
+            }
+        } else if (b == null) {
+            aLength = a.getArity();
+            distanceA += 1.0;
+            if (notMatchingNodeExit) {
+                return distanceA;
+            }
+        } else {
+            aLength = a.getArity();
+            bLength = b.getArity();
+
+            if (!a.getName().equals(b.getName())) {
+                distanceA += 1.0;
+                if (notMatchingNodeExit) {
+                    return distanceA;
+                }
+            }
+        }
+
+        double distanceB = 0.0;
+        int longer = aLength < bLength ? bLength : aLength;
+        int shorter = aLength < bLength ? aLength : bLength;
+        for (int i = 0; i < longer; i++) {
+            if (!descendNullTrees && i >= shorter) {
+                break;
+            }
+            ATNode aChild = (i >= aLength ? null : a.getChild(i));
+            ATNode bChild = (i >= bLength ? null : b.getChild(i));
+            distanceB += distanceRecursive(aChild, bChild);
+        }
+
+        return distanceA + distanceB / K;
+    }
+
 }

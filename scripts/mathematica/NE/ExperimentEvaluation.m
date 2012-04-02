@@ -357,23 +357,33 @@ printBooleanRanksAsTable[data_,paramName_,groupSize_,OptionsPattern[]]:=
 CHOSEN2 = {Null,Null}
 
 (* Other possibility is to set Operation -> Total *)
-Options[plotBooleanAsBarChartPub] = {Operation -> (100*Mean[#]&),Epilog -> {},PlotRange -> Automatic,ImagePadding->Automatic,AxesLabel -> "SUCCESS %",AspectRatio->0.5/GoldenRatio};
+Options[plotBooleanAsBarChartPub] = {
+	Operation -> (100*Mean[#]&),
+	Epilog -> {},
+	PlotRange -> Automatic,
+	ImagePadding->Automatic,
+	AxesLabel -> "SUCCESS %",
+	AspectRatio->0.5/GoldenRatio,
+	ImageSize->{{700},{1600}},
+	BarLabelsRotate->0
+	};
 plotBooleanAsBarChartPub[data_,paramName_,partNames_,subChartSpacing_,partSize_:1,OptionsPattern[]] :=
     Module[ {colors,parts,labels,partPlacement,labelPlacement,sum,barLabels},
+    	If[Mod[Length[data],partSize] != 0, Print["WARNING: Mod[Length[data],partSize] != 0"]];
         colors = listOfColors[partSize];
         labels = labelsForData[data];
         parts = Grid[Array[{""}&,Length[labels[[1]]]]~Join~{{#}},Spacings->{2,subChartSpacing}]&/@partNames;
         labels = Grid[Partition[#,1],Spacings->{2,0}]&/@labels;                 
         sum = OptionValue[Operation][resultsForConfiguration[#,paramName]]&/@data;
         sum = Partition[sum,partSize];
-        barLabels = (Placed[Style[Grid[{{#1}},Background->White],FontSize->13],Above]&);
+        barLabels = (Placed[Style[Grid[{{#1}},Background->White],FontSize->13],Above,Rotate[#,OptionValue[BarLabelsRotate]]&]&);
         partPlacement = Placed[Style[#,FontSize->17]&/@parts,Axis];
         labelPlacement = Placed[Style[#,FontSize->15]&/@labels,Axis];
  		BarChart[sum,
  			LabelingFunction->barLabels,
  			ChartLabels->{partPlacement,labelPlacement},
  			ChartStyle->colors,
- 			ImageSize->{{700},{1600}},
+ 			ImageSize->OptionValue[ImageSize],
  			AxesStyle->Directive[15],
  			AspectRatio->OptionValue[AspectRatio],
  			BarSpacing->{Automatic, 1.5},
