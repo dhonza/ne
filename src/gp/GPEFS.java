@@ -18,8 +18,8 @@ import java.util.*;
  */
 public class GPEFS<P> extends GP<P> {
     public static double DISTANCE_DELTA = 0.04;
-    public static double SPECIES_SIZE_MEAN = 5.0;
-    public static double SPECIES_SIZE_RANGE = 3.0;
+    public static double SPECIES_COUNT_MEAN = 5.0;
+    public static double SPECIES_COUNT_RANGE = 3.0;
     public static double SPECIES_REPRODUCTION_RATIO = 0.1;
     public static double ELITIST_PROPORTION_SIZE = 0.2;
     public static String SPECIES_ASSIGN = "original";
@@ -145,8 +145,8 @@ public class GPEFS<P> extends GP<P> {
             }
         }
 
-        int maxSpecies = (int) Math.round(GPEFS.SPECIES_SIZE_MEAN + 0.5 * GPEFS.SPECIES_SIZE_RANGE);
-        int minSpecies = (int) Math.round(GPEFS.SPECIES_SIZE_MEAN - 0.5 * GPEFS.SPECIES_SIZE_RANGE);
+        int maxSpecies = (int) Math.round(GPEFS.SPECIES_COUNT_MEAN + 0.5 * GPEFS.SPECIES_COUNT_RANGE);
+        int minSpecies = (int) Math.round(GPEFS.SPECIES_COUNT_MEAN - 0.5 * GPEFS.SPECIES_COUNT_RANGE);
 
         if (species.size() > maxSpecies) {
             GPEFS.DISTANCE_DELTA *= 2;
@@ -159,7 +159,7 @@ public class GPEFS<P> extends GP<P> {
     private void assignSpeciesKMedoids() {
         species.clear();
         forestToSpecies.clear();
-        int k = (int) Math.round(GPEFS.SPECIES_SIZE_MEAN);
+        int k = (int) Math.round(GPEFS.SPECIES_COUNT_MEAN);
         //initialization
         Forest[] medoids = new Forest[k];
 

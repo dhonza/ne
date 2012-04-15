@@ -167,7 +167,7 @@ public class PrecompiledFeedForwardSubstrateBuilder implements IEvaluableSubstra
         }
         JavaCompiler compiler = ToolProvider.getSystemJavaCompiler();
         int ret = compiler.run(null, System.out, System.err,
-                "-classpath", ".:out/production/Ne:build",
+                "-classpath", ".:out/production/Ne:build:ne.jar",
                 "PrecompiledStub.java"
         );
         if (ret != 0) {

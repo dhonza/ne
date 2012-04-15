@@ -5,6 +5,7 @@
     <!-- ========================================================================= -->
 
     <property name="build.dir" value="${basedir}/build"/>
+    <property name="dist.dir" value="${basedir}/dist"/>
     <property name="lib.dir" value="${basedir}/lib"/>
     <property name="config.dir" value="${basedir}/cfg"/>
     <!-- <property name="classes.dir" value="${basedir}/out/production/Ne"/> -->
@@ -26,13 +27,25 @@
     </path>
 
     <!-- ========================================================================= -->
-    <!--                           Build tasks                                     -->
+    <!--                           Build and Distribution task                     -->
     <!-- ========================================================================= -->
 
-    <target name="dist" depends="compile">
-        <jar destfile="${basedir}/ne.jar"
+    <target name="dist" depends="jar">
+        <copy todir="${dist.dir}/cfg">
+            <fileset dir="${basedir}/cfg"/>
+        </copy>
+        <copy todir="${dist.dir}/lib" flatten="true">
+            <fileset dir="${lib.dir}">
+                <include name="**/*.jar"/>
+            </fileset>
+        </copy>
+    </target>
+
+    <target name="jar" depends="compile">
+        <jar destfile="${dist.dir}/ne.jar"
              basedir="${build.dir}"
                 />
+
     </target>
 
     <target name="compile">
@@ -41,7 +54,6 @@
                classpathref="libraries"
                source="1.6">
             <src path="${src.dir}"/>
-            <exclude name="hyper/**"/>
         </javac>
     </target>
 
@@ -54,15 +66,4 @@
             <arg value="cfg/robots"/>
         </java>
     </target>
-
-    <target name="runjppf">
-        <java fork="yes" classname="hyper.experiments.MainJPPF" classpathref="run.classpath">
-            <arg value="cfg/reco"/>
-            <jvmarg value="-Dlog4j.configuration=log4j.properties"/>
-            <jvmarg value="-Djppf.config=jppf.properties"/>
-            <jvmarg value="-Xmx256m"/>
-        </java>
-    </target>
-
-
 </project> 

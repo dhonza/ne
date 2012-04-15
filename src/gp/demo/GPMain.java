@@ -61,10 +61,7 @@ public class GPMain {
 
             Stats stats = prepareStats();
 
-            StringBuilder parameterString = new StringBuilder();
-            parameterString.append("FIXED:\n").append("-----\n").append(manager.toStringNewLines());
-            parameterString.append("\nCHANGING:\n").append("--------\n").append(combination.toStringOnlyChanngingNewLines());
-            reportStorage.storeParameters(parameterString.toString());
+            reportStorage.storeParameters(combination.toStringAllSeparatedNewLines());
 
             for (int i = 1; i <= experiments; i++) {
                 reportStorage.startSingleRun();

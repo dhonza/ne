@@ -122,6 +122,16 @@ public class ParameterCombination implements Iterable<String>, Serializable {
         return combination.toString();
     }
 
+    public String toStringAllSeparatedNewLines() {
+        StringBuilder builder = new StringBuilder();
+        builder.append("# FIXED:\n");
+        builder.append(toStringNotChanngingNewLines());
+        builder.append("# CHANGING:\n");
+        builder.append(toStringOnlyChanngingNewLines());
+        return builder.toString();
+
+    }
+
     public String toStringNotChannging() {
         return combinationNotChanging.toString();
     }
@@ -130,12 +140,29 @@ public class ParameterCombination implements Iterable<String>, Serializable {
         return combinationOnlyChanging.toString();
     }
 
-    public String toStringOnlyChanngingNewLines() {
+    public String toStringNotChanngingNewLines() {
         StringBuilder builder = new StringBuilder();
-        for (String paramName : combinationOnlyChanging.keySet()) {
-            builder.append(paramName).append(" = ").append(combinationOnlyChanging.get(paramName)).append('\n');
+        for (String paramName : combinationNotChanging.keySet()) {
+            builder.append(paramName).append(" = ").append(paramValueAsString(paramName)).append('\n');
         }
         return builder.toString();
     }
 
+    public String toStringOnlyChanngingNewLines() {
+        StringBuilder builder = new StringBuilder();
+        for (String paramName : combinationOnlyChanging.keySet()) {
+            builder.append(paramName).append(" = ").append(paramValueAsString(paramName)).append('\n');
+        }
+        return builder.toString();
+    }
+
+
+    private String paramValueAsString(String paramName) {
+        Object value = combination.get(paramName);
+        if (value instanceof Number || value instanceof Boolean) {
+            return value.toString();
+        } else {
+            return "\"" + value.toString() + "\"";
+        }
+    }
 }

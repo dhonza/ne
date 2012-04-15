@@ -34,8 +34,8 @@ public class GPAT<P> implements IGPAT {
     public static int MUTATION_HEAVY_POWER = 2;
 
     public static double DISTANCE_DELTA = 0.04;
-    public static double SPECIES_SIZE_MEAN = 5.0;
-    public static double SPECIES_SIZE_RANGE = 3.0;
+    public static double SPECIES_COUNT_MEAN = 5.0;
+    public static double SPECIES_COUNT_RANGE = 3.0;
     public static double SPECIES_REPRODUCTION_RATIO = 0.1;
     public static double DISTANCE_C1 = 1.0;
     public static double DISTANCE_C2 = 1.0;
@@ -235,8 +235,8 @@ public class GPAT<P> implements IGPAT {
             }
         }
 
-        int maxSpecies = (int) Math.round(GPAT.SPECIES_SIZE_MEAN + 0.5 * GPAT.SPECIES_SIZE_RANGE);
-        int minSpecies = (int) Math.round(GPAT.SPECIES_SIZE_MEAN - 0.5 * GPAT.SPECIES_SIZE_RANGE);
+        int maxSpecies = (int) Math.round(GPAT.SPECIES_COUNT_MEAN + 0.5 * GPAT.SPECIES_COUNT_RANGE);
+        int minSpecies = (int) Math.round(GPAT.SPECIES_COUNT_MEAN - 0.5 * GPAT.SPECIES_COUNT_RANGE);
 
         if (species.size() > maxSpecies) {
             GPAT.DISTANCE_DELTA *= 2;

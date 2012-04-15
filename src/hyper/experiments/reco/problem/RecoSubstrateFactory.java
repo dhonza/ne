@@ -29,6 +29,10 @@ public class RecoSubstrateFactory {
         ISubstrateLayer inputLayer = new LineLayer1D(NodeType.INPUT, inputNodes, -2.0, 1.0);
         ISubstrateLayer outputLayer = new LineLayer1D(NodeType.OUTPUT, outputNodes, -2.0, 1.0);
 
+        //for GECCO 2012 review: test of CPPN inputs scaled to -1:1
+//        ISubstrateLayer inputLayer = new LineLayer1D(NodeType.INPUT, inputNodes, -1.0, 2.0/(inputNodes - 1.0));
+//        ISubstrateLayer outputLayer = new LineLayer1D(NodeType.OUTPUT, outputNodes, -1.0, 2.0/(inputNodes - 1.0));
+
         SubstrateInterLayerConnection biasToOutput = new SubstrateInterLayerConnection(biasLayer, outputLayer);
         SubstrateInterLayerConnection inputToOutput = new SubstrateInterLayerConnection(inputLayer, outputLayer);
 
@@ -54,6 +58,11 @@ public class RecoSubstrateFactory {
         ISubstrateLayer inputLayer = new LineLayer1D(NodeType.INPUT, inputNodes, 1.0, 1.0);
         ISubstrateLayer hiddenLayer = new LineLayer1D(NodeType.HIDDEN, hiddenNodes, 1.0, 1.0);
         ISubstrateLayer outputLayer = new LineLayer1D(NodeType.OUTPUT, outputNodes, 1.0, 1.0);
+
+        //for GECCO review: test of CPPN inputs scaled to -1:1
+//        ISubstrateLayer inputLayer = new LineLayer1D(NodeType.INPUT, inputNodes, -1.0, 2.0/(inputNodes - 1.0));
+//        ISubstrateLayer hiddenLayer = new LineLayer1D(NodeType.HIDDEN, hiddenNodes, -1.0, 2.0/(inputNodes - 1.0));
+//        ISubstrateLayer outputLayer = new LineLayer1D(NodeType.OUTPUT, outputNodes, -1.0, 2.0/(inputNodes - 1.0));
 
         SubstrateInterLayerConnection biasToHidden = new SubstrateInterLayerConnection(biasLayer, hiddenLayer);
         SubstrateInterLayerConnection inputToHidden = new SubstrateInterLayerConnection(inputLayer, hiddenLayer);
