@@ -42,9 +42,9 @@ public class XMPPHelper {
             }
             try {
                 String hostName = InetAddress.getLocalHost().getHostName();
-                if (hostName.endsWith(".local") || hostName.startsWith("eduroam") || hostName.startsWith("dhcp")) {
-                    return;
-                }
+//                if (hostName.endsWith(".local") || hostName.startsWith("eduroam") || hostName.startsWith("dhcp")) {
+//                    return;
+//                }
                 message = hostName + ": " + message;
 
                 XMPPConnection connection = new XMPPConnection(server);

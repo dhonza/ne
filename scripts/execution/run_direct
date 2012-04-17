@@ -1,0 +1,11 @@
+#!/bin/bash
+
+if [ $# != 2 ] ; then
+    echo usage: ${0} parameter_file output_dir
+    exit
+fi
+
+export CLASS="common.run.Runner"
+export CLASSPATH=".:ne.jar:lib/*"
+
+java -Xmx2048M -classpath ${CLASSPATH} ${CLASS} ${1} ${2}

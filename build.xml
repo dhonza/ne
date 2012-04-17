@@ -39,6 +39,10 @@
                 <include name="**/*.jar"/>
             </fileset>
         </copy>
+        <copy todir="${dist.dir}" file="${basedir}/scripts/execution/run_direct"/>
+        <chmod perm="a+x" file="${dist.dir}/run_direct"/>
+        <copy todir="${dist.dir}" file="${basedir}/scripts/execution/run_hyper"/>
+        <chmod perm="a+x" file="${dist.dir}/run_hyper"/>
     </target>
 
     <target name="jar" depends="compile">
