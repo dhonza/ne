@@ -2,6 +2,7 @@ package gpat;
 
 import common.ListHelper;
 import common.RND;
+import gp.GP;
 import gp.TreeInputs;
 
 import java.util.*;
@@ -502,8 +503,8 @@ public class ATTree {
 
     boolean limitStructure() {
 //        return getDepth() > 5 || getNumOfConstants() > 10;
-        return getDepth() > 5 || getNumOfConstants() > 10 || getNumOfNodes() > 12;
 //        return getDepth() > 6 || getNumOfConstants() > 20;
+        return getDepth() > GP.MAX_DEPTH || getNumOfConstants() > GPAT.MAX_CONSTANTS || getNumOfNodes() > GPAT.MAX_NODES;
     }
 
 

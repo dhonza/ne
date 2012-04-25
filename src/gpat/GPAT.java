@@ -43,6 +43,9 @@ public class GPAT<P> implements IGPAT {
     public static double DISTANCE_CACT = 0.0;
     public static double ELITIST_PROPORTION_SIZE = 0.2;
 
+    public static int MAX_NODES = 12;
+    public static int MAX_CONSTANTS = 10;
+
     final protected int inputs;
     final protected int outputs;
     final protected ATNodeCollection nodeCollection;
@@ -279,11 +282,14 @@ public class GPAT<P> implements IGPAT {
         }
 
         int[] toAssign = new int[distribute - assigned];
-        if (toAssign.length <= species.size()) {
-            RND.sampleRangeWithoutReplacement(species.size(), toAssign);
-        } else {
-            RND.sampleRangeWithReplacement(species.size(), toAssign);
-        }
+//        if (toAssign.length <= species.size()) {
+//            RND.sampleRangeWithoutReplacement(species.size(), toAssign);
+//        } else {
+//            RND.sampleRangeWithReplacement(species.size(), toAssign);
+//        }
+        assert (toAssign.length <= species.size());
+        //the opposite should not happen as the rounding error is max 1 less for each species
+        RND.sampleRangeWithoutReplacement(species.size(), toAssign);
 
         for (int i : toAssign) {
             ATSpecies spec = species.get(i);
