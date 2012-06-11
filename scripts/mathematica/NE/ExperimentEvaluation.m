@@ -73,7 +73,7 @@ readParameterFile[fileName_] :=
         convert :=
             Function[x,If[ NumberQ[ToExpression[x]]&&UnsameQ[Head[ToExpression[x]],Complex],
                            ToExpression[x],
-                           x
+                           StringReplace[x,"\""->""]
                        ]]
             },
         (* Extract only lines with a parameter which always contains " = ". *)
@@ -339,15 +339,16 @@ assignMeanRanks[values_List] :=
 
 Options[printBooleanRanksAsTable] = {Operation -> (100*Mean[#]&)};
 printBooleanRanksAsTable[data_,paramName_,groupSize_,OptionsPattern[]]:=
-    Module[ {labels,sum,ranks,params,paramValues,table,tableData},
+    Module[ {labels,sum,avgs,ranks,params,paramValues,table,tableData},
         labels = labelsForData[data];
-        sum = OptionValue[Operation][resultsForConfiguration[#,paramName]]&/@data;
+        sum = OptionValue[Operation][resultsForConfiguration[#,paramName]]&/@data;       
         ranks = Flatten[Mean/@Transpose[assignMeanRanks /@ Partition[sum,groupSize]]];
+        avgs = Flatten[Mean/@Transpose[Partition[sum,groupSize]]];
         params = (changingParameters /@ Partition[data,groupSize])[[1]];
         paramValues = paramValuesForConfiguration[#,params]& /@ (data[[1;;groupSize]]);
-        tableData = Transpose[{Range[groupSize]}~Join~Transpose[paramValues]~Join~{ranks}];
-        tableData = Sort[tableData,#1[[4]] < #2[[4]]&];
-        table = {Style[#,Bold]& /@ ({"ID"}~Join~params~Join~{"RANK"})}~Join~tableData;
+        tableData = Transpose[{Range[groupSize]}~Join~Transpose[paramValues]~Join~{avgs,ranks}];
+        tableData = Sort[tableData,#1[[-1]] < #2[[-1]]&];
+        table = {Style[#,Bold]& /@ ({"ID"}~Join~params~Join~{"AVGS","RANK"})}~Join~tableData;
         Grid[table,Frame->All]
     ]
 (* -------------------------------------------------------------------------------------------------------- *)
@@ -365,15 +366,16 @@ Options[plotBooleanAsBarChartPub] = {
 	AxesLabel -> "SUCCESS %",
 	AspectRatio->0.5/GoldenRatio,
 	ImageSize->{{700},{1600}},
-	BarLabelsRotate->0
+	BarLabelsRotate->0,
+	ColorsNumber->Null
 	};
 plotBooleanAsBarChartPub[data_,paramName_,partNames_,subChartSpacing_,partSize_:1,OptionsPattern[]] :=
     Module[ {colors,parts,labels,partPlacement,labelPlacement,sum,barLabels},
     	If[Mod[Length[data],partSize] != 0, Print["WARNING: Mod[Length[data],partSize] != 0"]];
-        colors = listOfColors[partSize];
+        colors = listOfColors[If[OptionValue[ColorsNumber]===Null,partSize,OptionValue[ColorsNumber]]];
         labels = labelsForData[data];
         parts = Grid[Array[{""}&,Length[labels[[1]]]]~Join~{{#}},Spacings->{2,subChartSpacing}]&/@partNames;
-        labels = Grid[Partition[#,1],Spacings->{2,0}]&/@labels;                 
+        labels = Grid[If[Head[#]===List,Partition[#,1],{{#}}],Spacings->{2,0}]&/@labels;
         sum = OptionValue[Operation][resultsForConfiguration[#,paramName]]&/@data;
         sum = Partition[sum,partSize];
         barLabels = (Placed[Style[Grid[{{#1}},Background->White],FontSize->13],Above,Rotate[#,OptionValue[BarLabelsRotate]]&]&);
@@ -394,13 +396,21 @@ plotBooleanAsBarChartPub[data_,paramName_,partNames_,subChartSpacing_,partSize_:
  			]            
     ]
 
-Options[plotAsBoxWhiskerChartPub] = {Epilog -> {},PlotRange -> Automatic,ImagePadding->Automatic,AxesLabel -> "", PlotRangePadding -> Automatic};
+Options[plotAsBoxWhiskerChartPub] = {
+	Epilog -> {},
+	PlotRange -> Automatic,
+	ImagePadding->Automatic,
+	AxesLabel -> "", 
+	PlotRangePadding -> Automatic,
+	ImageSize->700,
+	ColorsNumber->Null
+	};
 plotAsBoxWhiskerChartPub[data_,paramName_,partNames_,subChartSpacing_,partSize_:1,OptionsPattern[]] :=
     Module[ {colors,parts,labels,partPlacement,labelPlacement,values,barLabels},
-        colors = listOfColors[partSize];
+        colors = listOfColors[If[OptionValue[ColorsNumber]===Null,partSize,OptionValue[ColorsNumber]]];
         labels = labelsForData[data];
         parts = Grid[Array[{""}&,Length[labels[[1]]]]~Join~{{#}},Spacings->{2,subChartSpacing}]&/@partNames;
-        labels = Grid[Partition[#,1],Spacings->{2,0}]&/@labels;                 
+        labels = Grid[If[Head[#]===List,Partition[#,1],{{#}}],Spacings->{2,0}]&/@labels;                 
         values = resultsForConfiguration[#,paramName]&/@data;
  		values = Partition[values,partSize];
         barLabels = (Placed[Style[Grid[{{#1}},Background->White],FontSize->13],Above]&);
@@ -415,7 +425,7 @@ plotAsBoxWhiskerChartPub[data_,paramName_,partNames_,subChartSpacing_,partSize_:
  			ChartStyle->colors,
  			FrameTicksStyle -> Directive[18],
 			AspectRatio -> 0.5/GoldenRatio,
- 			ImageSize->700,
+ 			ImageSize->OptionValue[ImageSize],
  			Epilog->OptionValue[Epilog],
  			PlotRange->OptionValue[PlotRange],
  			ImagePadding->OptionValue[ImagePadding],

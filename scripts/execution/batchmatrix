@@ -1,10 +1,13 @@
 #!/usr/bin/env mash.pl
 
-name = "AT_B"
-baseAlgorithm = "HGPAT"
+name = "ROBEFS"
+baseAlgorithm = "HGP"
+(*baseAlgorithm = "HGPAT"*)
 (*baseAlgorithm = "GPAT"*)
 neDir="/Users/drchaj1/java/ne"
-cfg = neDir<>"/cfg/hyper/gpathyper.properties";
+
+cfg = neDir<>"/cfg/hyper/gphyper.properties";
+(*cfg = neDir<>"/cfg/hyper/gpathyper.properties";*)
 (*cfg = neDir<>"/cfg/demo/gpatdemo.properties";*)
 
 file = Import["/Users/drchaj1/java/exp/MATRIX", "TSV"];
@@ -18,20 +21,21 @@ toString[e_] :=
  If[NumberQ[e] || e == "true" || e == "false",
   ToString[e],
   "\"" <> e <> "\""]
-  
+
 applyConfiguration[cfg_, params_, values_, ids_] :=
  Module[{cfgFile, rules, ord, cmd},
-  cfgFile = Import[cfg];
+  cfgFile = Import[cfg,"Text"];
   rules = 
    MapThread[Shortest[StartOfLine ~~ #1 ~~ ___ ~~ EndOfLine] ->
       #1 <> " = " <> toString[#2] &,
     {params, values}];
   ord = StringJoin["_"<>ToString[#] & /@ ids];
   Print[name<>ord, 
-  	MapThread[#1 -> #2&, {params, values}]];
+  MapThread[#1 -> #2&, {params, values}]];
   cfgFile = StringReplace[cfgFile, rules];
   Export[cfg, cfgFile <> "\n", "String"];
-  cmd = "./batchaltix "<>baseAlgorithm<>" "<>name<>ord;
+  (*cmd = "./batchaltix "<>baseAlgorithm<>" "<>name<>ord;*)
+  cmd = "./packandrunaltix "<>baseAlgorithm<>" "<>name<>ord<>" rex 4";
   prn["Running: ",cmd];
   Run[cmd];
   ]

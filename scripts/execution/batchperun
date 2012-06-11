@@ -52,7 +52,7 @@ function run {
     sed -i "" "1s/.*/INCLUDE = "${2}"\/"${3}"\.properties/" ${CFG}
     sed -i "" "s/^PARALLEL\.FORCE_THREADS.*/PARALLEL\.FORCE_THREADS = "${4}"/" ${CFG}
     ./nepackage ${BALG} ${NAME}"_"${3}
-    ./runaltix ${1} ${4}
+    ./runssh ${1}
 }
 
 #echo "CHECK"
@@ -63,32 +63,32 @@ function run {
 if [[ ${BALG} == H* ]]
 then
 	echo "INDIRECT ENCODING EXPERIMENTS"
-	run "rex:~/scratch/nepack"${BALG}"_"${NAME}"_rcM" "reco" "rcM" 6
-	run "rex:~/scratch/nepack"${BALG}"_"${NAME}"_rcS" "reco" "rcS" 6
-	run "rex:~/scratch/nepack"${BALG}"_"${NAME}"_rcR" "reco" "rcR" 6
+	run "perun10:~/scratch/nepack"${BALG}"_"${NAME}"_rcM" "reco" "rcM" 3
+	run "perun11:~/scratch/nepack"${BALG}"_"${NAME}"_rcS" "reco" "rcS" 3
+	run "perun12:~/scratch/nepack"${BALG}"_"${NAME}"_rcR" "reco" "rcR" 3
 	
-	run "rex:~/scratch/nepack"${BALG}"_"${NAME}"_xor" "bool" "xor" 6
+	run "perun13:~/scratch/nepack"${BALG}"_"${NAME}"_xor" "bool" "xor" 3
 	
-	run "rex:~/scratch/nepack"${BALG}"_"${NAME}"_fc55" "fc" "fc55" 6
+	run "perun14:~/scratch/nepack"${BALG}"_"${NAME}"_fc55" "fc" "fc55" 3
 
 else
 	echo "DIRECT ENCODING EXPERIMENTS"
-	MACHINE="rex"
-	run ${MACHINE}":~/scratch/nepack"${BALG}"_"${NAME}"_1DF" "regression" "1DF" 6
-	run ${MACHINE}":~/scratch/nepack"${BALG}"_"${NAME}"_1DH" "regression" "1DH" 3
+
+	run "perun02:~/scratch/nepack"${BALG}"_"${NAME}"_1DF" "regression" "1DF" 3
+	run "perun03:~/scratch/nepack"${BALG}"_"${NAME}"_1DH" "regression" "1DH" 3
 	
-	run ${MACHINE}":~/scratch/nepack"${BALG}"_"${NAME}"_2DI" "regression" "2DI" 6
-	run ${MACHINE}":~/scratch/nepack"${BALG}"_"${NAME}"_2DK" "regression" "2DK" 3
+	run "perun08:~/scratch/nepack"${BALG}"_"${NAME}"_2DI" "regression" "2DI" 3
+	run "perun09:~/scratch/nepack"${BALG}"_"${NAME}"_2DK" "regression" "2DK" 3
 	
-	run ${MACHINE}":~/scratch/nepack"${BALG}"_"${NAME}"_3DE" "regression" "3DE" 6
-	run ${MACHINE}":~/scratch/nepack"${BALG}"_"${NAME}"_3DH" "regression" "3DH" 6
-	run ${MACHINE}":~/scratch/nepack"${BALG}"_"${NAME}"_3DK" "regression" "3DK" 6
+	run "perun10:~/scratch/nepack"${BALG}"_"${NAME}"_3DE" "regression" "3DE" 3
+	run "perun11:~/scratch/nepack"${BALG}"_"${NAME}"_3DH" "regression" "3DH" 3
+	run "perun12:~/scratch/nepack"${BALG}"_"${NAME}"_3DK" "regression" "3DK" 3
 	
-	run ${MACHINE}":~/scratch/nepack"${BALG}"_"${NAME}"_4DC" "regression" "4DC" 6
-	run ${MACHINE}":~/scratch/nepack"${BALG}"_"${NAME}"_4DF" "regression" "4DF" 6
-	run ${MACHINE}":~/scratch/nepack"${BALG}"_"${NAME}"_4DG" "regression" "4DG" 6
-	run ${MACHINE}":~/scratch/nepack"${BALG}"_"${NAME}"_4DV" "regression" "4DV" 6
+	run "perun13:~/scratch/nepack"${BALG}"_"${NAME}"_4DC" "regression" "4DC" 3
+	run "perun14:~/scratch/nepack"${BALG}"_"${NAME}"_4DF" "regression" "4DF" 3
+	run "perun13:~/scratch/nepack"${BALG}"_"${NAME}"_4DG" "regression" "4DG" 3
+	run "perun14:~/scratch/nepack"${BALG}"_"${NAME}"_4DV" "regression" "4DV" 3
 	
-	run ${MACHINE}":~/scratch/nepack"${BALG}"_"${NAME}"_M1" "maze" "M1" 6
-	run ${MACHINE}":~/scratch/nepack"${BALG}"_"${NAME}"_M2" "maze" "M2" 6
+	run "perun02:~/scratch/nepack"${BALG}"_"${NAME}"_M1" "maze" "M1" 3
+	run "perun03:~/scratch/nepack"${BALG}"_"${NAME}"_M2" "maze" "M2" 3
 fi

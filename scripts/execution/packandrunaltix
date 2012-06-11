@@ -1,0 +1,14 @@
+#!/bin/bash
+if [ $# != 4 ] ; then
+    echo "usage: "$0" BASE_ALGORITHM NAME MACHINE CPUS"
+    exit
+fi
+
+BALG="${1}"
+NAME="${2}"
+MACHINE="${3}"
+CPUS="${4}"
+
+./nepackage ${BALG} ${NAME}
+./runaltix ${MACHINE}":~/scratch/"${NAME} ${CPUS}
+ 

@@ -15,7 +15,8 @@ while read line
 do
     MACHINE=`echo "${line}" | cut -d ":" -f 1`
     DIR=`echo "${line}" | cut -d ":" -f 2`
-    echo -en  ${RED}${MACHINE}${NORMAL}": "
+    #echo -en  ${RED}${MACHINE}${NORMAL}": "
+    printf "${RED}%-10s${NORMAL}" "${MACHINE}:"
     if [ "${MACHINE}" == "${DIR}" ] ; then
 	DIR="."
     fi;

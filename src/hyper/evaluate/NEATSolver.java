@@ -79,20 +79,20 @@ public class NEATSolver extends AbstractSolver {
     private static void extractStats(Stats stats, NEAT neat) {
         List<Genome> lastGeneration = neat.getLastGenerationPopulation();
 //        double arityLG = 0.0;
-//        double constantsLG = 0.0;
+        double constantsLG = 0.0;
 //        double depthLG = 0.0;
 //        double leavesLG = 0.0;
         double nodesLG = 0.0;
         for (Genome genome : lastGeneration) {
 //            arityLG += forest.getAverageArity();
-//            constantsLG += forest.getNumOfConstants();
+            constantsLG += genome.getNet().getNumLinks();
 //            depthLG += forest.getMaxTreeDepth();
 //            leavesLG += forest.getNumOfLeaves();
             //TODO use only Hidden or add Input?
-            nodesLG += genome.getNet().getNumHidOut();
+            nodesLG += genome.getNet().getNumHidden();
         }
 //        arityLG /= lastGeneration.size();
-//        constantsLG /= lastGeneration.size();
+        constantsLG /= lastGeneration.size();
 //        depthLG /= lastGeneration.size();
 //        leavesLG /= lastGeneration.size();
         nodesLG /= lastGeneration.size();
@@ -102,13 +102,13 @@ public class NEATSolver extends AbstractSolver {
         stats.addSample("BSFG", neat.getGenerationOfBSF());
         stats.addSample("ARITY_BSF", 0.0);
         stats.addSample("ARITY_LG", 0.0);
-        stats.addSample("CONSTANTS_BSF", 0.0);
-        stats.addSample("CONSTANTS_LG", 0.0);
+        stats.addSample("CONSTANTS_BSF", (double) neat.getBestSoFar().getNet().getNumLinks());
+        stats.addSample("CONSTANTS_LG", constantsLG);
         stats.addSample("DEPTH_BSF", 0.0);
         stats.addSample("DEPTH_LG", 0.0);
         stats.addSample("LEAVES_BSF", 0.0);
         stats.addSample("LEAVES_LG", 0.0);
-        stats.addSample("NODES_BSF", (double) neat.getBestSoFar().getNet().getNumHidOut());
+        stats.addSample("NODES_BSF", (double) neat.getBestSoFar().getNet().getNumHidden());
         stats.addSample("NODES_LG", nodesLG);
     }
 }

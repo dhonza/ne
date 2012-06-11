@@ -1,0 +1,31 @@
+#!/bin/bash
+
+export JOBLIST=~/java/exp/jobs.txt
+
+if [ $# != 1 ] ; then
+    echo usage: rerunssh machine[:remote_dir]
+    exit
+fi
+
+MACHINE=`echo ${1} | cut -d ":" -f 1`
+RDIR=`echo ${1} | cut -d ":" -f 2`
+
+if [ ${MACHINE} == ${RDIR} ] ; then
+    RDIR="."
+    TDIR=""
+else
+    TDIR=${RDIR}
+fi
+
+echo Running on ${1} ...
+
+if [ ${RDIR} != "." ] ; then
+    echo " creating remote dir if not exist..."
+    ssh "${MACHINE}" "mkdir -p "${RDIR}
+    if [ $? != 0 ] ; then
+	exit
+    fi
+fi
+
+echo " running ..."
+ssh -n -f "${MACHINE}" "sh -c \"cd ${RDIR}; cd nepack; . ~/environment; nohup ts ./run > /dev/null 2>&1 &\""

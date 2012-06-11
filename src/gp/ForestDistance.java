@@ -1,6 +1,7 @@
 package gp;
 
 import common.evolution.IDistance;
+import common.evolution.IDistanceByOutput;
 import gp.distance.TreeDistance;
 
 /**
@@ -24,7 +25,11 @@ public class ForestDistance implements IDistance<Forest> {
     public double distance(Forest a, Forest b) {
         double distances = 0.0;
         for (int i = 0; i < a.trees.length; i++) {
-            distances += treeIDistance.distance(a.trees[i], b.trees[i]);
+            if (treeIDistance instanceof IDistanceByOutput) {
+                distances += ((IDistanceByOutput)treeIDistance).distance(a.trees[i], b.trees[i], i);
+            } else {
+                distances += treeIDistance.distance(a.trees[i], b.trees[i]);
+            }
         }
         return distances / a.trees.length;
     }

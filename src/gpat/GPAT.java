@@ -276,7 +276,11 @@ public class GPAT<P> implements IGPAT {
         int distribute = newPopulation.length;
         int assigned = 0;
         for (ATSpecies spec : species) {
-            int assign = (int) (distribute * (spec.getAverageFitness() / total));
+            double ratio = spec.getAverageFitness() / total;
+            if (total == 0.0) {//means all fitnesses = 0, should use |total| < epsilon
+                ratio = 1 / species.size();
+            }
+            int assign = (int) (distribute * ratio);
             spec.setEstimatedOffspring(assign);
             assigned += assign;
         }
