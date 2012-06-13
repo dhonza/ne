@@ -2,6 +2,7 @@ package gpat;
 
 import common.ListHelper;
 import common.RND;
+import common.mathematica.MathematicaUtils;
 import gp.GP;
 import gp.TreeInputs;
 
@@ -527,6 +528,94 @@ public class ATTree {
 
     public String toMathematicaExpression() {
         return root.toMathematicaExpression();
+    }
+
+    private int populateTreeMathematicaFull(ATNode n, StringBuffer nodes, StringBuffer links, int idx) {
+        if (idx == 0) {
+            nodes.append("{");
+        } else {
+            nodes.append(",{");
+        }
+        nodes.append(idx + ",");
+        nodes.append("\"" + n.getName() + "\",");
+        nodes.append(n.getId());
+        nodes.append("}");
+
+        int nodeIdx = idx;
+        idx++;
+        for (int i = 0; i < n.getArity(); i++) {
+            int childNodeIdx = idx;
+            idx = populateTreeMathematicaFull(n.getChild(i), nodes, links, idx);
+            links.append("{");
+
+            int fromId = childNodeIdx;
+            int toId = nodeIdx;
+
+            double weight = n.getConstant(i);
+            boolean active = n.isActive(i);
+            links.append(fromId + "->" + toId + "," + MathematicaUtils.toMathematica(weight) + "," + MathematicaUtils.toMathematica(active));
+            links.append("}");
+            links.append(",");
+        }
+        return idx;
+    }
+
+    public String toMathematicaExpressionFull() {
+
+        StringBuffer b = new StringBuffer();
+        StringBuffer n = new StringBuffer();
+        StringBuffer l = new StringBuffer();
+
+        populateTreeMathematicaFull(root, n, l, 0);
+
+        b.append("{NODES->{");
+        b.append(n);
+        b.append("},LINKS->{");
+        if (l.length() > 0) {//remove last "," :)
+            b.append(l.substring(0, l.length() - 1));
+        }
+
+        b.append("},ROOT->" + 0);
+        b.append(",DEPTH->" + getDepth());
+        b.append("}");
+        return b.toString();
+    }
+
+    public String toMathematicaExpressionFullMultiGraph() {
+        StringBuffer b = new StringBuffer();
+        StringBuffer l = new StringBuffer();
+        b.append("{NODES->{");
+        List<ATNode> allNodes = new ArrayList<ATNode>(terminalList);
+        allNodes.addAll(nodeGeneList);
+        ATNode last = allNodes.get(allNodes.size() - 1);
+        for (ATNode node : allNodes) {
+            b.append("{");
+            b.append(node.getId() + ",");
+            b.append("\"" + node.getName() + "\"");
+            b.append("}");
+            if (node != last) {
+                b.append(",");
+            }
+            for (int i = 0; i < node.getArity(); i++) {
+                l.append("{");
+                int fromId = node.getChild(i).getId();
+                int toId = node.getId();
+                double weight = node.getConstant(i);
+                boolean active = node.isActive(i);
+                l.append(fromId + "->" + toId + "," + MathematicaUtils.toMathematica(weight) + "," + MathematicaUtils.toMathematica(active));
+                l.append("}");
+                l.append(",");
+            }
+
+        }
+        b.append("},LINKS->{");
+        if (l.length() > 0) {
+            b.append(l.substring(0, l.length() - 1));
+        }
+        b.append("},ROOT->" + root.getId());
+        b.append(",DEPTH->" + getDepth());
+        b.append("}");
+        return b.toString();
     }
 
     public static void main(String[] args) {

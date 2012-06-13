@@ -12,6 +12,10 @@ public class MathematicaUtils {
         return Double.toString(n).toUpperCase().replace("E", "*10^");
     }
 
+    public static String toMathematica(boolean bool) {
+        return bool ? "True" : "False";
+    }
+
     public static String arrayToMathematica(int[] array) {
         if (array.length == 0) {
             return "{}";

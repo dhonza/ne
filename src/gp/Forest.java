@@ -136,7 +136,8 @@ public class Forest implements IGPForest, Comparable, Serializable {
         StringBuilder b = new StringBuilder("{");
         for (int i = 0; i < trees.length; i++) {
             Tree tree = trees[i];
-            b.append(tree.toMathematicaExpression());
+//            b.append(tree.toMathematicaExpression());
+            b.append(tree.toMathematicaExpressionFull());
             if (i < (trees.length - 1)) {
                 b.append(", ");
             }

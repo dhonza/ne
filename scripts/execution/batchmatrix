@@ -1,14 +1,14 @@
 #!/usr/bin/env mash.pl
 
-name = "ROBEFS"
-baseAlgorithm = "HGP"
+name = "HATGP"
+(*baseAlgorithm = "HGP"*)
 (*baseAlgorithm = "HGPAT"*)
-(*baseAlgorithm = "GPAT"*)
+baseAlgorithm = "GPAT"
 neDir="/Users/drchaj1/java/ne"
 
-cfg = neDir<>"/cfg/hyper/gphyper.properties";
+(*cfg = neDir<>"/cfg/hyper/gphyper.properties";*)
 (*cfg = neDir<>"/cfg/hyper/gpathyper.properties";*)
-(*cfg = neDir<>"/cfg/demo/gpatdemo.properties";*)
+cfg = neDir<>"/cfg/demo/gpatdemo.properties";
 
 file = Import["/Users/drchaj1/java/exp/MATRIX", "TSV"];
 
@@ -34,8 +34,8 @@ applyConfiguration[cfg_, params_, values_, ids_] :=
   MapThread[#1 -> #2&, {params, values}]];
   cfgFile = StringReplace[cfgFile, rules];
   Export[cfg, cfgFile <> "\n", "String"];
-  (*cmd = "./batchaltix "<>baseAlgorithm<>" "<>name<>ord;*)
-  cmd = "./packandrunaltix "<>baseAlgorithm<>" "<>name<>ord<>" rex 4";
+  cmd = "./batchaltix "<>baseAlgorithm<>" "<>name<>ord;
+  (*cmd = "./packandrunaltix "<>baseAlgorithm<>" "<>name<>ord<>" rex 4";*)
   prn["Running: ",cmd];
   Run[cmd];
   ]

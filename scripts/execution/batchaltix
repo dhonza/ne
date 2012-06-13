@@ -74,10 +74,10 @@ then
 else
 	echo "DIRECT ENCODING EXPERIMENTS"
 	MACHINE="rex"
-	run ${MACHINE}":~/scratch/nepack"${BALG}"_"${NAME}"_1DF" "regression" "1DF" 6
+	run ${MACHINE}":~/scratch/nepack"${BALG}"_"${NAME}"_1DF" "regression" "1DF" 3
 	run ${MACHINE}":~/scratch/nepack"${BALG}"_"${NAME}"_1DH" "regression" "1DH" 3
 	
-	run ${MACHINE}":~/scratch/nepack"${BALG}"_"${NAME}"_2DI" "regression" "2DI" 6
+	run ${MACHINE}":~/scratch/nepack"${BALG}"_"${NAME}"_2DI" "regression" "2DI" 3
 	run ${MACHINE}":~/scratch/nepack"${BALG}"_"${NAME}"_2DK" "regression" "2DK" 3
 	
 	run ${MACHINE}":~/scratch/nepack"${BALG}"_"${NAME}"_3DE" "regression" "3DE" 6
@@ -87,7 +87,7 @@ else
 	run ${MACHINE}":~/scratch/nepack"${BALG}"_"${NAME}"_4DC" "regression" "4DC" 6
 	run ${MACHINE}":~/scratch/nepack"${BALG}"_"${NAME}"_4DF" "regression" "4DF" 6
 	run ${MACHINE}":~/scratch/nepack"${BALG}"_"${NAME}"_4DG" "regression" "4DG" 6
-	run ${MACHINE}":~/scratch/nepack"${BALG}"_"${NAME}"_4DV" "regression" "4DV" 6
+	#run ${MACHINE}":~/scratch/nepack"${BALG}"_"${NAME}"_4DV" "regression" "4DV" 6
 	
 	run ${MACHINE}":~/scratch/nepack"${BALG}"_"${NAME}"_M1" "maze" "M1" 6
 	run ${MACHINE}":~/scratch/nepack"${BALG}"_"${NAME}"_M2" "maze" "M2" 6

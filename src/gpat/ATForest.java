@@ -247,10 +247,12 @@ public class ATForest implements IGPForest, Comparable, Serializable {
         StringBuilder s = new StringBuilder("{");
         for (int i = 0, treesLength = trees.length - 1; i < treesLength; i++) {
             ATTree tree = trees[i];
-            s.append(tree.toMathematicaExpression());
+//            s.append(tree.toMathematicaExpression());
+            s.append(tree.toMathematicaExpressionFull());
             s.append(", ");
         }
-        s.append(trees[trees.length - 1].toMathematicaExpression());
+//        s.append(trees[trees.length - 1].toMathematicaExpression());
+        s.append(trees[trees.length - 1].toMathematicaExpressionFull());
         s.append("}");
         return s.toString();
     }

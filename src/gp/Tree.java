@@ -1,7 +1,10 @@
 package gp;
 
 import common.RND;
+import common.mathematica.MathematicaUtils;
+import gp.terminals.ITerminal;
 import gp.terminals.Random;
+import gpat.ATNode;
 
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -159,6 +162,73 @@ public class Tree implements Serializable {
 
     public String toMathematicaExpression() {
         return root.toMathematicaExpression();
+    }
+
+    public String toMathematicaExpressionFull() {
+        StringBuffer b = new StringBuffer();
+        StringBuffer l = new StringBuffer();
+        b.append("{NODES->{");
+        populateNodes(root, null);
+
+
+        List<INode> allNodes = new ArrayList<INode>();
+//        for (int i = 0; i < nodeCollection.getTerminals().length; i++) {
+//            if (!(nodeCollection.getTerminals()[i] instanceof Random)) {
+//                allNodes.add(nodeCollection.getTerminals()[i]);
+//            }
+//        }
+
+        for (int i = 0; i < nodes.size(); i++) {
+//            if (!(nodes.get(i) instanceof ITerminal) || (nodes.get(i) instanceof Random)) {
+            allNodes.add(nodes.get(i));
+//            }
+        }
+
+        Map<INode, Integer> nodeToId = new HashMap<INode, Integer>();
+        for (int i = 0, allNodesSize = allNodes.size(); i < allNodesSize; i++) {
+            INode node = allNodes.get(i);
+            nodeToId.put(node, i);
+        }
+
+        int rootId = 0;
+        for (int i = 0, allNodesSize = allNodes.size(); i < allNodesSize; i++) {
+            INode node = allNodes.get(i);
+            b.append("{");
+            b.append(i + ",");
+            b.append("\"" + ((node instanceof ITerminal) ? node.toMathematicaExpression() : node.getName()) + "\"");
+            b.append("}");
+
+            if (node == root) {
+                rootId = i;
+            }
+
+            if (i < allNodesSize - 1) {
+                b.append(",");
+            }
+            for (int j = 0; j < node.getArity(); j++) {
+                l.append("{");
+                if (nodeToId.get(node.getChild(j)) == null) {
+                    System.out.println("node = " + node);
+                    System.out.println("nodeToId = " + nodeToId.get(node.getChild(j)));
+                }
+                int fromId = nodeToId.get(node.getChild(j));
+                int toId = nodeToId.get(node);
+                double weight = 1;
+                boolean active = false;
+                l.append(fromId + "->" + toId + "," + MathematicaUtils.toMathematica(weight) + "," + MathematicaUtils.toMathematica(active));
+                l.append("}");
+                l.append(",");
+            }
+
+        }
+        b.append("},LINKS->{");
+        if (l.length() > 0) {
+            b.append(l.substring(0, l.length() - 1));
+        }
+        b.append("},ROOT->" + rootId);
+        b.append(",DEPTH->" + getDepth());
+        b.append("}");
+        return b.toString();
     }
 
     public String innovationToString() {
