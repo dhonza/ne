@@ -84,7 +84,8 @@ public class GPATRunner implements EvolutionaryAlgorithmRunner {
         if (type.equals("GPAT")) {
 //            return new ATNode2[]{};//GPAT
 //            return new ATNodeImpl[]{new ATTerminals.Constant(1.0)};//GPAT
-            if (combination.getString("GPAT.FUNCTION_IMPL").equals("gpat.ATFunctionsNoConsts$")) {
+            if (combination.getString("GPAT.FUNCTION_IMPL").equals("gpat.ATFunctionsNoConsts$") ||
+                    combination.getString("GPAT.FUNCTION_IMPL").equals("gpat.ATFunctionsComplexifyOnly$")) {
                 return new ATNodeImpl[]{new ATTerminals.Constant(1.0), new ATTerminals.ConstantMarker()};//GPAT without inner constants
             } else {
                 return new ATNodeImpl[]{new ATTerminals.Constant(1.0)};

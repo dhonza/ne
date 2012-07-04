@@ -38,9 +38,11 @@ then
 fi
 
 mkdir -p ${TARGET}
+mkdir -p ${TARGET}/ORIG
 
 while [ $# != "0" ]; do
     echo ${1}
     copy ${1}
+    mv ${1} ${TARGET}/ORIG/
     shift
 done

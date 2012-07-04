@@ -43,7 +43,11 @@ public class Tree implements Serializable {
 
     public static Tree createRandom(NodeCollection nodeCollection) {
         Tree tree = new Tree(nodeCollection);
+        if (GP.FULL_INIT) {
+            tree.root = createRandomSubtreeFull(nodeCollection, 0);
+        } else {
         tree.root = createRandomSubtree(nodeCollection, 0);
+        }
         return tree;
     }
 
@@ -59,6 +63,25 @@ public class Tree implements Serializable {
         INode[] children = new Node[arity];
         for (int i = 0; i < arity; i++) {
             children[i] = createRandomSubtree(nodeCollection, startDepth + 1);
+        }
+
+        node = choice.create(startDepth, children);
+
+        return node;
+    }
+
+    private static INode createRandomSubtreeFull(NodeCollection nodeCollection, int startDepth) {
+        INode node;
+        INode choice;
+        if (startDepth < GP.MAX_DEPTH) {
+            choice = nodeCollection.getRandomFunction();
+        } else {
+            choice = nodeCollection.getRandomTerminal();
+        }
+        int arity = choice.getArity();
+        INode[] children = new Node[arity];
+        for (int i = 0; i < arity; i++) {
+            children[i] = createRandomSubtreeFull(nodeCollection, startDepth + 1);
         }
 
         node = choice.create(startDepth, children);
@@ -227,6 +250,18 @@ public class Tree implements Serializable {
         }
         b.append("},ROOT->" + rootId);
         b.append(",DEPTH->" + getDepth());
+        b.append("}");
+        return b.toString();
+    }
+
+    public String toMathematicaExpressionSizes() {
+        StringBuffer b = new StringBuffer();
+        b.append("{NODES->");
+        b.append(getNumOfNodes());
+        b.append(",CONSTANTS->");
+        b.append(getNumOfConstants());
+        b.append(",DEPTH->");
+        b.append(getDepth());
         b.append("}");
         return b.toString();
     }

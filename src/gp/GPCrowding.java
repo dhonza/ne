@@ -17,7 +17,7 @@ import common.pmatrix.ParameterCombination;
  * TODO create a single common abstract predecessor class (do not use newPopulation from GP)
  */
 public class GPCrowding<P> extends GP<P> {
-    public GPCrowding(ParameterCombination parameters, PopulationManager<Forest, P> populationManager, Node[] functions, Node[] terminals, String initialGenome) {
+    public GPCrowding(ParameterCombination parameters, PopulationManager<Forest, P> populationManager, INode[] functions, INode[] terminals, String initialGenome) {
         super(parameters, populationManager, functions, terminals, initialGenome);
         if (GP.POPULATION_SIZE % 2 != 0) {
             throw new IllegalStateException("Population size must be even.");

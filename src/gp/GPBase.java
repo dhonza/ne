@@ -23,6 +23,8 @@ abstract public class GPBase<P, T extends IGPForest> implements IEvolutionaryAlg
     public static double MUTATION_CAUCHY_PROBABILITY = 0.8;
     public static double MUTATION_CAUCHY_POWER = 0.01;
 
+    public static boolean FULL_INIT = false;
+
     final protected int inputs;
     final protected int outputs;
     final protected NodeCollection nodeCollection;

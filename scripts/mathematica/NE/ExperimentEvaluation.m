@@ -20,6 +20,8 @@ saveData::usage = "saveData"
 keepOnlyBest::usage = "keepOnlyBest"
 aggregateBoolean::usage = "aggregateBoolean"
 
+listOfColors::usage = "listOfColors"
+
 changingParameters::usage = "changingParameters"
 sortDataByParams::usage = "sortDataByParams[data,paramOrder] sorts configuration in data by given parameters, paramOrder is a 
 	list of parameter names."
@@ -367,12 +369,16 @@ Options[plotBooleanAsBarChartPub] = {
 	AspectRatio->0.5/GoldenRatio,
 	ImageSize->{{700},{1600}},
 	BarLabelsRotate->0,
-	ColorsNumber->Null
+	ColorsNumber->Null,
+	Colors->Null
 	};
 plotBooleanAsBarChartPub[data_,paramName_,partNames_,subChartSpacing_,partSize_:1,OptionsPattern[]] :=
     Module[ {colors,parts,labels,partPlacement,labelPlacement,sum,barLabels},
     	If[Mod[Length[data],partSize] != 0, Print["WARNING: Mod[Length[data],partSize] != 0"]];
-        colors = listOfColors[If[OptionValue[ColorsNumber]===Null,partSize,OptionValue[ColorsNumber]]];
+        colors = If[OptionValue[Colors]===Null,
+        	listOfColors[If[OptionValue[ColorsNumber]===Null,partSize,OptionValue[ColorsNumber]]],
+        	OptionValue[Colors]
+        ];
         labels = labelsForData[data];
         parts = Grid[Array[{""}&,Length[labels[[1]]]]~Join~{{#}},Spacings->{2,subChartSpacing}]&/@partNames;
         labels = Grid[If[Head[#]===List,Partition[#,1],{{#}}],Spacings->{2,0}]&/@labels;

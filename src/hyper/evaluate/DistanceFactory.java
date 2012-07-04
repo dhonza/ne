@@ -37,7 +37,7 @@ public class DistanceFactory {
                 return new GEPChromosomeDistance();
             } else if (parameters.getString("GP.TYPE").equals("gpaac.GPAAC")) {
                 return new AACForestDistance();
-            } else if (parameters.getString("GP.TYPE").equals("gp.GPEFS")) {
+            } else if (parameters.getString("GP.TYPE").equals("gp.GPEFS") || parameters.getString("GP.TYPE").equals("gp.GPCrowding")) {
                 if (parameters.getString("GP.DISTANCE").equals("BASIC")) {
                     return new ForestDistance();
                 } else if (parameters.getString("GP.DISTANCE").equals("RANDOM")) {

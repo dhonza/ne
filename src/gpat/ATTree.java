@@ -618,6 +618,18 @@ public class ATTree {
         return b.toString();
     }
 
+    public String toMathematicaExpressionSizes() {
+        StringBuffer b = new StringBuffer();
+        b.append("{NODES->");
+        b.append(getNumOfNodes());
+        b.append(",CONSTANTS->");
+        b.append(getNumOfConstants());
+        b.append(",DEPTH->");
+        b.append(getDepth());
+        b.append("}");
+        return b.toString();
+    }
+
     public static void main(String[] args) {
         ATNodeImpl[] functions = new ATNodeImpl[]{new ATFunctions.Plus(), new ATFunctions.Times()};
         ATNodeImpl[] terminals = new ATNodeImpl[]{new ATTerminals.Constant(1.0), new ATTerminals.Constant(-1.0)};
