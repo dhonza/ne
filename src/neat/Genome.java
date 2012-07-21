@@ -784,8 +784,13 @@ public class Genome implements Comparable {
     protected Object clone() {
         net.check();
         Net tn = (Net) net.clone();
-        if (!tn.check())
+        if (!tn.check()) {
             System.out.println("ERROR: bad net");
+            System.out.println(net);
+            System.out.println(tn);
+            tn.check();
+            System.exit(1);
+        }
         Genome tg;
         tg = new Genome(tn);
         if (tg.genomeOrigin != GenomeOrigin.NEW) {

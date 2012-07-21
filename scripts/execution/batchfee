@@ -65,9 +65,9 @@ then
 	echo "INDIRECT ENCODING EXPERIMENTS"
 	run "drchal:~/scratch/nepack"${BALG}"_"${NAME}"_rcM" "reco" "rcM" 3
 	run "drchal:~/scratch/nepack"${BALG}"_"${NAME}"_rcS" "reco" "rcS" 3
-	run "kovarik:~/scratch/nepack"${BALG}"_"${NAME}"_rcR" "reco" "rcR" 3
+	run "brian:~/scratch/nepack"${BALG}"_"${NAME}"_rcR" "reco" "rcR" 3
 	
-	run "kovarik:~/scratch/nepack"${BALG}"_"${NAME}"_xor" "bool" "xor" 3
+	run "brian:~/scratch/nepack"${BALG}"_"${NAME}"_xor" "bool" "xor" 3
 	
 	run "pilny:~/scratch/nepack"${BALG}"_"${NAME}"_fc55" "fc" "fc55" 3
 
@@ -75,20 +75,20 @@ else
 	echo "DIRECT ENCODING EXPERIMENTS"
 
 	run "drchal:~/scratch/nepack"${BALG}"_"${NAME}"_1DF" "regression" "1DF" 3
-	run "kovarik:~/scratch/nepack"${BALG}"_"${NAME}"_1DH" "regression" "1DH" 3
+	run "brian:~/scratch/nepack"${BALG}"_"${NAME}"_1DH" "regression" "1DH" 3
 	
 	run "drchal:~/scratch/nepack"${BALG}"_"${NAME}"_2DI" "regression" "2DI" 3
 	run "drchal:~/scratch/nepack"${BALG}"_"${NAME}"_2DK" "regression" "2DK" 3
 	
-	run "kovarik:~/scratch/nepack"${BALG}"_"${NAME}"_3DE" "regression" "3DE" 3
+	run "brian:~/scratch/nepack"${BALG}"_"${NAME}"_3DE" "regression" "3DE" 3
 	run "pilny:~/scratch/nepack"${BALG}"_"${NAME}"_3DH" "regression" "3DH" 3
-	run "drchal:~/scratch/nepack"${BALG}"_"${NAME}"_3DK" "regression" "3DK" 3
+	run "kovarik:~/scratch/nepack"${BALG}"_"${NAME}"_3DK" "regression" "3DK" 3
 	
-	run "kovarik:~/scratch/nepack"${BALG}"_"${NAME}"_4DC" "regression" "4DC" 3
+	run "brian:~/scratch/nepack"${BALG}"_"${NAME}"_4DC" "regression" "4DC" 3
 	run "pilny:~/scratch/nepack"${BALG}"_"${NAME}"_4DF" "regression" "4DF" 3
-	run "pilny:~/scratch/nepack"${BALG}"_"${NAME}"_4DG" "regression" "4DG" 3
-	run "kovarik:~/scratch/nepack"${BALG}"_"${NAME}"_4DV" "regression" "4DV" 3
+	run "kovarik:~/scratch/nepack"${BALG}"_"${NAME}"_4DG" "regression" "4DG" 3
+	run "brian:~/scratch/nepack"${BALG}"_"${NAME}"_4DV" "regression" "4DV" 3
 	
 	run "pilny:~/scratch/nepack"${BALG}"_"${NAME}"_M1" "maze" "M1" 3
-	run "pilny:~/scratch/nepack"${BALG}"_"${NAME}"_M2" "maze" "M2" 3
+	run "kovarik:~/scratch/nepack"${BALG}"_"${NAME}"_M2" "maze" "M2" 3
 fi

@@ -1,5 +1,6 @@
 package neat;
 
+import common.RND;
 import common.net.linked.Link;
 import common.net.linked.Net;
 import common.net.linked.Neuron;
@@ -12,38 +13,7 @@ import java.util.Map;
  * from(input Neuron) ---> to(output Neuron). The algorithm fo proposing of a new Link innovation tries until succeeds or
  * the number of this tests is greater than NE.INNOVATION_MATRIX_TRIES.
  */
-class LocalInnovation {
-    private class InnovLink {
-        private Neuron from;
-        private Neuron to;
-
-        public InnovLink(Neuron from, Neuron to) {
-            this.from = from;
-            this.to = to;
-        }
-
-        @Override
-        public boolean equals(Object o) {
-            if (this == o) return true;
-            if (o == null || getClass() != o.getClass()) return false;
-
-            InnovLink innovLink = (InnovLink) o;
-
-            if (from != null ? !from.equals(innovLink.from) : innovLink.from != null) return false;
-            if (to != null ? !to.equals(innovLink.to) : innovLink.to != null) return false;
-
-            return true;
-        }
-
-        @Override
-        public int hashCode() {
-            int result = from != null ? from.hashCode() : 0;
-            result = 31 * result + (to != null ? to.hashCode() : 0);
-            return result;
-        }
-    }
-
-    private Map<InnovLink, Link> linkMap = new HashMap<InnovLink, Link>();
+class LocalInnovationOld {
     /**
      * References all the Links. The row represents the Link's input Neuron, the
      * column its output Neuron. The rows consist of input, hidden and output
@@ -53,17 +23,17 @@ class LocalInnovation {
      * reference to the corresponding Link or <b>null </b> if there is no Link
      * between two Neurons.
      */
-//    private Link[][] linkMatrix;
+    private Link[][] linkMatrix;
 
     /**
      * References position in linkMatrix by given Neuron.
      */
-//    private Map<Neuron, Integer> neuronInMatrix;
+    private Map<Neuron, Integer> neuronInMatrix;
 
     /**
      * References Neuron by given position in linkMatrix.
      */
-//    private Map<Integer, Neuron> positionInMatrix;
+    private Map<Integer, Neuron> positionInMatrix;
 
     /**
      * Proposed Link recurrence flag.
@@ -73,6 +43,9 @@ class LocalInnovation {
     /**
      * Used to address columns in linkMatrix.
      */
+    private int offsetColumn;
+
+    private int numNeurons;
 
     private Net net;
 
@@ -81,8 +54,34 @@ class LocalInnovation {
      *
      * @param onet Net template
      */
-    LocalInnovation(Net onet) {
+    LocalInnovationOld(Net onet) {
         net = onet;
+
+        // +1 reserve for mutateAddNeuron()
+        int inputs = net.getNumNeurons() + 1;
+        int outputs = net.getNumHidOut() + 1;
+        linkMatrix = new Link[inputs][outputs];
+
+        neuronInMatrix = new HashMap(inputs);
+        positionInMatrix = new HashMap(inputs);
+
+        offsetColumn = inputs - outputs;
+        numNeurons = inputs;
+
+        // +1 reserve for mutateAddNeuron()
+        //TODO prob. slow, use arrays?
+        int i = 0;
+        for (Neuron tn : net.getInputs()) {
+            neuronInMatrix.put(tn, i);
+            positionInMatrix.put(i, tn);
+            i++;
+        }
+
+        for (Neuron tn : net.getHidout()) {
+            neuronInMatrix.put(tn, i);
+            positionInMatrix.put(i, tn);
+            i++;
+        }
     }
 
     /**
@@ -94,12 +93,15 @@ class LocalInnovation {
      * @param obias if null nothing is added
      */
     void addNeuron(Neuron on, Link oin, Link oout, Link obias) {
+        int row = numNeurons - 1;
+        int col = row - offsetColumn;
+        neuronInMatrix.put(on, row);
+        positionInMatrix.put(row, on);
 
-        linkMap.put(new InnovLink(oin.getIn(), on), oin);
-        linkMap.put(new InnovLink(on, oout.getOut()), oout);
-        linkMap.put(new InnovLink(obias.getIn(), on), obias);
-        //TODO BIAS!!!!!!
-//        linkMap.add(new InnovLink(on, oout.getOut()));
+        linkMatrix[neuronInMatrix.get(oin.getIn())][col] = oin;
+        linkMatrix[row][neuronInMatrix.get(oout.getOut()) - offsetColumn] = oout;
+
+        linkMatrix[0][col] = obias; // bias
     }
 
     //TODO comment  + Net should have at least one non bias output
@@ -111,22 +113,26 @@ class LocalInnovation {
      * @return Base Link for new Neuron.
      */
     Link proposeNeuronInnovation() {
-        Neuron proposedIn;
-        Neuron proposedOut;
+        Link tlink;
+        int proposedIn;
+        int proposedOut;
 
         int tries = 0;
 
         while (tries < NEAT.getConfig().innovationMatrixTries) {
 
-            proposedIn = net.getRandomAllNotBias();
-            proposedOut = net.getRandomHidOut();
+            proposedIn = RND.getInt(1, net.getNumNeurons() - 1); // don't take BIASes
+            proposedOut = RND.getInt(0, net.getNumHidOut() - 1);
 
-            Link tlink = linkMap.get(new InnovLink(proposedIn, proposedOut));
+            tlink = linkMatrix[proposedIn][proposedOut];
+
             if (tlink != null) { // this could be removed if we don't need new Neuron replacing existing Link
-//                proposedRecurrent = net.testRecurrent(proposedIn, proposedOut);
-//                if (NEAT.getConfig().recurrent || !proposedRecurrent) {
-                return tlink;
-//                }
+
+                proposedRecurrent = net.testRecurrent(positionInMatrix.get(proposedIn), positionInMatrix.get(proposedOut + offsetColumn));
+
+                if (NEAT.getConfig().recurrent || !proposedRecurrent) {
+                    return tlink;
+                }
             }
             tries++;
         }
@@ -139,14 +145,15 @@ class LocalInnovation {
      * @param olink Link to add.
      */
     void addLink(Link olink) {
-        linkMap.put(new InnovLink(olink.getIn(), olink.getOut()), olink);
+        int from, to;
+        from = neuronInMatrix.get(olink.getIn());
+        to = neuronInMatrix.get(olink.getOut()) - offsetColumn;
+        linkMatrix[from][to] = olink;
     }
 
 
     private Link getLink(int ofrom, int oto) {
-        //note: neuron Id is the only key...
-        return linkMap.get(new InnovLink(new Neuron(ofrom, Neuron.Type.HIDDEN, Neuron.Activation.SIGMOID),
-                new Neuron(oto, Neuron.Type.HIDDEN, Neuron.Activation.SIGMOID)));
+        return linkMatrix[ofrom][oto];
     }
 
     /**
@@ -162,22 +169,15 @@ class LocalInnovation {
 
         /** TODO speed up recurrence tests */
         while (tries < NEAT.getConfig().innovationMatrixTries) {
-            Neuron proposedIn = net.getRandomAllNotBias();
-            Neuron proposedOut = net.getRandomHidOut();
-            if (getLink(proposedIn.getId(), proposedOut.getId()) == null) {
+            int proposedIn = RND.getInt(0, net.getNumNeurons() - 1);
+            int proposedOut = RND.getInt(0, net.getNumHidOut() - 1);
+            if (getLink(proposedIn, proposedOut) == null) {
 
-                tneurons[0] = proposedIn; // the input Neuron of the new Link
-                tneurons[1] = proposedOut; // the output Neuron
+                tneurons[0] = positionInMatrix.get(proposedIn); // the input Neuron of the new Link
+                tneurons[1] = positionInMatrix.get(proposedOut + offsetColumn); // the output Neuron
 //                proposedRecurrent = net.testRecurrent(tneurons[0], tneurons[1]);
 
                 proposedRecurrent = net.testRecurrent2(tneurons[0], tneurons[1]);
-
-                if (getLink(proposedOut.getId(), proposedIn.getId()) != null && !proposedRecurrent) {
-                    System.out.println("PODEZRELE: " + proposedRecurrent + " " + proposedIn.getId() + "---->" + proposedOut.getId());
-                    System.out.println(net);
-                    net.testRecurrent2(tneurons[0], tneurons[1]);
-                }
-
 
                 if (NEAT.getConfig().recurrent)
                     break;

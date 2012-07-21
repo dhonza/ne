@@ -24,7 +24,7 @@ public class HyperRunner {
 
     public static void main(String[] args) {
         long seed = RND.initializeTime();
-//        long seed = 1321410388649375013L;
+//        long seed = 1351199082406044013L;
         System.out.println("INITIALIZED SEED: " + seed);
         RND.initialize(seed);
 

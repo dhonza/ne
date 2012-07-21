@@ -4,9 +4,7 @@ import common.RND;
 import common.net.INet;
 
 import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
+import java.util.*;
 
 /**
  * <p/>
@@ -597,6 +595,28 @@ public class Net implements INet, Serializable {
 
     }
 
+    public boolean testRecurrent2(Neuron in, Neuron out) {
+        Set<Integer> visited = new HashSet<Integer>();
+        return testRecurrent2Helper(in, out, visited);
+    }
+
+    public boolean testRecurrent2Helper(Neuron in, Neuron act, Set<Integer> visited) {
+        if (act.getId() == in.getId()) {
+            return true;
+        }
+        for (Link link : act.getOutgoing()) {
+            Neuron adj = link.getOut();
+            if (!visited.contains(adj.getId())) {
+                visited.add(adj.getId());
+                boolean isRecurrent = testRecurrent2Helper(in, adj, visited);
+                if(isRecurrent) {
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
+
     /**
      * Tries to find neuron of given id in hidden and output set.
      *
@@ -779,6 +799,37 @@ public class Net implements INet, Serializable {
             links.get(i).setWeight(RND.getDouble(omin, omax));
     }
 
+
+    private class LinkTest {
+        private Neuron from;
+        private Neuron to;
+
+        public LinkTest(Neuron from, Neuron to) {
+            this.from = from;
+            this.to = to;
+        }
+
+        @Override
+        public boolean equals(Object o) {
+            if (this == o) return true;
+            if (o == null || getClass() != o.getClass()) return false;
+
+            LinkTest innovLink = (LinkTest) o;
+
+            if (from != null ? !from.equals(innovLink.from) : innovLink.from != null) return false;
+            if (to != null ? !to.equals(innovLink.to) : innovLink.to != null) return false;
+
+            return true;
+        }
+
+        @Override
+        public int hashCode() {
+            int result = from != null ? from.hashCode() : 0;
+            result = 31 * result + (to != null ? to.hashCode() : 0);
+            return result;
+        }
+    }
+
     /**
      * Checks the network.
      *
@@ -798,16 +849,31 @@ public class Net implements INet, Serializable {
         }
 
         sort();
-        //Check if all Links are included only once
+        //Check if all link ids
         if (numLinks > 1) {
             for (int i = 1; i < numLinks; i++)
-                if (links.get(i - 1).getId() >= links.get(i).getId())
+                if (links.get(i - 1).getId() >= links.get(i).getId()) {
+                    System.out.println("ERROR: links ID error");
                     return false;
+                }
         }
+
+        //Check duplicate links
+        Set<LinkTest> linkTestSet = new HashSet<LinkTest>();
+        for (Link link : links) {
+            LinkTest linkTest = new LinkTest(link.getIn(), link.getOut());
+            if (linkTestSet.contains(linkTest)) {
+                System.out.println("ERROR: duplicate link: " + link.getIn().getId() + "---->" + link.getOut().getId());
+                return false;
+            }
+            linkTestSet.add(linkTest);
+        }
+
         //Check if all hidden neurons have output links
         for (int i = 0; i < numHidOut; i++) {
             Neuron tn = hidout.get(i);
             if (tn.getType() == Neuron.Type.HIDDEN && tn.getOutgoing().size() == 0) {
+                System.out.println("ERROR: not all nodes have output links");
                 return false;
             }
         }
@@ -826,6 +892,17 @@ public class Net implements INet, Serializable {
     public Object clone() {
         Net t = new Net(id);
         return copyTo(t);
+    }
+
+    public Neuron getRandomHidOut() {
+        return RND.randomChoice(hidout);
+    }
+
+    public Neuron getRandomAllNotBias() {
+        List<Neuron> all = new ArrayList<Neuron>(inputs);
+        all.addAll(hidout);
+        all.remove(getBiasNeuron());
+        return RND.randomChoice(all);
     }
 
     public Object copyTo(Net onet) {

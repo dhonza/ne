@@ -89,19 +89,23 @@ public class FitnessSharingPopulation<P> extends Population<P> {
                     double r = RND.getDouble();
                     if (r < NEAT.getConfig().mutateAddNeuron) {
                         tgnew = tg.mutateAddNeuron();
+//                        tgnew.getNet().check();
                         tpop[tpopi++] = tgnew;
                     } else if (r < NEAT.getConfig().mutateAddLink + NEAT.getConfig().mutateAddNeuron) {
                         tgnew = tg.mutateAddLink();
+//                        tgnew.getNet().check();
                         tpop[tpopi++] = tgnew;
                     } else { // non-structural mutations
                         tpop[tpopi] = tg.mutateWeights();
                         tpop[tpopi].mutateToggleEnabled();
                         tpop[tpopi++].mutateActivation();
+//                        tpop[tpopi - 1].getNet().check();
                         /** TODO maybe call from mutateWeight (DelphiNEAT) */
                     }
                 } else { // mating
                     tgs = specie.getTwoRandomGenomes();
                     tgnew = tgs[0].mateMultipoint(tgs[1]);
+//                    tgnew.getNet().check();
                     tpop[tpopi++] = tgnew;
                 }
                 if (!(tpop[tpopi - 1].check() && tpop[tpopi - 1].getNet().check())) {

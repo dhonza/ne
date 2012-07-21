@@ -14,11 +14,14 @@ assignLabelsByParameters::usage = "assignLabelsByParameters replaces current lab
 extractParameters::usage = "extractParameters"
 replaceLabels::usage = "replaceLabels"
 selectData::usage = "selectData[data, paramRule] selects only experiments having given parameter value (given by paramRule), param rules are in form:
-	{ParamA -> Value1, AndParamB -> {Value2 , OrValue3}}."    
+	{ParamA -> Value1, AndParamB -> {Value2 , OrValue3}}."
+selectMaximum::usage = "selectMaximum"    
 removeData::usage = "removeData works similar to selectData, but removes experiments" 
 saveData::usage = "saveData"
 keepOnlyBest::usage = "keepOnlyBest"
 aggregateBoolean::usage = "aggregateBoolean"
+
+resultsForConfiguration::usage = "resultsForConfiguration"
 
 listOfColors::usage = "listOfColors"
 
@@ -203,6 +206,13 @@ selectData[data_,paramRule_List] :=
         ]
     ]
 
+selectMaximum[data_, paramName_] :=
+ Module[{values},
+  values = 
+   Total /@ (resultsForConfiguration[#, paramName] & /@ data);
+  data[[Position[values, Max[values]][[1]]]][[1]]
+  ]
+  
 removeData[data_,paramRule_List] :=
     Module[ {},
         Select[data, 
