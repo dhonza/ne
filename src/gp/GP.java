@@ -57,6 +57,11 @@ public class GP<P> extends GPBase<P, Forest> {
         System.arraycopy(oldAndNewPopulation, 0, population, 0, population.length);
     }
 
+//    protected void reduce() {
+//        Arrays.sort(newPopulation);
+//        System.arraycopy(newPopulation, 0, population, 0, population.length);
+//    }
+
     public String getConfigString() {
         StringBuilder s = new StringBuilder();
         s.append("CONSTANT_AMPLITUDE = ").append(CONSTANT_AMPLITUDE);
