@@ -41,7 +41,8 @@ public class GPATSolver extends AbstractSolver {
 
         ATNodeImpl[] functions = ATNodeFactory.createByNameList(parameters.getString("GPAT.FUNCTION_IMPL"), parameters.getString("GPAT.FUNCTIONS"));
         ATNodeImpl[] terminals = null;
-        if (parameters.getString("GPAT.FUNCTION_IMPL").equals("gpat.ATFunctionsNoConsts$")) {
+        if (parameters.getString("GPAT.FUNCTION_IMPL").equals("gpat.ATFunctionsNoConsts$")||
+                parameters.getString("GPAT.FUNCTION_IMPL").equals("gpat.ATFunctionsComplexifyOnly$")) {
             terminals = new ATNodeImpl[]{new ATTerminals.Constant(1.0), new ATTerminals.ConstantMarker()};
 //            terminals = new ATNodeImpl[]{new ATTerminals.Constant(1.0), new ATTerminals.ConstantMarker(), new ATTerminals.ConstantMarker(), new ATTerminals.ConstantMarker()};
 //            terminals = new ATNodeImpl[]{new ATTerminals.ConstantMarker()};
