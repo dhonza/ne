@@ -63,13 +63,13 @@ function run {
 if [[ ${BALG} == H* ]]
 then
 	echo "INDIRECT ENCODING EXPERIMENTS"
-	run "drchal:~/scratch/nepack"${BALG}"_"${NAME}"_rcM" "reco" "rcM" 3
-	run "drchal:~/scratch/nepack"${BALG}"_"${NAME}"_rcS" "reco" "rcS" 3
-	run "brian:~/scratch/nepack"${BALG}"_"${NAME}"_rcR" "reco" "rcR" 3
+	run "drchal:~/scratch/nepack"${BALG}"_"${NAME}"_rcM" "reco" "rcM" 4
+	run "kovarik:~/scratch/nepack"${BALG}"_"${NAME}"_rcS" "reco" "rcS" 4
+	run "brian:~/scratch/nepack"${BALG}"_"${NAME}"_rcR" "reco" "rcR" 4
 	
-	run "brian:~/scratch/nepack"${BALG}"_"${NAME}"_xor" "bool" "xor" 3
+	run "brian:~/scratch/nepack"${BALG}"_"${NAME}"_xor" "bool" "xor" 5
 	
-	run "pilny:~/scratch/nepack"${BALG}"_"${NAME}"_fc55" "fc" "fc55" 3
+	run "pilny:~/scratch/nepack"${BALG}"_"${NAME}"_fc55" "fc" "fc55" 4
 
 else
 	echo "DIRECT ENCODING EXPERIMENTS"

@@ -380,17 +380,22 @@ Options[plotBooleanAsBarChartPub] = {
 	ImageSize->{{700},{1600}},
 	BarLabelsRotate->0,
 	ColorsNumber->Null,
-	Colors->Null
+	Colors->Null,
+	LabelsSkip->Null
 	};
 plotBooleanAsBarChartPub[data_,paramName_,partNames_,subChartSpacing_,partSize_:1,OptionsPattern[]] :=
-    Module[ {colors,parts,labels,partPlacement,labelPlacement,sum,barLabels},
+    Module[ {colors,parts,labels,lskip,partPlacement,labelPlacement,sum,barLabels},
     	If[Mod[Length[data],partSize] != 0, Print["WARNING: Mod[Length[data],partSize] != 0"]];
         colors = If[OptionValue[Colors]===Null,
         	listOfColors[If[OptionValue[ColorsNumber]===Null,partSize,OptionValue[ColorsNumber]]],
         	OptionValue[Colors]
         ];
         labels = labelsForData[data];
-        parts = Grid[Array[{""}&,Length[labels[[1]]]]~Join~{{#}},Spacings->{2,subChartSpacing}]&/@partNames;
+        lskip = If[OptionValue[LabelsSkip]===Null,
+        	Length[labels[[1]]],
+        	OptionValue[LabelsSkip]
+        ];
+        parts = Grid[Array[{""}&,lskip]~Join~{{#}},Spacings->{2,subChartSpacing}]&/@partNames;
         labels = Grid[If[Head[#]===List,Partition[#,1],{{#}}],Spacings->{2,0}]&/@labels;
         sum = OptionValue[Operation][resultsForConfiguration[#,paramName]]&/@data;
         sum = Partition[sum,partSize];
