@@ -905,6 +905,12 @@ public class Net implements INet, Serializable {
         return RND.randomChoice(all);
     }
 
+    public Neuron getRandomInputNotBias() {
+        List<Neuron> all = new ArrayList<Neuron>(inputs);
+        all.remove(getBiasNeuron());
+        return RND.randomChoice(all);
+    }
+
     public Object copyTo(Net onet) {
 
         onet.numNeurons = numNeurons;
