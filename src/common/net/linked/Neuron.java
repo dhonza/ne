@@ -312,10 +312,13 @@ public class Neuron implements Serializable {
             }
         } else {
             sum = 1.0;
+            if(getIncoming().size() == 0) {
+                sum = 0.0;
+            }
             for (int i = 0; i < getIncoming().size(); i++) {
                 tl = getIncoming().get(i);
                 if (tl.isEnabled()) { //only if the Link is enabled
-                    sum *= tl.getIn().output * tl.getWeight();
+                    sum *= tl.getIn().output;
                     if (tl.getIn().isUpdated()) {
                         setUpdated(true);
                     }

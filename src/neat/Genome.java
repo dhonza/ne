@@ -689,7 +689,7 @@ public class Genome implements Comparable {
 
         Neuron n = new Neuron(ninnov, Neuron.Type.HIDDEN, Neuron.Activation.getRandom());
 
-        // create two links, interconect them with Neurons already present in
+        // create two links, interconnect them with Neurons already present in
         // Net, fill innovation matrix
 
         linnov1 = getPop().getGlobalInnovation().addLink(tn1.getId(), ninnov);
