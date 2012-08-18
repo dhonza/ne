@@ -278,6 +278,54 @@ public class Net implements INet, Serializable {
         maxLinkId = numLinks - 1;
     }
 
+    public void createUnconnectedMinimalSubstrate(int onumInputs, int onumOutputs, Neuron.Activation hidoutType) {
+        numInputs = onumInputs + 1; //bias
+        numHidden = 0;
+        numOutputs = onumOutputs;
+
+        numHidOut = numHidden + numOutputs;
+        numNeurons = numInputs + numHidOut;
+        maxNeuronId = numNeurons - 1;
+
+        numLinks = 0;
+
+        inputs = new ArrayList<Neuron>(numInputs);
+        hidout = new ArrayList<Neuron>(numHidOut);
+        outputs = new ArrayList<Neuron>(numOutputs);
+
+        links = new ArrayList<Link>();
+
+        Neuron tn;
+        Link tl;
+
+        int i, j, k, l, counterN = 0, counterL = 0;
+
+        //bias Neuron
+        Neuron bias = new Neuron(counterN++, Neuron.Type.INPUT, Neuron.Activation.LINEAR);
+        bias.setUpdated(true);
+        inputs.add(bias);
+
+        //input Neurons
+        for (i = 1; i < numInputs; i++, counterN++) {
+            tn = new Neuron(counterN, Neuron.Type.INPUT, Neuron.Activation.LINEAR);
+            tn.setUpdated(true);
+            inputs.add(tn);
+        }
+
+        // output Neurons + Links from bias to them
+        for (j = 0; j < numOutputs; j++, counterN++) {
+            tn = new Neuron(counterN, Neuron.Type.OUTPUT, hidoutType);
+            hidout.add(tn);
+            outputs.add(tn);
+            tl = new Link(counterL++, 0.0, bias, tn);
+            links.add(tl);
+            bias.getOutgoing().add(tl);
+            tn.getIncoming().add(tl);
+        }
+
+        maxLinkId = numLinks - 1;
+    }
+
     public void createConnectedLayers(int[] layers) {
         int[] tlayers = layers.clone();
         tlayers[0]++; //bias
@@ -609,7 +657,7 @@ public class Net implements INet, Serializable {
             if (!visited.contains(adj.getId())) {
                 visited.add(adj.getId());
                 boolean isRecurrent = testRecurrent2Helper(in, adj, visited);
-                if(isRecurrent) {
+                if (isRecurrent) {
                     return true;
                 }
             }
