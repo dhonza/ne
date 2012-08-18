@@ -60,6 +60,7 @@ public class NEATSolver extends AbstractSolver {
     private static Genome getPrototype(PopulationManager<Genome, INet> populationManager, ParameterCombination parameters) {
         Net net = new Net(1);
         net.createFeedForward(populationManager.getNumberOfInputs(), new int[]{}, populationManager.getNumberOfOutputs());
+//        net.createUnconnectedMinimalSubstrate(populationManager.getNumberOfInputs(), populationManager.getNumberOfOutputs());
         for (int i = 0; i < populationManager.getNumberOfOutputs(); i++) {
             net.getOutputNodes().get(i).setActivation(OutputNeuronTypeFactory.getOutputNeuron(parameters));
         }

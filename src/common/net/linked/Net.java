@@ -278,6 +278,12 @@ public class Net implements INet, Serializable {
         maxLinkId = numLinks - 1;
     }
 
+    //CLONNING DOES NOT WORK FOR THIS!!!
+    public void createUnconnectedMinimalSubstrate(int onumInputs, int onumOutputs) {
+        createUnconnectedMinimalSubstrate(onumInputs, onumOutputs, Neuron.Activation.SIGMOID);
+    }
+
+    //CLONNING DOES NOT WORK FOR THIS!!!
     public void createUnconnectedMinimalSubstrate(int onumInputs, int onumOutputs, Neuron.Activation hidoutType) {
         numInputs = onumInputs + 1; //bias
         numHidden = 0;
@@ -298,7 +304,7 @@ public class Net implements INet, Serializable {
         Neuron tn;
         Link tl;
 
-        int i, j, k, l, counterN = 0, counterL = 0;
+        int i, j, counterN = 0, counterL = 0;
 
         //bias Neuron
         Neuron bias = new Neuron(counterN++, Neuron.Type.INPUT, Neuron.Activation.LINEAR);
