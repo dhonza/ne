@@ -424,7 +424,8 @@ Options[plotAsBoxWhiskerChartPub] = {
 	AxesLabel -> "", 
 	PlotRangePadding -> Automatic,
 	ImageSize->700,
-	ColorsNumber->Null
+	ColorsNumber->Null,
+	AspectRatio->0.5/GoldenRatio
 	};
 plotAsBoxWhiskerChartPub[data_,paramName_,partNames_,subChartSpacing_,partSize_:1,OptionsPattern[]] :=
     Module[ {colors,parts,labels,partPlacement,labelPlacement,values,barLabels},
@@ -445,7 +446,7 @@ plotAsBoxWhiskerChartPub[data_,paramName_,partNames_,subChartSpacing_,partSize_:
  			LabelingFunction->(Placed[Style[Round[Mean[#1],0.1], FontSize -> 14], Above] &),
  			ChartStyle->colors,
  			FrameTicksStyle -> Directive[18],
-			AspectRatio -> 0.5/GoldenRatio,
+			AspectRatio -> OptionValue[AspectRatio],
  			ImageSize->OptionValue[ImageSize],
  			Epilog->OptionValue[Epilog],
  			PlotRange->OptionValue[PlotRange],
