@@ -353,7 +353,7 @@ public class Neuron implements Serializable {
                     output = sum;
                     break;
                 case GAUSS:
-                    output = Math.exp(-2.5 * x * x);
+                    output = Math.exp(-2.5 * sum * sum);
                     break;
                 case ABS:
                     output = Math.abs(sum);
