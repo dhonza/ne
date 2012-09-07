@@ -1,0 +1,13 @@
+#!/bin/bash
+
+NORMAL="\x1B[0m"
+GREEN="\x1B[32m"
+RED="\x1B[31m"
+
+for MACHINE in brian drchal kovarik pilny
+do
+#INFO=`ssh -n ${MACHINE} "cd "${DIR}" ; cd nepack ; ./info"`
+  echo -en "${RED}${MACHINE}${NORMAL}: " 
+  ssh $MACHINE df -h "~/scratch" | grep -v Filesystem
+done
+
