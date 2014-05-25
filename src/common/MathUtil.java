@@ -78,4 +78,16 @@ public class MathUtil {
         System.out.println(ovec[i]);
     }
 
+    public static int maxIndexFirst(double[] a) {
+        double m = a[0];
+        int idx = 0;
+        for (int i = 1; i < a.length; i++) {
+            if (a[i] > m) {
+                m = a[i];
+                idx = i;
+            }
+        }
+        return idx;
+    }
+
 }

@@ -162,7 +162,8 @@ class LocalInnovation {
 
         /** TODO speed up recurrence tests */
         while (tries < NEAT.getConfig().innovationMatrixTries) {
-            Neuron proposedIn = net.getRandomAllNotBias();
+//            Neuron proposedIn = net.getRandomAllNotBias();
+            Neuron proposedIn = net.getRandomInputNotBias();
             Neuron proposedOut = net.getRandomHidOut();
             if (getLink(proposedIn.getId(), proposedOut.getId()) == null) {
 
