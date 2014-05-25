@@ -139,6 +139,7 @@ public class JavaALEPipes implements IJavaALE {
                         maxGray += gray;
                     }
                 }
+                maxGray /= 255.0;
 //                s[r][c] = maxGray;
                 s[r][c] = maxGray / (factor * factor);
             }

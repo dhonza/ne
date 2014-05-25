@@ -1,6 +1,7 @@
 package hyper.experiments.ale;
 
 import com.google.common.collect.ImmutableList;
+import com.google.common.collect.ImmutableSet;
 import com.google.common.primitives.Doubles;
 import common.MathUtil;
 import common.evolution.EvaluationInfo;
@@ -62,8 +63,8 @@ public class ALEExperiment implements IProblem<INet> {
     }
 
     public ISubstrate getSubstrate() {
-        return ALESubstrateFactory.createGrayDirectionOnly(16, 21);
-//        return ALESubstrateFactory.createGrayDirectionOnly(32, 42);
+        return ALESubstrateFactory.createGrayDirectionOnly(16, 25);
+//        return ALESubstrateFactory.createGrayDirectionOnly(32, 50);
     }
 
     public List<String> getEvaluationInfoItemNames() {
@@ -77,7 +78,7 @@ public class ALEExperiment implements IProblem<INet> {
         for (int ep = 1; ep <= episodes; ep++) {
             ale.resetGame();
 
-            List<Integer> l = new ArrayList<>();
+            List<Integer> actionList = new ArrayList<>();
 
             int reward = 0;
             while (!ale.isGameOver() && ale.getEpisodeFrameNumber() <= maxFrames) {
@@ -85,23 +86,29 @@ public class ALEExperiment implements IProblem<INet> {
                 double[][] s = ale.getScreenGrayNormalizedRescaled(10);
 //                System.out.println("m=" + MathematicaUtils.matrixToMathematica(s) + ";");
 
-
+                hyperNet.reset();
                 hyperNet.loadInputs(Doubles.concat(s));
                 hyperNet.activate();
                 double[] outputs = hyperNet.getOutputs();
                 int maxIdx = MathUtil.maxIndexFirst(outputs);
                 int action = decodeAction(maxIdx, true);
 
-                l.add(action);
+                actionList.add(action);
 
                 reward += ale.act(action);
 //                reward += ale.act(RND.getInt(0, 17));
 //                reward += ale.act(Actions.map("player_a_down"));
 
             }
-//            System.out.println(l);
-            System.out.println("\tEpisode: " + ep + " reward: " + reward + " frames:" + ale.getEpisodeFrameNumber());
-            averageReward += reward;
+
+
+            ImmutableSet<Integer> acts = ImmutableSet.copyOf(actionList);
+
+            System.out.println("\tEpisode: " + ep + " reward: " + reward + " frames:" + ale.getEpisodeFrameNumber() + " actions: " + acts.size());
+            if (acts.size() > 1) {
+                System.out.println(actionList);
+            }
+            averageReward += reward + (4 * acts.size());
         }
         return averageReward / episodes;
     }
