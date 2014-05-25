@@ -33,12 +33,12 @@ public class MeshLayer2D implements ISubstrateLayer {
         this.xNodes = xNodes;
         this.yNodes = yNodes;
         this.xScale = xScale;
-        this.xMax = xScale / 2.0;
+        this.xMax = (xNodes == 1) ? 0.0 : xScale / 2.0;
         this.xMin = -xMax;
 //        this.xMax = xScale;
 //        this.xMin = 0.0;
         this.yScale = yScale;
-        this.yMax = yScale / 2.0;
+        this.yMax = (yNodes == 1) ? 0.0 : yScale / 2.0;
         this.yMin = -yMax;
 //        this.yMax = yScale;
 //        this.yMin = 0.0;
@@ -49,8 +49,8 @@ public class MeshLayer2D implements ISubstrateLayer {
 
     private void createNodes() {
         System.out.println("MeshLayer2D: SEVERE ROUNDOFF ERROR POSSIBLE, REPLACE THIS CODE!");
-        double xStep = xScale / (xNodes - 1);
-        double yStep = yScale / (yNodes - 1);
+        double xStep = (xNodes == 1) ? 0.0 : xScale / (xNodes - 1);
+        double yStep = (yNodes == 1) ? 0.0 : yScale / (yNodes - 1);
         double xPos = xMin;
         double yPos = yMax;
         int cnt = 0;

@@ -56,7 +56,7 @@
         <mkdir dir="${build.dir}"/>
         <javac destdir="${build.dir}"
                classpathref="libraries"
-               source="1.6">
+               source="1.7">
             <src path="${src.dir}"/>
         </javac>
     </target>
@@ -67,7 +67,8 @@
 
     <target name="run" depends="compile">
         <java fork="yes" classname="hyper.experiments.HyperRunner" classpathref="run.classpath">
-            <arg value="cfg/robots"/>
+            <jvmarg value="-Xmx10g"/> 
+            <arg value="cfg/hyper/gphyper.properties"/>
         </java>
     </target>
 </project> 

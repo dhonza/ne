@@ -2,6 +2,7 @@ package hyper.evaluate;
 
 import common.pmatrix.ParameterCombination;
 import hyper.evaluate.printer.ReportStorage;
+import hyper.experiments.ale.ALEExperiment;
 import hyper.experiments.findcluster.FindCluster;
 import hyper.experiments.findcluster2.FindCluster2;
 import hyper.experiments.octopusArm.OctopusArm;
@@ -35,6 +36,8 @@ public class ProblemFactory {
             return new Robots(parameters, reportStorage);
         } else if (name.equalsIgnoreCase("OCTOPUS")) {
             return new OctopusArm(parameters, reportStorage);
+        } else if (name.equalsIgnoreCase("ALE")) {
+            return new ALEExperiment(parameters, reportStorage);
         } else {
             throw new IllegalStateException("Unknown problem: \"" + name + "\"");
         }

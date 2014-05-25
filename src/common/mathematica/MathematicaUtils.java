@@ -35,7 +35,7 @@ public class MathematicaUtils {
         }
         StringBuilder b = new StringBuilder("{");
         for (int i = 0; i < array.length - 1; i++) {
-            b.append(array[i]).append(", ");
+            b.append(toMathematica(array[i])).append(", ");
         }
         b.append(array[array.length - 1]);
         b.append("}");
