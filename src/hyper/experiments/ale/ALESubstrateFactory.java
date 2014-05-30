@@ -17,13 +17,18 @@ public class ALESubstrateFactory {
     private ALESubstrateFactory() {
     }
 
-    public static BasicSubstrate createGrayDirectionOnly(int numNodesX, int numNodesY) {
+    public static BasicSubstrate createGrayDirectionOnly(int numNodesX, int numNodesY, boolean singleAxis) {
         BasicSubstrate substrate = new BasicSubstrate();
 
         ISubstrateLayer biasLayer = new BiasLayer2D(0.0, 0.0);
         ISubstrateLayer inputGrayLayer = new MeshLayer2D(NodeType.INPUT, numNodesX, numNodesY, 2.0, 2.0);
         ISubstrateLayer hiddenLayer = new MeshLayer2D(NodeType.HIDDEN, numNodesX, numNodesY, 2.0, 2.0);
-        ISubstrateLayer outputDirectionLayer = new MeshLayer2D(NodeType.OUTPUT, 3, 3, 2.0, 2.0);
+        ISubstrateLayer outputDirectionLayer = null;
+        if (singleAxis) {
+            outputDirectionLayer = new MeshLayer2D(NodeType.OUTPUT, 3, 1, 2.0, 2.0);
+        } else {
+            outputDirectionLayer = new MeshLayer2D(NodeType.OUTPUT, 3, 3, 2.0, 2.0);
+        }
 
         SubstrateInterLayerConnection inputGrayToHidden = new SubstrateInterLayerConnection(inputGrayLayer, hiddenLayer);
         SubstrateInterLayerConnection hiddenToOutputDirection = new SubstrateInterLayerConnection(hiddenLayer, outputDirectionLayer);

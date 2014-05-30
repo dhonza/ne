@@ -2,7 +2,9 @@ package hyper.evaluate.printer;
 
 import common.evolution.IProgressPrinter;
 import common.pmatrix.ParameterCombination;
-import gp.*;
+import gp.GPBase;
+import gp.GPBasicProgressPrinter;
+import gp.IGPForest;
 import hyper.cppn.BasicGPCPPN;
 import hyper.cppn.ICPPN;
 import hyper.evaluate.IProblem;
@@ -35,6 +37,6 @@ public class GPProgressPrinter1D extends CommonProgressPrinter1D {
     @Override
     protected void storeBSFCPPN(String fileName) {
         IGPForest forestBSF = gp.getBestSoFar();
-        GenomeStorage.saveGenome(parameters, forestBSF, reportStorage.getCompleteFilename(fileName, ".xml"));
+        GenomeStorage.saveGenome(parameters, forestBSF, reportStorage.getCompleteFilename(fileName + "G" + gp.getGeneration() + "_", ".xml"));
     }
 }

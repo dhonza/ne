@@ -90,4 +90,16 @@ public class MathUtil {
         return idx;
     }
 
+    public static double[][] partition(double[] v, int columns) {
+        assert (v.length % columns == 0);
+        double[][] n = new double[v.length / columns][];
+        int offset = 0;
+        for (int row = 0; row < n.length; row++) {
+            n[row] = new double[columns];
+            System.arraycopy(v, offset, n[row], 0, columns);
+            offset += columns;
+        }
+        return n;
+    }
+
 }

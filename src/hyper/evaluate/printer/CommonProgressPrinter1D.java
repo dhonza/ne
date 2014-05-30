@@ -24,6 +24,7 @@ abstract public class CommonProgressPrinter1D implements IProgressPrinter {
     protected boolean generation = true;
 
     protected boolean progress = true;
+    protected boolean progressShowCPPN = true;
     protected boolean progressShowHyperNet = true;
     protected boolean progressShowProblem = true;
 
@@ -44,6 +45,7 @@ abstract public class CommonProgressPrinter1D implements IProgressPrinter {
         generation = parameters.contains("PRINT.generation") ? parameters.getBoolean("PRINT.generation") : generation;
 
         progress = parameters.contains("PRINT.progress") ? parameters.getBoolean("PRINT.progress") : progress;
+        progressShowCPPN = parameters.contains("PRINT.progressShowCPPN") ? parameters.getBoolean("PRINT.progressShowCPPN") : progressShowCPPN;
         progressShowHyperNet = parameters.contains("PRINT.progressShowHyperNet") ? parameters.getBoolean("PRINT.progressShowHyperNet") : progressShowHyperNet;
         progressShowProblem = parameters.contains("PRINT.progressShowProblem") ? parameters.getBoolean("PRINT.progressShowProblem") : progressShowProblem;
 
@@ -65,6 +67,10 @@ abstract public class CommonProgressPrinter1D implements IProgressPrinter {
         }
         progressPrinter.printGeneration();
         progressPrinter.printProgress();
+
+        if (progressShowCPPN) {
+            storeBSFCPPN("bestCPPN_");
+        }
 
         showHyperNet(progressShowHyperNet);
         showProblem(progressShowProblem);

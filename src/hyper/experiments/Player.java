@@ -24,7 +24,7 @@ import java.io.File;
  */
 public class Player {
     static String cfgFile = "cfg/hyper/gphyper.properties";
-    static String aCPPNFile = "../exp/NEW/GPEFS_OCTOPUS_500_GENERAL/bestCPPN_001_001.xml";
+    static String aCPPNFile = "../exp/140530121033_1/bestCPPN__G1_001_001.xml";
 //    static String aCPPNFile = "bestCPPN_001_001.xml";
 
     public static void play() {
@@ -41,7 +41,7 @@ public class Player {
             IGenotypeToPhenotype<Object, INet> converter = ConverterFactory.getConverter(combination, substrateBuilder, problem);
 
             INet net = converter.transform(genome);
-            System.out.println(net);
+//            System.out.println(net);
 //            MathematicaUtils.printMatrixMathematica(((Net) net).toWeightMatrix());
 
             problem.show(net);

@@ -9,5 +9,10 @@ package common.net.precompiled;
  */
 public interface IPrecompiledFeedForwardStub {
     double[] propagate(double b, double[] in, double[] w);
+
+    double[] getActivities(int l);
+
     int getNumberOfInputs();
+
+    int getNumberOfLayers();
 }

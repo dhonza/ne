@@ -16,6 +16,10 @@ public class EvaluationInfo extends BasicInfo {
         this.fitness = fitness;
     }
 
+    private EvaluationInfo() {
+        fitness = 0.0;
+    }
+
     public EvaluationInfo(double fitness, Map<String, Object> infoMap) {
         super(infoMap);
         this.fitness = fitness;

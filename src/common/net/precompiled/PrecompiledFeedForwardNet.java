@@ -84,6 +84,10 @@ public class PrecompiledFeedForwardNet implements INet {
         return outputs;
     }
 
+    public double[] getActivities(int l) {
+        return stub.getActivities(l);
+    }
+
     @Override
     public String toString() {
         return "PrecompiledFeedForwardNet{" +

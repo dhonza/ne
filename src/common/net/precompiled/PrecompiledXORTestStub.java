@@ -18,12 +18,22 @@ public class PrecompiledXORTestStub implements common.net.precompiled.IPrecompil
         return n;
     }
 
+    @Override
+    public double[] getActivities(int l) {
+        throw new IllegalStateException("Not implemented!");
+    }
+
     public double a(double s) {
         return 1 / (1 + Math.exp(-4.924273 * s));
     }
 
     public int getNumberOfInputs() {
         return 2;
+    }
+
+    @Override
+    public int getNumberOfLayers() {
+        throw new IllegalStateException("Not implemented!");
     }
 
     public double s(int n, int wc) {

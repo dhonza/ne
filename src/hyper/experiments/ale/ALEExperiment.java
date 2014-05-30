@@ -6,16 +6,20 @@ import com.google.common.primitives.Doubles;
 import common.MathUtil;
 import common.evolution.EvaluationInfo;
 import common.net.INet;
+import common.net.precompiled.PrecompiledFeedForwardNet;
 import common.pmatrix.ParameterCombination;
 import gp.GP;
 import hyper.evaluate.IProblem;
 import hyper.evaluate.printer.ReportStorage;
 import hyper.experiments.ale.io.Actions;
 import hyper.experiments.ale.movie.MovieGenerator;
+import hyper.substrate.BasicSubstrate;
 import hyper.substrate.ISubstrate;
 
 import java.awt.*;
 import java.awt.image.BufferedImage;
+import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -28,22 +32,43 @@ import java.util.List;
 public class ALEExperiment implements IProblem<INet> {
 
     private boolean solved = false;
-    private IJavaALE ale;
+    private final String aleDir;
+    private final IJavaALE ale;
     private static int process = 1;
+
+    private BasicSubstrate substrate;
+
     private final int maxFrames;
     private final int downsampleFactor;
-    private boolean exportInputs = false;
+    private boolean exportActivities = false;
+    private MovieGenerator[] frameActivities;
+
+    private static boolean aleRunning = false;
 
     public ALEExperiment(ParameterCombination parameters, ReportStorage reportStorage) {
+        aleDir = parameters.getString("ALE.DIR");
+        runALE();
         System.out.println("Initializing ALE - waiting for pipe connection...");
-        String pipeDir = parameters.getString("ALE.PIPE_DIR");
-        String pipe = pipeDir + process + "/ale_fifo_";
+        String pipe = aleDir + process + "/ale_fifo_";
         ale = new JavaALEPipes(pipe);
         process++;
         maxFrames = parameters.getInteger("ALE.MAX_FRAMES");
         downsampleFactor = parameters.getInteger("ALE.DOWNSAMPLE_FACTOR");
 
         System.out.println("ALE initialized.");
+    }
+
+    private synchronized void runALE() {
+        if (aleRunning) {
+            return;
+        }
+        aleRunning = true;
+        String command = "./run.sh";
+        try {
+            Runtime.getRuntime().exec(command, new String[]{}, new File(aleDir));
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     public EvaluationInfo evaluate(INet hyperNet) {
@@ -62,10 +87,10 @@ public class ALEExperiment implements IProblem<INet> {
     public void show(INet hyperNet) {
         System.out.println("Export...");
         ale.setExportEnabled(true);
-        exportInputs = true;
+        exportActivities = true;
         evaluate(hyperNet);
         ale.setExportEnabled(false);
-        exportInputs = false;
+        exportActivities = false;
         System.out.println("Export finished.");
 
     }
@@ -81,7 +106,9 @@ public class ALEExperiment implements IProblem<INet> {
         System.out.println("downsample factor: " + downsampleFactor + " (" +
                 ale.getScreenWidth() + "x" + ale.getScreenHeight() +
                 " -> " + w + "x" + h + ")");
-        return ALESubstrateFactory.createGrayDirectionOnly(w, h);
+        substrate = ALESubstrateFactory.createGrayDirectionOnly(w, h, true);
+        frameActivities = new MovieGenerator[3];//TODO get from substrate (inputs + other non bias layers)
+        return substrate;
     }
 
     public List<String> getEvaluationInfoItemNames() {
@@ -97,25 +124,26 @@ public class ALEExperiment implements IProblem<INet> {
 
             List<Integer> actionList = new ArrayList<>();
 
-            MovieGenerator frameInput = null;
-            if (exportInputs) {
-                frameInput = new MovieGenerator("frameInput/" + ale.getExportSequence() + "/frame");
+            if (exportActivities) {
+                for (int i = 0; i < frameActivities.length; i++) {
+                    frameActivities[i] = new MovieGenerator("frames" + "/" + ale.getExportSequence() + "/l" + i + "/frame");
+                }
+
             }
             int reward = 0;
             while (!ale.isGameOver() && ale.getEpisodeFrameNumber() <= maxFrames) {
-//                System.out.println(" " + ale.getEpisodeFrameNumber() + " " + reward);
-                double[][] s = ale.getScreenGrayNormalizedRescaled(downsampleFactor);
-//                System.out.println("m=" + MathematicaUtils.matrixToMathematica(s) + ";");
 
-                if (frameInput != null) {
-                    frameInput.record(grayScreenToImage(s));
-                }
+                double[][] s = ale.getScreenGrayNormalizedRescaled(downsampleFactor);
                 hyperNet.reset();
                 hyperNet.loadInputs(Doubles.concat(s));
                 hyperNet.activate();
+
+                exportActivities(hyperNet);
+
                 double[] outputs = hyperNet.getOutputs();
                 int maxIdx = MathUtil.maxIndexFirst(outputs);
-                int action = decodeAction(maxIdx, true);
+//                int action = decodeAction(maxIdx, true);
+                int action = decodeHorizontalFireAction(maxIdx);
 
                 actionList.add(action);
 
@@ -140,6 +168,13 @@ public class ALEExperiment implements IProblem<INet> {
         }
 //        averageReward = RND.getDouble(1.0, 100.0);
         return averageReward / episodes;
+    }
+
+    private static int decodeHorizontalFireAction(int dir) {
+        if (dir < 0 || dir > 2) {
+            throw new IllegalStateException("Unknown direction!");
+        }
+        return decodeAction(dir + 3, true);
     }
 
     private static int decodeAction(int dir, boolean fire) {
@@ -210,6 +245,17 @@ public class ALEExperiment implements IProblem<INet> {
             }
         }
         return action;
+    }
+
+    private void exportActivities(INet hyperNet) {
+        if (exportActivities) {
+            PrecompiledFeedForwardNet net = (PrecompiledFeedForwardNet) hyperNet;
+            frameActivities[0].record(grayScreenToImage(MathUtil.partition(net.getActivities(0), ale.getScreenWidth() / downsampleFactor)));
+            frameActivities[1].record(grayScreenToImage(MathUtil.partition(net.getActivities(1), ale.getScreenWidth() / downsampleFactor)));
+            frameActivities[2].record(grayScreenToImage(MathUtil.partition(net.getActivities(2), 3)));
+
+        }
+
     }
 
     private static BufferedImage grayScreenToImage(double[][] s) {
