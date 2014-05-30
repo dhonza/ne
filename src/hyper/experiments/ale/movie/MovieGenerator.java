@@ -17,36 +17,44 @@
  */
 package hyper.experiments.ale.movie;
 
+import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 import java.text.NumberFormat;
-import javax.imageio.ImageIO;
 
-/** A class for exporting screen images to PNG files.
+/**
+ * A class for exporting screen images to PNG files.
  *
  * @author Marc G. Bellemare <mgbellemare@ualberta.ca>
  */
 public class MovieGenerator {
-    /** How many times to show the same image sequence before moving on to the next */
+    /**
+     * How many times to show the same image sequence before moving on to the next
+     */
     protected String baseFilename;
 
-    /** The current frame index (used to obtain the PNG filename) */
+    /**
+     * The current frame index (used to obtain the PNG filename)
+     */
     protected int pngIndex = 0;
 
-    /** How many digits to use in generating the filename */
+    /**
+     * How many digits to use in generating the filename
+     */
     protected final int indexDigits = 6;
 
-    /** Create a new MovieGenerator that saves images to /tmp/frames/atari_xxxxxx.png
-     * 
+    /**
+     * Create a new MovieGenerator that saves images to /tmp/frames/atari_xxxxxx.png
      */
     public MovieGenerator() {
         this("/tmp/frames/atari_");
     }
 
-    /** Create a new MovieGenerator with the specified base filename. To this
-     *   base filename is appended a frame number and ".png" in order to obtain
-     *   the full filename.
+    /**
+     * Create a new MovieGenerator with the specified base filename. To this
+     * base filename is appended a frame number and ".png" in order to obtain
+     * the full filename.
      *
      * @param baseFilename
      */
@@ -60,16 +68,17 @@ public class MovieGenerator {
         // Create the directory if necessary; fail if it exists and is not a directory
         if (!directory.isDirectory()) {
             if (!directory.exists())
-                directory.mkdir();
+                directory.mkdirs();
             else
-                throw new IllegalArgumentException("File "+directory.getAbsolutePath()+" exists, "+
+                throw new IllegalArgumentException("File " + directory.getAbsolutePath() + " exists, " +
                         "is not a directory.");
         }
     }
 
-    /** This method saves the given image to disk as the next frame. It then
-     *   increments pngIndex.
-     * 
+    /**
+     * This method saves the given image to disk as the next frame. It then
+     * increments pngIndex.
+     *
      * @param image
      */
     public void record(BufferedImage image) {

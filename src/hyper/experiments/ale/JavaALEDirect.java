@@ -39,6 +39,16 @@ public class JavaALEDirect implements IJavaALE {
     public native int getEpisodeFrameNumber();
 
     @Override
+    public int getScreenWidth() {
+        throw new IllegalStateException("Not yet implemented!");
+    }
+
+    @Override
+    public int getScreenHeight() {
+        throw new IllegalStateException("Not yet implemented!");
+    }
+
+    @Override
     public native double[][][] getScreenRGBNormalized();
 
     @Override
@@ -51,6 +61,11 @@ public class JavaALEDirect implements IJavaALE {
 
     @Override
     public void setExportEnabled(boolean enabled) {
+        throw new IllegalStateException("Not yet implemented!");
+    }
+
+    @Override
+    public int getExportSequence() {
         throw new IllegalStateException("Not yet implemented!");
     }
 }

@@ -11,8 +11,11 @@ import gp.GP;
 import hyper.evaluate.IProblem;
 import hyper.evaluate.printer.ReportStorage;
 import hyper.experiments.ale.io.Actions;
+import hyper.experiments.ale.movie.MovieGenerator;
 import hyper.substrate.ISubstrate;
 
+import java.awt.*;
+import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -28,6 +31,8 @@ public class ALEExperiment implements IProblem<INet> {
     private IJavaALE ale;
     private static int process = 1;
     private final int maxFrames;
+    private final int downsampleFactor;
+    private boolean exportInputs = false;
 
     public ALEExperiment(ParameterCombination parameters, ReportStorage reportStorage) {
         System.out.println("Initializing ALE - waiting for pipe connection...");
@@ -36,6 +41,8 @@ public class ALEExperiment implements IProblem<INet> {
         ale = new JavaALEPipes(pipe);
         process++;
         maxFrames = parameters.getInteger("ALE.MAX_FRAMES");
+        downsampleFactor = parameters.getInteger("ALE.DOWNSAMPLE_FACTOR");
+
         System.out.println("ALE initialized.");
     }
 
@@ -53,9 +60,14 @@ public class ALEExperiment implements IProblem<INet> {
     }
 
     public void show(INet hyperNet) {
+        System.out.println("Export...");
         ale.setExportEnabled(true);
+        exportInputs = true;
         evaluate(hyperNet);
         ale.setExportEnabled(false);
+        exportInputs = false;
+        System.out.println("Export finished.");
+
     }
 
     public double getTargetFitness() {
@@ -63,8 +75,13 @@ public class ALEExperiment implements IProblem<INet> {
     }
 
     public ISubstrate getSubstrate() {
-        return ALESubstrateFactory.createGrayDirectionOnly(16, 25);
-//        return ALESubstrateFactory.createGrayDirectionOnly(32, 50);
+        int w = ale.getScreenWidth() / downsampleFactor;
+        int h = ale.getScreenHeight() / downsampleFactor;
+
+        System.out.println("downsample factor: " + downsampleFactor + " (" +
+                ale.getScreenWidth() + "x" + ale.getScreenHeight() +
+                " -> " + w + "x" + h + ")");
+        return ALESubstrateFactory.createGrayDirectionOnly(w, h);
     }
 
     public List<String> getEvaluationInfoItemNames() {
@@ -74,18 +91,25 @@ public class ALEExperiment implements IProblem<INet> {
     private double runGame(INet hyperNet) {
         double averageReward = 0.0;
         int episodes = 1;
-//        ale.setExportEnabled(true);
+
         for (int ep = 1; ep <= episodes; ep++) {
             ale.resetGame();
 
             List<Integer> actionList = new ArrayList<>();
 
+            MovieGenerator frameInput = null;
+            if (exportInputs) {
+                frameInput = new MovieGenerator("frameInput/" + ale.getExportSequence() + "/frame");
+            }
             int reward = 0;
             while (!ale.isGameOver() && ale.getEpisodeFrameNumber() <= maxFrames) {
 //                System.out.println(" " + ale.getEpisodeFrameNumber() + " " + reward);
-                double[][] s = ale.getScreenGrayNormalizedRescaled(10);
+                double[][] s = ale.getScreenGrayNormalizedRescaled(downsampleFactor);
 //                System.out.println("m=" + MathematicaUtils.matrixToMathematica(s) + ";");
 
+                if (frameInput != null) {
+                    frameInput.record(grayScreenToImage(s));
+                }
                 hyperNet.reset();
                 hyperNet.loadInputs(Doubles.concat(s));
                 hyperNet.activate();
@@ -108,8 +132,13 @@ public class ALEExperiment implements IProblem<INet> {
             if (acts.size() > 1) {
                 System.out.println(actionList);
             }
-            averageReward += reward + (4 * acts.size());
+            double bonus = 0.0;
+            if (acts.size() > 1 && acts.size() < 4) {
+                bonus = 3 * acts.size();
+            }
+            averageReward += reward + bonus;
         }
+//        averageReward = RND.getDouble(1.0, 100.0);
         return averageReward / episodes;
     }
 
@@ -181,5 +210,17 @@ public class ALEExperiment implements IProblem<INet> {
             }
         }
         return action;
+    }
+
+    private static BufferedImage grayScreenToImage(double[][] s) {
+        BufferedImage img = new BufferedImage(s[0].length, s.length, BufferedImage.TYPE_INT_RGB);
+        for (int r = 0; r < s.length; r++) {
+            double[] row = s[r];
+            for (int c = 0; c < row.length; c++) {
+                Color col = new Color((float) s[r][c], (float) s[r][c], (float) s[r][c]);
+                img.setRGB(c, r, col.getRGB());
+            }
+        }
+        return img;
     }
 }

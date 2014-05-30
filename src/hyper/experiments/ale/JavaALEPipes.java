@@ -26,7 +26,9 @@ public class JavaALEPipes implements IJavaALE {
     private int episodeFrameNumber = 1;
 
     private final ScreenConverter converter = new ScreenConverter(new NTSCPalette());
-    private final MovieGenerator movieGenerator = new MovieGenerator("frames/frame");
+
+    private MovieGenerator movieGenerator;
+    private int exportSequence = 1;
     private final ColorPalette colorMap;
 
     private boolean exportEnabled = false;
@@ -114,6 +116,16 @@ public class JavaALEPipes implements IJavaALE {
     }
 
     @Override
+    public int getScreenWidth() {
+        return io.getScreen().width;
+    }
+
+    @Override
+    public int getScreenHeight() {
+        return io.getScreen().height;
+    }
+
+    @Override
     public double[][][] getScreenRGBNormalized() {
         observe();
         throw new IllegalStateException("Not yet implemented!");
@@ -155,6 +167,19 @@ public class JavaALEPipes implements IJavaALE {
 
     @Override
     public void setExportEnabled(boolean exportEnabled) {
+        if (exportEnabled == this.exportEnabled) {
+            return;
+        }
         this.exportEnabled = exportEnabled;
+        if (exportEnabled) {
+            movieGenerator = new MovieGenerator("frames/" + exportSequence + "/frame");
+        } else {
+            exportSequence++;
+        }
+    }
+
+    @Override
+    public int getExportSequence() {
+        return exportSequence;
     }
 }

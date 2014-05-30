@@ -42,6 +42,7 @@ public class EvolutionaryAlgorithmSolver implements Serializable {
         }
 
         printGeneration();
+        printProgress();
 
         while (!toStop()) {
             evolutionaryAlgorithm.nextGeneration();

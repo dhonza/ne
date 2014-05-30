@@ -18,6 +18,10 @@ public interface IJavaALE {
 
     int getEpisodeFrameNumber();
 
+    int getScreenWidth();
+
+    int getScreenHeight();
+
     double[][][] getScreenRGBNormalized();
 
     double[][] getScreenGrayNormalizedRescaled(int factor);
@@ -25,4 +29,6 @@ public interface IJavaALE {
     int[] getPalette();
 
     void setExportEnabled(boolean enabled);
+
+    int getExportSequence();
 }
