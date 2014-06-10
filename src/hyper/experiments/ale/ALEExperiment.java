@@ -40,8 +40,11 @@ public class ALEExperiment implements IProblem<INet> {
 
     private final int maxFrames;
     private final int downsampleFactor;
-    private boolean exportActivities = false;
+
+    private boolean export = false;
+    private MovieGenerator frame;
     private MovieGenerator[] frameActivities;
+    private int exportSequence = 1;
 
     private static boolean aleRunning = false;
 
@@ -86,11 +89,10 @@ public class ALEExperiment implements IProblem<INet> {
 
     public void show(INet hyperNet) {
         System.out.println("Export...");
-        ale.setExportEnabled(true);
-        exportActivities = true;
+        export = true;
         evaluate(hyperNet);
-        ale.setExportEnabled(false);
-        exportActivities = false;
+        export = false;
+        exportSequence++;
         System.out.println("Export finished.");
 
     }
@@ -124,9 +126,10 @@ public class ALEExperiment implements IProblem<INet> {
 
             List<Integer> actionList = new ArrayList<>();
 
-            if (exportActivities) {
+            if (export) {
+                frame = new MovieGenerator("frames" + "/" + exportSequence + "/frame");
                 for (int i = 0; i < frameActivities.length; i++) {
-                    frameActivities[i] = new MovieGenerator("frames" + "/" + ale.getExportSequence() + "/l" + i + "/frame");
+                    frameActivities[i] = new MovieGenerator("frames" + "/" + exportSequence + "/l" + i + "/frame");
                 }
 
             }
@@ -138,7 +141,7 @@ public class ALEExperiment implements IProblem<INet> {
                 hyperNet.loadInputs(Doubles.concat(s));
                 hyperNet.activate();
 
-                exportActivities(hyperNet);
+                exportFrame(hyperNet);
 
                 double[] outputs = hyperNet.getOutputs();
                 int maxIdx = MathUtil.maxIndexFirst(outputs);
@@ -161,9 +164,9 @@ public class ALEExperiment implements IProblem<INet> {
                 System.out.println(actionList);
             }
             double bonus = 0.0;
-            if (acts.size() > 1 && acts.size() < 4) {
-                bonus = 3 * acts.size();
-            }
+//            if (acts.size() > 1 && acts.size() < 4) {
+//                bonus = 3 * acts.size();
+//            }
             averageReward += reward + bonus;
         }
 //        averageReward = RND.getDouble(1.0, 100.0);
@@ -247,8 +250,9 @@ public class ALEExperiment implements IProblem<INet> {
         return action;
     }
 
-    private void exportActivities(INet hyperNet) {
-        if (exportActivities) {
+    private void exportFrame(INet hyperNet) {
+        if (export) {
+            frame.record(ale.getScreenAsBufferedImage());
             PrecompiledFeedForwardNet net = (PrecompiledFeedForwardNet) hyperNet;
             frameActivities[0].record(grayScreenToImage(MathUtil.partition(net.getActivities(0), ale.getScreenWidth() / downsampleFactor)));
             frameActivities[1].record(grayScreenToImage(MathUtil.partition(net.getActivities(1), ale.getScreenWidth() / downsampleFactor)));

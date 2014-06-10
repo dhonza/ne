@@ -1,5 +1,7 @@
 package hyper.experiments.ale;
 
+import java.awt.image.BufferedImage;
+
 /**
  * Created by drchajan on 22/05/14.
  */
@@ -57,15 +59,10 @@ public class JavaALEDirect implements IJavaALE {
     }
 
     @Override
+    public BufferedImage getScreenAsBufferedImage() {
+        throw new IllegalStateException("Not yet implemented!");
+    }
+
+    @Override
     public native int[] getPalette();
-
-    @Override
-    public void setExportEnabled(boolean enabled) {
-        throw new IllegalStateException("Not yet implemented!");
-    }
-
-    @Override
-    public int getExportSequence() {
-        throw new IllegalStateException("Not yet implemented!");
-    }
 }

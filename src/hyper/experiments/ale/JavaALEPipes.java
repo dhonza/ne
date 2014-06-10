@@ -2,7 +2,6 @@ package hyper.experiments.ale;
 
 import hyper.experiments.ale.io.ALEPipes;
 import hyper.experiments.ale.io.Actions;
-import hyper.experiments.ale.movie.MovieGenerator;
 import hyper.experiments.ale.screen.ColorPalette;
 import hyper.experiments.ale.screen.NTSCPalette;
 import hyper.experiments.ale.screen.ScreenConverter;
@@ -27,11 +26,7 @@ public class JavaALEPipes implements IJavaALE {
 
     private final ScreenConverter converter = new ScreenConverter(new NTSCPalette());
 
-    private MovieGenerator movieGenerator;
-    private int exportSequence = 1;
     private final ColorPalette colorMap;
-
-    private boolean exportEnabled = false;
 
     public JavaALEPipes(String pipeBasename) {
         init(pipeBasename);
@@ -62,11 +57,6 @@ public class JavaALEPipes implements IJavaALE {
         if (!observed) {
             boolean ret = io.observe();
             observed = true;
-            if (exportEnabled) {
-                ScreenMatrix screen = io.getScreen();
-                BufferedImage image = converter.convert(screen);
-                movieGenerator.record(image);
-            }
         }
     }
 
@@ -159,27 +149,14 @@ public class JavaALEPipes implements IJavaALE {
         return s;
     }
 
+    public BufferedImage getScreenAsBufferedImage() {
+        return converter.convert(io.getScreen());
+    }
+
     @Override
     public int[] getPalette() {
         observe();
         throw new IllegalStateException("Not yet implemented!");
     }
 
-    @Override
-    public void setExportEnabled(boolean exportEnabled) {
-        if (exportEnabled == this.exportEnabled) {
-            return;
-        }
-        this.exportEnabled = exportEnabled;
-        if (exportEnabled) {
-            movieGenerator = new MovieGenerator("frames/" + exportSequence + "/frame");
-        } else {
-            exportSequence++;
-        }
-    }
-
-    @Override
-    public int getExportSequence() {
-        return exportSequence;
-    }
 }

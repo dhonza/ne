@@ -67,6 +67,9 @@ public class Runner {
                 if (solver.equals("GP")) {
                     initializeGP(combination);
                     runnerEA = new GPRunner(combination);
+                } else if (solver.equals("MOGP")) {
+                    initializeMOGP(combination);
+                    runnerEA = new MOGPRunner(combination);
                 } else if (solver.equals("GPAT")) {
                     initializeGP(combination);
                     runnerEA = new GPATRunner(combination);
@@ -101,6 +104,13 @@ public class Runner {
     }
 
     private static void initializeGP(ParameterCombination combination) {
+        GP.MAX_GENERATIONS = combination.getInteger("GP.MAX_GENERATIONS");
+        GP.MAX_EVALUATIONS = combination.getInteger("GP.MAX_EVALUATIONS");
+        GP.POPULATION_SIZE = combination.getInteger("GP.POPULATION_SIZE");
+        GP.TARGET_FITNESS = combination.getDouble("GP.TARGET_FITNESS");
+    }
+
+    private static void initializeMOGP(ParameterCombination combination) {
         GP.MAX_GENERATIONS = combination.getInteger("GP.MAX_GENERATIONS");
         GP.MAX_EVALUATIONS = combination.getInteger("GP.MAX_EVALUATIONS");
         GP.POPULATION_SIZE = combination.getInteger("GP.POPULATION_SIZE");

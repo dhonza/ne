@@ -100,6 +100,14 @@ public class RND implements Serializable {
         return (max - min) * seed.nextDouble() + min;
     }
 
+    public static double[] getDoubles(int n, double min, double max) {
+        double[] d = new double[n];
+        for (int i = 0; i < d.length; i++) {
+            d[i] = getDouble(min, max);
+        }
+        return d;
+    }
+
     /**
      * Fills a random double array from the given range.
      *

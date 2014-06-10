@@ -1,5 +1,8 @@
 package gp.demo;
 
+import com.google.common.collect.ImmutableList;
+import com.google.common.collect.ImmutableMap;
+import com.google.common.primitives.Ints;
 import common.evolution.EvaluationInfo;
 import common.evolution.IBlackBox;
 import common.evolution.IEvaluable;
@@ -53,6 +56,8 @@ public class Maze<P extends IBlackBox> implements IEvaluable<P> {
 
     public EvaluationInfo evaluate(P forest) {
         setToStart();
+
+        ImmutableList.Builder<Telemetry> telemetryBuilder = ImmutableList.builder();
         int steps = 0;
         for (int i = 0; i < maxSteps; i++) {
             if (distanceToTarget() == 0) {
@@ -73,13 +78,18 @@ public class Maze<P extends IBlackBox> implements IEvaluable<P> {
                 moveF();
             }
             steps++;
+            telemetryBuilder.add(new Telemetry(pos[0], pos[1]));
         }
 //        double fitness = map.length + map[0].length + (maxSteps - steps) - distanceToTarget();
         double fitness = map.length + map[0].length - distanceToTarget();
         if (fitness < 0.0) {
             throw new IllegalStateException("Fitness < 0");
         }
-        return new EvaluationInfo(fitness);
+        ImmutableMap<String, Object> paramMap = ImmutableMap.of(
+                "FINAL_X", (Object) pos[0],
+                "FINAL_Y", pos[1],
+                "TELEMETRY", telemetryBuilder.build());
+        return new EvaluationInfo(fitness, paramMap);
     }
 
     public EvaluationInfo evaluateGeneralization(P forest) {
@@ -101,6 +111,48 @@ public class Maze<P extends IBlackBox> implements IEvaluable<P> {
 
     public int getNumberOfOutputs() {
         return 1;
+    }
+
+    public ImmutableList<Double> behavioralDiversityEndPosition(ImmutableList<EvaluationInfo> evaluationInfos) {
+        ImmutableList.Builder<Double> builder = ImmutableList.builder();
+
+        double maxDist = map.length + map[0].length;
+        for (EvaluationInfo e1 : evaluationInfos) {
+            int pos1x = (Integer) e1.getInfo("FINAL_X");
+            int pos1y = (Integer) e1.getInfo("FINAL_Y");
+
+            double sum = 0.0;
+            for (EvaluationInfo e2 : evaluationInfos) {
+                if (e1 != e2) {
+                    int pos2x = (Integer) e2.getInfo("FINAL_X");
+                    int pos2y = (Integer) e2.getInfo("FINAL_Y");
+                    double dist = (Math.abs(pos1x - pos2x) + Math.abs(pos1y - pos2y)) / maxDist;
+                    sum += dist;
+                }
+            }
+            builder.add(sum / evaluationInfos.size());
+//            builder.add(0.0);
+        }
+        return builder.build();
+    }
+
+    public ImmutableList<Double> behavioralDiversityTrack(ImmutableList<EvaluationInfo> evaluationInfos) {
+        ImmutableList.Builder<Double> builder = ImmutableList.builder();
+
+        for (EvaluationInfo e1 : evaluationInfos) {
+            ImmutableList<Telemetry> track1 = (ImmutableList<Telemetry>) e1.getInfo("TELEMETRY");
+
+            double sum = 0.0;
+            for (EvaluationInfo e2 : evaluationInfos) {
+                if (e1 != e2) {
+                    ImmutableList<Telemetry> track2 = (ImmutableList<Telemetry>) e2.getInfo("TELEMETRY");
+                    sum += this.trackDistance(track1, track2);
+                }
+            }
+            builder.add(sum / evaluationInfos.size());
+//            builder.add(0.0);
+        }
+        return builder.build();
     }
 
     protected void setToStart() {
@@ -268,6 +320,34 @@ public class Maze<P extends IBlackBox> implements IEvaluable<P> {
             b.append(in[i]).append(" ");
         }
         return b.toString();
+    }
+
+    private class Telemetry {
+        public final int x;
+        public final int y;
+
+        private Telemetry(int x, int y) {
+            this.x = x;
+            this.y = y;
+        }
+
+        @Override
+        public String toString() {
+            return "Telemetry{" + "x=" + x + ", y=" + y + '}';
+        }
+    }
+
+    public double trackDistance(ImmutableList<Telemetry> a, ImmutableList<Telemetry> b) {
+        int length = Ints.min(a.size(), b.size());
+        double xSize = map[0].length;
+        double ySize = map.length;
+        double sum = 0.0;
+        for (int i = 0; i < length; i++) {
+            double dx = Math.abs(a.get(i).x - b.get(i).x) / xSize;
+            double dy = Math.abs(a.get(i).y - b.get(i).y) / ySize;
+            sum += dx + dy;
+        }
+        return sum / length;
     }
 
     public static void main(String[] args) {

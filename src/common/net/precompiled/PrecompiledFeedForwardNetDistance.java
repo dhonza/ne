@@ -20,6 +20,9 @@ public class PrecompiledFeedForwardNetDistance implements IDistance<PrecompiledF
         for (int i = 0; i < weightsA.length; i++) {
             sum += Math.abs(weightsA[i] - weightsB[i]);
         }
-        return sum /= weightsA.length;
+
+        sum /= weightsA.length;
+
+        return sum;
     }
 }

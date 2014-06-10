@@ -66,9 +66,19 @@
     <!-- ========================================================================= -->
 
     <target name="run" depends="compile">
-        <java fork="yes" classname="hyper.experiments.HyperRunner" classpathref="run.classpath">
-            <jvmarg value="-Xmx10g"/> 
-            <arg value="cfg/hyper/gphyper.properties"/>
+        <java fork="yes" classname="common.run.Runner" classpathref="run.classpath">
+            <jvmarg value="-Xmx10g"/>
+            <arg value="cfg/demo/mogpdemo.properties"/>
         </java>
     </target>
+
+    <!---
+        <target name="run" depends="compile">
+            <java fork="yes" classname="hyper.experiments.HyperRunner" classpathref="run.classpath">
+                <jvmarg value="-Xmx10g"/>
+                <arg value="cfg/hyper/gphyper.properties"/>
+            </java>
+        </target>
+    -->
+
 </project> 

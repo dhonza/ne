@@ -232,6 +232,10 @@ public class PopulationManager<G, P> {
         }
     }
 
+    public IEvaluable<P> getFirstEvaluable() {
+        return perThreadEvaluators.get(0);
+    }
+
     public static int getNumberOfThreads() {
         return Runtime.getRuntime().availableProcessors();
     }

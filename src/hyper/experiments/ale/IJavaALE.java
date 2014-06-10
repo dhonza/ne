@@ -1,5 +1,7 @@
 package hyper.experiments.ale;
 
+import java.awt.image.BufferedImage;
+
 /**
  * Created by drchajan on 23/05/14.
  */
@@ -26,9 +28,7 @@ public interface IJavaALE {
 
     double[][] getScreenGrayNormalizedRescaled(int factor);
 
+    BufferedImage getScreenAsBufferedImage();
+
     int[] getPalette();
-
-    void setExportEnabled(boolean enabled);
-
-    int getExportSequence();
 }
