@@ -78,7 +78,7 @@ public class Maze<P extends IBlackBox> implements IEvaluable<P> {
                 moveF();
             }
             steps++;
-            telemetryBuilder.add(new Telemetry(pos[0], pos[1]));
+            telemetryBuilder.add(new Telemetry(pos[0], pos[1], orientationToInt()));
         }
 //        double fitness = map.length + map[0].length + (maxSteps - steps) - distanceToTarget();
         double fitness = map.length + map[0].length - distanceToTarget();
@@ -150,7 +150,24 @@ public class Maze<P extends IBlackBox> implements IEvaluable<P> {
                 }
             }
             builder.add(sum / evaluationInfos.size());
-//            builder.add(0.0);
+        }
+        return builder.build();
+    }
+
+    public ImmutableList<Double> behavioralDiversityOrientationTrack(ImmutableList<EvaluationInfo> evaluationInfos) {
+        ImmutableList.Builder<Double> builder = ImmutableList.builder();
+
+        for (EvaluationInfo e1 : evaluationInfos) {
+            ImmutableList<Telemetry> track1 = (ImmutableList<Telemetry>) e1.getInfo("TELEMETRY");
+
+            double sum = 0.0;
+            for (EvaluationInfo e2 : evaluationInfos) {
+                if (e1 != e2) {
+                    ImmutableList<Telemetry> track2 = (ImmutableList<Telemetry>) e2.getInfo("TELEMETRY");
+                    sum += this.orientationDistance(track1, track2);
+                }
+            }
+            builder.add(sum / evaluationInfos.size());
         }
         return builder.build();
     }
@@ -325,10 +342,12 @@ public class Maze<P extends IBlackBox> implements IEvaluable<P> {
     private class Telemetry {
         public final int x;
         public final int y;
+        public final int orientation;
 
-        private Telemetry(int x, int y) {
+        private Telemetry(int x, int y, int orientation) {
             this.x = x;
             this.y = y;
+            this.orientation = orientation;
         }
 
         @Override
@@ -348,6 +367,25 @@ public class Maze<P extends IBlackBox> implements IEvaluable<P> {
             sum += dx + dy;
         }
         return sum / length;
+    }
+
+    public double orientationDistance(ImmutableList<Telemetry> a, ImmutableList<Telemetry> b) {
+        int length = Ints.min(a.size(), b.size());
+        double sum = 0.0;
+        for (int i = 0; i < length; i++) {
+            int ao = a.get(i).orientation;
+            int bo = b.get(i).orientation;
+            int d = Math.abs(ao - bo);
+            sum += d == 3 ? 1 : d;
+        }
+        return sum / length;
+    }
+
+    private int orientationToInt() {
+        if (dir == N) return 0;
+        else if (dir == E) return 1;
+        else if (dir == S) return 2;
+        else return 3;
     }
 
     public static void main(String[] args) {

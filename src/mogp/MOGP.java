@@ -153,7 +153,8 @@ public class MOGP<P> implements IEvolutionaryAlgorithm, IGP<Forest>, Serializabl
         //DIVERSITY
         Maze maze = (Maze) evaluable;
 //        ImmutableList<Double> behavioralDiversities = maze.behavioralDiversityEndPosition(getEvaluationInfo(pop));
-        ImmutableList<Double> behavioralDiversities = maze.behavioralDiversityTrack(getEvaluationInfo(pop));
+//        ImmutableList<Double> behavioralDiversities = maze.behavioralDiversityTrack(getEvaluationInfo(pop));
+        ImmutableList<Double> behavioralDiversities = maze.behavioralDiversityOrientationTrack(getEvaluationInfo(pop));
 
 //        ImmutableList<Double> genotypeDiversities = genotypeDiversity(pop);
 
