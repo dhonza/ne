@@ -5,7 +5,6 @@ import common.RND;
 import common.evolution.*;
 import common.pmatrix.ParameterCombination;
 import gp.*;
-import gp.demo.Maze;
 
 import java.io.Serializable;
 import java.util.HashMap;
@@ -151,16 +150,29 @@ public class MOGP<P> implements IEvolutionaryAlgorithm, IGP<Forest>, Serializabl
 
     private void evaluateDiversity(ImmutableList<Solution> pop) {
         //DIVERSITY
-        Maze maze = (Maze) evaluable;
-//        ImmutableList<Double> behavioralDiversities = maze.behavioralDiversityEndPosition(getEvaluationInfo(pop));
-//        ImmutableList<Double> behavioralDiversities = maze.behavioralDiversityTrack(getEvaluationInfo(pop));
-        ImmutableList<Double> behavioralDiversities = maze.behavioralDiversityOrientationTrack(getEvaluationInfo(pop));
+        IBehavioralDiversity maze = (IBehavioralDiversity) evaluable;
+        ImmutableList<EvaluationInfo> evaluationInfos = getEvaluationInfo(pop);
+        ImmutableList<Double> behavioralDiversities = maze.behavioralDiversity(evaluationInfos);
 
 //        ImmutableList<Double> genotypeDiversities = genotypeDiversity(pop);
+
+        /*
+        ImmutableList.Builder<Double> sumDiversitiesBuilder = ImmutableList.builder();
+        double diversity1Max = Ordering.<Double>natural().max(behavioralDiversities);
+//        double diversity2Max = Ordering.<Double>natural().max(behavioralDiversities2);
+        for (int i = 0; i < behavioralDiversities.size(); i++) {
+            double diversity1 = diversity1Max == 0.0 ? 0.0 : behavioralDiversities.get(i) / diversity1Max;
+//            double diversity2 = diversity2Max == 0.0 ? 0.0 : behavioralDiversities2.get(i) / diversity2Max;
+            double diversity2 = 0.0;
+            sumDiversitiesBuilder.add(diversity1 + diversity2);
+        }
+        ImmutableList<Double> sumDiversities = sumDiversitiesBuilder.build();
+          */
 
         //SET OBJECTIVES
         for (int i = 0; i < pop.size(); i++) {
             Forest forest = pop.get(i).getX();
+//            Objectives objectives = new Objectives(ImmutableList.of(forest.getFitness(), sumDiversities.get(i)));
             Objectives objectives = new Objectives(ImmutableList.of(forest.getFitness(), behavioralDiversities.get(i)));
 //            Objectives objectives = new Objectives(ImmutableList.of(forest.getFitness(), genotypeDiversities.get(i)));
 //            Objectives objectives = new Objectives(ImmutableList.of(forest.getFitness(), 0.0));

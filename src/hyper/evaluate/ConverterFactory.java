@@ -21,7 +21,7 @@ public class ConverterFactory {
 
     public static IGenotypeToPhenotype getConverter(ParameterCombination parameters, IEvaluableSubstrateBuilder substrateBuilder, IProblem problem) {
         String name = parameters.getString("SOLVER");
-        if (name.equalsIgnoreCase("GP")) {
+        if (name.equalsIgnoreCase("GP") || name.equalsIgnoreCase("MOGP")) {
             return new GPForestToINet(substrateBuilder);
         } else if (name.equalsIgnoreCase("GPAT")) {
             return new GPForestToINet(substrateBuilder);

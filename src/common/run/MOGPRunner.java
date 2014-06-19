@@ -78,7 +78,7 @@ public class MOGPRunner implements EvolutionaryAlgorithmRunner {
         return populationManager;
     }
 
-    private static MOGP createAlgorithm(ParameterCombination combination, PopulationManager populationManager, INode[] functions, INode[] terminals) {
+    public static MOGP createAlgorithm(ParameterCombination combination, PopulationManager populationManager, INode[] functions, INode[] terminals) {
         MOGP gp = null;
         try {
             Constructor constructor = Class.forName("mogp.MOGP").getConstructor(ParameterCombination.class, PopulationManager.class, INode[].class, INode[].class, String.class);
@@ -141,12 +141,12 @@ public class MOGPRunner implements EvolutionaryAlgorithmRunner {
         stats.addSample("NODES_LG", nodesLG);
     }
 
-    private static INode[] createFunctions(ParameterCombination combination) {
+    public static INode[] createFunctions(ParameterCombination combination) {
         return NodeFactory.createByNameList("gp.functions.", combination.getString("GP.FUNCTIONS"));
 
     }
 
-    private static INode[] createTerminals() {
+    public static INode[] createTerminals() {
         return new Node[]{new Constant(-1.0), new Random()};//GP
     }
 }

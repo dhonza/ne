@@ -2,11 +2,9 @@ package gp.demo;
 
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableMap;
-import com.google.common.primitives.Ints;
-import common.evolution.EvaluationInfo;
-import common.evolution.IBlackBox;
-import common.evolution.IEvaluable;
+import common.evolution.*;
 import common.pmatrix.ParameterCombination;
+import org.apache.commons.lang.ArrayUtils;
 
 import java.io.BufferedReader;
 import java.io.DataInputStream;
@@ -22,7 +20,7 @@ import java.util.List;
  * Time: 11:49 PM
  * To change this template use File | Settings | File Templates.
  */
-public class Maze<P extends IBlackBox> implements IEvaluable<P> {
+public class Maze<P extends IBlackBox> implements IEvaluable<P>, IBehavioralDiversity {
     final public static int EMPTY = 0;
     final public static int WALL = 1;
     final public static int START = 2;
@@ -33,6 +31,8 @@ public class Maze<P extends IBlackBox> implements IEvaluable<P> {
     final protected static int[][] S = {{0, 1}, {1, 1}, {-1, 1}};//S, SE, SW
     final protected static int[][] W = {{-1, 0}, {-1, 1}, {-1, -1}};
     final protected static int[][] E = {{1, 0}, {1, -1}, {1, 1}};
+
+    protected final IDistanceWithPrepare<Object, EvaluationInfo> behavioralDistance;
 
     protected int[][] map;
     protected int[] start = new int[2];
@@ -51,6 +51,7 @@ public class Maze<P extends IBlackBox> implements IEvaluable<P> {
         readMap("cfg/demo/maze/" + mapFile);
         setToStart();
         inputs = new double[getNumberOfInputs()];
+        behavioralDistance = MazeBehavioralDistanceFactory.createDistance(this, combination.getString("MAZE.BEHAVIORAL_DIVERSITY"));
     }
 
 
@@ -58,6 +59,8 @@ public class Maze<P extends IBlackBox> implements IEvaluable<P> {
         setToStart();
 
         ImmutableList.Builder<Telemetry> telemetryBuilder = ImmutableList.builder();
+        ImmutableList.Builder<Double> inputBuilder = ImmutableList.builder();
+        ImmutableList.Builder<Double> outputBuilder = ImmutableList.builder();
         int steps = 0;
         for (int i = 0; i < maxSteps; i++) {
             if (distanceToTarget() == 0) {
@@ -65,9 +68,15 @@ public class Maze<P extends IBlackBox> implements IEvaluable<P> {
                 break;
             }
             readInputs(inputs);
+            double[] normalizedInputs = normalizeInputs(inputs);
+            inputBuilder.add(ArrayUtils.toObject(normalizedInputs));
+
             forest.loadInputs(inputs);
             forest.propagate();
             double output = forest.getOutputs()[0];
+            outputBuilder.add(1.0 / (1.0 + Math.exp(-output)));
+//            output = 2.0 / (1.0 + Math.exp(-output)) - 1.0;
+
             if (output < -0.5) {
                 rotateL();
                 moveF();
@@ -88,7 +97,9 @@ public class Maze<P extends IBlackBox> implements IEvaluable<P> {
         ImmutableMap<String, Object> paramMap = ImmutableMap.of(
                 "FINAL_X", (Object) pos[0],
                 "FINAL_Y", pos[1],
-                "TELEMETRY", telemetryBuilder.build());
+                "TELEMETRY", telemetryBuilder.build(),
+                "INPUTS", inputBuilder.build(),
+                "OUTPUTS", outputBuilder.build());
         return new EvaluationInfo(fitness, paramMap);
     }
 
@@ -113,58 +124,27 @@ public class Maze<P extends IBlackBox> implements IEvaluable<P> {
         return 1;
     }
 
-    public ImmutableList<Double> behavioralDiversityEndPosition(ImmutableList<EvaluationInfo> evaluationInfos) {
+    public ImmutableList<Double> behavioralDiversity(ImmutableList<EvaluationInfo> evaluationInfos) {
         ImmutableList.Builder<Double> builder = ImmutableList.builder();
+        Double[][] dists = new Double[evaluationInfos.size()][evaluationInfos.size()];
 
-        double maxDist = map.length + map[0].length;
-        for (EvaluationInfo e1 : evaluationInfos) {
-            int pos1x = (Integer) e1.getInfo("FINAL_X");
-            int pos1y = (Integer) e1.getInfo("FINAL_Y");
+        for (int i = 0; i < evaluationInfos.size(); i++) {
+            EvaluationInfo e1 = evaluationInfos.get(i);
+            Object a = behavioralDistance.prepare(e1);
 
             double sum = 0.0;
-            for (EvaluationInfo e2 : evaluationInfos) {
+            for (int j = 0; j < evaluationInfos.size(); j++) {
+                EvaluationInfo e2 = evaluationInfos.get(j);
                 if (e1 != e2) {
-                    int pos2x = (Integer) e2.getInfo("FINAL_X");
-                    int pos2y = (Integer) e2.getInfo("FINAL_Y");
-                    double dist = (Math.abs(pos1x - pos2x) + Math.abs(pos1y - pos2y)) / maxDist;
-                    sum += dist;
-                }
-            }
-            builder.add(sum / evaluationInfos.size());
-//            builder.add(0.0);
-        }
-        return builder.build();
-    }
-
-    public ImmutableList<Double> behavioralDiversityTrack(ImmutableList<EvaluationInfo> evaluationInfos) {
-        ImmutableList.Builder<Double> builder = ImmutableList.builder();
-
-        for (EvaluationInfo e1 : evaluationInfos) {
-            ImmutableList<Telemetry> track1 = (ImmutableList<Telemetry>) e1.getInfo("TELEMETRY");
-
-            double sum = 0.0;
-            for (EvaluationInfo e2 : evaluationInfos) {
-                if (e1 != e2) {
-                    ImmutableList<Telemetry> track2 = (ImmutableList<Telemetry>) e2.getInfo("TELEMETRY");
-                    sum += this.trackDistance(track1, track2);
-                }
-            }
-            builder.add(sum / evaluationInfos.size());
-        }
-        return builder.build();
-    }
-
-    public ImmutableList<Double> behavioralDiversityOrientationTrack(ImmutableList<EvaluationInfo> evaluationInfos) {
-        ImmutableList.Builder<Double> builder = ImmutableList.builder();
-
-        for (EvaluationInfo e1 : evaluationInfos) {
-            ImmutableList<Telemetry> track1 = (ImmutableList<Telemetry>) e1.getInfo("TELEMETRY");
-
-            double sum = 0.0;
-            for (EvaluationInfo e2 : evaluationInfos) {
-                if (e1 != e2) {
-                    ImmutableList<Telemetry> track2 = (ImmutableList<Telemetry>) e2.getInfo("TELEMETRY");
-                    sum += this.orientationDistance(track1, track2);
+                    Object b = behavioralDistance.prepare(e2);
+                    double d;
+                    if (i <= j) {
+                        d = behavioralDistance.distance(a, b);
+                        dists[i][j] = d;
+                    } else {
+                        d = dists[j][i];
+                    }
+                    sum += d;
                 }
             }
             builder.add(sum / evaluationInfos.size());
@@ -229,6 +209,8 @@ public class Maze<P extends IBlackBox> implements IEvaluable<P> {
     }
 
     protected void readInputs(double[] in) {
+//        System.out.println("Maze.readInputs(): " + + Thread.currentThread().getId());
+
         boolean isF, isB, isL, isR;
         if (dir == N) {
             isF = pos[1] >= target[1];
@@ -260,6 +242,12 @@ public class Maze<P extends IBlackBox> implements IEvaluable<P> {
         in[cnt++] = isB ? 1.0 : 0.0;
         in[cnt++] = isL ? 1.0 : 0.0;
         in[cnt++] = isR ? 1.0 : 0.0;
+    }
+
+    protected double[] normalizeInputs(double[] in) {
+        //nothing has to be normalized here, just return a copy
+        double[] nin = in.clone();
+        return nin;
     }
 
     protected void readMap(String mapFile) {
@@ -330,16 +318,16 @@ public class Maze<P extends IBlackBox> implements IEvaluable<P> {
             }
             b.append("\n");
         }
-        b.append("inputs: ");
-        double in[] = new double[getNumberOfInputs()];
-        readInputs(in);
-        for (int i = 0; i < getNumberOfInputs(); i++) {
-            b.append(in[i]).append(" ");
-        }
+//        b.append("inputs: ");
+//        double in[] = new double[getNumberOfInputs()];
+//        readInputs(in);
+//        for (int i = 0; i < getNumberOfInputs(); i++) {
+//            b.append(in[i]).append(" ");
+//        }
         return b.toString();
     }
 
-    private class Telemetry {
+    class Telemetry {
         public final int x;
         public final int y;
         public final int orientation;
@@ -354,31 +342,6 @@ public class Maze<P extends IBlackBox> implements IEvaluable<P> {
         public String toString() {
             return "Telemetry{" + "x=" + x + ", y=" + y + '}';
         }
-    }
-
-    public double trackDistance(ImmutableList<Telemetry> a, ImmutableList<Telemetry> b) {
-        int length = Ints.min(a.size(), b.size());
-        double xSize = map[0].length;
-        double ySize = map.length;
-        double sum = 0.0;
-        for (int i = 0; i < length; i++) {
-            double dx = Math.abs(a.get(i).x - b.get(i).x) / xSize;
-            double dy = Math.abs(a.get(i).y - b.get(i).y) / ySize;
-            sum += dx + dy;
-        }
-        return sum / length;
-    }
-
-    public double orientationDistance(ImmutableList<Telemetry> a, ImmutableList<Telemetry> b) {
-        int length = Ints.min(a.size(), b.size());
-        double sum = 0.0;
-        for (int i = 0; i < length; i++) {
-            int ao = a.get(i).orientation;
-            int bo = b.get(i).orientation;
-            int d = Math.abs(ao - bo);
-            sum += d == 3 ? 1 : d;
-        }
-        return sum / length;
     }
 
     private int orientationToInt() {

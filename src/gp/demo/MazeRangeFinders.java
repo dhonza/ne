@@ -21,6 +21,7 @@ public class MazeRangeFinders extends Maze {
     }
 
     protected double[] rangeFinders4() {
+//        System.out.println("MazeRangeFinders.rangeFinders4(): " + Thread.currentThread().getId());
         double[] ranges = new double[4];
         int[][][] order;
         if (dir == N) {
@@ -47,6 +48,7 @@ public class MazeRangeFinders extends Maze {
     }
 
     protected void readInputs(double[] in) {
+//        System.out.println("MazeRangeFinders.readInputs(): " + Thread.currentThread().getId());
         boolean isF, isB, isL, isR;
         if (dir == N) {
             isF = pos[1] >= target[1];
@@ -78,5 +80,18 @@ public class MazeRangeFinders extends Maze {
         in[cnt++] = isB ? 1.0 : 0.0;
         in[cnt++] = isL ? 1.0 : 0.0;
         in[cnt++] = isR ? 1.0 : 0.0;
+    }
+
+    protected double[] normalizeInputs(double[] in) {
+        //only the first four elements (distances to wall) must be normalized
+        double[] nin = in.clone();
+        for (int i = 0; i < 4; i++) {
+            if (i % 2 == 0) {
+                nin[i] /= map.length;
+            } else {
+                nin[i] /= map[0].length;
+            }
+        }
+        return nin;
     }
 }
