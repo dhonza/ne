@@ -45,25 +45,17 @@ public class MovieGenerator {
     protected final int indexDigits = 6;
 
     /**
-     * Create a new MovieGenerator that saves images to /tmp/frames/atari_xxxxxx.png
-     */
-    public MovieGenerator() {
-        this("/tmp/frames/atari_");
-    }
-
-    /**
      * Create a new MovieGenerator with the specified base filename. To this
      * base filename is appended a frame number and ".png" in order to obtain
      * the full filename.
      *
      * @param baseFilename
      */
-    public MovieGenerator(String baseFilename) {
-        this.baseFilename = baseFilename;
-
+    public MovieGenerator(File directory, String baseFilename) {
         // Create the relevant directory if necessary
-        File fp = new File(baseFilename);
-        File directory = fp.getParentFile();
+        File fp = new File(directory, baseFilename);
+
+        this.baseFilename = fp.getAbsolutePath();
 
         // Create the directory if necessary; fail if it exists and is not a directory
         if (!directory.isDirectory()) {

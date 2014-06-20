@@ -30,6 +30,7 @@ import java.util.List;
  * Time: 3:50 PM
  */
 public class ALEExperiment implements IProblem<INet> {
+    private final ReportStorage reportStorage;
 
     private boolean solved = false;
     private final String aleDir;
@@ -49,6 +50,7 @@ public class ALEExperiment implements IProblem<INet> {
     private static boolean aleRunning = false;
 
     public ALEExperiment(ParameterCombination parameters, ReportStorage reportStorage) {
+        this.reportStorage = reportStorage;
         aleDir = parameters.getString("ALE.DIR");
         runALE();
         System.out.println("Initializing ALE - waiting for pipe connection...");
@@ -127,9 +129,9 @@ public class ALEExperiment implements IProblem<INet> {
             List<Integer> actionList = new ArrayList<>();
 
             if (export) {
-                frame = new MovieGenerator("frames" + "/" + exportSequence + "/frame");
+                frame = new MovieGenerator(new File(reportStorage.getSubDir("frames"), "" + exportSequence), "frame");
                 for (int i = 0; i < frameActivities.length; i++) {
-                    frameActivities[i] = new MovieGenerator("frames" + "/" + exportSequence + "/l" + i + "/frame");
+                    frameActivities[i] = new MovieGenerator(new File(reportStorage.getSubDir("frames"), exportSequence + "/l" + i), "frame");
                 }
 
             }

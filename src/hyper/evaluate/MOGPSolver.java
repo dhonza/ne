@@ -33,7 +33,7 @@ public class MOGPSolver extends AbstractSolver {
 
 
     private void init() {
-        Utils.setStaticParameters(parameters, MOGP.class, "MOGP");
+        Utils.setStaticParameters(parameters, MOGP.class, "GP");
 
         INode[] functions = MOGPRunner.createFunctions(parameters);
         INode[] terminals = MOGPRunner.createTerminals();
@@ -50,9 +50,9 @@ public class MOGPSolver extends AbstractSolver {
         solver = new EvolutionaryAlgorithmSolver(gp, stats, problem instanceof IProblemGeneralization);
         solver.addProgressPrinter(new MOGPProgressPrinter1D(gp, problem, reportStorage, parameters));
         solver.addProgressPrinter(new FileProgressPrinter(gp, problem, reportStorage, parameters));
-        solver.addStopCondition(new MaxGenerationsStopCondition(gp, GP.MAX_GENERATIONS));
-        solver.addStopCondition(new MaxEvaluationsStopCondition(gp, GP.MAX_EVALUATIONS));
-        solver.addStopCondition(new TargetFitnessStopCondition(gp, GP.TARGET_FITNESS));
+        solver.addStopCondition(new MaxGenerationsStopCondition(gp, MOGP.MAX_GENERATIONS));
+        solver.addStopCondition(new MaxEvaluationsStopCondition(gp, MOGP.MAX_EVALUATIONS));
+        solver.addStopCondition(new TargetFitnessStopCondition(gp, MOGP.TARGET_FITNESS));
         solver.addStopCondition(new SolvedStopCondition(populationManager));
     }
 

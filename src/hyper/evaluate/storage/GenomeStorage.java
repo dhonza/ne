@@ -23,7 +23,7 @@ import java.io.File;
 public class GenomeStorage {
     public static void saveGenome(ParameterCombination parameters, Object genome, String fileName) {
         //TODO better use special interface for "genome"
-        if (parameters.getString("SOLVER").equals("GP")) {
+        if (parameters.getString("SOLVER").equals("GP") || parameters.getString("SOLVER").equals("MOGP")) {
             System.out.println("Now storing only Forest (GP) implement for GEP!!!");
             if (genome instanceof Forest) {
                 ForestStorage.save((Forest) genome, fileName);
@@ -46,7 +46,7 @@ public class GenomeStorage {
     }
 
     public static Object loadGenome(ParameterCombination parameters, String fileName) {
-        if (parameters.getString("SOLVER").equals("GP")) {
+        if (parameters.getString("SOLVER").equals("GP") || parameters.getString("SOLVER").equals("MOGP")) {
             return ForestStorage.load(fileName);
         } else if (parameters.getString("SOLVER").equals("GPAT")) {
             return XMLSerialization.load(fileName);

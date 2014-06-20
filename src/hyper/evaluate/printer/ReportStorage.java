@@ -96,7 +96,7 @@ public class ReportStorage implements Serializable {
         }
     }
 
-    public void openExperimentsOveralResults() {
+    public void openExperimentsOverallResults() {
         try {
             experimentOverallFile = new BufferedWriter(new FileWriter(new File(baseDir, EXPERIMENTS_OVERALL_FILE_PREFIX + SUFFIX_TEMP)));
         } catch (IOException e) {
@@ -191,6 +191,13 @@ public class ReportStorage implements Serializable {
             System.err.println("Cannot save single run auxiliary file: " + file);
         }
     }
+
+    public File getSubDir(String subDirPrefix) {
+        return new File(baseDir, subDirPrefix +
+                String.format("%03d", parameterCombinationId) + "_" +
+                String.format("%03d", experimentId));
+    }
+
 
     public String getCompleteFilename(String prefix, String suffix) {
         //TODO this code is copy-pasted through this class

@@ -44,7 +44,7 @@ public class HyperRunner {
         }
 
         reportStorage.startAll(seed, manager);
-        reportStorage.openExperimentsOveralResults();
+        reportStorage.openExperimentsOverallResults();
         for (ParameterCombination combination : manager) {
             reportStorage.storeParameters(combination.toStringAllSeparatedNewLines());
 

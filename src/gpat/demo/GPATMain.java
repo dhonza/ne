@@ -50,7 +50,7 @@ public class GPATMain {
         }
 
         reportStorage.startAll(seed, manager);
-        reportStorage.openExperimentsOveralResults();
+        reportStorage.openExperimentsOverallResults();
         for (ParameterCombination combination : manager) {
             int experiments = combination.getInteger("EXPERIMENTS");
 

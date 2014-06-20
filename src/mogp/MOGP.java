@@ -150,11 +150,11 @@ public class MOGP<P> implements IEvolutionaryAlgorithm, IGP<Forest>, Serializabl
 
     private void evaluateDiversity(ImmutableList<Solution> pop) {
         //DIVERSITY
-        IBehavioralDiversity maze = (IBehavioralDiversity) evaluable;
-        ImmutableList<EvaluationInfo> evaluationInfos = getEvaluationInfo(pop);
-        ImmutableList<Double> behavioralDiversities = maze.behavioralDiversity(evaluationInfos);
+//        IBehavioralDiversity maze = (IBehavioralDiversity) evaluable;
+//        ImmutableList<EvaluationInfo> evaluationInfos = getEvaluationInfo(pop);
+//        ImmutableList<Double> behavioralDiversities = maze.behavioralDiversity(evaluationInfos);
 
-//        ImmutableList<Double> genotypeDiversities = genotypeDiversity(pop);
+        ImmutableList<Double> genotypeDiversities = genotypeDiversity(pop);
 
         /*
         ImmutableList.Builder<Double> sumDiversitiesBuilder = ImmutableList.builder();
@@ -173,8 +173,8 @@ public class MOGP<P> implements IEvolutionaryAlgorithm, IGP<Forest>, Serializabl
         for (int i = 0; i < pop.size(); i++) {
             Forest forest = pop.get(i).getX();
 //            Objectives objectives = new Objectives(ImmutableList.of(forest.getFitness(), sumDiversities.get(i)));
-            Objectives objectives = new Objectives(ImmutableList.of(forest.getFitness(), behavioralDiversities.get(i)));
-//            Objectives objectives = new Objectives(ImmutableList.of(forest.getFitness(), genotypeDiversities.get(i)));
+//            Objectives objectives = new Objectives(ImmutableList.of(forest.getFitness(), behavioralDiversities.get(i)));
+            Objectives objectives = new Objectives(ImmutableList.of(forest.getFitness(), genotypeDiversities.get(i)));
 //            Objectives objectives = new Objectives(ImmutableList.of(forest.getFitness(), 0.0));
 //            Objectives objectives = new Objectives(ImmutableList.of(forest.getFitness()));
             pop.get(i).setObjectives(objectives);
