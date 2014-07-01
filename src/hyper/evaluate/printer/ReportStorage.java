@@ -192,10 +192,10 @@ public class ReportStorage implements Serializable {
         }
     }
 
-    public File getSubDir(String subDirPrefix) {
-        return new File(baseDir, subDirPrefix +
+    public File getReportFile(String filePrefix, String filePostfix) {
+        return new File(baseDir, filePrefix +
                 String.format("%03d", parameterCombinationId) + "_" +
-                String.format("%03d", experimentId));
+                String.format("%03d", experimentId) + "_" + filePostfix);
     }
 
 

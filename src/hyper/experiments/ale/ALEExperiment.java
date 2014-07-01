@@ -1,10 +1,10 @@
 package hyper.experiments.ale;
 
 import com.google.common.collect.ImmutableList;
-import com.google.common.collect.ImmutableSet;
+import com.google.common.collect.ImmutableMap;
 import com.google.common.primitives.Doubles;
 import common.MathUtil;
-import common.evolution.EvaluationInfo;
+import common.evolution.*;
 import common.net.INet;
 import common.net.precompiled.PrecompiledFeedForwardNet;
 import common.pmatrix.ParameterCombination;
@@ -20,7 +20,6 @@ import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -29,7 +28,7 @@ import java.util.List;
  * Date: 1/3/11
  * Time: 3:50 PM
  */
-public class ALEExperiment implements IProblem<INet> {
+public class ALEExperiment implements IProblem<INet>, IBehavioralDiversity {
     private final ReportStorage reportStorage;
 
     private boolean solved = false;
@@ -41,6 +40,7 @@ public class ALEExperiment implements IProblem<INet> {
 
     private final int maxFrames;
     private final int downsampleFactor;
+    private final int frameSkip;
 
     private boolean export = false;
     private MovieGenerator frame;
@@ -49,26 +49,39 @@ public class ALEExperiment implements IProblem<INet> {
 
     private static boolean aleRunning = false;
 
+    protected final IDistanceWithPrepare<Object, EvaluationInfo> behavioralDistance;
+
+
     public ALEExperiment(ParameterCombination parameters, ReportStorage reportStorage) {
         this.reportStorage = reportStorage;
         aleDir = parameters.getString("ALE.DIR");
-        runALE();
+        runALE(parameters);
         System.out.println("Initializing ALE - waiting for pipe connection...");
         String pipe = aleDir + process + "/ale_fifo_";
         ale = new JavaALEPipes(pipe);
         process++;
         maxFrames = parameters.getInteger("ALE.MAX_FRAMES");
         downsampleFactor = parameters.getInteger("ALE.DOWNSAMPLE_FACTOR");
-
+        frameSkip = parameters.getInteger("ALE.FRAME_SKIP");
         System.out.println("ALE initialized.");
+        behavioralDistance = ALEBehavioralDistanceFactory.createDistance(this, parameters.getString("ALE.BEHAVIORAL_DIVERSITY"));
     }
 
-    private synchronized void runALE() {
+    private synchronized void runALE(ParameterCombination parameters) {
         if (aleRunning) {
             return;
         }
         aleRunning = true;
-        String command = "./run.sh";
+        int threads = 1;
+        if (parameters.getBoolean("PARALLEL")) {
+            if (parameters.contains("PARALLEL.FORCE_THREADS")) {
+                threads = parameters.getInteger("PARALLEL.FORCE_THREADS");
+            } else {
+                threads = PopulationManager.getNumberOfThreads();
+            }
+        }
+
+        String command = "./run.sh " + threads;
         try {
             Runtime.getRuntime().exec(command, new String[]{}, new File(aleDir));
         } catch (IOException e) {
@@ -77,12 +90,12 @@ public class ALEExperiment implements IProblem<INet> {
     }
 
     public EvaluationInfo evaluate(INet hyperNet) {
-        double fitness = runGame(hyperNet);
-        System.out.println("Fitness reached: " + fitness);
-        if (fitness >= GP.TARGET_FITNESS) {
+        EvaluationInfo evaluationInfo = runGame(hyperNet);
+//        System.out.println("Fitness reached: " + fitness);
+        if (evaluationInfo.getFitness() >= GP.TARGET_FITNESS) {
             solved = true;
         }
-        return new EvaluationInfo(fitness);
+        return evaluationInfo;
     }
 
     public boolean isSolved() {
@@ -110,7 +123,7 @@ public class ALEExperiment implements IProblem<INet> {
         System.out.println("downsample factor: " + downsampleFactor + " (" +
                 ale.getScreenWidth() + "x" + ale.getScreenHeight() +
                 " -> " + w + "x" + h + ")");
-        substrate = ALESubstrateFactory.createGrayDirectionOnly(w, h, true);
+        substrate = ALESubstrateFactory.createGrayDirectionOnly(w, h, false);
         frameActivities = new MovieGenerator[3];//TODO get from substrate (inputs + other non bias layers)
         return substrate;
     }
@@ -119,38 +132,45 @@ public class ALEExperiment implements IProblem<INet> {
         return ImmutableList.of();
     }
 
-    private double runGame(INet hyperNet) {
+    private EvaluationInfo runGame(INet hyperNet) {
         double averageReward = 0.0;
         int episodes = 1;
+
+        ImmutableList.Builder<Double> outputBuilder = ImmutableList.builder();
 
         for (int ep = 1; ep <= episodes; ep++) {
             ale.resetGame();
 
-            List<Integer> actionList = new ArrayList<>();
-
             if (export) {
-                frame = new MovieGenerator(new File(reportStorage.getSubDir("frames"), "" + exportSequence), "frame");
+                frame = new MovieGenerator(reportStorage.getReportFile("frames", exportSequence + ".zip"), "frame");
                 for (int i = 0; i < frameActivities.length; i++) {
-                    frameActivities[i] = new MovieGenerator(new File(reportStorage.getSubDir("frames"), exportSequence + "/l" + i), "frame");
+                    frameActivities[i] = new MovieGenerator(reportStorage.getReportFile("frames", exportSequence + "_l" + i + ".zip"), "frame");
                 }
 
             }
             int reward = 0;
+            int action = -1;
+            int toSkip = 0;
             while (!ale.isGameOver() && ale.getEpisodeFrameNumber() <= maxFrames) {
 
-                double[][] s = ale.getScreenGrayNormalizedRescaled(downsampleFactor);
-                hyperNet.reset();
-                hyperNet.loadInputs(Doubles.concat(s));
-                hyperNet.activate();
+                if (toSkip == 0) {
+                    double[][] s = ale.getScreenGrayNormalizedRescaled(downsampleFactor);
+                    hyperNet.reset();
+                    hyperNet.loadInputs(Doubles.concat(s));
+                    hyperNet.activate();
+                    double[] outputs = hyperNet.getOutputs();
 
+                    outputBuilder.addAll(Doubles.asList(outputs));
+
+                    int maxIdx = MathUtil.maxIndexFirst(outputs);
+//                    action = decodeHorizontalFireAction(maxIdx);
+                    action = decodeAction(maxIdx, true);
+                    toSkip = frameSkip;
+                } else {
+                    toSkip--;
+                }
                 exportFrame(hyperNet);
 
-                double[] outputs = hyperNet.getOutputs();
-                int maxIdx = MathUtil.maxIndexFirst(outputs);
-//                int action = decodeAction(maxIdx, true);
-                int action = decodeHorizontalFireAction(maxIdx);
-
-                actionList.add(action);
 
                 reward += ale.act(action);
 //                reward += ale.act(RND.getInt(0, 17));
@@ -158,21 +178,20 @@ public class ALEExperiment implements IProblem<INet> {
 
             }
 
+            exportFinish();
 
-            ImmutableSet<Integer> acts = ImmutableSet.copyOf(actionList);
-
-            System.out.println("\tEpisode: " + ep + " reward: " + reward + " frames:" + ale.getEpisodeFrameNumber() + " actions: " + acts.size());
-            if (acts.size() > 1) {
-                System.out.println(actionList);
-            }
             double bonus = 0.0;
-//            if (acts.size() > 1 && acts.size() < 4) {
-//                bonus = 3 * acts.size();
-//            }
             averageReward += reward + bonus;
         }
-//        averageReward = RND.getDouble(1.0, 100.0);
-        return averageReward / episodes;
+        double fitness = averageReward / episodes;
+        ImmutableMap<String, Object> paramMap = ImmutableMap.of("OUTPUTS", (Object) outputBuilder.build());
+
+        return new EvaluationInfo(fitness, paramMap);
+    }
+
+    @Override
+    public ImmutableList<Double> behavioralDiversity(ImmutableList<EvaluationInfo> evaluationInfos) {
+        return BehavioralDiversityUtils.behavioralDiversity(behavioralDistance, evaluationInfos);
     }
 
     private static int decodeHorizontalFireAction(int dir) {
@@ -262,6 +281,16 @@ public class ALEExperiment implements IProblem<INet> {
 
         }
 
+    }
+
+    private void exportFinish() {
+        if (export) {
+            frame.close();
+            for (MovieGenerator frameActivity : frameActivities) {
+                frameActivity.close();
+            }
+
+        }
     }
 
     private static BufferedImage grayScreenToImage(double[][] s) {

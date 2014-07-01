@@ -1,6 +1,8 @@
 package hyper.evaluate;
 
+import com.google.common.collect.ImmutableList;
 import common.evolution.EvaluationInfo;
+import common.evolution.IBehavioralDiversity;
 import common.evolution.IEvaluable;
 import hyper.builder.IEvaluableSubstrateBuilder;
 
@@ -11,7 +13,7 @@ import hyper.builder.IEvaluableSubstrateBuilder;
  * Time: 12:34:28 PM
  * To change this template use File | Settings | File Templates.
  */
-public class HyperEvaluator<INet> implements IEvaluable<INet> {
+public class HyperEvaluator<INet> implements IEvaluable<INet>, IBehavioralDiversity {
     final private IEvaluableSubstrateBuilder substrateBuilder;
     final private IProblem<INet> problem;
 
@@ -41,5 +43,11 @@ public class HyperEvaluator<INet> implements IEvaluable<INet> {
 
     public int getNumberOfOutputs() {
         return substrateBuilder.getSubstrate().getNumOfLayerConnections();
+    }
+
+    @Override
+    public ImmutableList<Double> behavioralDiversity(ImmutableList<EvaluationInfo> evaluationInfos) {
+        //Class cast exception when not implementing IBehavioralDiversity
+        return ((IBehavioralDiversity) problem).behavioralDiversity(evaluationInfos);
     }
 }

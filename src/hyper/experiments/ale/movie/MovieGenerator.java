@@ -19,65 +19,49 @@ package hyper.experiments.ale.movie;
 
 import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
-import java.io.File;
-import java.io.IOException;
+import java.io.*;
 import java.text.NumberFormat;
+import java.util.zip.ZipEntry;
+import java.util.zip.ZipOutputStream;
 
 /**
- * A class for exporting screen images to PNG files.
+ * A class for exporting screen images to PNG files. Now packed in zip file.
  *
- * @author Marc G. Bellemare <mgbellemare@ualberta.ca>
+ * @author Marc G. Bellemare <mgbellemare@ualberta.ca>, Drchal
  */
 public class MovieGenerator {
-    /**
-     * How many times to show the same image sequence before moving on to the next
-     */
-    protected String baseFilename;
+    private final String baseFilename;
+    private ZipOutputStream zos;
 
     /**
      * The current frame index (used to obtain the PNG filename)
      */
-    protected int pngIndex = 0;
+    private int pngIndex = 0;
 
     /**
      * How many digits to use in generating the filename
      */
-    protected final int indexDigits = 6;
+    private final int indexDigits = 6;
 
-    /**
-     * Create a new MovieGenerator with the specified base filename. To this
-     * base filename is appended a frame number and ".png" in order to obtain
-     * the full filename.
-     *
-     * @param baseFilename
-     */
-    public MovieGenerator(File directory, String baseFilename) {
+    public MovieGenerator(File zipFile, String baseFilename) {
         // Create the relevant directory if necessary
-        File fp = new File(directory, baseFilename);
+        this.baseFilename = baseFilename;
 
-        this.baseFilename = fp.getAbsolutePath();
-
-        // Create the directory if necessary; fail if it exists and is not a directory
-        if (!directory.isDirectory()) {
-            if (!directory.exists())
-                directory.mkdirs();
-            else
-                throw new IllegalArgumentException("File " + directory.getAbsolutePath() + " exists, " +
-                        "is not a directory.");
+        try {
+            this.zos = new ZipOutputStream(new BufferedOutputStream(new FileOutputStream(zipFile)));
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+            System.exit(1);
         }
     }
 
     /**
-     * This method saves the given image to disk as the next frame. It then
+     * This method saves the given image to zip as the next frame. It then
      * increments pngIndex.
      *
      * @param image
      */
     public void record(BufferedImage image) {
-        // We need a filename in order to save frames
-        if (baseFilename == null)
-            throw new IllegalArgumentException("Base filename is not defined.");
-
         // Create a formatter to generate 6-digit indices
         NumberFormat formatter = NumberFormat.getInstance();
         formatter.setMinimumIntegerDigits(indexDigits);
@@ -89,14 +73,26 @@ public class MovieGenerator {
         // Create the full filename
         String filename = baseFilename + indexString + ".png";
 
-        // Save the image to disk
+        // Save the image to zip
         try {
-            ImageIO.write(image, "png", new File(filename));
+            ZipEntry zipEntry = new ZipEntry(filename);
+            zos.putNextEntry(zipEntry);
+            ImageIO.write(image, "png", zos);
+            zos.closeEntry();
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
 
         // Increment pngIndex so that the next frame has a different filename
         pngIndex++;
+    }
+
+    public void close() {
+        try {
+            zos.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+            System.exit(1);
+        }
     }
 }

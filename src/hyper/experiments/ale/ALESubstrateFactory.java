@@ -22,7 +22,7 @@ public class ALESubstrateFactory {
 
         ISubstrateLayer biasLayer = new BiasLayer2D(0.0, 0.0);
         ISubstrateLayer inputGrayLayer = new MeshLayer2D(NodeType.INPUT, numNodesX, numNodesY, 2.0, 2.0);
-        ISubstrateLayer hiddenLayer = new MeshLayer2D(NodeType.HIDDEN, numNodesX, numNodesY, 2.0, 2.0);
+        ISubstrateLayer hiddenLayer = new MeshLayer2D(NodeType.HIDDEN, numNodesX / 2, numNodesY / 2, 2.0, 2.0);
         ISubstrateLayer outputDirectionLayer = null;
         if (singleAxis) {
             outputDirectionLayer = new MeshLayer2D(NodeType.OUTPUT, 3, 1, 2.0, 2.0);
