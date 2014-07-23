@@ -1,10 +1,15 @@
 package hyper.substrate;
 
+import com.google.common.collect.ImmutableSet;
 import hyper.substrate.layer.IConnectable;
-import hyper.substrate.layer.SubstrateInterLayerConnection;
 import hyper.substrate.layer.ISubstrateLayer;
+import hyper.substrate.layer.SubstrateInterLayerConnection;
+import hyper.substrate.node.INode;
+import hyper.substrate.node.NodeType;
 
-import java.util.*;
+import java.util.HashMap;
+import java.util.LinkedHashSet;
+import java.util.Map;
 
 /**
  * Created by IntelliJ IDEA.
@@ -21,20 +26,42 @@ public class BasicSubstrate implements ISubstrate {
 
     private boolean completed = false;
 
-    private Set<ISubstrateLayer> layers = new LinkedHashSet<ISubstrateLayer>();
-    private Set<SubstrateInterLayerConnection> connections = new LinkedHashSet<SubstrateInterLayerConnection>();
+
+    private final INode biasNode;
+    private ImmutableSet<ISubstrateLayer> layers = null;
+    private LinkedHashSet<ISubstrateLayer> layersBuilder = new LinkedHashSet<>();
+    private ImmutableSet<SubstrateInterLayerConnection> connections = null;
+    private LinkedHashSet<SubstrateInterLayerConnection> connectionsBuilder = new LinkedHashSet<>();
 
     private int connectionCounter = 0;
-    private Map<IConnectable, Integer> connectionCPPNOutput = new HashMap<IConnectable, Integer>();
+    private Map<IConnectable, Integer> connectionCPPNOutput = new HashMap<>();
+    private Map<ISubstrateLayer, Integer> biasCPPNOutput = new HashMap<>();
 
-    private int maxDimension = 0;
+    private int maxDimension;
+
+    public BasicSubstrate(INode biasNode) {
+        this.biasNode = biasNode;
+        maxDimension = biasNode.getCoordinate().getDimension();
+    }
+
+    public INode getBiasNode() {
+        return biasNode;
+    }
 
     public void addLayer(ISubstrateLayer layer) throws IllegalStateException {
         if (completed) {
             throw new IllegalStateException("Substrate already completed. Cannot add a layer.");
         }
-        layers.add(layer);
+        if (layer.isBiased() && layer.getNodeType() == NodeType.INPUT) {
+            throw new IllegalStateException("Can't bias input layer!");
+        }
+
+        layersBuilder.add(layer);
         maxDimension = maxDimension < layer.getDimension() ? layer.getDimension() : maxDimension;
+
+        if (layer.isBiased()) {
+            biasCPPNOutput.put(layer, connectionCounter++);
+        }
         if (layer.hasIntraLayerConnections()) {
             connectionCPPNOutput.put(layer, connectionCounter++);
         }
@@ -44,16 +71,16 @@ public class BasicSubstrate implements ISubstrate {
         if (completed) {
             throw new IllegalStateException("Substrate already completed. Cannot connect layers.");
         }
-        if (!layers.contains(substrateLayerConnection.getFrom())) {
+        if (!layersBuilder.contains(substrateLayerConnection.getFrom())) {
             throw new IllegalArgumentException("Nonexisting FROM layer.");
         }
-        if (!layers.contains(substrateLayerConnection.getTo())) {
+        if (!layersBuilder.contains(substrateLayerConnection.getTo())) {
             throw new IllegalArgumentException("Nonexisting TO layer.");
         }
-        if (connections.contains(substrateLayerConnection)) {
+        if (connectionsBuilder.contains(substrateLayerConnection)) {
             throw new IllegalArgumentException("Already existing connection.");
         }
-        connections.add(substrateLayerConnection);
+        connectionsBuilder.add(substrateLayerConnection);
         connectionCPPNOutput.put(substrateLayerConnection, connectionCounter++);
     }
 
@@ -63,48 +90,42 @@ public class BasicSubstrate implements ISubstrate {
      */
     public void complete() {
         completed = true;
-        layers = Collections.unmodifiableSet(layers);
-        connections = Collections.unmodifiableSet(connections);
+        layers = ImmutableSet.copyOf(layersBuilder);
+        connections = ImmutableSet.copyOf(connectionsBuilder);
     }
 
-    public Set<ISubstrateLayer> getLayers() throws IllegalStateException {
-        if (!completed) {
-            throw new IllegalStateException("Substrate not completed.");
-        }
+    public ImmutableSet<ISubstrateLayer> getLayers() throws IllegalStateException {
+        checkCompletion();
         return layers;
     }
 
-    public Set<SubstrateInterLayerConnection> getConnections() throws IllegalStateException {
-        if (!completed) {
-            throw new IllegalStateException("Substrate not completed.");
-        }
+    public ImmutableSet<SubstrateInterLayerConnection> getConnections() throws IllegalStateException {
+        checkCompletion();
         return connections;
     }
 
     public int getMaxDimension() throws IllegalStateException {
-        if (!completed) {
-            throw new IllegalStateException("Substrate not completed.");
-        }
+        checkCompletion();
         return maxDimension;
     }
 
     public int getNumOfLayerConnections() throws IllegalStateException {
-        if (!completed) {
-            throw new IllegalStateException("Substrate not completed.");
-        }
+        checkCompletion();
         return connectionCounter;
     }
 
     public int getNumOfLinks() {
-        if (!completed) {
-            throw new IllegalStateException("Substrate not completed.");
-        }
+        checkCompletion();
+
         int sum = 0;
         for (SubstrateInterLayerConnection connection : connections) {
             sum += connection.getNumOfLinks();
         }
 
         for (ISubstrateLayer layer : layers) {
+            if (layer.isBiased()) {
+                sum += layer.getNumber();
+            }
             if (layer.hasIntraLayerConnections()) {
                 sum += layer.getNumberOfIntraLayerConnections();
             }
@@ -114,9 +135,19 @@ public class BasicSubstrate implements ISubstrate {
     }
 
     public int getConnectionCPPNOutput(IConnectable connectable) {
+        checkCompletion();
+
+        return connectionCPPNOutput.get(connectable);
+    }
+
+    public int getBiasCPPNOutput(ISubstrateLayer layer) {
+        checkCompletion();
+        return biasCPPNOutput.get(layer);
+    }
+
+    private void checkCompletion() {
         if (!completed) {
             throw new IllegalStateException("Substrate not completed.");
         }
-        return connectionCPPNOutput.get(connectable);
     }
 }

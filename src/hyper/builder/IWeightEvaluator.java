@@ -1,7 +1,7 @@
 package hyper.builder;
 
 import hyper.cppn.ICPPN;
-import hyper.substrate.node.Node;
+import hyper.substrate.node.INode;
 
 /**
  * Created by IntelliJ IDEA.
@@ -11,5 +11,5 @@ import hyper.substrate.node.Node;
  * To change this template use File | Settings | File Templates.
  */
 public interface IWeightEvaluator {
-    double evaluate(ICPPN aCPPN, int aCPPNOutput, Node nodeFrom, Node nodeTo, int incomingLinks);
+    double evaluate(ICPPN aCPPN, int aCPPNOutput, INode nodeFrom, INode nodeTo, int incomingLinks);
 }

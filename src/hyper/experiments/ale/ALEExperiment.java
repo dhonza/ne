@@ -39,7 +39,8 @@ public class ALEExperiment implements IProblem<INet>, IBehavioralDiversity {
     private BasicSubstrate substrate;
 
     private final int maxFrames;
-    private final int downsampleFactor;
+    private final int downSampleFactor;
+    private final int hiddenDownSampleFactor;
     private final int frameSkip;
 
     private boolean export = false;
@@ -61,7 +62,8 @@ public class ALEExperiment implements IProblem<INet>, IBehavioralDiversity {
         ale = new JavaALEPipes(pipe);
         process++;
         maxFrames = parameters.getInteger("ALE.MAX_FRAMES");
-        downsampleFactor = parameters.getInteger("ALE.DOWNSAMPLE_FACTOR");
+        downSampleFactor = parameters.getInteger("ALE.DOWNSAMPLE_FACTOR");
+        hiddenDownSampleFactor = parameters.getInteger("ALE.HIDDEN_DOWNSAMPLE_FACTOR");
         frameSkip = parameters.getInteger("ALE.FRAME_SKIP");
         System.out.println("ALE initialized.");
         behavioralDistance = ALEBehavioralDistanceFactory.createDistance(this, parameters.getString("ALE.BEHAVIORAL_DIVERSITY"));
@@ -117,13 +119,13 @@ public class ALEExperiment implements IProblem<INet>, IBehavioralDiversity {
     }
 
     public ISubstrate getSubstrate() {
-        int w = ale.getScreenWidth() / downsampleFactor;
-        int h = ale.getScreenHeight() / downsampleFactor;
+        int w = ale.getScreenWidth() / downSampleFactor;
+        int h = ale.getScreenHeight() / downSampleFactor;
 
-        System.out.println("downsample factor: " + downsampleFactor + " (" +
+        System.out.println("down sample factor: " + downSampleFactor + " (" +
                 ale.getScreenWidth() + "x" + ale.getScreenHeight() +
                 " -> " + w + "x" + h + ")");
-        substrate = ALESubstrateFactory.createGrayDirectionOnly(w, h, false);
+        substrate = ALESubstrateFactory.createGrayDirectionOnly(w, h, hiddenDownSampleFactor, false);
         frameActivities = new MovieGenerator[3];//TODO get from substrate (inputs + other non bias layers)
         return substrate;
     }
@@ -154,7 +156,7 @@ public class ALEExperiment implements IProblem<INet>, IBehavioralDiversity {
             while (!ale.isGameOver() && ale.getEpisodeFrameNumber() <= maxFrames) {
 
                 if (toSkip == 0) {
-                    double[][] s = ale.getScreenGrayNormalizedRescaled(downsampleFactor);
+                    double[][] s = ale.getScreenGrayNormalizedRescaled(downSampleFactor);
                     hyperNet.reset();
                     hyperNet.loadInputs(Doubles.concat(s));
                     hyperNet.activate();
@@ -275,8 +277,8 @@ public class ALEExperiment implements IProblem<INet>, IBehavioralDiversity {
         if (export) {
             frame.record(ale.getScreenAsBufferedImage());
             PrecompiledFeedForwardNet net = (PrecompiledFeedForwardNet) hyperNet;
-            frameActivities[0].record(grayScreenToImage(MathUtil.partition(net.getActivities(0), ale.getScreenWidth() / downsampleFactor)));
-            frameActivities[1].record(grayScreenToImage(MathUtil.partition(net.getActivities(1), ale.getScreenWidth() / downsampleFactor)));
+            frameActivities[0].record(grayScreenToImage(MathUtil.partition(net.getActivities(0), ale.getScreenWidth() / downSampleFactor)));
+            frameActivities[1].record(grayScreenToImage(MathUtil.partition(net.getActivities(1), ale.getScreenWidth() / (downSampleFactor * hiddenDownSampleFactor))));
             frameActivities[2].record(grayScreenToImage(MathUtil.partition(net.getActivities(2), 3)));
 
         }

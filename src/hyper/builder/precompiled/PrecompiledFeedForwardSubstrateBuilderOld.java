@@ -1,8 +1,8 @@
 package hyper.builder.precompiled;
 
+import com.google.common.collect.ArrayListMultimap;
 import com.google.common.collect.ImmutableList;
-import com.google.common.collect.ImmutableMap;
-import com.google.common.collect.ImmutableMultimap;
+import com.google.common.collect.Queues;
 import common.net.INet;
 import common.net.precompiled.IPrecompiledFeedForwardStub;
 import common.net.precompiled.PrecompiledFeedForwardNet;
@@ -22,7 +22,7 @@ import java.io.*;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLClassLoader;
-import java.util.Set;
+import java.util.*;
 
 /**
  * Created by IntelliJ IDEA.
@@ -31,36 +31,29 @@ import java.util.Set;
  * Time: 8:16:07 PM
  * To change this template use File | Settings | File Templates.
  */
-public class PrecompiledFeedForwardSubstrateBuilder implements IEvaluableSubstrateBuilder {
+public class PrecompiledFeedForwardSubstrateBuilderOld implements IEvaluableSubstrateBuilder {
     final private ISubstrate substrate;
     final private IWeightEvaluator weightEvaluator;
 
     private ImmutableList<ISubstrateLayer> inputLayers = null;
-    private ImmutableList<ISubstrateLayer> outputLayers = null;
-    private ImmutableMultimap<ISubstrateLayer, ISubstrateLayer> layerInputs = null;
-
-    //offsets in input vector
-    private ImmutableMap<ISubstrateLayer, Integer> inputOffsets = null;
-
-    //offsets in weight array
-    private ImmutableMap<ISubstrateLayer, Integer> biasOffsets = null;
-    private ImmutableMap<SubstrateInterLayerConnection, Integer> weightOffsets = null;
+    private ISubstrateLayer biasLayer = null;
+    private ImmutableList<PreviousLayerConnectionContainer> successiveConnections = null;
 
     private IPrecompiledFeedForwardStub stub;
-
-    private int weightCount;
     private double[] weights;
+    private int weightCount;
+    private int numberOfInputs;
 
     private boolean built = false;
 
-    public PrecompiledFeedForwardSubstrateBuilder(ISubstrate substrate, IWeightEvaluator weightEvaluator) {
+    public PrecompiledFeedForwardSubstrateBuilderOld(ISubstrate substrate, IWeightEvaluator weightEvaluator) {
         this.substrate = substrate;
         this.weightEvaluator = weightEvaluator;
         prepare();
     }
 
     private void prepare() {
-        findLayerTypes();
+        findBiasAndInputLayers();
         createListOfSuccessiveLayers();
         prepareWeightVector();
         String sourceCode = generateSourceCode();
@@ -69,89 +62,86 @@ public class PrecompiledFeedForwardSubstrateBuilder implements IEvaluableSubstra
         loadStubClass();
     }
 
-    private void findLayerTypes() {
+    private void findBiasAndInputLayers() {
         Set<ISubstrateLayer> layers = substrate.getLayers();
         ImmutableList.Builder<ISubstrateLayer> inputLayersBuilder = ImmutableList.builder();
-        ImmutableList.Builder<ISubstrateLayer> outputLayersBuilder = ImmutableList.builder();
-        ImmutableMap.Builder<ISubstrateLayer, Integer> inputOffsetsBuilder = ImmutableMap.builder();
 
-        int inputOffset = 0;
+        biasLayer = null;
+        boolean foundBias = false;
         for (ISubstrateLayer layer : layers) {
             if (layer.hasIntraLayerConnections()) {
                 throw new IllegalStateException("No intralayer connections allowed for this substrate builder!");
             }
             if (layer.getNodeType() == NodeType.BIAS) {
-                throw new IllegalStateException("No bias layers allowed!");
+                if (foundBias) {
+                    throw new IllegalStateException("Bias layers are not supported!");
+                }
+                foundBias = true;
+                biasLayer = layer;
             } else if (layer.getNodeType() == NodeType.INPUT) {
                 inputLayersBuilder.add(layer);
-                inputOffsetsBuilder.put(layer, inputOffset);
-                inputOffset += layer.getNumber();
-            } else if (layer.getNodeType() == NodeType.OUTPUT) {
-                outputLayersBuilder.add(layer);
+                numberOfInputs += layer.getNumber();
             }
         }
         inputLayers = inputLayersBuilder.build();
-        outputLayers = outputLayersBuilder.build();
-        inputOffsets = inputOffsetsBuilder.build();
 
-        if (inputLayers.size() == 0) {
-            System.out.println("WARNING: none input substrate layer found!");
+        if (!foundBias) {
+            System.out.println("WARNING: None bias substrate layer found!");
         }
-
-        if (outputLayers.size() == 0) {
-            throw new IllegalStateException("None output substrate layer found!");
+        if (inputLayers.size() == 0) {
+            throw new IllegalStateException("None input substrate layer found!");
         }
     }
 
     private void createListOfSuccessiveLayers() {
         Set<SubstrateInterLayerConnection> layerConnections = substrate.getConnections();
-
-        ImmutableMultimap.Builder<ISubstrateLayer, ISubstrateLayer> layerInputsBuilder = ImmutableMultimap.builder();
-
+        ArrayListMultimap<ISubstrateLayer, SubstrateInterLayerConnection> layerConnectionMap = ArrayListMultimap.create();
+        Map<ISubstrateLayer, SubstrateInterLayerConnection> biasConnectionMap = new HashMap<>();
         for (SubstrateInterLayerConnection layerConnection : layerConnections) {
-            layerInputsBuilder.put(layerConnection.getTo(), layerConnection.getFrom());
-        }
-
-        layerInputs = layerInputsBuilder.build();
-    }
-
-    private void prepareWeightVector() {
-        ImmutableMap.Builder<ISubstrateLayer, Integer> biasOffsetBuilder = ImmutableMap.builder();
-        ImmutableMap.Builder<SubstrateInterLayerConnection, Integer> weightOffsetBuilder = ImmutableMap.builder();
-
-        weightCount = 0;
-
-        //biases stored at start of the weight array in order in which layers were added
-        for (ISubstrateLayer layer : substrate.getLayers()) {
-            if (layer.isBiased()) {
-                biasOffsetBuilder.put(layer, weightCount);
-                weightCount += layer.getNumber();
+            //ignore all bias connections, build only fully connected neural networks with all
+            //non-input layers biased
+            if (layerConnection.getFrom() != biasLayer) {
+                layerConnectionMap.put(layerConnection.getFrom(), layerConnection);
+            } else {
+                biasConnectionMap.put(layerConnection.getTo(), layerConnection);
             }
         }
 
-        //inter-layer connections stored after biases in order in which connections were added
-        for (SubstrateInterLayerConnection connection : substrate.getConnections()) {
-            weightOffsetBuilder.put(connection, weightCount);
-            weightCount += connection.getFrom().getNumber() * connection.getTo().getNumber();
-        }
+        ImmutableList.Builder<PreviousLayerConnectionContainer> successiveConnectionsBuilder = ImmutableList.builder();
+        Queue<ISubstrateLayer> layerQueue = Queues.newArrayDeque(inputLayers);
 
-        biasOffsets = biasOffsetBuilder.build();
-        weightOffsets = weightOffsetBuilder.build();
+        while (!layerQueue.isEmpty()) {
+            ISubstrateLayer currentLayer = layerQueue.remove();
+            System.out.println("PrecompiledFeedForwardSubstrateBuilder: current layer type: " + currentLayer.getNodeType() + " size: " + currentLayer.getNumber());
+            List<SubstrateInterLayerConnection> next = layerConnectionMap.get(currentLayer);
+            for (SubstrateInterLayerConnection connection : next) {
+                ISubstrateLayer nextLayer = connection.getTo();
+                successiveConnectionsBuilder.add(new PreviousLayerConnectionContainer(biasConnectionMap.get(nextLayer), connection));
+                layerQueue.add(nextLayer);
+            }
+        }
+        successiveConnections = successiveConnectionsBuilder.build();
+    }
+
+    private void prepareWeightVector() {
+        weightCount = 0;
+        for (PreviousLayerConnectionContainer successiveConnection : successiveConnections) {
+            //bias
+            if (successiveConnection.bias != null) {
+                weightCount += successiveConnection.bias.getTo().getNodes().length;
+            }
+            //all connections to neuron
+            weightCount += successiveConnection.connection.getFrom().getNodes().length *
+                    successiveConnection.connection.getTo().getNodes().length;
+        }
+//        weights = new double[weightCount];
         System.out.println("PrecompiledFeedForwardSubstrateBuilder: # of weights: " + weightCount);
     }
 
-
     private String generateSourceCode() {
         StringBuilder src = new StringBuilder();
-        DirectedAcyclicGraphGenerator generator = new DirectedAcyclicGraphGenerator(
-                substrate.getLayers(),
-                inputLayers,
-                outputLayers,
-                layerInputs,
-                biasOffsets,
-                weightOffsets,
-                inputOffsets
-        );
+//        NoCyclesGenerator generator = new NoCyclesGenerator(successiveConnections, numberOfInputs, biasLayer);
+        NeuronsByCycleGenerator generator = new NeuronsByCycleGenerator(successiveConnections, numberOfInputs, biasLayer);
         generator.generateHeader(src);
         generator.generateLayers(src);
         generator.generateHelperMethods(src);
@@ -211,30 +201,23 @@ public class PrecompiledFeedForwardSubstrateBuilder implements IEvaluableSubstra
     public void build(ICPPN aCPPN) {
         int cnt = 0;
         weights = new double[weightCount];
-
-        //biases stored at start of the weight array in order in which layers were added
-        for (ISubstrateLayer layer : substrate.getLayers()) {
-            if (layer.isBiased()) {
-                INode nodeFrom = substrate.getBiasNode();
-                for (INode nodeTo : layer.getNodes()) {
-                    int aCPPNOutput = substrate.getBiasCPPNOutput(layer);
-                    weights[cnt++] = weightEvaluator.evaluate(aCPPN, aCPPNOutput, nodeFrom, nodeTo, 1);
+        for (PreviousLayerConnectionContainer successiveConnection : successiveConnections) {
+            for (INode nodeTo : successiveConnection.connection.getTo().getNodes()) {
+                //number of incoming links
+                int incomingLinks = successiveConnection.connection.getFrom().getNodes().length;
+                //bias
+                if (successiveConnection.bias != null) {
+                    int aCPPNOutput = substrate.getConnectionCPPNOutput(successiveConnection.bias);
+                    weights[cnt++] = weightEvaluator.evaluate(aCPPN, aCPPNOutput, successiveConnection.bias.getFrom().getNodes()[0],
+                            nodeTo, incomingLinks);
                 }
-                layer.getNumber();
-            }
-        }
-
-        //inter-layer connections stored after biases in order in which connections were added
-        for (SubstrateInterLayerConnection connection : substrate.getConnections()) {
-            int incomingLinks = connection.getFrom().getNumber();
-            int aCPPNOutput = substrate.getConnectionCPPNOutput(connection);
-            for (INode nodeTo : connection.getTo().getNodes()) {
-                for (INode nodeFrom : connection.getFrom().getNodes()) {
+                //all connections to neuron
+                int aCPPNOutput = substrate.getConnectionCPPNOutput(successiveConnection.connection);
+                for (INode nodeFrom : successiveConnection.connection.getFrom().getNodes()) {
                     weights[cnt++] = weightEvaluator.evaluate(aCPPN, aCPPNOutput, nodeFrom, nodeTo, incomingLinks);
                 }
             }
         }
-
         built = true;
     }
 

@@ -1,7 +1,10 @@
 package hyper.experiments.findcluster;
 
 import hyper.substrate.BasicSubstrate;
-import hyper.substrate.layer.*;
+import hyper.substrate.layer.ISubstrateLayer;
+import hyper.substrate.layer.MeshLayer2D;
+import hyper.substrate.layer.SubstrateInterLayerConnection;
+import hyper.substrate.node.Node2D;
 import hyper.substrate.node.NodeType;
 
 /**
@@ -16,10 +19,10 @@ public class FindClusterSubstrateFactory {
     }
 
     public static BasicSubstrate createInputToOutputNoBias(int numNodesX, int numNodesY) {
-        BasicSubstrate substrate = new BasicSubstrate();
+        BasicSubstrate substrate = new BasicSubstrate(new Node2D(0.0, 0.0, NodeType.BIAS));
 
-        ISubstrateLayer inputLayer = new MeshLayer2D(NodeType.INPUT, numNodesX, numNodesY, 2.0, 2.0);
-        ISubstrateLayer outputLayer = new MeshLayer2D(NodeType.OUTPUT, numNodesX, numNodesY, 2.0, 2.0);
+        ISubstrateLayer inputLayer = new MeshLayer2D(NodeType.INPUT, numNodesX, numNodesY, 2.0, 2.0, false);
+        ISubstrateLayer outputLayer = new MeshLayer2D(NodeType.OUTPUT, numNodesX, numNodesY, 2.0, 2.0, false);
 
         SubstrateInterLayerConnection inputToOutput = new SubstrateInterLayerConnection(inputLayer, outputLayer);
 

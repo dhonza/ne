@@ -16,7 +16,7 @@ import java.io.Serializable;
 /**
  * Implementing class must be immutable.
  */
-public interface Node extends Serializable {
+public interface INode extends Serializable {
     public ICoordinate getCoordinate();
 
     public NodeType getType();

@@ -6,12 +6,12 @@ import hyper.substrate.node.INode;
 /**
  * Created by IntelliJ IDEA.
  * User: drchaj1
- * Date: Jul 5, 2010
- * Time: 6:05:17 PM
+ * Date: Aug 2, 2010
+ * Time: 1:52:12 PM
  * To change this template use File | Settings | File Templates.
  */
-public class BasicWeightEvaluator implements IWeightEvaluator {
+public class MockWeightEvaluator implements IWeightEvaluator {
     public double evaluate(ICPPN aCPPN, int aCPPNOutput, INode nodeFrom, INode nodeTo, int incomingLinks) {
-        return 3.0 * aCPPN.evaluate(aCPPNOutput, nodeFrom.getCoordinate(), nodeTo.getCoordinate());
+        return 1.0;
     }
 }

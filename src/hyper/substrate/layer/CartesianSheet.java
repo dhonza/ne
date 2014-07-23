@@ -1,7 +1,7 @@
 package hyper.substrate.layer;
 
 import common.net.linked.Neuron;
-import hyper.substrate.node.Node;
+import hyper.substrate.node.INode;
 import hyper.substrate.node.Node2D;
 import hyper.substrate.node.NodeType;
 
@@ -19,19 +19,23 @@ import hyper.substrate.node.NodeType;
  */
 public class CartesianSheet implements ISubstrateLayer {
     final private NodeType nodeType;
+    final private boolean biased;
+    final private Neuron.Activation activationFunction;
 
-    private final Node[] nodes;
+    private final INode[] nodes;
 
     public final int xSize, ySize;
 
     private final double xInterval, yInterval;
 
-    public CartesianSheet(int dimX, int dimY, NodeType nodeType) {
-        this(dimX, dimY, nodeType, Neuron.Activation.SIGMOID);
+    public CartesianSheet(int dimX, int dimY, boolean biased, NodeType nodeType) {
+        this(dimX, dimY, nodeType, biased, Neuron.Activation.SIGMOID);
     }
 
-    public CartesianSheet(int dimX, int dimY, NodeType nodeType, Neuron.Activation activationFunction) {
+    public CartesianSheet(int dimX, int dimY, NodeType nodeType, boolean biased, Neuron.Activation activationFunction) {
         this.nodeType = nodeType;
+        this.biased = biased;
+        this.activationFunction = activationFunction;
         assert (dimX > 0);
         xSize = dimX;
         assert (dimY > 0);
@@ -41,7 +45,7 @@ public class CartesianSheet implements ISubstrateLayer {
         yInterval = 2.0 / (ySize + 1);
 
         double x, y;
-        this.nodes = new Node[dimX * dimY];
+        this.nodes = new INode[dimX * dimY];
         int cnt = 0;
 //        System.out.println("--------------------" + xSize + " " + ySize + " " + xInterval + " " + yInterval);
         for (int i = 0; i < xSize; i++) {
@@ -58,12 +62,17 @@ public class CartesianSheet implements ISubstrateLayer {
         return nodes.length;
     }
 
-    public Node[] getNodes() {
+    public INode[] getNodes() {
         return nodes;
     }
 
     public NodeType getNodeType() {
         return nodeType;
+    }
+
+    @Override
+    public Neuron.Activation getNodeActivationFunction() {
+        return activationFunction;
     }
 
     public int getDimension() {
@@ -80,5 +89,9 @@ public class CartesianSheet implements ISubstrateLayer {
 
     public int getNumberOfIntraLayerConnections() {
         return 0;
+    }
+
+    public boolean isBiased() {
+        return biased;
     }
 }

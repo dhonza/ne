@@ -1,6 +1,6 @@
 package hyper.substrate.layer;
 
-import hyper.substrate.node.Node;
+import hyper.substrate.node.INode;
 
 import java.io.Serializable;
 
@@ -16,19 +16,19 @@ import java.io.Serializable;
  * This class is immutable.
  */
 public class SubstrateIntraLayerConnection implements Serializable {
-    final private Node from;
-    final private Node to;
+    final private INode from;
+    final private INode to;
 
-    public SubstrateIntraLayerConnection(Node from, Node to) {
+    public SubstrateIntraLayerConnection(INode from, INode to) {
         this.from = from;
         this.to = to;
     }
 
-    public Node getFrom() {
+    public INode getFrom() {
         return from;
     }
 
-    public Node getTo() {
+    public INode getTo() {
         return to;
     }
 }

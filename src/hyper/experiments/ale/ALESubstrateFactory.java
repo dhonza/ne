@@ -1,10 +1,10 @@
 package hyper.experiments.ale;
 
 import hyper.substrate.BasicSubstrate;
-import hyper.substrate.layer.BiasLayer2D;
 import hyper.substrate.layer.ISubstrateLayer;
 import hyper.substrate.layer.MeshLayer2D;
 import hyper.substrate.layer.SubstrateInterLayerConnection;
+import hyper.substrate.node.Node2D;
 import hyper.substrate.node.NodeType;
 
 /**
@@ -17,49 +17,48 @@ public class ALESubstrateFactory {
     private ALESubstrateFactory() {
     }
 
-    public static BasicSubstrate createGrayDirectionOnly(int numNodesX, int numNodesY, boolean singleAxis) {
-        BasicSubstrate substrate = new BasicSubstrate();
+    public static BasicSubstrate createGrayDirectionOnly(int numNodesX, int numNodesY, int hiddenDownSampleFactor, boolean singleAxis) {
+        BasicSubstrate substrate = new BasicSubstrate(new Node2D(0.0, 0.0, NodeType.BIAS));
 
-        ISubstrateLayer biasLayer = new BiasLayer2D(0.0, 0.0);
-        ISubstrateLayer inputGrayLayer = new MeshLayer2D(NodeType.INPUT, numNodesX, numNodesY, 2.0, 2.0);
-        ISubstrateLayer hiddenLayer = new MeshLayer2D(NodeType.HIDDEN, numNodesX / 2, numNodesY / 2, 2.0, 2.0);
+        ISubstrateLayer inputGrayLayer = new MeshLayer2D(NodeType.INPUT, numNodesX, numNodesY, 2.0, 2.0, false);
+        ISubstrateLayer hiddenLayer = new MeshLayer2D(NodeType.HIDDEN, numNodesX / hiddenDownSampleFactor, numNodesY / hiddenDownSampleFactor, 2.0, 2.0, true);
         ISubstrateLayer outputDirectionLayer = null;
         if (singleAxis) {
-            outputDirectionLayer = new MeshLayer2D(NodeType.OUTPUT, 3, 1, 2.0, 2.0);
+            outputDirectionLayer = new MeshLayer2D(NodeType.OUTPUT, 3, 1, 2.0, 2.0, true);
         } else {
-            outputDirectionLayer = new MeshLayer2D(NodeType.OUTPUT, 3, 3, 2.0, 2.0);
+            outputDirectionLayer = new MeshLayer2D(NodeType.OUTPUT, 3, 3, 2.0, 2.0, true);
         }
+
+        ISubstrateLayer outputFireLayer = new MeshLayer2D(NodeType.OUTPUT, 1, 1, 0.0, 0.0, true);
 
         SubstrateInterLayerConnection inputGrayToHidden = new SubstrateInterLayerConnection(inputGrayLayer, hiddenLayer);
         SubstrateInterLayerConnection hiddenToOutputDirection = new SubstrateInterLayerConnection(hiddenLayer, outputDirectionLayer);
-        SubstrateInterLayerConnection biasToHidden = new SubstrateInterLayerConnection(biasLayer, hiddenLayer);
-        SubstrateInterLayerConnection biasToOutputDirection = new SubstrateInterLayerConnection(biasLayer, outputDirectionLayer);
+        SubstrateInterLayerConnection hiddenToOutputFire = new SubstrateInterLayerConnection(hiddenLayer, outputFireLayer);
 
-        substrate.addLayer(biasLayer);
         substrate.addLayer(inputGrayLayer);
         substrate.addLayer(hiddenLayer);
         substrate.addLayer(outputDirectionLayer);
+        substrate.addLayer(outputFireLayer);
 
         substrate.connect(inputGrayToHidden);
         substrate.connect(hiddenToOutputDirection);
-        substrate.connect(biasToHidden);
-        substrate.connect(biasToOutputDirection);
+        substrate.connect(hiddenToOutputFire);
 
         substrate.complete();
         return substrate;
     }
 
     public static BasicSubstrate create(int numNodesX, int numNodesY) {
-        BasicSubstrate substrate = new BasicSubstrate();
+        BasicSubstrate substrate = new BasicSubstrate(new Node2D(0.0, 0.0, NodeType.BIAS));
 
-        ISubstrateLayer inputRedLayer = new MeshLayer2D(NodeType.INPUT, numNodesX, numNodesY, 2.0, 2.0);
-        ISubstrateLayer inputGreenLayer = new MeshLayer2D(NodeType.INPUT, numNodesX, numNodesY, 2.0, 2.0);
-        ISubstrateLayer inputBlueLayer = new MeshLayer2D(NodeType.INPUT, numNodesX, numNodesY, 2.0, 2.0);
+        ISubstrateLayer inputRedLayer = new MeshLayer2D(NodeType.INPUT, numNodesX, numNodesY, 2.0, 2.0, false);
+        ISubstrateLayer inputGreenLayer = new MeshLayer2D(NodeType.INPUT, numNodesX, numNodesY, 2.0, 2.0, false);
+        ISubstrateLayer inputBlueLayer = new MeshLayer2D(NodeType.INPUT, numNodesX, numNodesY, 2.0, 2.0, false);
 
-        ISubstrateLayer hiddenLayer = new MeshLayer2D(NodeType.HIDDEN, numNodesX, numNodesY, 2.0, 2.0);
+        ISubstrateLayer hiddenLayer = new MeshLayer2D(NodeType.HIDDEN, numNodesX, numNodesY, 2.0, 2.0, true);
 
-        ISubstrateLayer outputDirectionLayer = new MeshLayer2D(NodeType.OUTPUT, 3, 3, 2.0, 2.0);
-        ISubstrateLayer outputFireLayer = new MeshLayer2D(NodeType.OUTPUT, 1, 1, 2.0, 2.0);
+        ISubstrateLayer outputDirectionLayer = new MeshLayer2D(NodeType.OUTPUT, 3, 3, 2.0, 2.0, true);
+        ISubstrateLayer outputFireLayer = new MeshLayer2D(NodeType.OUTPUT, 1, 1, 2.0, 2.0, true);
 
 
         SubstrateInterLayerConnection inputRedToHidden = new SubstrateInterLayerConnection(inputRedLayer, hiddenLayer);

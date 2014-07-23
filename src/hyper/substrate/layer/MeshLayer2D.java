@@ -1,6 +1,7 @@
 package hyper.substrate.layer;
 
-import hyper.substrate.node.Node;
+import common.net.linked.Neuron;
+import hyper.substrate.node.INode;
 import hyper.substrate.node.Node2D;
 import hyper.substrate.node.NodeType;
 
@@ -25,10 +26,11 @@ public class MeshLayer2D implements ISubstrateLayer {
     final private double yMin;
     final private double yMax;
     final private double yScale;
+    final private boolean biased;
 
-    final private Node[] nodes;
+    final private INode[] nodes;
 
-    public MeshLayer2D(NodeType nodeType, int xNodes, int yNodes, double xScale, double yScale) {
+    public MeshLayer2D(NodeType nodeType, int xNodes, int yNodes, double xScale, double yScale, boolean biased) {
         this.nodeType = nodeType;
         this.xNodes = xNodes;
         this.yNodes = yNodes;
@@ -42,8 +44,9 @@ public class MeshLayer2D implements ISubstrateLayer {
         this.yMin = -yMax;
 //        this.yMax = yScale;
 //        this.yMin = 0.0;
+        this.biased = biased;
 
-        this.nodes = new Node[xNodes * yNodes];
+        this.nodes = new INode[xNodes * yNodes];
         createNodes();
     }
 
@@ -70,12 +73,17 @@ public class MeshLayer2D implements ISubstrateLayer {
         return nodes.length;
     }
 
-    public Node[] getNodes() {
+    public INode[] getNodes() {
         return nodes;
     }
 
     public NodeType getNodeType() {
         return nodeType;
+    }
+
+    @Override
+    public Neuron.Activation getNodeActivationFunction() {
+        return nodes[0].getActivationFunction();
     }
 
     public int getDimension() {
@@ -92,5 +100,9 @@ public class MeshLayer2D implements ISubstrateLayer {
 
     public int getNumberOfIntraLayerConnections() {
         return 0;
+    }
+
+    public boolean isBiased() {
+        return biased;
     }
 }

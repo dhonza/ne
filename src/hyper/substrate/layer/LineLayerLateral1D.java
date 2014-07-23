@@ -10,8 +10,8 @@ import hyper.substrate.node.NodeType;
  * To change this template use File | Settings | File Templates.
  */
 public class LineLayerLateral1D extends LineLayer1D {
-    public LineLayerLateral1D(NodeType nodeType, int xNodes, double xStart, double xStep) {
-        super(nodeType, xNodes, xStart, xStep);
+    public LineLayerLateral1D(NodeType nodeType, int xNodes, double xStart, double xStep, boolean biased) {
+        super(nodeType, xNodes, xStart, xStep, biased);
     }
 
     public SubstrateIntraLayerConnection[] getIntraLayerConnections() {

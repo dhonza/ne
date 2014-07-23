@@ -1,11 +1,12 @@
 package hyper.substrate;
 
+import com.google.common.collect.ImmutableSet;
 import hyper.substrate.layer.IConnectable;
 import hyper.substrate.layer.ISubstrateLayer;
 import hyper.substrate.layer.SubstrateInterLayerConnection;
+import hyper.substrate.node.INode;
 
 import java.io.Serializable;
-import java.util.Set;
 
 /**
  * Created by IntelliJ IDEA.
@@ -15,23 +16,29 @@ import java.util.Set;
  * To change this template use File | Settings | File Templates.
  */
 public interface ISubstrate extends Serializable {
-    public void addLayer(final ISubstrateLayer layer);
+    INode getBiasNode();
+
+    void addLayer(final ISubstrateLayer layer);
 
     /**
      * @param substrateLayerConnection
      * @throws IllegalArgumentException when from or to are not added also when duplicate connection
      */
-    public void connect(final SubstrateInterLayerConnection substrateLayerConnection) throws IllegalArgumentException;
+    void connect(final SubstrateInterLayerConnection substrateLayerConnection) throws IllegalArgumentException;
 
-    public Set<ISubstrateLayer> getLayers();
+    //note, that insertion order is preserved
+    ImmutableSet<ISubstrateLayer> getLayers();
 
-    public Set<SubstrateInterLayerConnection> getConnections();
+    //note, that insertion order is preserved
+    ImmutableSet<SubstrateInterLayerConnection> getConnections();
 
-    public int getMaxDimension();
+    int getMaxDimension();
 
-    public int getNumOfLayerConnections();
+    int getNumOfLayerConnections();
 
-    public int getNumOfLinks();
+    int getNumOfLinks();
 
-    public int getConnectionCPPNOutput(IConnectable connectable);
+    int getConnectionCPPNOutput(IConnectable connectable);
+
+    int getBiasCPPNOutput(ISubstrateLayer layer);
 }

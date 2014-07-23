@@ -8,7 +8,7 @@ import hyper.cppn.ICPPN;
 import hyper.substrate.ISubstrate;
 import hyper.substrate.layer.ISubstrateLayer;
 import hyper.substrate.layer.SubstrateInterLayerConnection;
-import hyper.substrate.node.Node;
+import hyper.substrate.node.INode;
 import hyper.substrate.node.NodeType;
 
 import java.util.*;
@@ -53,6 +53,7 @@ public class CascadeNetBuilder implements IEvaluableSubstrateBuilder {
         this.substrate = substrate;
         this.weightEvaluator = weightEvaluator;
         prepare();
+        throw new IllegalStateException("CORRECT bias layer behavior!");
     }
 
     private void prepare() {
@@ -148,7 +149,7 @@ public class CascadeNetBuilder implements IEvaluableSubstrateBuilder {
         //TODO same code as in  PrecompiledFeedForward
         int cnt = 0;
         for (PreviousLayerConnectionContainer successiveConnection : successiveConnections) {
-            for (Node nodeTo : successiveConnection.connection.getTo().getNodes()) {
+            for (INode nodeTo : successiveConnection.connection.getTo().getNodes()) {
                 if (nodeTo.getActivationFunction() != Neuron.Activation.SIGMOID) {
                     throw new IllegalStateException("Only Neuron.Activation.SIGMOID supported by cascade networks!");
                 }
@@ -162,7 +163,7 @@ public class CascadeNetBuilder implements IEvaluableSubstrateBuilder {
                 }
                 //all connections to neuron
                 int aCPPNOutput = substrate.getConnectionCPPNOutput(successiveConnection.connection);
-                for (Node nodeFrom : successiveConnection.connection.getFrom().getNodes()) {
+                for (INode nodeFrom : successiveConnection.connection.getFrom().getNodes()) {
                     weights[cnt++] = weightEvaluator.evaluate(aCPPN, aCPPNOutput, nodeFrom, nodeTo, incomingLinks);
                 }
             }

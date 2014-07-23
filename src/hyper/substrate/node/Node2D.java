@@ -14,7 +14,7 @@ import hyper.substrate.Coordinate2D;
 /**
  * This class is immutable.
  */
-public class Node2D implements Node {
+public class Node2D implements INode {
     final private Coordinate2D coordinate;
     final private NodeType type;
     final private Neuron.Activation activationFunction;

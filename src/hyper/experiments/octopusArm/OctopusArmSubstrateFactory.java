@@ -5,6 +5,7 @@ import hyper.substrate.BasicSubstrate;
 import hyper.substrate.layer.CartesianSheet;
 import hyper.substrate.layer.ISubstrateLayer;
 import hyper.substrate.layer.SubstrateInterLayerConnection;
+import hyper.substrate.node.Node2D;
 import hyper.substrate.node.NodeType;
 
 /**
@@ -19,11 +20,11 @@ public class OctopusArmSubstrateFactory {
     }
 
     public static BasicSubstrate createInputHiddenOutputNoBias(int segments, int sensors) {
-        BasicSubstrate substrate = new BasicSubstrate();
+        BasicSubstrate substrate = new BasicSubstrate(new Node2D(0.0, 0.0, NodeType.BIAS));
 
-        ISubstrateLayer inputLayer = new CartesianSheet(segments, sensors, NodeType.INPUT, Neuron.Activation.LINEAR);
-        ISubstrateLayer hiddenLayer = new CartesianSheet(segments, 3, NodeType.HIDDEN, Neuron.Activation.BIPOLAR_SIGMOID_ALPHA1);
-        ISubstrateLayer outputLayer = new CartesianSheet(segments, 3, NodeType.OUTPUT, Neuron.Activation.SIGMOID_ALPHA1);
+        ISubstrateLayer inputLayer = new CartesianSheet(segments, sensors, NodeType.INPUT, false, Neuron.Activation.LINEAR);
+        ISubstrateLayer hiddenLayer = new CartesianSheet(segments, 3, NodeType.HIDDEN, false, Neuron.Activation.BIPOLAR_SIGMOID_ALPHA1);
+        ISubstrateLayer outputLayer = new CartesianSheet(segments, 3, NodeType.OUTPUT, false, Neuron.Activation.SIGMOID_ALPHA1);
 
         SubstrateInterLayerConnection inputToHidden = new SubstrateInterLayerConnection(inputLayer, hiddenLayer);
         SubstrateInterLayerConnection hiddenToOutput = new SubstrateInterLayerConnection(hiddenLayer, outputLayer);

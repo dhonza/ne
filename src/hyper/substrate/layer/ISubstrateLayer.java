@@ -1,6 +1,7 @@
 package hyper.substrate.layer;
 
-import hyper.substrate.node.Node;
+import common.net.linked.Neuron;
+import hyper.substrate.node.INode;
 import hyper.substrate.node.NodeType;
 
 import java.io.Serializable;
@@ -21,7 +22,7 @@ import java.io.Serializable;
 public interface ISubstrateLayer extends IConnectable, Serializable {
     public int getNumber();
 
-    public Node[] getNodes();
+    public INode[] getNodes();
 
     public boolean hasIntraLayerConnections();
 
@@ -31,6 +32,10 @@ public interface ISubstrateLayer extends IConnectable, Serializable {
 
     public NodeType getNodeType();
 
+    public Neuron.Activation getNodeActivationFunction();
+
     public int getDimension();
+
+    public boolean isBiased();
 
 }

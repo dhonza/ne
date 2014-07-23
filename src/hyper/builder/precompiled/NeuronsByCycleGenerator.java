@@ -2,7 +2,7 @@ package hyper.builder.precompiled;
 
 import hyper.substrate.layer.ISubstrateLayer;
 import hyper.substrate.layer.SubstrateInterLayerConnection;
-import hyper.substrate.node.Node;
+import hyper.substrate.node.INode;
 
 import java.util.List;
 
@@ -14,12 +14,12 @@ import java.util.List;
  * To change this template use File | Settings | File Templates.
  */
 public class NeuronsByCycleGenerator {
-    protected List<PrecompiledFeedForwardSubstrateBuilder.PreviousLayerConnectionContainer> successiveConnections = null;
+    protected List<PreviousLayerConnectionContainer> successiveConnections = null;
     protected int numberOfInputs;
     protected ISubstrateLayer biasLayer = null;
     int weightCnt = 0;
 
-    public NeuronsByCycleGenerator(List<PrecompiledFeedForwardSubstrateBuilder.PreviousLayerConnectionContainer> successiveConnections, int numberOfInputs, ISubstrateLayer biasLayer) {
+    public NeuronsByCycleGenerator(List<PreviousLayerConnectionContainer> successiveConnections, int numberOfInputs, ISubstrateLayer biasLayer) {
         this.successiveConnections = successiveConnections;
         this.numberOfInputs = numberOfInputs;
         this.biasLayer = biasLayer;
@@ -57,8 +57,8 @@ public class NeuronsByCycleGenerator {
         src.append("\tthis.p = in;\n");
         src.append("\tdouble[] n;\n");
         SubstrateInterLayerConnection connection = successiveConnections.get(i).connection;
-        Node[] tNodes = connection.getTo().getNodes();
-        Node[] fNodes = connection.getFrom().getNodes();
+        INode[] tNodes = connection.getTo().getNodes();
+        INode[] fNodes = connection.getFrom().getNodes();
         src.append("\tn = new double[").append(tNodes.length).append("];\n");
 
         for (int t = 0; t < tNodes.length; t++) {
@@ -74,7 +74,7 @@ public class NeuronsByCycleGenerator {
     }
 
 
-    protected static String getActivationFunction(Node n) {
+    protected static String getActivationFunction(INode n) {
         switch (n.getActivationFunction()) {
             case SIGMOID:
                 return "a";

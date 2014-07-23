@@ -1,7 +1,11 @@
 package hyper.experiments.robots;
 
 import hyper.substrate.BasicSubstrate;
-import hyper.substrate.layer.*;
+import hyper.substrate.layer.ISubstrateLayer;
+import hyper.substrate.layer.LineLayer1D;
+import hyper.substrate.layer.LineLayerFullyConnected1D;
+import hyper.substrate.layer.SubstrateInterLayerConnection;
+import hyper.substrate.node.Node1D;
 import hyper.substrate.node.NodeType;
 
 /**
@@ -16,20 +20,16 @@ public class RobotsSubstrateFactory {
     }
 
     public static BasicSubstrate create(int inputNodes, int hiddenOutputNodes) {
-        BasicSubstrate substrate = new BasicSubstrate();
+        BasicSubstrate substrate = new BasicSubstrate(new Node1D(0.0, NodeType.BIAS));
 
-        ISubstrateLayer biasLayer = new BiasLayer1D(0.0);
-        ISubstrateLayer inputLayer = new LineLayer1D(NodeType.INPUT, inputNodes, -Math.PI / 2, Math.PI / (inputNodes - 1));
-        ISubstrateLayer outputLayer = new LineLayerFullyConnected1D(NodeType.OUTPUT, hiddenOutputNodes, -Math.PI / 2, Math.PI / (hiddenOutputNodes - 1));
+        ISubstrateLayer inputLayer = new LineLayer1D(NodeType.INPUT, inputNodes, -Math.PI / 2, Math.PI / (inputNodes - 1), false);
+        ISubstrateLayer outputLayer = new LineLayerFullyConnected1D(NodeType.OUTPUT, hiddenOutputNodes, -Math.PI / 2, Math.PI / (hiddenOutputNodes - 1), true);
 
-        SubstrateInterLayerConnection biasToOutput = new SubstrateInterLayerConnection(biasLayer, outputLayer);
         SubstrateInterLayerConnection inputToOutput = new SubstrateInterLayerConnection(inputLayer, outputLayer);
 
-        substrate.addLayer(biasLayer);
         substrate.addLayer(inputLayer);
         substrate.addLayer(outputLayer);
 
-        substrate.connect(biasToOutput);
         substrate.connect(inputToOutput);
         substrate.complete();
         return substrate;

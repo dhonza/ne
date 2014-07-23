@@ -6,7 +6,7 @@ import hyper.substrate.ISubstrate;
 import hyper.substrate.layer.ISubstrateLayer;
 import hyper.substrate.layer.SubstrateInterLayerConnection;
 import hyper.substrate.layer.SubstrateIntraLayerConnection;
-import hyper.substrate.node.Node;
+import hyper.substrate.node.INode;
 
 import java.util.HashMap;
 import java.util.Iterator;
@@ -40,7 +40,7 @@ public class MathematicaHyperGraphSubstrateBuilder2D implements ISubstrateBuilde
         StringBuilder vertices = new StringBuilder();
         StringBuilder coords = new StringBuilder();
 
-        Map<Node, Integer> indexMap = new HashMap<Node, Integer>();
+        Map<INode, Integer> indexMap = new HashMap<INode, Integer>();
         int counter = 1;
 
 
@@ -48,9 +48,9 @@ public class MathematicaHyperGraphSubstrateBuilder2D implements ISubstrateBuilde
         coords.append("coords := {");
         for (Iterator<ISubstrateLayer> itLayer = substrate.getLayers().iterator(); itLayer.hasNext(); ) {
             ISubstrateLayer layer = itLayer.next();
-            Node[] nodes = layer.getNodes();
+            INode[] nodes = layer.getNodes();
             for (int i = 0; i < nodes.length; i++) {
-                Node node = nodes[i];
+                INode node = nodes[i];
                 coords.append(counter + "->{" + node.getCoordinate() + "," + layerLevel + "}");
                 if (itLayer.hasNext() || i != (nodes.length - 1)) {
                     coords.append(", ");
@@ -68,8 +68,8 @@ public class MathematicaHyperGraphSubstrateBuilder2D implements ISubstrateBuilde
         for (Iterator<SubstrateInterLayerConnection> itConnection = substrate.getConnections().iterator(); itConnection.hasNext(); ) {
             SubstrateInterLayerConnection connection = itConnection.next();
             int aCPPNOutput = substrate.getConnectionCPPNOutput(connection);
-            Node[] fromNodes = connection.getFrom().getNodes();
-            Node[] toNodes = connection.getTo().getNodes();
+            INode[] fromNodes = connection.getFrom().getNodes();
+            INode[] toNodes = connection.getTo().getNodes();
             for (int i = 0; i < fromNodes.length; i++) {
                 for (int j = 0; j < toNodes.length; j++) {
                     double weight = 1.0 * aCPPN.evaluate(aCPPNOutput, fromNodes[i].getCoordinate(), toNodes[j].getCoordinate());
@@ -95,8 +95,8 @@ public class MathematicaHyperGraphSubstrateBuilder2D implements ISubstrateBuilde
                         vertices.append(", ");
                         printComma = false;
                     }
-                    Node fromNode = connection.getFrom();
-                    Node toNode = connection.getTo();
+                    INode fromNode = connection.getFrom();
+                    INode toNode = connection.getTo();
                     double weight = 1.0 * aCPPN.evaluate(aCPPNOutput, fromNode.getCoordinate(), toNode.getCoordinate());
                     vertices.append("{" + indexMap.get(fromNode) + "->" + indexMap.get(toNode) + ", " + MathematicaUtils.toMathematica(weight) + "}");
 

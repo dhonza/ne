@@ -10,8 +10,8 @@ import hyper.substrate.node.NodeType;
  * To change this template use File | Settings | File Templates.
  */
 public class LineLayerFullyConnected1D extends LineLayer1D {
-    public LineLayerFullyConnected1D(NodeType nodeType, int xNodes, double xStart, double xStep) {
-        super(nodeType, xNodes, xStart, xStep);
+    public LineLayerFullyConnected1D(NodeType nodeType, int xNodes, double xStart, double xStep, boolean biased) {
+        super(nodeType, xNodes, xStart, xStep, biased);
     }
 
     public SubstrateIntraLayerConnection[] getIntraLayerConnections() {

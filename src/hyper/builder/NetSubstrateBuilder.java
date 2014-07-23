@@ -9,7 +9,7 @@ import hyper.substrate.ISubstrate;
 import hyper.substrate.layer.ISubstrateLayer;
 import hyper.substrate.layer.SubstrateInterLayerConnection;
 import hyper.substrate.layer.SubstrateIntraLayerConnection;
-import hyper.substrate.node.Node;
+import hyper.substrate.node.INode;
 import hyper.substrate.node.NodeType;
 
 import java.io.Serializable;
@@ -54,6 +54,7 @@ public class NetSubstrateBuilder implements IEvaluableSubstrateBuilder {
     public NetSubstrateBuilder(ISubstrate substrate, IWeightEvaluator weightEvaluator) {
         this.substrate = substrate;
         this.weightEvaluator = weightEvaluator;
+        throw new IllegalStateException("CORRECT bias layer behavior!");
     }
 
     public ISubstrate getSubstrate() {
@@ -63,7 +64,7 @@ public class NetSubstrateBuilder implements IEvaluableSubstrateBuilder {
     public void build(ICPPN aCPPN) {
         //TODO checks
         indices = new HashMap<ISubstrateLayer, NeuronIndices>();
-        Map<Node, Neuron> nodeMap = new LinkedHashMap<Node, Neuron>();
+        Map<INode, Neuron> nodeMap = new LinkedHashMap<INode, Neuron>();
         int neuronIdCounter = 0;
         int numInput = 0;
         int numHidden = 0;
@@ -72,8 +73,8 @@ public class NetSubstrateBuilder implements IEvaluableSubstrateBuilder {
         int higherIndex;
         for (ISubstrateLayer layer : substrate.getLayers()) {
             lowerIndex = neuronIdCounter;
-            Node[] nodes = layer.getNodes();
-            for (Node node : nodes) {
+            INode[] nodes = layer.getNodes();
+            for (INode node : nodes) {
                 Neuron newNeuron;
                 if (node.getType() == NodeType.INPUT || node.getType() == NodeType.BIAS) {
                     newNeuron = new Neuron(neuronIdCounter++, Neuron.Type.INPUT, node.getActivationFunction());
@@ -108,8 +109,8 @@ public class NetSubstrateBuilder implements IEvaluableSubstrateBuilder {
         for (SubstrateInterLayerConnection connection : substrate.getConnections()) {
             int aCPPNOutput = substrate.getConnectionCPPNOutput(connection);
 
-            for (Node nodeFrom : connection.getFrom().getNodes()) {
-                for (Node nodeTo : connection.getTo().getNodes()) {
+            for (INode nodeFrom : connection.getFrom().getNodes()) {
+                for (INode nodeTo : connection.getTo().getNodes()) {
                     Neuron from = nodeMap.get(nodeFrom);
                     Neuron to = nodeMap.get(nodeTo);
                     //number of incoming links

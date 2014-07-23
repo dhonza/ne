@@ -1,6 +1,7 @@
 package hyper.substrate.layer;
 
-import hyper.substrate.node.Node;
+import common.net.linked.Neuron;
+import hyper.substrate.node.INode;
 import hyper.substrate.node.Node1D;
 import hyper.substrate.node.NodeType;
 
@@ -24,9 +25,10 @@ public class LineLayer1D implements ISubstrateLayer {
 //    final private double xMax;
 //    final private double xScale;
 
-    final protected Node[] nodes;
+    final protected INode[] nodes;
+    final private boolean biased;
 
-    public LineLayer1D(NodeType nodeType, int xNodes, double xStart, double xStep) {
+    public LineLayer1D(NodeType nodeType, int xNodes, double xStart, double xStep, boolean biased) {
         this.nodeType = nodeType;
         this.xNodes = xNodes;
         this.xStart = xStart;
@@ -36,7 +38,8 @@ public class LineLayer1D implements ISubstrateLayer {
 //        this.xMin = -xMax;
 //        this.xMax = xScale;
 //        this.xMin = 0.0;
-        this.nodes = new Node[xNodes];
+        this.nodes = new INode[xNodes];
+        this.biased = biased;
         createNodes();
     }
 
@@ -51,12 +54,17 @@ public class LineLayer1D implements ISubstrateLayer {
         return nodes.length;
     }
 
-    public Node[] getNodes() {
+    public INode[] getNodes() {
         return nodes;
     }
 
     public NodeType getNodeType() {
         return nodeType;
+    }
+
+    @Override
+    public Neuron.Activation getNodeActivationFunction() {
+        return nodes[0].getActivationFunction();
     }
 
     public int getDimension() {
@@ -73,5 +81,9 @@ public class LineLayer1D implements ISubstrateLayer {
 
     public int getNumberOfIntraLayerConnections() {
         return 0;
+    }
+
+    public boolean isBiased() {
+        return biased;
     }
 }
