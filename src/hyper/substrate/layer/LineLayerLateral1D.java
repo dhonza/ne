@@ -1,5 +1,6 @@
 package hyper.substrate.layer;
 
+import common.net.linked.Neuron;
 import hyper.substrate.node.NodeType;
 
 /**
@@ -12,6 +13,10 @@ import hyper.substrate.node.NodeType;
 public class LineLayerLateral1D extends LineLayer1D {
     public LineLayerLateral1D(NodeType nodeType, int xNodes, double xStart, double xStep, boolean biased) {
         super(nodeType, xNodes, xStart, xStep, biased);
+    }
+
+    public LineLayerLateral1D(NodeType nodeType, int xNodes, double xStart, double xStep, boolean biased, Neuron.Activation activationFunction) {
+        super(nodeType, xNodes, xStart, xStep, biased, activationFunction);
     }
 
     public SubstrateIntraLayerConnection[] getIntraLayerConnections() {

@@ -92,6 +92,9 @@ public class BasicSubstrate implements ISubstrate {
         completed = true;
         layers = ImmutableSet.copyOf(layersBuilder);
         connections = ImmutableSet.copyOf(connectionsBuilder);
+        System.out.println("BasicSubstrate: substrate completed:");
+        System.out.println("\t#links: " + getNumOfLinks());
+        System.out.println("\t#CPPN outputs: " + biasCPPNOutput.size() + "(bias), " + connectionCPPNOutput.size() + "(connections)");
     }
 
     public ImmutableSet<ISubstrateLayer> getLayers() throws IllegalStateException {

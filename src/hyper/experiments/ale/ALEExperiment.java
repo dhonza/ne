@@ -20,6 +20,7 @@ import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
+import java.util.Arrays;
 import java.util.List;
 
 /**
@@ -154,24 +155,35 @@ public class ALEExperiment implements IProblem<INet>, IBehavioralDiversity {
             int action = -1;
             int toSkip = 0;
             while (!ale.isGameOver() && ale.getEpisodeFrameNumber() <= maxFrames) {
+                int maxIdx = 0;
+                boolean fire = false;
+                double[] softmax = new double[9];
+                Arrays.fill(softmax, 1.0 / 9.0);
 
+                double[] directionOutputs;
                 if (toSkip == 0) {
                     double[][] s = ale.getScreenGrayNormalizedRescaled(downSampleFactor);
                     hyperNet.reset();
                     hyperNet.loadInputs(Doubles.concat(s));
                     hyperNet.activate();
                     double[] outputs = hyperNet.getOutputs();
+                    directionOutputs = Arrays.copyOfRange(outputs, 0, 9);
+                    double fireOutput = outputs[9];
 
                     outputBuilder.addAll(Doubles.asList(outputs));
 
-                    int maxIdx = MathUtil.maxIndexFirst(outputs);
+//                    int maxIdx = MathUtil.maxIndexFirst(directionOutputs);
+                    softmax = MathUtil.softmax(directionOutputs);
+                    maxIdx = MathUtil.roulette(softmax);
+                    fire = fireOutput > 0.5;
 //                    action = decodeHorizontalFireAction(maxIdx);
-                    action = decodeAction(maxIdx, true);
+
+                    action = decodeAction(maxIdx, fire);
                     toSkip = frameSkip;
                 } else {
                     toSkip--;
                 }
-                exportFrame(hyperNet);
+                exportFrame(hyperNet, softmax, fire, maxIdx % 3, maxIdx / 3);
 
 
                 reward += ale.act(action);
@@ -273,14 +285,18 @@ public class ALEExperiment implements IProblem<INet>, IBehavioralDiversity {
         return action;
     }
 
-    private void exportFrame(INet hyperNet) {
+    private void exportFrame(INet hyperNet, double[] out, boolean fire, int selX, int selY) {
         if (export) {
             frame.record(ale.getScreenAsBufferedImage());
             PrecompiledFeedForwardNet net = (PrecompiledFeedForwardNet) hyperNet;
             frameActivities[0].record(grayScreenToImage(MathUtil.partition(net.getActivities(0), ale.getScreenWidth() / downSampleFactor)));
             frameActivities[1].record(grayScreenToImage(MathUtil.partition(net.getActivities(1), ale.getScreenWidth() / (downSampleFactor * hiddenDownSampleFactor))));
-            frameActivities[2].record(grayScreenToImage(MathUtil.partition(net.getActivities(2), 3)));
 
+            if (fire) {//fire -> make it red
+                frameActivities[2].record(grayScreenToImage(MathUtil.partition(out, 3), new double[]{1.0, 0.0, 0.0}, selX, selY));
+            } else {
+                frameActivities[2].record(grayScreenToImage(MathUtil.partition(out, 3), new double[]{1.0, 1.0, 1.0}, selX, selY));
+            }
         }
 
     }
@@ -296,12 +312,25 @@ public class ALEExperiment implements IProblem<INet>, IBehavioralDiversity {
     }
 
     private static BufferedImage grayScreenToImage(double[][] s) {
+        return grayScreenToImage(s, new double[]{1.0, 1.0, 1.0});
+    }
+
+    private static BufferedImage grayScreenToImage(double[][] s, double[] rgb) {
+        return grayScreenToImage(s, rgb, -1, -1);
+    }
+
+    private static BufferedImage grayScreenToImage(double[][] s, double[] rgb, int selX, int selY) {
+        assert rgb.length == 3;
         BufferedImage img = new BufferedImage(s[0].length, s.length, BufferedImage.TYPE_INT_RGB);
         for (int r = 0; r < s.length; r++) {
             double[] row = s[r];
             for (int c = 0; c < row.length; c++) {
-                Color col = new Color((float) s[r][c], (float) s[r][c], (float) s[r][c]);
-                img.setRGB(c, r, col.getRGB());
+                if (c == selX && r == selY) {
+                    img.setRGB(c, r, Color.BLUE.getRGB());
+                } else {
+                    Color col = new Color((float) (rgb[0] * s[r][c]), (float) (rgb[1] * s[r][c]), (float) (rgb[2] * s[r][c]));
+                    img.setRGB(c, r, col.getRGB());
+                }
             }
         }
         return img;

@@ -90,6 +90,36 @@ public class MathUtil {
         return idx;
     }
 
+    //squashes a vector of doubles to a probability vector of the same size
+    //see http://en.wikipedia.org/wiki/Softmax_function
+    public static double[] softmax(double[] a) {
+        double[] t = new double[a.length];
+        double sum = 0.0;
+        for (int i = 0; i < a.length; i++) {
+            t[i] = Math.exp(a[i]);
+            sum += t[i];
+        }
+        for (int i = 0; i < a.length; i++) {
+            t[i] /= sum;
+        }
+        return t;
+    }
+
+    //p is a vector of probabilities which sums to 1
+    //method returns a random index given the probabilities
+    public static int roulette(double[] p) {
+        double r = RND.getDouble();
+        double sum = 0.0; //running total
+        for (int i = 0; i < p.length; i++) {
+            sum += p[i];
+            if (r < sum) {
+                return i;
+            }
+        }
+        return p.length - 1;
+    }
+
+
     public static double[][] partition(double[] v, int columns) {
         assert (v.length % columns == 0);
         double[][] n = new double[v.length / columns][];

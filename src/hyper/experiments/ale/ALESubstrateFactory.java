@@ -1,5 +1,6 @@
 package hyper.experiments.ale;
 
+import common.net.linked.Neuron;
 import hyper.substrate.BasicSubstrate;
 import hyper.substrate.layer.ISubstrateLayer;
 import hyper.substrate.layer.MeshLayer2D;
@@ -55,10 +56,10 @@ public class ALESubstrateFactory {
         ISubstrateLayer inputGreenLayer = new MeshLayer2D(NodeType.INPUT, numNodesX, numNodesY, 2.0, 2.0, false);
         ISubstrateLayer inputBlueLayer = new MeshLayer2D(NodeType.INPUT, numNodesX, numNodesY, 2.0, 2.0, false);
 
-        ISubstrateLayer hiddenLayer = new MeshLayer2D(NodeType.HIDDEN, numNodesX, numNodesY, 2.0, 2.0, true);
+        ISubstrateLayer hiddenLayer = new MeshLayer2D(NodeType.HIDDEN, numNodesX, numNodesY, 2.0, 2.0, true, Neuron.Activation.SIGMOID_ALPHA1);
 
-        ISubstrateLayer outputDirectionLayer = new MeshLayer2D(NodeType.OUTPUT, 3, 3, 2.0, 2.0, true);
-        ISubstrateLayer outputFireLayer = new MeshLayer2D(NodeType.OUTPUT, 1, 1, 2.0, 2.0, true);
+        ISubstrateLayer outputDirectionLayer = new MeshLayer2D(NodeType.OUTPUT, 3, 3, 2.0, 2.0, true, Neuron.Activation.SIGMOID_ALPHA1);
+        ISubstrateLayer outputFireLayer = new MeshLayer2D(NodeType.OUTPUT, 1, 1, 2.0, 2.0, true, Neuron.Activation.SIGMOID_ALPHA1);
 
 
         SubstrateInterLayerConnection inputRedToHidden = new SubstrateInterLayerConnection(inputRedLayer, hiddenLayer);

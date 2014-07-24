@@ -169,7 +169,7 @@ public class DirectedAcyclicGraphGenerator {
             case BIPOLAR_SIGMOID_ALPHA1:
                 return "a1b";
             default:
-                throw new IllegalStateException("Not yet implemented!");
+                throw new IllegalStateException("Not yet implemented for " + n + "!");
         }
     }
 

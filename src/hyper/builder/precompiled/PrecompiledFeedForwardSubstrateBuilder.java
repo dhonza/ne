@@ -137,7 +137,7 @@ public class PrecompiledFeedForwardSubstrateBuilder implements IEvaluableSubstra
 
         biasOffsets = biasOffsetBuilder.build();
         weightOffsets = weightOffsetBuilder.build();
-        System.out.println("PrecompiledFeedForwardSubstrateBuilder: # of weights: " + weightCount);
+        System.out.println("PrecompiledFeedForwardSubstrateBuilder: #weights: " + weightCount);
     }
 
 

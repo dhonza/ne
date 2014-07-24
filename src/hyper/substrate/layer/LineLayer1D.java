@@ -27,8 +27,14 @@ public class LineLayer1D implements ISubstrateLayer {
 
     final protected INode[] nodes;
     final private boolean biased;
+    final private Neuron.Activation activationFunction;
+
 
     public LineLayer1D(NodeType nodeType, int xNodes, double xStart, double xStep, boolean biased) {
+        this(nodeType, xNodes, xStart, xStep, biased, Neuron.Activation.SIGMOID);
+    }
+
+    public LineLayer1D(NodeType nodeType, int xNodes, double xStart, double xStep, boolean biased, Neuron.Activation activationFunction) {
         this.nodeType = nodeType;
         this.xNodes = xNodes;
         this.xStart = xStart;
@@ -40,13 +46,14 @@ public class LineLayer1D implements ISubstrateLayer {
 //        this.xMin = 0.0;
         this.nodes = new INode[xNodes];
         this.biased = biased;
+        this.activationFunction = activationFunction;
         createNodes();
     }
 
     private void createNodes() {
         int cnt = 0;
         for (int j = 0; j < xNodes; j++) {
-            nodes[cnt++] = new Node1D(xStart + j * xStep, nodeType);
+            nodes[cnt++] = new Node1D(xStart + j * xStep, nodeType, activationFunction);
         }
     }
 
@@ -64,7 +71,7 @@ public class LineLayer1D implements ISubstrateLayer {
 
     @Override
     public Neuron.Activation getNodeActivationFunction() {
-        return nodes[0].getActivationFunction();
+        return activationFunction;
     }
 
     public int getDimension() {

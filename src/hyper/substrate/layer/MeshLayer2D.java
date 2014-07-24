@@ -27,10 +27,15 @@ public class MeshLayer2D implements ISubstrateLayer {
     final private double yMax;
     final private double yScale;
     final private boolean biased;
+    final private Neuron.Activation activationFunction;
 
     final private INode[] nodes;
 
     public MeshLayer2D(NodeType nodeType, int xNodes, int yNodes, double xScale, double yScale, boolean biased) {
+        this(nodeType, xNodes, yNodes, xScale, yScale, biased, Neuron.Activation.SIGMOID);
+    }
+
+    public MeshLayer2D(NodeType nodeType, int xNodes, int yNodes, double xScale, double yScale, boolean biased, Neuron.Activation activationFunction) {
         this.nodeType = nodeType;
         this.xNodes = xNodes;
         this.yNodes = yNodes;
@@ -45,6 +50,7 @@ public class MeshLayer2D implements ISubstrateLayer {
 //        this.yMax = yScale;
 //        this.yMin = 0.0;
         this.biased = biased;
+        this.activationFunction = activationFunction;
 
         this.nodes = new INode[xNodes * yNodes];
         createNodes();
@@ -60,7 +66,7 @@ public class MeshLayer2D implements ISubstrateLayer {
 //        System.out.println("--------------------" + xNodes + " " + yNodes + " " + xStep + " " + yStep);
         for (int i = 0; i < yNodes; i++) {
             for (int j = 0; j < xNodes; j++) {
-                nodes[cnt++] = new Node2D(xPos, yPos, nodeType);
+                nodes[cnt++] = new Node2D(xPos, yPos, nodeType, activationFunction);
 //                System.out.println("POS: " + xPos + " " + yPos);
                 xPos += xStep;
             }
@@ -83,7 +89,7 @@ public class MeshLayer2D implements ISubstrateLayer {
 
     @Override
     public Neuron.Activation getNodeActivationFunction() {
-        return nodes[0].getActivationFunction();
+        return activationFunction;
     }
 
     public int getDimension() {
